@@ -1,0 +1,90 @@
+@charset "utf-8";
+
+@import './mixins.scss';
+@import './variables.scss';
+
+html{
+  font-family: "Helvetica Neue", Arial,
+    "Hiragino Kaku Gothic ProN",
+    "Hiragino Sans",
+    Meiryo,
+    sans-serif;
+}
+
+ul{
+  padding-inline-start: 0;
+  margin-block-start: 0;
+  margin-block-end: 0;
+}
+
+a {
+  cursor: pointer;
+}
+
+
+
+.app {
+  
+  position: relative;
+  display: grid;
+  grid-template-rows: min-content auto min-content;
+  overflow: hidden;
+  padding: 0;
+  background-color: var(--app-bg-color);
+  background-image: url('/img/subtle-dark-vertical.png');
+  height: 100%;
+}
+
+.view{
+  --app-base-color2: #d2bd28;
+  --app-base-color: #d9c84e;
+  --app-bg-color: #fbecad;
+  --app-icon-size: 30px;
+  --app-comment-color: #666;
+  --app-color-red: #ff3366;
+  --app-color-dark: #57591d;
+
+  // override
+  --button-label-color: #57591d;
+  --badge-bg-color: #ff3399;
+  --badge-shadow: 0 0 0 1px rgba(255, 255, 255, 0.9);
+  --button-border-color: none;
+
+  --modalview-header-bgcolor: #d2bd28;
+  --modalview-header-color: #fff;
+  --modalview-header-fontsize: 16px;
+  --modalview-bg-color: #d2bd28;
+}
+
+.app input {
+  outline: none;
+  color: #666;
+}
+
+/* -------------------- 
+ parts
+ ---------------------*/
+.chat-usericon {
+  width: var(--app-icon-size);
+  height: var(--app-icon-size);
+  border-radius: calc(var(--app-icon-size) / 2);
+}
+
+.btn-more {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100px;
+  text-align: center;
+  margin: 30px auto;
+}
+
+/* -------------------- 
+ Ionicons
+ ---------------------*/
+ion-icon {
+  color: #7e7020;
+
+  font-size: 24px;
+  fill: currentColor;
+}

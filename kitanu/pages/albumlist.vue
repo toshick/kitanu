@@ -1,15 +1,15 @@
 <template>
-  <AppTop />
+  <AppAlbumList />
 </template>
 <!------------------------------->
 
 <!------------------------------->
 <script lang="ts">
 import Vue from 'vue'
-import AppTop from '@/components/AppTop.vue'
+import AppAlbumList from '@/components/AppAlbumList.vue'
 
 export default Vue.extend({
-  components: { AppTop },
+  components: { AppAlbumList },
 })
 </script>
 <!------------------------------->

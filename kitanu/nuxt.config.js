@@ -25,11 +25,19 @@ export default {
       },
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
+    script: [
+      { src: 'https://unpkg.com/ionicons@5.1.2/dist/ionicons/ionicons.esm.js', type: 'module' },
+      { src: 'https://unpkg.com/ionicons@5.1.2/dist/ionicons/ionicons.js', nomodule: '' },
+    ],
   },
   /*
    ** Global CSS
    */
-  css: [],
+  css: [
+    { src: 'node_modules/camaleao-design/css/reset.css', lang: 'css' },
+    { src: 'node_modules/camaleao-design/css/camaleao.css', lang: 'css' },
+    { src: 'assets/css/app.scss', lang: 'scss' },
+  ],
   /*
    ** Plugins to load before mounting the App
    ** https://nuxtjs.org/guide/plugins
@@ -62,4 +70,4 @@ export default {
    ** See https://nuxtjs.org/api/configuration-build/
    */
   build: {},
-}
+};

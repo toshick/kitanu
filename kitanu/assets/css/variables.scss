@@ -1,0 +1,124 @@
+@charset "utf-8";
+
+@for $i from 10 to 60 {
+  .fontsize-#{$i} {
+    font-size: #{$i}px;
+  }
+}
+
+@for $i from 10 to 60 {
+  // margin
+  .margin-#{$i} {
+    margin: #{$i}px !important;
+  }
+
+  .margin-top-#{$i} {
+    margin-top: #{$i}px !important;
+  }
+
+  .margin-right-#{$i} {
+    margin-right: #{$i}px !important;
+  }
+
+  .margin-bottom-#{$i} {
+    margin-bottom: #{$i}px !important;
+  }
+
+  .margin-left-#{$i} {
+    margin-left: #{$i}px !important;
+  }
+
+  // padding
+  .padding-#{$i} {
+    padding: #{$i}px !important;
+  }
+
+  .padding-top-#{$i} {
+    padding-top: #{$i}px !important;
+  }
+
+  .padding-right-#{$i} {
+    padding-right: #{$i}px !important;
+  }
+
+  .padding-bottom-#{$i} {
+    padding-bottom: #{$i}px !important;
+  }
+
+  .padding-left-#{$i} {
+    padding-left: #{$i}px !important;
+  }
+}
+
+@include mobile {
+  @for $i from 10 through 60 {
+    // margin
+    .margin-#{$i}-mobile {
+      margin: #{$i}px !important;
+    }
+
+    .margin-top-#{$i}-mobile {
+      margin-top: #{$i}px !important;
+    }
+
+    .margin-right-#{$i}-mobile {
+      margin-right: #{$i}px !important;
+    }
+
+    .margin-bottom-#{$i}-mobile {
+      margin-bottom: #{$i}px !important;
+    }
+
+    .margin-left-#{$i}-mobile {
+      margin-left: #{$i}px !important;
+    }
+
+    // padding
+    .padding-#{$i}-mobile {
+      padding: #{$i}px !important;
+    }
+
+    .padding-top-#{$i}-mobile {
+      padding-top: #{$i}px !important;
+    }
+
+    .padding-right-#{$i}-mobile {
+      padding-right: #{$i}px !important;
+    }
+
+    .padding-bottom-#{$i}-mobile {
+      padding-bottom: #{$i}px !important;
+    }
+
+    .padding-left-#{$i}-mobile {
+      padding-left: #{$i}px !important;
+    }
+  }
+}
+
+.margin-left-auto {
+  margin-left: auto !important;
+}
+
+.margin-right-auto {
+  margin-right: auto !important;
+}
+
+.padding-left-auto {
+  padding-left: auto !important;
+}
+
+.padding-right-auto {
+  padding-right: auto !important;
+}
+
+//----------------------
+// img
+//----------------------
+.img-pos-center-bottom {
+  object-position: center bottom;
+}
+
+.img-pos-center-top {
+  object-position: center top;
+}

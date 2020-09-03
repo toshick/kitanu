@@ -1,20 +1,16 @@
 # kitanu
 
-## Build Setup
+## ADR
 
-```bash
-# install dependencies
-$ npm install
+### core-jsを手動でインストール
 
-# serve with hot reload at localhost:3000
-$ npm run dev
+storybookのビルド時に以下のエラーがでる
 
-# build for production and launch server
-$ npm run build
-$ npm run start
-
-# generate static project
-$ npm run generate
+```
+Error: Can't resolve 'core-js/modules/web.dom-collections.for-each'...
 ```
 
-For detailed explanation on how things work, check out [Nuxt.js docs](https://nuxtjs.org).
+core-js関連、nuxtがつかっているバージョンが古い（`core-js@2.6.11`）せい
+
+手動で3系をインストールする
+

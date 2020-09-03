@@ -1,0 +1,201 @@
+<template>
+  <div v-if="myitem" :class="myclass">
+    <div class="chatitem-icon">
+      <img class="chat-usericon" :src="myitem.iconurl" alt="" />
+    </div>
+    <div class="chatitem-body">
+      <p class="chatitem-body-text" v-html="text"></p>
+
+      <p v-for="u in urls" :key="u" class="chatitem-body-img">
+        <img :src="u" alt="" />
+      </p>
+
+      <div class="chatitem-bottom">
+        <p><a class="chatitem-good" @click="good">いいね</a></p>
+        <div class="chatitem-postinfo">
+          （{{ myitem.username }}
+          <span>{{ myitem.postdate }}</span>
+          ）
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+<!------------------------------->
+
+<!------------------------------->
+<script lang="ts">
+import Vue, { PropType } from 'vue';
+
+export type ChatCommentType = {
+  iconurl: string;
+  text: string;
+  username: string;
+  postdate: string;
+  fukitype?: string;
+};
+
+type State = {
+  urls: string[];
+};
+
+export default Vue.extend({
+  name: 'ChatComment',
+  props: {
+    opposite: {
+      default: false,
+      type: Boolean,
+    },
+    myitem: {
+      default: null,
+      type: Object as PropType<ChatCommentType>,
+    },
+  },
+  data(): State {
+    return {
+      urls: [],
+    };
+  },
+  computed: {
+    myclass(): any {
+      const ret: any = { chatitem: true };
+      if (this.opposite) {
+        ret['--opposite'] = true;
+      }
+      if (this.myitem.fukitype) {
+        ret['--fuki'] = true;
+        ret[`--${this.myitem.fukitype}`] = true;
+      }
+      return ret;
+    },
+    text(): string {
+      return this.myitem.text.replace(/http.*[a-zA-Z]?/, '').replace(/[\n]/g, '<br>');
+    },
+  },
+  mounted() {
+    const links = this.myitem.text.match(/http.*[a-zA-Z]?/g);
+    if (links && links.length > 0) {
+      this.urls = links;
+    }
+  },
+  methods: {
+    close() {
+      this.$emit('close');
+    },
+    good() {},
+  },
+});
+</script>
+<!------------------------------->
+
+<!------------------------------->
+<style scoped>
+.chatitem {
+  position: relative;
+  display: flex;
+  padding: 10px 20px 10px 20px;
+  /* margin: 10px 0 20px; */
+  color: var(--app-comment-color);
+}
+.chatitem-icon {
+  position: absolute;
+  top: 5px;
+  left: 10px;
+}
+.chatitem-body {
+  flex: 1;
+  font-size: 12px;
+  line-height: 1.5;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 6px;
+  padding: 10px 0px 0;
+  text-indent: 1.5em;
+  /* border: solid 1px #fff; */
+  /* background-color: #fff6d3; */
+  /* box-shadow: 5px 5px 5px #ecdea3, -5px -5px 5px #ecdea3; */
+}
+.chatitem-body-text {
+  font-size: 12px;
+  padding: 0px 10px 0 10px;
+}
+.chatitem-body-img {
+  margin: 10px 0;
+}
+
+.chatitem .chat-usericon {
+  flex: 1 0 0;
+  margin-right: 0.5em;
+}
+
+/* opposite */
+.chatitem.--opposite {
+  /* justify-content: flex-end; */
+  /* background-color: rgba(255, 255, 255, 0.8); */
+}
+
+/* ------------------ */
+/* fuki */
+/* ------------------ */
+
+.chatitem.--fuki .chatitem-body {
+  background-color: transparent;
+  text-indent: initial;
+}
+.chatitem.--fuki .chatitem-body-text {
+  display: flex;
+  align-items: center;
+
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  font-size: 14px;
+  padding: 40px 60px;
+  min-height: 230px;
+}
+.chatitem.--fuki .chatitem-bottom {
+  border-top: none;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.chatitem.--fuki1 .chatitem-body-text {
+  background-image: url('/img/e0520_1.png');
+}
+.chatitem.--fuki2 .chatitem-body-text {
+  background-image: url('/img/e0308_1.png');
+  padding: 80px 60px 40px;
+  min-height: 260px;
+}
+.chatitem.--fuki3 .chatitem-body-text {
+  background-image: url('/img/e0684_1.png');
+  padding: 30px 60px;
+  min-height: 160px;
+}
+.chatitem.--fuki4 .chatitem-body-text {
+  background-image: url('/img/e0272_1.png');
+  padding: 30px 60px 30px;
+  min-height: 100px;
+}
+
+.chatitem-bottom {
+  display: flex;
+  align-items: center;
+  border-top: dashed 1px #bbb;
+  border-radius: 3px;
+  padding: 6px 10px;
+  margin: 6px 0 0;
+  font-size: 10px;
+}
+
+.chatitem-postinfo {
+  font-size: 10px;
+  text-align: right;
+  margin-left: auto;
+}
+.chatitem-good {
+  cursor: pointer;
+  text-decoration: underline;
+}
+.chatitem-good:hover {
+  text-decoration: none;
+}
+</style>
