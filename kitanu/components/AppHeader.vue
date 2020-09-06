@@ -1,6 +1,9 @@
 <template>
   <header class="app-header">
     <slot></slot>
+    <div class="app-header-right">
+      <slot name="right"></slot>
+    </div>
   </header>
 </template>
 <!------------------------------->
@@ -36,6 +39,7 @@ export default Vue.extend({
   background: linear-gradient(var(--app-base-color) 60%, var(--app-base-color2) 0%);
   padding: 0px 15px;
   height: 40px;
+  border-bottom: solid 1px #ecde90;
 
   a {
     display: flex;
@@ -61,12 +65,15 @@ export default Vue.extend({
     font-weight: normal;
     text-align: center;
     letter-spacing: 0.2em;
-    margin-right: auto;
+  }
+  .app-header-right {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
   }
   /* -------------------- 
     Ionicons
   ---------------------*/
-
   .btn-header {
     margin-left: 10px;
     & > span {

@@ -1,16 +1,24 @@
 <template>
-  <div class="activity">
-    <ul class="item-list">
-      <li v-for="(i, index) in items" :key="`item-${index}-${i.user.username}`">
-        <UserIcon :url="i.user.iconurl" />
-        <div class="item-label">
-          <!-- <h3>{{ i.user.username }}</h3> -->
-          <p>{{ i.text }}</p>
-          <p class="item-date">{{ i.date }}</p>
-        </div>
-      </li>
-    </ul>
-    <a class="btn-more" href=""><ion-icon name="chevron-down-outline" size="large" /></a>
+  <div class="activity ca-modal-scroll-wrapper">
+    <CaModalScroll>
+      <CaModalViewHeader title="オシラセーヌ" @close="close"> </CaModalViewHeader>
+      <CaModalViewBody>
+        <ul class="item-list">
+          <li v-for="(i, index) in items" :key="`item-${index}-${i.user.username}`">
+            <UserIcon :url="i.user.iconurl" />
+            <div class="item-label">
+              <!-- <h3>{{ i.user.username }}</h3> -->
+              <p>
+                {{ i.text }}<br />
+                <CaTag v-for="t in i.tag" :key="t" class="item-tag" size="S">{{ t }}</CaTag>
+              </p>
+              <!-- <p class="item-date">{{ i.date }}</p> -->
+            </div>
+          </li>
+        </ul>
+        <a class="btn-more" href=""><ion-icon name="chevron-down-outline" size="large" /></a>
+      </CaModalViewBody>
+    </CaModalScroll>
   </div>
 </template>
 <!------------------------------->
@@ -25,6 +33,7 @@ type Item = {
   user: User;
   text: string;
   date: string;
+  tag?: string[];
 };
 
 type State = {
@@ -32,10 +41,10 @@ type State = {
 };
 
 let items: Item[] = [];
-items.push({ user: { username: 'にゃんごろう', iconurl: 'https://avatars3.githubusercontent.com/u/6635142?s=460&v=4', subtext: 'いつだってオレンジ' }, text: 'にゃんごろうが新しい投稿をしたーヌにゃんごろうが新しい投稿をしたーヌ', date: '2020.03.11' });
-items.push({ user: { username: 'カマキチ', iconurl: 'https://avatars3.githubusercontent.com/u/6635142?s=460&v=4', subtext: 'そろそろキャンプしたいぞ' }, text: 'にゃんごろうが新しい投稿をしたーヌ', date: '2020.03.11' });
-items.push({ user: { username: 'エドブラウン', iconurl: 'https://avatars3.githubusercontent.com/u/6635142?s=460&v=4', subtext: '' }, text: 'にゃんごろうが新しい投稿をしたーヌにゃんごろうが新しい投稿をしたーヌ', date: '2020.03.11' });
-items.push({ user: { username: 'サルバトーレトスカニーニ', iconurl: 'https://avatars3.githubusercontent.com/u/6635142?s=460&v=4', subtext: 'スパゲティつくってみた' }, text: 'にゃんごろうが新しい投稿をしたーヌにゃんごろうが新しい投稿をしたーヌにゃんごろうが新しい投稿をしたーヌ', date: '2020.03.11' });
+items.push({ user: { username: 'にゃんごろう', iconurl: 'https://avatars3.githubusercontent.com/u/6635142?s=460&v=4', subtext: 'いつだってオレンジ' }, text: 'にゃんごろうが新しい投稿をしたーヌにゃんごろうが新しい投稿をしたーヌ', date: '2020.03.11', tag: ['2020.03.11', '投稿'] });
+items.push({ user: { username: 'カマキチ', iconurl: 'https://avatars3.githubusercontent.com/u/6635142?s=460&v=4', subtext: 'そろそろキャンプしたいぞ' }, text: 'にゃんごろうが新しい投稿をしたーヌ', date: '2020.03.11', tag: ['2020.03.11'] });
+items.push({ user: { username: 'エドブラウン', iconurl: 'https://avatars3.githubusercontent.com/u/6635142?s=460&v=4', subtext: '' }, text: 'にゃんごろうが新しい投稿をしたーヌにゃんごろうが新しい投稿をしたーヌ', date: '2020.03.11', tag: ['2020.03.11', '投稿', 'お知らせ'] });
+items.push({ user: { username: 'サルバトーレトスカニーニ', iconurl: 'https://avatars3.githubusercontent.com/u/6635142?s=460&v=4', subtext: 'スパゲティつくってみた' }, text: 'にゃんごろうが新しい投稿をしたーヌにゃんごろうが新しい投稿をしたーヌにゃんごろうが新しい投稿をしたーヌ', date: '2020.03.11', tag: ['2020.03.11'] });
 
 for (let index = 0; index < 3; index++) {
   items = items.concat(items);
@@ -52,15 +61,20 @@ export default Vue.extend({
   },
   computed: {},
   mounted() {},
-  methods: {},
+  methods: {
+    close() {
+      this.$emit('close');
+    },
+    save() {
+      console.log('ほぞん');
+    },
+  },
 });
 </script>
 <!------------------------------->
 
 <!------------------------------->
 <style scoped lang="scss">
-.activity {
-}
 .item-list {
   li {
     display: flex;
@@ -78,6 +92,13 @@ export default Vue.extend({
   }
   p {
     font-size: var(--fontsize-small);
+    .ca-tag {
+      background-color: #f0d755;
+      color: #6c3321;
+      margin-top: 3px;
+      margin-right: 6px;
+      // border: solid 1px #fff;
+    }
   }
 }
 .item-date {
@@ -86,7 +107,7 @@ export default Vue.extend({
 </style>
 <style lang="scss">
 .view-activitylist {
-  .ca-modal-view {
+  .ca-modalview {
     background-color: #ddcd61;
     background-image: url('/img/subtle-dark-vertical.png');
   }

@@ -1,26 +1,73 @@
 <template>
   <footer class="app-footer">
-    <div class="app-footer-icon"></div>
-    <div class="app-footer-icon"></div>
-    <div class="app-footer-icon"></div>
-    <div class="app-footer-input">
-      <input type="text" placeholder="書く" />
-    </div>
-    <div class="app-footer-icon"></div>
+    <!-- top -->
+    <template v-if="mode == 'top'">
+      <div class="app-footer-icon">
+        <a @click.stop.prevent="$emit('home')">
+          <ion-icon name="leaf" />
+          <p>ホーム</p>
+        </a>
+      </div>
+      <div class="app-footer-icon">
+        <a @click.stop.prevent="$emit('album')">
+          <ion-icon name="reorder-four-outline" />
+          <p>アルバム</p>
+        </a>
+      </div>
+      <div class="app-footer-icon">
+        <a @click.stop.prevent="$emit('talk')">
+          <ion-icon name="chatbubble-ellipses-outline" />
+          <p>しゃべる</p>
+        </a>
+      </div>
+      <div class="app-footer-icon">
+        <a @click.stop.prevent="$emit('setting')">
+          <ion-icon name="restaurant-outline" />
+          <p>せってい</p>
+        </a>
+      </div>
+    </template>
+    <!-- chat -->
+    <template v-if="mode == 'chat'">
+      <div class="app-footer-icon">
+        <a @click.stop.prevent="$emit('album')">
+          <ion-icon name="reorder-four-outline" />
+          <p>アルバム</p>
+        </a>
+      </div>
+      <div class="app-footer-icon">
+        <a @click.stop.prevent="$emit('talk')">
+          <ion-icon name="chatbubble-ellipses-outline" />
+          <p>しゃべる</p>
+        </a>
+      </div>
+      <div class="app-footer-icon">
+        <a @click.stop.prevent="$emit('setting')">
+          <ion-icon name="restaurant-outline" />
+          <p>せってい</p>
+        </a>
+      </div>
+    </template>
   </footer>
 </template>
 <!------------------------------->
 
 <!------------------------------->
 <script lang="ts">
-import Vue from 'vue';
+import Vue, { PropType } from 'vue';
 
 type State = {};
+type Mode = 'top' | 'chat';
 
 export default Vue.extend({
   name: 'AppFooter',
   components: {},
-  props: {},
+  props: {
+    mode: {
+      default: 'top',
+      type: String as PropType<Mode>,
+    },
+  },
   data(): State {
     return {};
   },
@@ -31,28 +78,40 @@ export default Vue.extend({
 <!------------------------------->
 
 <!------------------------------->
-<style scoped>
+<style scoped lang="scss">
 .app-footer {
   display: flex;
   align-items: center;
   justify-content: space-between;
   background: linear-gradient(var(--app-base-color) 50%, var(--app-base-color2) 0%);
-  padding: 0 10px;
+  padding: 0 30px;
   height: 50px;
+  border-top: solid 1px #ecde90;
 }
 
 .app-footer-icon {
-  --icon-size: 34px;
-  width: var(--icon-size);
-  height: var(--icon-size);
-  border-radius: calc(var(--icon-size) / 2);
-  background-color: #fff;
-}
-
-.app-footer-input input {
-  height: 34px;
-  border-radius: 4px;
-  border: solid 1px var(--app-base-color);
-  padding: 0 10px;
+  a {
+    display: block;
+    text-align: center;
+    font-size: 10px;
+    color: var(--app-color-dark);
+    text-decoration: none;
+    // color: #fff;
+  }
+  p {
+    padding: 0;
+    margin: -3px 0 0;
+    color: inherit;
+  }
+  input {
+    height: 34px;
+    border-radius: 4px;
+    border: solid 1px var(--app-base-color);
+    padding: 0 10px;
+  }
+  ion-icon {
+    font-size: 26px;
+    color: inherit;
+  }
 }
 </style>

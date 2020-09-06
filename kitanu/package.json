@@ -10,7 +10,7 @@
     "lint:js": "eslint --ext .js,.vue --ignore-path .gitignore .",
     "lint": "npm run lint:js",
     "test": "jest",
-    "storybook": "start-storybook -p 6006 -s static",
+    "storybook": "start-storybook -p 6007 -s static",
     "build-storybook": "build-storybook",
     "camaleao": "npm i https://github.com/toshick/camaleao-design.git"
   },

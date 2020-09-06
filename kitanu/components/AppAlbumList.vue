@@ -3,10 +3,13 @@
     <AppHeader>
       <a class="btn-back" href=""><ion-icon name="chevron-back" size="medium" /></a>
       <h1>アルバムリスト</h1>
-      <a class="btn-header" @click.stop="editing = !editing">
-        <ion-icon v-if="!editing" name="restaurant-outline" size="medium" />
-        <span v-else>完了</span>
-      </a>
+      <!-- right -->
+      <template v-slot:right>
+        <a class="btn-header" @click.stop="editing = !editing">
+          <ion-icon v-if="!editing" name="restaurant-outline" size="medium" />
+          <span v-else>完了</span>
+        </a>
+      </template>
     </AppHeader>
     <div :class="myClass">
       <div class="album-body-head">
@@ -23,7 +26,7 @@
 <!------------------------------->
 <script lang="ts">
 import Vue from 'vue';
-import { openDialog } from '@/common/util';
+import { openDialog, toast } from '@/common/util';
 import { Input } from 'camaleao-design/components/type';
 import AppHeader from './AppHeader.vue';
 import AppFooter from './AppFooter.vue';
@@ -76,27 +79,30 @@ export default Vue.extend({
       const $t = this.$el.closest('.mobileview') || null;
       openDialog({
         modalTitle: '新しいアルバムをつくるぞ',
-        confirmText: 'よろしいヌ？',
-        btnLabel: 'ヌ',
-        onConfirm: () => {
-          console.log('いえす');
-        },
         target: $t,
-        inputs,
+        compoParams: {
+          inputs,
+          confirmText: 'よろしいヌ？',
+          btnLabel: 'ヌ',
+          onConfirm: () => {
+            toast('アルバムを作成したヌ', { target: $t });
+          },
+        },
       });
     },
     deleteItem(i: AlbumItem) {
-      console.log('i', i);
       const $t = this.$el.closest('.mobileview') || null;
       openDialog({
         modalTitle: 'このアルバムを削除するぞ',
-        confirmText: 'よろしいヌ？',
-        btnLabel: 'ヌ',
-        type: 'danger',
-        onConfirm: () => {
-          console.log('いえす');
-        },
         target: $t,
+        compoParams: {
+          confirmText: 'よろしいヌ？',
+          btnLabel: 'ヌ',
+          onConfirm: () => {
+            toast('アルバムを削除したヌ', { target: $t });
+          },
+          type: 'danger',
+        },
       });
     },
   },

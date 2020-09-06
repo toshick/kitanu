@@ -9,7 +9,7 @@ import AppAlbumDetail from '@/components/AppAlbumDetail.vue';
 import AppAlbumList from '@/components/AppAlbumList.vue';
 import AppMember from '@/components/AppMember.vue';
 
-import Chat from '@/components/Chat.vue';
+import AppChat from '@/components/AppChat.vue';
 Vue.config.ignoredElements = ['ion-icon'];
 
 const chatitems = [];
@@ -66,7 +66,7 @@ infoitems.push({
 
 storiesOf('キータヌ', module).add('チャット', () => ({
   components: {
-    Chat,
+    AppChat,
     AppTop,
     AppSetting,
     AppAlbumDetail,
@@ -80,7 +80,7 @@ storiesOf('キータヌ', module).add('チャット', () => ({
   </div>
   <section class="appviews">
   <div class="mobileview"><AppTop :infoitems="infoitems"  /></div>
-  <div class="mobileview"><Chat :chatitems="chatitems" :infoitems="infoitems" /></div>
+  <div class="mobileview"><AppChat :chatitems="chatitems" :infoitems="infoitems" /></div>
   <div class="mobileview"><AppSetting /></div>
   <div class="mobileview"><AppAlbumList /></div>
   <div class="mobileview"><AppAlbumDetail /></div>

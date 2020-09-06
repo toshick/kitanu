@@ -4,20 +4,21 @@
       <a class="btn-back" href=""><ion-icon name="chevron-back" size="medium" /></a>
       <img class="chat-usericon" src="https://storage.googleapis.com/toshickcom-a7f98.appspot.com/upload_images/%E3%82%A4%E3%83%A1%E3%83%BC%E3%82%B8-1595803900938.jpeg" alt="" />
       <p class="chat-username">{{ title }}</p>
-      <a class="btn-header margin-left-auto" href=""><ion-icon name="log-in" size="medium" /></a>
-      <a class="btn-header" href=""><ion-icon name="log-in-outline" size="medium" /></a>
+      <!-- right -->
+      <template v-slot:right>
+        <a class="btn-header margin-left-auto" href=""><ion-icon name="log-in" size="medium" /></a>
+        <a class="btn-header" href=""><ion-icon name="log-in-outline" size="medium" /></a>
+      </template>
     </AppHeader>
-
-    <div class="chat-body">
+    <AppBody>
       <ChatInfo :infoitems="infoitems" />
       <ul>
         <li v-for="(i, index) in chatitems" :key="`${index}-${i.text}`">
           <ChatComment :myitem="i" :opposite="index % 2 === 1" />
         </li>
       </ul>
-    </div>
-
-    <AppFooter />
+    </AppBody>
+    <AppFooter mode="chat" @talk="startTalk" />
   </section>
 </template>
 <!------------------------------->
@@ -25,20 +26,24 @@
 <!------------------------------->
 <script lang="ts">
 import Vue, { PropType } from 'vue';
+import { openView } from '@/common/util';
 import ChatComment, { ChatCommentType } from './ChatComment.vue';
 import ChatInfo, { ChatInfoItemType } from './ChatInfo.vue';
+import AppBody from './AppBody.vue';
 import AppFooter from './AppFooter.vue';
 import AppHeader from './AppHeader.vue';
+import TextInputModal from './parts/TextInputModal.vue';
 
 type State = {};
 
 export default Vue.extend({
-  name: 'Chat',
+  name: 'AppChat',
   components: {
     ChatComment,
     ChatInfo,
     AppFooter,
     AppHeader,
+    AppBody,
   },
   props: {
     title: {
@@ -65,6 +70,22 @@ export default Vue.extend({
     close() {
       this.$emit('close');
     },
+    startTalk() {
+      const $t = this.$el.closest('.mobileview') || null;
+
+      openView({
+        modalTitle: '確認しますヨ',
+        target: $t,
+        component: TextInputModal,
+        klass: ['view-textinput'],
+        compoParams: {
+          confirmText: 'なんだかしらんけどよろしいですか？なんだかしらんけどよろしいですか？',
+          onConfirm: () => {
+            console.log('いえす');
+          },
+        },
+      });
+    },
   },
 });
 </script>
@@ -72,10 +93,7 @@ export default Vue.extend({
 
 <!------------------------------->
 <style scoped lang="scss">
-.chat-body {
-  overflow: scroll;
-}
-.chat-body ul {
+ul {
   padding: 10px 0 30px;
 }
 </style>

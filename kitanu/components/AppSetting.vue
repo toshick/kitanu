@@ -3,9 +3,11 @@
     <AppHeader>
       <a class="btn-back" href=""><ion-icon name="chevron-back" size="medium" /></a>
       <h1>設定</h1>
-      <a @click="showModalPolicy"><ion-icon name="build-outline" size="medium" /></a>
+      <template v-slot:right>
+        <a @click="showModalPolicy"><ion-icon name="build-outline" size="medium" /></a>
+      </template>
     </AppHeader>
-    <div class="setting-body">
+    <AppBody>
       <div class="setting-user">
         <UserIcon url="https://avatars3.githubusercontent.com/u/6635142?s=460&v=4" />
         <p>せかいのとしっく</p>
@@ -29,7 +31,7 @@
           <a @click="logout">ログアウト</a>
         </li>
       </ul>
-    </div>
+    </AppBody>
   </section>
 </template>
 <!------------------------------->
@@ -63,6 +65,7 @@ export default Vue.extend({
         modalTitle: 'プライバシーポリシーヌ',
         target: $t,
         component: PrivacyPolicy,
+        klass: ['view-orange'],
       });
     },
     showModalKiyauku() {
@@ -71,18 +74,21 @@ export default Vue.extend({
         modalTitle: '利用規約ヌ',
         target: $t,
         component: Kiyaku,
+        klass: ['view-orange'],
       });
     },
     logout() {
       const $t = this.$el.closest('.mobileview') || null;
       openDialog({
         modalTitle: 'ログアウト',
-        confirmText: 'よろしいヌ？',
-        btnLabel: 'ログアウトヌ',
-        onConfirm: () => {
-          console.log('いえす');
-        },
         target: $t,
+        compoParams: {
+          btnLabel: 'ログアウトヌ',
+          onConfirm: () => {
+            console.log('いえす');
+          },
+          confirmText: 'よろしいヌ？',
+        },
       });
     },
   },
@@ -92,10 +98,13 @@ export default Vue.extend({
 
 <!------------------------------->
 <style scoped lang="scss">
-.setting-body {
-  padding: 20px;
-  color: var(--app-color-dark);
+.view {
+  appbody {
+    color: var(--app-color-dark);
+    padding: 20px;
+  }
 }
+
 .setting-user {
   display: flex;
   align-items: center;

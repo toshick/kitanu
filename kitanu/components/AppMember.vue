@@ -3,9 +3,12 @@
     <AppHeader>
       <a class="btn-back" href=""><ion-icon name="chevron-back" size="medium" /></a>
       <h1>Member</h1>
-      <a href=""><ion-icon name="restaurant-outline" size="medium" /></a>
+      <!-- right -->
+      <template v-slot:right>
+        <a href=""><ion-icon name="restaurant-outline" size="medium" /></a>
+      </template>
     </AppHeader>
-    <div class="member-body">
+    <AppBody>
       <h2><input class="ca-input-editablelabel" value="アジをたんと釣りにいこうの会" /></h2>
       <div class="member-add">
         <CaButton size="S" class="btn-add-member" @click="addMember"> メンバー追加 </CaButton>
@@ -20,7 +23,7 @@
           </div>
         </li>
       </ul>
-    </div>
+    </AppBody>
   </section>
 </template>
 <!------------------------------->

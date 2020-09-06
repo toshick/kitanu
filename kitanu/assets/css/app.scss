@@ -21,7 +21,17 @@ a {
   cursor: pointer;
 }
 
-
+:root {
+  // toast
+  --toast-bg-color: #ac9934;
+  // tag
+  --tag-padding-small: 2px 6px;
+  --tag-fontsize-small: 10px;
+  --tag-radius-small: 6px;
+  // modal
+  --modal-bg-color: #f0e7a6;
+  --modal-bg-img: url('/img/subtle-dark-vertical.png');
+}
 
 .app {
   
@@ -54,6 +64,9 @@ a {
   --modalview-header-color: #fff;
   --modalview-header-fontsize: 16px;
   --modalview-bg-color: #d2bd28;
+
+
+  
 }
 
 .app input {
@@ -79,6 +92,10 @@ a {
   margin: 30px auto;
 }
 
+.btn-header-action[disabled] {
+  opacity: 0.4;
+}
+
 /* -------------------- 
  Ionicons
  ---------------------*/
@@ -87,4 +104,19 @@ ion-icon {
 
   font-size: 24px;
   fill: currentColor;
+}
+
+
+/* -------------------- 
+ modal view
+ ---------------------*/
+.view-orange {
+  .ca-modalview {
+    background-color: #ddcd61;
+    background-image: url('/img/subtle-dark-vertical.png');
+  }
+}
+
+.view-activitylist{
+  --modalview-body-padding: 0;
 }

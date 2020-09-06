@@ -1,50 +1,25 @@
-import CaModalPG, { OpenParamsDialog } from 'camaleao-design/components/CaModalPG';
+import CaModalPG, { OpenParams } from 'camaleao-design/components/CaModalPG';
+import CaToastPG, { OpenParamsToast } from 'camaleao-design/components/CaToastPG';
 
-// export type ConfirmParams = {
-//   title: string;
-//   text: string;
-//   onConfirm?: any;
-//   target: Element | null;
-//   btnLabel?: string;
-//   type?: 'danger';
-// };
-
-export const openDialog = (params: OpenParamsDialog) => {
+export const openDialog = (params: OpenParams) => {
   CaModalPG.openDialog({
-    modalTitle: params.modalTitle,
-    confirmText: params.confirmText,
-    onConfirm: params.onConfirm,
-    target: params.target,
-    titleIcon: {
-      tag: 'ion-icon',
-      attrs: {
-        name: 'hand-left-outline',
-      },
-    },
-    type: params.type,
-    btnLabel: params.btnLabel,
-    inputs: params.inputs,
-    component: params.component,
-    klass: params.klass ? ['view', params.klass] : ['view'],
+    ...params,
+    klass: params.klass ? [...params.klass, 'view'] : ['view'],
   });
 };
 
-export const openView = (params: OpenParamsDialog) => {
+export const openView = (params: OpenParams) => {
   CaModalPG.openView({
-    modalTitle: params.modalTitle,
-    confirmText: params.confirmText,
-    onConfirm: params.onConfirm,
-    target: params.target,
-    titleIcon: {
-      tag: 'ion-icon',
-      attrs: {
-        name: 'moon',
-      },
-    },
-    type: params.type,
-    btnLabel: params.btnLabel,
-    inputs: params.inputs,
-    component: params.component,
-    klass: params.klass ? ['view', params.klass] : ['view'],
+    ...params,
+    klass: params.klass ? [...params.klass, 'view'] : ['view'],
+  });
+};
+
+type ToastOption = Omit<OpenParamsToast, 'text'>;
+export const toast = (text: string, params?: ToastOption) => {
+  const p = params || {};
+  CaToastPG.open({
+    ...p,
+    text,
   });
 };

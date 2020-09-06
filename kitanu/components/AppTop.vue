@@ -2,8 +2,12 @@
   <section class="app view">
     <AppHeader>
       <h1>キタキターヌ</h1>
-      <a @click="showModalPolicy"><ion-icon name="leaf-outline" size="medium" /></a>
-      <CaBadge :num="5" />
+      <a class="btn-header" @click="login"><ion-icon name="log-in-outline" size="medium" /></a>
+      <!-- right -->
+      <template v-slot:right>
+        <a class="btn-header" @click="showActivityList"><ion-icon name="leaf-outline" size="medium" /></a>
+        <CaBadge :num="5" />
+      </template>
     </AppHeader>
     <div class="top-body">
       <ChatInfo :infoitems="infoitems" />
@@ -23,6 +27,7 @@
         <AlbumList :items="albumItems" />
       </section>
     </div>
+    <AppFooter @talk="toast" />
   </section>
 </template>
 <!------------------------------->
@@ -30,9 +35,10 @@
 <!------------------------------->
 <script lang="ts">
 import Vue, { PropType } from 'vue';
-import { openView } from '@/common/util';
+import { openView, toast } from '@/common/util';
 import ChatInfo, { ChatInfoItemType } from './ChatInfo.vue';
 import AppHeader from './AppHeader.vue';
+import AppFooter from './AppFooter.vue';
 import AlbumList from './parts/AlbumList.vue';
 import ActivityList from './parts/ActivityList.vue';
 import { AlbumItem } from './types/app';
@@ -46,6 +52,7 @@ export default Vue.extend({
   name: 'AppTop',
   components: {
     AppHeader,
+    AppFooter,
     AlbumList,
     ChatInfo,
   },
@@ -62,15 +69,20 @@ export default Vue.extend({
   },
   mounted() {},
   methods: {
-    showModalPolicy() {
+    showActivityList() {
       const $t = this.$el.closest('.mobileview') || null;
       openView({
         modalTitle: '最近の活動ーヌ',
         target: $t,
         component: ActivityList,
-        klass: 'view-activitylist',
+        klass: ['view-activitylist'],
       });
     },
+    toast() {
+      const $t = this.$el.closest('.mobileview') || null;
+      toast('とーすとだよ', { target: $t });
+    },
+    login() {},
   },
 });
 </script>
