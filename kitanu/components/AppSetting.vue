@@ -4,7 +4,7 @@
       <a class="btn-back" href=""><ion-icon name="chevron-back" size="medium" /></a>
       <h1>設定</h1>
       <template v-slot:right>
-        <a @click="showModalPolicy"><ion-icon name="build-outline" size="medium" /></a>
+        <a @click.stop.prevent="showModalPolicy"><ion-icon name="build-outline" size="medium" /></a>
       </template>
     </AppHeader>
     <AppBody>
@@ -15,20 +15,20 @@
 
       <ul class="setting-menu">
         <li>
-          <a @click="showModalPolicy">本人確認</a>
+          <a @click.stop.prevent="showModalPolicy">本人確認</a>
         </li>
         <li>
-          <a @click="showModalPolicy">ともだちリスト</a>
+          <a @click.stop.prevent="showModalPolicy">ともだちリスト</a>
         </li>
         <li>
-          <a @click="showModalPolicy">プライバシーポリシー</a>
+          <a @click.stop.prevent="showModalPolicy">プライバシーポリシー</a>
         </li>
         <li>
-          <a @click="showModalKiyauku">利用規約</a>
+          <a @click.stop.prevent="showModalKiyauku">利用規約</a>
         </li>
 
         <li>
-          <a @click="logout">ログアウト</a>
+          <a @click.stop.prevent="logout">ログアウト</a>
         </li>
       </ul>
     </AppBody>
@@ -41,6 +41,7 @@
 import Vue from 'vue';
 import { openView, openDialog } from '@/common/util';
 import AppHeader from './AppHeader.vue';
+import AppBody from './AppBody.vue';
 import UserIcon from './parts/UserIcon.vue';
 import PrivacyPolicy from './parts/PrivacyPolicy.vue';
 import Kiyaku from './parts/Kiyaku.vue';
@@ -51,6 +52,7 @@ export default Vue.extend({
   name: 'AppSetting',
   components: {
     AppHeader,
+    AppBody,
     UserIcon,
   },
   props: {},
@@ -99,7 +101,7 @@ export default Vue.extend({
 <!------------------------------->
 <style scoped lang="scss">
 .view {
-  appbody {
+  .app-body {
     color: var(--app-color-dark);
     padding: 20px;
   }

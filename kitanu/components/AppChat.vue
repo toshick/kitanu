@@ -18,7 +18,7 @@
         </li>
       </ul>
     </AppBody>
-    <AppFooter mode="chat" @talk="startTalk" />
+    <AppFooter mode="chat" @talk="startTalk" @menu="openMenu" />
   </section>
 </template>
 <!------------------------------->
@@ -26,7 +26,7 @@
 <!------------------------------->
 <script lang="ts">
 import Vue, { PropType } from 'vue';
-import { openView } from '@/common/util';
+import { openView, sidemenu } from '@/common/util';
 import ChatComment, { ChatCommentType } from './ChatComment.vue';
 import ChatInfo, { ChatInfoItemType } from './ChatInfo.vue';
 import AppBody from './AppBody.vue';
@@ -84,6 +84,12 @@ export default Vue.extend({
             console.log('いえす');
           },
         },
+      });
+    },
+    openMenu() {
+      const $t = this.$el.closest('.mobileview') || null;
+      sidemenu({
+        target: $t,
       });
     },
   },

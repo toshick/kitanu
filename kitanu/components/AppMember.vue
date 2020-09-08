@@ -34,6 +34,7 @@ import Vue from 'vue';
 import CaModalPG from 'camaleao-design/components/CaModalPG';
 import { openDialog } from '@/common/util';
 import AppHeader from './AppHeader.vue';
+import AppBody from './AppBody.vue';
 import UserIcon from './parts/UserIcon.vue';
 import { User } from './types/app';
 
@@ -51,6 +52,7 @@ export default Vue.extend({
   name: 'AppMember',
   components: {
     AppHeader,
+    AppBody,
     UserIcon,
   },
   props: {},

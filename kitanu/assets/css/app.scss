@@ -31,10 +31,13 @@ a {
   // modal
   --modal-bg-color: #f0e7a6;
   --modal-bg-img: url('/img/subtle-dark-vertical.png');
+  // sidemenu
+  --modal-sidemenu-width: 70%;
+  --modal-sidemenu-scroll-bg-color: #d2bd28;
+  --modal-sidemenu-padding: 0px;
 }
 
 .app {
-  
   position: relative;
   display: grid;
   grid-template-rows: min-content auto min-content;
@@ -58,13 +61,12 @@ a {
   --button-label-color: #57591d;
   --badge-bg-color: #ff3399;
   --badge-shadow: 0 0 0 1px rgba(255, 255, 255, 0.9);
-  --button-border-color: none;
+  --button-border: none;
 
   --modalview-header-bgcolor: #d2bd28;
   --modalview-header-color: #fff;
   --modalview-header-fontsize: 16px;
   --modalview-bg-color: #d2bd28;
-
 
   
 }
@@ -119,4 +121,11 @@ ion-icon {
 
 .view-activitylist{
   --modalview-body-padding: 0;
+}
+
+/* -------------------- 
+ ca-button
+ ---------------------*/
+.ca-button.-positive{
+  border: solid 1px #D5CC92 !important;
 }

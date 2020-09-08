@@ -76,7 +76,7 @@ storiesOf('キータヌ', module).add('チャット', () => ({
   template: `<main>
   <div class="mobileview-des">
     ・リアルタイムにアルバムを構築していく<br>
-    ・リアルタイムにアルバムを構築していく
+    ・スワイプいれる？
   </div>
   <section class="appviews">
   <div class="mobileview"><AppTop :infoitems="infoitems"  /></div>

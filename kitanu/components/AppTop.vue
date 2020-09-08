@@ -1,8 +1,9 @@
 <template>
   <section class="app view">
     <AppHeader>
-      <h1>キタキターヌ</h1>
-      <a class="btn-header" @click="login"><ion-icon name="log-in-outline" size="medium" /></a>
+      <!-- <a class="btn-back" @click="openMenu"><ion-icon name="log-in-outline" size="medium" /></a> -->
+      <h1>キタキタヌ</h1>
+
       <!-- right -->
       <template v-slot:right>
         <a class="btn-header" @click="showActivityList"><ion-icon name="leaf-outline" size="medium" /></a>
@@ -27,7 +28,7 @@
         <AlbumList :items="albumItems" />
       </section>
     </div>
-    <AppFooter @talk="toast" />
+    <AppFooter @talk="toast" @menu="openMenu" />
   </section>
 </template>
 <!------------------------------->
@@ -35,7 +36,7 @@
 <!------------------------------->
 <script lang="ts">
 import Vue, { PropType } from 'vue';
-import { openView, toast } from '@/common/util';
+import { openView, toast, sidemenu } from '@/common/util';
 import ChatInfo, { ChatInfoItemType } from './ChatInfo.vue';
 import AppHeader from './AppHeader.vue';
 import AppFooter from './AppFooter.vue';
@@ -82,7 +83,12 @@ export default Vue.extend({
       const $t = this.$el.closest('.mobileview') || null;
       toast('とーすとだよ', { target: $t });
     },
-    login() {},
+    openMenu() {
+      const $t = this.$el.closest('.mobileview') || null;
+      sidemenu({
+        target: $t,
+      });
+    },
   },
 });
 </script>
@@ -126,8 +132,13 @@ export default Vue.extend({
     width: 260px;
   }
 }
+
 .top-body {
   position: relative;
+}
+
+h1 {
+  margin-left: 0.5em;
 }
 
 h2 {

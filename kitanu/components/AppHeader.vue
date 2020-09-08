@@ -37,7 +37,7 @@ export default Vue.extend({
   display: flex;
   align-items: center;
   background: linear-gradient(var(--app-base-color) 60%, var(--app-base-color2) 0%);
-  padding: 0px 15px;
+  padding: 0px 15px 0 10px;
   height: 40px;
   border-bottom: solid 1px #ecde90;
 
@@ -82,7 +82,7 @@ export default Vue.extend({
     }
   }
   .btn-back {
-    margin-left: -10px;
+    margin-left: 0px;
     margin-right: 10px;
 
     color: #fff;
@@ -90,6 +90,9 @@ export default Vue.extend({
     ion-icon {
       color: #fff;
     }
+  }
+  .btn-menu {
+    margin-right: 10px;
   }
   .ca-badge {
     margin-left: 4px;
