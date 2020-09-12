@@ -33,16 +33,12 @@ export default {
   /*
    ** Global CSS
    */
-  css: [
-    { src: 'node_modules/camaleao-design/css/reset.css', lang: 'css' },
-    { src: 'node_modules/camaleao-design/css/camaleao.css', lang: 'css' },
-    { src: 'assets/css/app.scss', lang: 'scss' },
-  ],
+  css: [{ src: 'assets/css/app.scss', lang: 'scss' }],
   /*
    ** Plugins to load before mounting the App
    ** https://nuxtjs.org/guide/plugins
    */
-  plugins: [],
+  plugins: ['plugins/global.ts'],
   /*
    ** Auto import components
    ** See https://nuxtjs.org/api/configuration-components

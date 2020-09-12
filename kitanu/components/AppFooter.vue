@@ -8,12 +8,12 @@
           <p>メニュー</p>
         </a>
       </div>
-      <div class="app-footer-icon">
+      <!-- <div class="app-footer-icon">
         <a @click.stop.prevent="$emit('home')">
           <ion-icon name="leaf" />
           <p>ホーム</p>
         </a>
-      </div>
+      </div> -->
       <div class="app-footer-icon">
         <a @click.stop.prevent="$emit('album')">
           <ion-icon name="reorder-four-outline" />
@@ -34,11 +34,17 @@
       </div>
     </template>
     <!-- chat -->
-    <template v-if="mode == 'chat'">
+    <template v-if="mode == 'albamlist'">
       <div class="app-footer-icon">
         <a @click.stop.prevent="$emit('menu')">
           <ion-icon name="log-in-outline" />
           <p>メニュー</p>
+        </a>
+      </div>
+      <div class="app-footer-icon">
+        <a @click.stop.prevent="$emit('home')">
+          <ion-icon name="leaf" />
+          <p>ホーム</p>
         </a>
       </div>
       <div class="app-footer-icon">

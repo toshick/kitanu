@@ -10,6 +10,7 @@
         <CaBadge :num="5" />
       </template>
     </AppHeader>
+
     <div class="top-body">
       <ChatInfo :infoitems="infoitems" />
       <section>
@@ -18,7 +19,7 @@
           <img src="/img/top/tanu-title.png" class="tanu-title" alt="kitanu-title" />
           <p>
             キータヌは世話焼きたぬき
-            <ion-icon name="heart"></ion-icon>
+            <a class="kitanu" @click="about"><ion-icon name="finger-print-outline"></ion-icon></a>
             <br />
             キータヌに自分のアクティビティをみてもらおーぬ
           </p>
@@ -28,7 +29,8 @@
         <AlbumList :items="albumItems" />
       </section>
     </div>
-    <AppFooter @talk="toast" @menu="openMenu" />
+
+    <AppFooter @talk="confirm" @menu="openMenu" @setting="showSetting" @album="changeView('albumlist')" />
   </section>
 </template>
 <!------------------------------->
@@ -36,12 +38,13 @@
 <!------------------------------->
 <script lang="ts">
 import Vue, { PropType } from 'vue';
-import { openView, toast, sidemenu } from '@/common/util';
+// import { openView, toast, sidemenu } from '@/common/util';
 import ChatInfo, { ChatInfoItemType } from './ChatInfo.vue';
 import AppHeader from './AppHeader.vue';
 import AppFooter from './AppFooter.vue';
 import AlbumList from './parts/AlbumList.vue';
 import ActivityList from './parts/ActivityList.vue';
+import AboutThisApp from './description/AboutThisApp.vue';
 import { AlbumItem } from './types/app';
 import { albumItems } from './sample';
 
@@ -71,22 +74,21 @@ export default Vue.extend({
   mounted() {},
   methods: {
     showActivityList() {
-      const $t = this.$el.closest('.mobileview') || null;
-      openView({
-        modalTitle: '最近の活動ーヌ',
-        target: $t,
+      this.openView({
         component: ActivityList,
         klass: ['view-activitylist'],
       });
     },
-    toast() {
-      const $t = this.$el.closest('.mobileview') || null;
-      toast('とーすとだよ', { target: $t });
+
+    about() {
+      this.openView({
+        component: AboutThisApp,
+        klass: ['view-about'],
+      });
     },
-    openMenu() {
-      const $t = this.$el.closest('.mobileview') || null;
-      sidemenu({
-        target: $t,
+    confirm() {
+      this.showConfirm('にゃお', () => {
+        console.log('いええす');
       });
     },
   },
@@ -135,10 +137,6 @@ export default Vue.extend({
 
 .top-body {
   position: relative;
-}
-
-h1 {
-  margin-left: 0.5em;
 }
 
 h2 {

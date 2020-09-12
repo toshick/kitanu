@@ -1,15 +1,15 @@
 <template>
-  <AppTop />
+  <AppSetting />
 </template>
 <!------------------------------->
 
 <!------------------------------->
 <script lang="ts">
 import Vue from 'vue';
-import AppTop from '@/components/AppTop.vue';
+import AppSetting from '@/components/AppSetting.vue';
 
 export default Vue.extend({
-  components: { AppTop },
+  components: { AppSetting },
 });
 </script>
 <!------------------------------->

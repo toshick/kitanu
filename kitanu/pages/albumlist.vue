@@ -5,12 +5,12 @@
 
 <!------------------------------->
 <script lang="ts">
-import Vue from 'vue'
-import AppAlbumList from '@/components/AppAlbumList.vue'
+import Vue from 'vue';
+import AppAlbumList from '@/components/AppAlbumList.vue';
 
 export default Vue.extend({
   components: { AppAlbumList },
-})
+});
 </script>
 <!------------------------------->
 

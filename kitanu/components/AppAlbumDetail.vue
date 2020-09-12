@@ -1,7 +1,7 @@
 <template>
   <section class="app view">
     <AppHeader>
-      <a class="btn-back" href=""><ion-icon name="chevron-back" size="medium" /></a>
+      <a class="btn-back" @click.stop.prevent="$emit('close')"><ion-icon name="chevron-back" size="medium" /></a>
       <h1>2020.08.08</h1>
       <!-- right -->
       <template v-slot:right>

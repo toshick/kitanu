@@ -1,7 +1,6 @@
 <template>
-  <section class="app view">
+  <section class="app view albumlist">
     <AppHeader>
-      <a class="btn-back" href=""><ion-icon name="chevron-back" size="medium" /></a>
       <h1>アルバムリスト</h1>
       <!-- right -->
       <template v-slot:right>
@@ -13,12 +12,16 @@
     </AppHeader>
     <div :class="myClass">
       <div class="album-body-head">
-        <p class="album-text-des">アルバムだよ</p>
+        <p class="album-text-des">
+          アルバムだヌ
+          <a class="kitanu" @click="description"><ion-icon name="finger-print-outline"></ion-icon></a>
+        </p>
         <CaButton size="S" @click="createAlbum">新規作成</CaButton>
       </div>
       <!-- リスト -->
       <AlbumList :items="albumItems" :editing="editing" @delete="deleteItem" @select="selectItem" />
     </div>
+    <AppFooter mode="albamlist" @talk="toast('ほおええええ')" @menu="openMenu" @setting="showSetting" @album="changeView('albumlist')" @home="changeView('/')" />
   </section>
 </template>
 <!------------------------------->
@@ -26,11 +29,13 @@
 <!------------------------------->
 <script lang="ts">
 import Vue from 'vue';
-import { openDialog, toast } from '@/common/util';
+import { openDialog, openView, toast } from '@/common/util';
 import { Input } from 'camaleao-design/components/type';
+import AppAlbumDetail from '@/components/AppAlbumDetail.vue';
 import AppHeader from './AppHeader.vue';
 import AppFooter from './AppFooter.vue';
 import AlbumList from './parts/AlbumList.vue';
+import AboutAlbum from './description/AboutAlbum.vue';
 import { AlbumItem } from './types/app';
 import { albumItems } from './sample';
 
@@ -65,7 +70,11 @@ export default Vue.extend({
   },
   mounted() {},
   methods: {
-    selectItem() {},
+    selectItem() {
+      this.drillDown({
+        component: AppAlbumDetail,
+      });
+    },
     createAlbum() {
       const inputs: Input[] = [];
       inputs.push({
@@ -103,6 +112,14 @@ export default Vue.extend({
           },
           type: 'danger',
         },
+      });
+    },
+    description() {
+      const $t = this.$el.closest('.mobileview') || null;
+      openView({
+        target: $t,
+        component: AboutAlbum,
+        klass: ['view-about'],
       });
     },
   },

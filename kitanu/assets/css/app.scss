@@ -1,20 +1,19 @@
 @charset "utf-8";
 
+@import '../../node_modules/camaleao-design/css/reset.css';
+@import '../../node_modules/camaleao-design/css/camaleao.css';
 @import './mixins.scss';
 @import './variables.scss';
 
-html{
-  font-family: "Helvetica Neue", Arial,
-    "Hiragino Kaku Gothic ProN",
-    "Hiragino Sans",
-    Meiryo,
-    sans-serif;
+html {
+  font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
 }
 
-ul{
-  padding-inline-start: 0;
-  margin-block-start: 0;
-  margin-block-end: 0;
+ul {
+  padding: 0;
+  margin: 0;
+
+
 }
 
 a {
@@ -38,7 +37,7 @@ a {
 }
 
 .app {
-  position: relative;
+  position: absolute;
   display: grid;
   grid-template-rows: min-content auto min-content;
   overflow: hidden;
@@ -46,9 +45,10 @@ a {
   background-color: var(--app-bg-color);
   background-image: url('/img/subtle-dark-vertical.png');
   height: 100%;
+  width: 100%;
 }
 
-.view{
+.view {
   --app-base-color2: #d2bd28;
   --app-base-color: #d9c84e;
   --app-bg-color: #fbecad;
@@ -67,8 +67,6 @@ a {
   --modalview-header-color: #fff;
   --modalview-header-fontsize: 16px;
   --modalview-bg-color: #d2bd28;
-
-  
 }
 
 .app input {
@@ -108,7 +106,6 @@ ion-icon {
   fill: currentColor;
 }
 
-
 /* -------------------- 
  modal view
  ---------------------*/
@@ -119,13 +116,33 @@ ion-icon {
   }
 }
 
-.view-activitylist{
+.view-about {
+  background-color: transparent;
+
+  .ca-modalview {
+    background-color: #ddcd61;
+
+    &::after {
+      content: '';
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: solid 4px #666 !important;
+      pointer-events: none;
+    }
+  }
+}
+
+.view-activitylist {
   --modalview-body-padding: 0;
 }
 
 /* -------------------- 
  ca-button
  ---------------------*/
-.ca-button.-positive{
-  border: solid 1px #D5CC92 !important;
+.ca-button.-positive {
+  border: solid 1px #d5cc92 !important;
 }

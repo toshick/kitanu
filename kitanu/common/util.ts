@@ -1,6 +1,7 @@
 import CaModalPG, { OpenParams } from 'camaleao-design/components/CaModalPG';
 import CaToastPG, { OpenParamsToast } from 'camaleao-design/components/CaToastPG';
 import ModalSideMenu from '@/components/parts/ModalSideMenu.vue';
+import Loading from '@/components/parts/Loading.vue';
 
 export const openDialog = (params: OpenParams) => {
   CaModalPG.openDialog({
@@ -11,6 +12,13 @@ export const openDialog = (params: OpenParams) => {
 
 export const openView = (params: OpenParams) => {
   CaModalPG.openView({
+    ...params,
+    klass: params.klass ? [...params.klass, 'view'] : ['view'],
+  });
+};
+
+export const drillDown = (params: OpenParams) => {
+  CaModalPG.drillDown({
     ...params,
     klass: params.klass ? [...params.klass, 'view'] : ['view'],
   });
@@ -30,6 +38,33 @@ export const sidemenu = (params: OpenParams) => {
     ...params,
     component: ModalSideMenu,
     klass: ['-sidemenu'],
+  });
+};
+
+let closeLoading: any | null = null;
+
+export const loading = (flg: boolean) => {
+  if (!flg) {
+    if (closeLoading) {
+      closeLoading();
+    }
+    closeLoading = null;
+    return;
+  }
+  if (closeLoading) {
+    return;
+  }
+  const params: OpenParams = { easyClose: false };
+  const vm = CaModalPG.openView({
+    ...params,
+    component: Loading,
+    klass: ['-loading'],
+  });
+
+  vm.$children.forEach((child: any) => {
+    if (child.close) {
+      closeLoading = child.close;
+    }
   });
 };
 

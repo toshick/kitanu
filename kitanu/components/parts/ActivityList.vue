@@ -1,7 +1,7 @@
 <template>
   <div class="activity ca-modal-scroll-wrapper">
     <CaModalScroll>
-      <CaModalViewHeader title="オシラセーヌ" @close="close"> </CaModalViewHeader>
+      <CaModalViewHeader title="最近の活動ヌ" @close="close"> </CaModalViewHeader>
       <CaModalViewBody>
         <ul class="item-list">
           <li v-for="(i, index) in items" :key="`item-${index}-${i.user.username}`">

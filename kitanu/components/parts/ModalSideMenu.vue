@@ -24,7 +24,7 @@ import { shuffle } from '@/common/util';
 type State = {
   comment: string;
 };
-const comments: string[] = ['今日やらねえ奴は明日もヤラヌ', 'アイリッシュパブにいきたいヌ', 'あさめしはバナナだヌ', 'トマトはそのままでヌ', 'just do イッヌ', '勝てば負けないヌ', '不足を知る物は足る者ヌ', 'ストレイツオ容赦せんヌ', 'そのへんの草でも食わせておけヌ'];
+const comments: string[] = ['今日やらねえ奴は明日もヤラヌ', 'アイリッシュパブにいきたいヌ', 'あさめしはバナナだヌ', 'トマトはそのままでヌ', 'just do イッヌ', '勝てば負けないヌ', '不足を知る物は足る者ヌ', 'ストレイツオ容赦せんヌ', 'そのへんの草でも食わせておけヌ', 'その紙切れ、あの世ではつかえんヌ', 'なぜできないか、やらないからだヌ', 'レモネードで回復ヌ'];
 
 export default Vue.extend({
   name: 'ModalSideMenu',
@@ -41,6 +41,7 @@ export default Vue.extend({
   },
   mounted() {
     this.comment = shuffle(comments)[0];
+    // this.comment = comments[comments.length - 1];
   },
   methods: {
     close() {
