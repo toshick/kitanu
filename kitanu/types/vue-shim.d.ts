@@ -1,4 +1,4 @@
-import Vue from 'vue';
+import Vue from 'vue'; // import error おこる
 
 declare module '*.vue' {
   export default Vue;
