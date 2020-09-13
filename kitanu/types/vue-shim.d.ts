@@ -9,5 +9,6 @@ declare module 'vue/types/vue' {
     openView: any;
     showConfirm: any;
     drillDown: any;
+    $router: any;
   }
 }

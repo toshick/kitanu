@@ -53,10 +53,7 @@ export default Vue.extend({
 <!------------------------------->
 
 <!------------------------------->
-<style scoped lang="scss">
-.text-input-modal {
-}
-</style>
+<style scoped lang="scss"></style>
 
 <style lang="scss">
 .view-textinput {

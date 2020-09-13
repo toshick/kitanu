@@ -30,7 +30,7 @@
         <p class="album-text -sirowaku -bottom-left">せかいのとしっくです。こちらは謎の池を発見せり</p>
       </div>
     </div>
-    <AppFooter @menu="openMenu" />
+    <AppFooter @menu="openMenu" @talk="startTalk" />
   </section>
 </template>
 <!------------------------------->
@@ -38,10 +38,11 @@
 <!------------------------------->
 <script lang="ts">
 import Vue from 'vue';
-import { sidemenu } from '@/common/util';
+import { sidemenu, openView } from '@/common/util';
 import AppHeader from './AppHeader.vue';
 import AppFooter from './AppFooter.vue';
 import UserIcon from './parts/UserIcon.vue';
+import TextInputModal from './parts/TextInputModal.vue';
 
 type State = {};
 
@@ -62,6 +63,20 @@ export default Vue.extend({
       const $t = this.$el.closest('.mobileview') || null;
       sidemenu({
         target: $t,
+      });
+    },
+    startTalk() {
+      const $t = this.$el.closest('.mobileview') || null;
+
+      openView({
+        target: $t,
+        component: TextInputModal,
+        klass: ['view-textinput'],
+        compoParams: {
+          onConfirm: () => {
+            console.log('いえすだよ');
+          },
+        },
       });
     },
   },

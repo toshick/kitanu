@@ -4,7 +4,7 @@ import sanitizeHTML from 'sanitize-html';
 import { OpenParams } from 'camaleao-design/components/CaModalPG';
 import { openDialog, openView, toast, sidemenu, drillDown, loading } from '@/common/util';
 import AppSetting from '@/components/AppSetting.vue';
-import TextInputModal from '@/components/parts/TextInputModal.vue';
+// import TextInputModal from '@/components/parts/TextInputModal.vue';
 
 import 'camaleao-design/components/install';
 import 'camaleao-design/form/validation.ts';
