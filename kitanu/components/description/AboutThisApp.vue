@@ -39,7 +39,7 @@ export default Vue.extend({
         rotate: '1turn',
         // backgroundColor: '#FFF',
         duration: 800,
-        delay: 1000,
+        delay: 500,
         opacity: 1,
       });
     },

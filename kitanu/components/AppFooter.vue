@@ -66,6 +66,20 @@
         </a>
       </div>
     </template>
+    <!-- make -->
+    <template v-if="mode == 'make'">
+      <ValidationProvider v-slot="{ invalid }" class="app-footer-input" name="mycomment" :rules="'required'" tag="div">
+        <CaInput v-model="talkText" name="mail2" size="S" width="M" placeholder="コメント"></CaInput>
+        <a :disabled="invalid" @click.stop.prevent="$emit('album')">
+          <ion-icon name="cloud-upload-outline" />
+        </a>
+      </ValidationProvider>
+      <div class="app-footer-icon">
+        <a @click.stop.prevent="$emit('setting')">
+          <ion-icon name="duplicate-outline" />
+        </a>
+      </div>
+    </template>
   </footer>
 </template>
 <!------------------------------->
@@ -73,13 +87,16 @@
 <!------------------------------->
 <script lang="ts">
 import Vue, { PropType } from 'vue';
+import { ValidationProvider } from 'vee-validate';
 
-type State = {};
+type State = {
+  talkText: string;
+};
 type Mode = 'top' | 'chat';
 
 export default Vue.extend({
   name: 'AppFooter',
-  components: {},
+  components: { ValidationProvider },
   props: {
     mode: {
       default: 'top',
@@ -87,7 +104,9 @@ export default Vue.extend({
     },
   },
   data(): State {
-    return {};
+    return {
+      talkText: '',
+    };
   },
   mounted() {},
   methods: {},
@@ -96,7 +115,7 @@ export default Vue.extend({
 <!------------------------------->
 
 <!------------------------------->
-<style scoped lang="scss">
+<style lang="scss">
 .app-footer {
   display: flex;
   align-items: center;
@@ -130,6 +149,21 @@ export default Vue.extend({
   ion-icon {
     font-size: 26px;
     color: inherit;
+  }
+}
+.app-footer-input {
+  display: flex;
+  align-items: center;
+  a {
+    display: flex;
+    align-items: center;
+    margin-left: 0.5em;
+  }
+  .ca-input-status {
+    display: none;
+  }
+  .ca-input-errors {
+    display: none !important;
   }
 }
 </style>

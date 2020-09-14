@@ -14,7 +14,7 @@
       <div class="album-body-head">
         <p class="album-text-des">
           アルバムだヌ
-          <a class="kitanu" @click="description"><ion-icon name="finger-print-outline"></ion-icon></a>
+          <a class="kitanu" @click.stop.prevent="description"><ion-icon name="finger-print-outline"></ion-icon></a>
         </p>
         <CaButton size="S" @click="createAlbum">新規作成</CaButton>
       </div>

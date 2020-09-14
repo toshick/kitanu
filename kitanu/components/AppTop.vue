@@ -77,6 +77,7 @@ export default Vue.extend({
       this.openView({
         component: ActivityList,
         klass: ['view-activitylist'],
+        transition: 'modal',
       });
     },
 

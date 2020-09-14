@@ -117,11 +117,14 @@ ion-icon {
   }
 }
 
-.view-about {
-  background-color: transparent;
+.ca-modal.view-about {
+  background-color: rgba(#fff, 0.6) !important;
+  padding: 20px;
 
   .ca-modalview {
-    background-color: #ddcd61;
+    border-radius: 20px;
+    overflow: hidden;
+
 
     &::after {
       content: '';
@@ -133,6 +136,7 @@ ion-icon {
       height: 100%;
       border: solid 4px #666 !important;
       pointer-events: none;
+      border-radius: 20px;
     }
   }
 }

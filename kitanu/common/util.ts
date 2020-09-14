@@ -7,6 +7,7 @@ export const openDialog = (params: OpenParams) => {
   CaModalPG.openDialog({
     ...params,
     klass: params.klass ? [...params.klass, 'view'] : ['view'],
+    transition: params.transition || 'scalefade',
   });
 };
 
@@ -14,6 +15,7 @@ export const openView = (params: OpenParams) => {
   CaModalPG.openView({
     ...params,
     klass: params.klass ? [...params.klass, 'view'] : ['view'],
+    transition: params.transition || 'scalefade',
   });
 };
 

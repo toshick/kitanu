@@ -30,7 +30,7 @@
         <p class="album-text -sirowaku -bottom-left">せかいのとしっくです。こちらは謎の池を発見せり</p>
       </div>
     </div>
-    <AppFooter @menu="openMenu" @talk="startTalk" />
+    <AppFooter mode="make" @menu="openMenu" @talk="startTalk" />
   </section>
 </template>
 <!------------------------------->
