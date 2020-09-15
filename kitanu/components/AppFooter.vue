@@ -1,5 +1,5 @@
 <template>
-  <footer class="app-footer">
+  <footer :class="myClass">
     <!-- top -->
     <template v-if="mode == 'top'">
       <div class="app-footer-icon">
@@ -69,14 +69,21 @@
     <!-- make -->
     <template v-if="mode == 'make'">
       <ValidationProvider v-slot="{ invalid }" class="app-footer-input" name="mycomment" :rules="'required'" tag="div">
-        <CaInput v-model="talkText" name="mail2" size="S" width="M" placeholder="コメント"></CaInput>
-        <a :disabled="invalid" @click.stop.prevent="$emit('album')">
+        <a :disabled="invalid" class="btn-comment" @click.stop.prevent="$emit('album')">
           <ion-icon name="cloud-upload-outline" />
         </a>
+        <CaInput v-model="talkText" name="talkText" width="M" placeholder="コメント"></CaInput>
       </ValidationProvider>
       <div class="app-footer-icon">
         <a @click.stop.prevent="$emit('setting')">
           <ion-icon name="duplicate-outline" />
+          <p>画像</p>
+        </a>
+      </div>
+      <div class="app-footer-icon">
+        <a @click.stop.prevent="$emit('setting')">
+          <ion-icon name="restaurant-outline" />
+          <p>せってい</p>
         </a>
       </div>
     </template>
@@ -108,6 +115,13 @@ export default Vue.extend({
       talkText: '',
     };
   },
+  computed: {
+    myClass(): any {
+      const klass: any = { 'app-footer': true };
+      klass[`-${this.mode}`] = true;
+      return klass;
+    },
+  },
   mounted() {},
   methods: {},
 });
@@ -124,6 +138,16 @@ export default Vue.extend({
   padding: 0 30px;
   height: 50px;
   border-top: solid 1px #ecde90;
+  &.-make {
+    padding: 0 10px;
+    justify-content: flex-start;
+    .app-footer-icon {
+      margin-right: 0.5em;
+      ion-icon {
+        font-size: 20px;
+      }
+    }
+  }
 }
 
 .app-footer-icon {
@@ -154,16 +178,22 @@ export default Vue.extend({
 .app-footer-input {
   display: flex;
   align-items: center;
-  a {
-    display: flex;
-    align-items: center;
-    margin-left: 0.5em;
-  }
+  margin-right: 0.5em;
+
   .ca-input-status {
     display: none;
   }
   .ca-input-errors {
     display: none !important;
+  }
+}
+
+.btn-comment {
+  display: flex;
+  align-items: center;
+  margin-right: 0.5em;
+  &[disabled] {
+    opacity: 0.4;
   }
 }
 </style>

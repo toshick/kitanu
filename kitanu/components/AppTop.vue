@@ -38,7 +38,7 @@
 <!------------------------------->
 <script lang="ts">
 import Vue, { PropType } from 'vue';
-// import { openView, toast, sidemenu } from '@/common/util';
+// import { openModal, openView, toast, sidemenu } from '@/common/util';
 import ChatInfo, { ChatInfoItemType } from './ChatInfo.vue';
 import AppHeader from './AppHeader.vue';
 import AppFooter from './AppFooter.vue';
@@ -74,7 +74,7 @@ export default Vue.extend({
   mounted() {},
   methods: {
     showActivityList() {
-      this.openView({
+      this.openModal({
         component: ActivityList,
         klass: ['view-activitylist'],
         transition: 'modal',

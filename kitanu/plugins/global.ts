@@ -2,7 +2,7 @@ import Vue from 'vue';
 import axios from 'axios';
 import sanitizeHTML from 'sanitize-html';
 import { OpenParams } from 'camaleao-design/components/CaModalPG';
-import { openDialog, openView, toast, sidemenu, drillDown, loading } from '@/common/util';
+import { openModal, openDialog, openView, toast, sidemenu, drillDown, loading } from '@/common/util';
 import AppSetting from '@/components/AppSetting.vue';
 // import TextInputModal from '@/components/parts/TextInputModal.vue';
 
@@ -43,6 +43,10 @@ Vue.mixin({
     openView(params: OpenParams) {
       const $t = this.$el.closest('.mobileview') || null;
       openView({ target: $t, ...params });
+    },
+    openModal(params: OpenParams) {
+      const $t = this.$el.closest('.mobileview') || null;
+      openModal({ target: $t, ...params });
     },
     showLoading(flg: boolean) {
       loading(flg);

@@ -6,7 +6,7 @@ import Loading from '@/components/parts/Loading.vue';
 export const openDialog = (params: OpenParams) => {
   CaModalPG.openDialog({
     ...params,
-    klass: params.klass ? [...params.klass, 'view'] : ['view'],
+    klass: params.klass ? [...params.klass, 'view', '-transparentbg'] : ['view', '-transparentbg'],
     transition: params.transition || 'scalefade',
   });
 };
@@ -16,6 +16,14 @@ export const openView = (params: OpenParams) => {
     ...params,
     klass: params.klass ? [...params.klass, 'view'] : ['view'],
     transition: params.transition || 'scalefade',
+  });
+};
+
+export const openModal = (params: OpenParams) => {
+  CaModalPG.openView({
+    ...params,
+    klass: params.klass ? [...params.klass, 'view'] : ['view'],
+    transition: params.transition || 'modal',
   });
 };
 

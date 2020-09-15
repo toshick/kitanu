@@ -39,7 +39,7 @@
 <!------------------------------->
 <script lang="ts">
 import Vue from 'vue';
-import { openView, openDialog } from '@/common/util';
+import { openModal, openDialog } from '@/common/util';
 import AppHeader from './AppHeader.vue';
 import AppBody from './AppBody.vue';
 import UserIcon from './parts/UserIcon.vue';
@@ -63,7 +63,7 @@ export default Vue.extend({
   methods: {
     showModalPolicy() {
       const $t = this.$el.closest('.mobileview') || null;
-      openView({
+      openModal({
         modalTitle: 'プライバシーポリシーヌ',
         target: $t,
         component: PrivacyPolicy,
@@ -72,7 +72,7 @@ export default Vue.extend({
     },
     showModalKiyauku() {
       const $t = this.$el.closest('.mobileview') || null;
-      openView({
+      openModal({
         modalTitle: '利用規約ヌ',
         target: $t,
         component: Kiyaku,
