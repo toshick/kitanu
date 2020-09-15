@@ -27,7 +27,29 @@ export default {
       { name: 'apple-mobile-web-app-status-bar-style', content: 'black' },
       { name: 'apple-mobile-web-app-title', content: 'KitakitaNu' },
     ],
-    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
+    link: [
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      {
+        rel: 'apple-touch-icon',
+        href: '/ios/AppIcon.appiconset/iphone_app60x60@2x.png',
+        sizes: '72x72',
+      },
+      {
+        rel: 'apple-touch-icon',
+        href: '/ios/AppIcon.appiconset/iphone_app60x60@2x.png',
+        sizes: '114x114',
+      },
+      {
+        rel: 'apple-touch-icon',
+        href: '/ios/AppIcon.appiconset/iphone_app60x60@2x.png',
+        sizes: '120x120',
+      },
+      {
+        rel: 'apple-touch-icon',
+        href: '/ios/AppIcon.appiconset/iphone_app60x60@2x.png',
+        sizes: '144x144',
+      },
+    ],
     script: [
       { src: 'https://unpkg.com/ionicons@5.1.2/dist/ionicons/ionicons.esm.js', type: 'module' },
       { src: 'https://unpkg.com/ionicons@5.1.2/dist/ionicons/ionicons.js', nomodule: '' },
