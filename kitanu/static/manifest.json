@@ -1,0 +1,13 @@
+{
+  "name": "kitakita-nu",
+  "short_name": "KitakitaNu",
+  "icons": [
+    {
+      "src": "/ios/AppIcon.appiconset/iphone_app60x60@2x.png",
+      "sizes": "120x120",
+      "type": "image/png"
+    }
+  ],
+  "start_url": "index.html",
+  "display": "standalone"
+}

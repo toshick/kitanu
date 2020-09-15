@@ -75,3 +75,33 @@ Vue.mixin({
     },
   },
 });
+
+// manifestのlinkタグを生成
+function setManifest(path: string) {
+  const manifest = document.createElement('link');
+  manifest.rel = 'manifest';
+  manifest.href = path;
+  document.head.appendChild(manifest);
+}
+
+// OSに応じて読み込むmanifestを変更
+const userAgent = navigator.userAgent.toLowerCase();
+if (userAgent.indexOf('iphone') > 0 || userAgent.indexOf('ipad') > 0) {
+  setManifest('/manifest-ios.json');
+} else {
+  setManifest('/manifest.json');
+}
+
+// serviceWorker
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker
+    .register('/sw.js')
+    .then(function (registration) {
+      // 登録成功
+      console.log('ServiceWorker の登録に成功しました。スコープ: ', registration.scope);
+    })
+    .catch(function (err) {
+      // 登録失敗
+      console.log('ServiceWorker の登録に失敗しました。', err);
+    });
+}
