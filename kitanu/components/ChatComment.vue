@@ -1,13 +1,13 @@
 <template>
   <div v-if="myitem" :class="myclass">
     <div class="chatitem-icon">
-      <img class="chat-usericon" :src="myitem.iconurl" alt="" />
+      <img class="chat-usericon" :src="placeholderImg" :data-src="myitem.iconurl" alt="" />
     </div>
     <div class="chatitem-body">
       <p class="chatitem-body-text" v-html="text"></p>
 
       <p v-for="u in urls" :key="u" class="chatitem-body-img">
-        <img :src="u" alt="" />
+        <img :src="placeholderImg" :data-src="u" alt="" />
       </p>
 
       <div class="chatitem-bottom">

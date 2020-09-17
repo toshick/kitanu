@@ -2,9 +2,8 @@ import Vue from 'vue';
 import axios from 'axios';
 import sanitizeHTML from 'sanitize-html';
 import { OpenParams } from 'camaleao-design/components/CaModalPG';
-import { openModal, openDialog, openView, toast, sidemenu, drillDown, loading } from '@/common/util';
+import { openModal, openDialog, openView, toast, sidemenu, drillDown, loading, placeholderImg } from '@/common/util';
 import AppSetting from '@/components/AppSetting.vue';
-// import TextInputModal from '@/components/parts/TextInputModal.vue';
 
 import 'camaleao-design/components/install';
 import 'camaleao-design/form/validation.ts';
@@ -29,9 +28,51 @@ function mobileNoScroll(e: any) {
 }
 
 /**
+ * yall
+ */
+// tslint:disable-next-line:no-var-requires
+const yall = require('yall-js').default;
+document.addEventListener('DOMContentLoaded', () => {
+  yall({
+    observeChanges: true,
+    events: {
+      // The object key is sent as the first argument to `addEventListener`,
+      // which is the event. The corresponding value can be the callback if you
+      // don't want to send any options to `addEventListener`.
+      load(e: any) {
+        if (!e.target.classList.contains('lazy') && e.target.nodeName === 'IMG') {
+          e.target.classList.add('yall-loaded');
+        }
+      },
+      // If we want to pass options to the third argument in `addEventListener`,
+      // we can use a nested object syntax like so:
+      error: {
+        // Here, the `listener` member is the callback.
+        listener(e: any) {
+          if (!e.target.classList.contains('lazy') && e.target.nodeName === 'IMG') {
+            e.target.classList.add('yall-error');
+          }
+        },
+        // The option below is sent as the third argument to `addEventListener`,
+        // offering more control over how events are bound. If you want to
+        // specify `useCapture` in lieu of options pass a boolean here instead.
+        options: {
+          once: true,
+        },
+      },
+    },
+  });
+});
+
+/**
  * mixin
  */
 Vue.mixin({
+  data() {
+    return {
+      placeholderImg,
+    };
+  },
   methods: {
     changeView(name: string) {
       this.$router.push(name);

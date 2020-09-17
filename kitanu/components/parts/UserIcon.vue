@@ -1,6 +1,6 @@
 <template>
   <div :class="myClass">
-    <img src="https://avatars3.githubusercontent.com/u/6635142?s=460&v=4" alt="" />
+    <img class="lazy" :src="placeholderImg" data-src="https://avatars3.githubusercontent.com/u/6635142?s=460&v=4" alt="" />
   </div>
 </template>
 <!------------------------------->
@@ -14,6 +14,15 @@ type State = {};
 export default Vue.extend({
   name: 'UserIcon',
   components: {},
+  props: {
+    size: {
+      default: '',
+      type: String,
+    },
+  },
+  data(): State {
+    return {};
+  },
   computed: {
     myClass(): any {
       const klass: any = { usericon: true };
@@ -27,15 +36,6 @@ export default Vue.extend({
       klass[size] = true;
       return klass;
     },
-  },
-  props: {
-    size: {
-      default: '',
-      type: String,
-    },
-  },
-  data(): State {
-    return {};
   },
   mounted() {},
   methods: {},

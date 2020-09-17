@@ -14,7 +14,7 @@
       <div class="album-body-head">
         <p class="album-text-des">
           アルバムだヌ
-          <a class="kitanu" @click.stop.prevent="description"><ion-icon name="finger-print-outline"></ion-icon></a>
+          <a class="btn-des" :disabled="editing" @click.stop.prevent="description"><ion-icon name="finger-print-outline"></ion-icon></a>
         </p>
         <CaButton size="S" @click="createAlbum">新規作成</CaButton>
       </div>
@@ -138,6 +138,9 @@ export default Vue.extend({
         pointer-events: none;
         opacity: 0.5;
       }
+    }
+    .btn-des {
+      opacity: 0.2;
     }
   }
 }

@@ -2,7 +2,7 @@
   <section class="app view">
     <AppHeader>
       <a class="btn-back" href=""><ion-icon name="chevron-back" size="medium" /></a>
-      <img class="chat-usericon" src="https://storage.googleapis.com/toshickcom-a7f98.appspot.com/upload_images/%E3%82%A4%E3%83%A1%E3%83%BC%E3%82%B8-1595803900938.jpeg" alt="" />
+      <img class="chat-usericon lazy" :src="placeholderImg" data-src="https://storage.googleapis.com/toshickcom-a7f98.appspot.com/upload_images/%E3%82%A4%E3%83%A1%E3%83%BC%E3%82%B8-1595803900938.jpeg" alt="" />
       <p class="chat-username">{{ title }}</p>
       <!-- right -->
       <template v-slot:right>

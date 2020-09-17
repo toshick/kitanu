@@ -1,7 +1,7 @@
 <template>
   <section>
     <h1>
-      <img src="/img/top/tanu.png" class="tanu" alt="kitanu" />
+      <img data-src="/img/top/tanu.png" :src="placeholderImg" class="tanu lazy" alt="kitanu" />
       <p class="comment">{{ comment }}</p>
     </h1>
     <ul>

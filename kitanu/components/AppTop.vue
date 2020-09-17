@@ -15,8 +15,8 @@
       <ChatInfo :infoitems="infoitems" />
       <section>
         <div class="chara">
-          <img src="/img/top/tanu.png" class="tanu" alt="kitanu" />
-          <img src="/img/top/tanu-title.png" class="tanu-title" alt="kitanu-title" />
+          <img data-src="/img/top/tanu.png" :src="placeholderImg" class="tanu lazy" alt="kitanu" />
+          <img data-src="/img/top/tanu-title.png" :src="placeholderImg" class="tanu-title lazy" alt="kitanu-title" />
           <p>
             キータヌは世話焼きたぬき
             <a class="kitanu" @click="about"><ion-icon name="finger-print-outline"></ion-icon></a>
@@ -38,7 +38,7 @@
 <!------------------------------->
 <script lang="ts">
 import Vue, { PropType } from 'vue';
-// import { openModal, openView, toast, sidemenu } from '@/common/util';
+// import { placeholderImg } from '@/common/util';
 import ChatInfo, { ChatInfoItemType } from './ChatInfo.vue';
 import AppHeader from './AppHeader.vue';
 import AppFooter from './AppFooter.vue';

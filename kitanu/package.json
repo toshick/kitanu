@@ -22,7 +22,8 @@
     "axios": "^0.20.0",
     "camaleao-design": "git+https://github.com/toshick/camaleao-design.git",
     "nuxt": "^2.14.0",
-    "sanitize-html": "^1.27.4"
+    "sanitize-html": "^1.27.4",
+    "yall-js": "^3.2.0"
   },
   "devDependencies": {
     "@nuxt/types": "^2.14.0",

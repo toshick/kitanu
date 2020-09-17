@@ -14,19 +14,19 @@
       <p class="album-text-des">みんなで東北へいってきたよ。<br />変な公園があったんだ。（グレイフォックスのすけ）</p>
       <div class="album-item">
         <p class="album-text -sirowaku -bottom-center">我々は不思議なキャットに遭遇した。</p>
-        <img src="https://storage.googleapis.com/toshickcom-a7f98.appspot.com/upload_images/Camera_2020-07-24_18.23.00-1595582593445.jpeg" alt="" />
+        <img class="lazy" :src="placeholderImg" data-src="https://storage.googleapis.com/toshickcom-a7f98.appspot.com/upload_images/Camera_2020-07-24_18.23.00-1595582593445.jpeg" alt="" />
       </div>
       <p class="album-text-des">キャットはじっと何かをみつめているよ。（グレイフォックスのすけ）</p>
       <div class="album-item">
-        <img src="https://storage.googleapis.com/toshickcom-a7f98.appspot.com/upload_images/Camera_2020-07-24_18.23.42-1595582635687.jpeg" alt="" />
+        <img class="lazy" :src="placeholderImg" data-src="https://storage.googleapis.com/toshickcom-a7f98.appspot.com/upload_images/Camera_2020-07-24_18.23.42-1595582635687.jpeg" alt="" />
         <p class="album-text -sirowaku -bottom-right">なにかがあるのかしら。</p>
       </div>
       <div class="album-item">
-        <img src="https://storage.googleapis.com/toshickcom-a7f98.appspot.com/upload_images/Camera_2020-08-01_13.04.25-1596254669373.jpeg" alt="" />
+        <img class="lazy" :src="placeholderImg" data-src="https://storage.googleapis.com/toshickcom-a7f98.appspot.com/upload_images/Camera_2020-08-01_13.04.25-1596254669373.jpeg" alt="" />
         <p class="album-text -sirowaku -bottom-left">なんか綿菓子うっている。</p>
       </div>
       <div class="album-item">
-        <img src="https://storage.googleapis.com/toshickcom-a7f98.appspot.com/upload_images/Camera_2020-07-24_18.38.38-1595583527442.jpeg" alt="" />
+        <img class="lazy" :src="placeholderImg" data-src="https://storage.googleapis.com/toshickcom-a7f98.appspot.com/upload_images/Camera_2020-07-24_18.38.38-1595583527442.jpeg" alt="" />
         <p class="album-text -sirowaku -bottom-left">せかいのとしっくです。こちらは謎の池を発見せり</p>
       </div>
     </div>

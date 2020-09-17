@@ -91,3 +91,8 @@ export function shuffle(array: Array<any>): Array<any> {
   }
   return ret;
 }
+
+/**
+ * 1*1 transparent png img
+ */
+export const placeholderImg = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=';
