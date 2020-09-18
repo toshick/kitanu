@@ -17,19 +17,26 @@
 <script lang="ts">
 import Vue from 'vue';
 import anime from 'animejs';
+import { particleEffect } from '@/common/util';
 
-type State = {};
+type State = {
+  visibleParticle: boolean;
+};
 
 export default Vue.extend({
   name: 'Kiyaku',
   components: {},
   props: {},
   data(): State {
-    return {};
+    return {
+      visibleParticle: false,
+    };
   },
   computed: {},
   mounted() {
     this.tanuAnime();
+    this.visibleParticle = true;
+    particleEffect();
   },
   methods: {
     tanuAnime() {

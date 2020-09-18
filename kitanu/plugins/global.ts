@@ -2,11 +2,13 @@ import Vue from 'vue';
 import axios from 'axios';
 import sanitizeHTML from 'sanitize-html';
 import { OpenParams } from 'camaleao-design/components/CaModalPG';
-import { openModal, openDialog, openView, toast, sidemenu, drillDown, loading, placeholderImg } from '@/common/util';
+import { particleEffect, openModal, openDialog, openView, toast, sidemenu, drillDown, loading, placeholderImg } from '@/common/util';
 import AppSetting from '@/components/AppSetting.vue';
+import Particle from '@/components/parts/Particle.vue';
 
 import 'camaleao-design/components/install';
 import 'camaleao-design/form/validation.ts';
+Vue.component('Particle', Particle);
 
 Vue.prototype.$sanitize = sanitizeHTML;
 

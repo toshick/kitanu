@@ -15,7 +15,7 @@
       <ChatInfo :infoitems="infoitems" />
       <section>
         <div class="chara">
-          <img data-src="/img/top/tanu.png" :src="placeholderImg" class="tanu lazy" alt="kitanu" />
+          <img data-src="/img/top/tanu.png" :src="placeholderImg" class="tanu lazy" alt="kitanu" @click="showParticle" />
           <img data-src="/img/top/tanu-title.png" :src="placeholderImg" class="tanu-title lazy" alt="kitanu-title" />
           <p>
             キータヌは世話焼きたぬき
@@ -38,7 +38,7 @@
 <!------------------------------->
 <script lang="ts">
 import Vue, { PropType } from 'vue';
-// import { placeholderImg } from '@/common/util';
+import { particleEffect } from '@/common/util';
 import ChatInfo, { ChatInfoItemType } from './ChatInfo.vue';
 import AppHeader from './AppHeader.vue';
 import AppFooter from './AppFooter.vue';
@@ -92,6 +92,9 @@ export default Vue.extend({
         console.log('いええす');
       });
     },
+    showParticle() {
+      particleEffect();
+    },
   },
 });
 </script>
@@ -144,5 +147,12 @@ h2 {
   color: var(--app-color-dark);
   font-size: var(--fontsize-medium);
   margin-bottom: 20px;
+}
+
+.myparticle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  border: solid 1px #ff0000;
 }
 </style>
