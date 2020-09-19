@@ -12,10 +12,12 @@ import Particle from '@/components/parts/Particle.vue';
 export const placeholderImg = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=';
 
 export const openDialog = (params: OpenParams) => {
+  particleEffect();
   CaModalPG.openDialog({
     ...params,
     klass: params.klass ? [...params.klass, 'view', '-transparentbg'] : ['view', '-transparentbg'],
     transition: params.transition || 'scalefade',
+    easyClose: params.easyClose || false,
   });
 };
 
@@ -81,6 +83,7 @@ export const loading = (flg: boolean) => {
     ...params,
     component: Loading,
     klass: ['-loading'],
+    transition: 'scalefade',
   });
 
   vm.$children.forEach((child: any) => {

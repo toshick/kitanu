@@ -5,10 +5,10 @@
       <p class="comment">{{ comment }}</p>
     </h1>
     <ul>
-      <li v-for="i in 40" :key="i">
+      <li v-for="i in 10" :key="i">
         <a href="">
           <ion-icon name="notifications-outline" />
-          キタキタヌ
+          キタキータヌ
         </a>
       </li>
     </ul>
@@ -68,7 +68,7 @@ section {
   overflow: hidden;
 
   padding: 20px;
-  background-image: url('/img/subtle-dark-vertical.png');
+  // background-image: url('/img/subtle-dark-vertical.png');
 }
 .tanu {
   position: absolute;

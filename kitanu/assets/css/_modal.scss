@@ -10,7 +10,6 @@
  ---------------------*/
 .ca-modal.-transparentbg {
   background-color: rgba(#fbecad, 0.8) !important;
-
 }
 
 /* -------------------- 
@@ -23,7 +22,6 @@
   .ca-modalview {
     border-radius: 20px;
     overflow: hidden;
-
 
     &::after {
       content: '';
@@ -38,4 +36,43 @@
       border-radius: 20px;
     }
   }
+
+  .about {
+    color: #fff;
+    font-size: var(--fontsize-small);
+  }
+
+  .about-body {}
+
+  h1 {
+    font-size: var(--fontsize-large);
+    margin-bottom: 10px;
+  }
+
+  h2 {
+    font-size: var(--fontsize-medium);
+    margin: 10px 0;
+  }
+
+  p {
+    font-size: var(--fontsize-medium);
+  }
+
+  .about-tanu {
+    position: absolute;
+    bottom: -140px;
+    left: 40px;
+    width: 280px;
+    pointer-events: none;
+    opacity: 0;
+  }
+}
+
+/* -------------------- 
+ ca-modal-sidemenu
+ ---------------------*/
+.ca-modal-sidemenu-body {
+  height: min-content;
+  min-height: 100%;
+  background-image: url("/img/subtle-dark-vertical.png");
 }

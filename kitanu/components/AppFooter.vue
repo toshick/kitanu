@@ -2,18 +2,18 @@
   <footer :class="myClass">
     <!-- top -->
     <template v-if="mode == 'top'">
-      <div class="app-footer-icon">
+      <!-- <div class="app-footer-icon">
         <a @click.stop.prevent="$emit('menu')">
           <ion-icon name="log-in-outline" />
           <p>メニュー</p>
         </a>
-      </div>
-      <!-- <div class="app-footer-icon">
-        <a @click.stop.prevent="$emit('home')">
+      </div> -->
+      <div class="app-footer-icon">
+        <a @click.stop.prevent="goTop">
           <ion-icon name="leaf" />
           <p>ホーム</p>
         </a>
-      </div> -->
+      </div>
       <div class="app-footer-icon">
         <a @click.stop.prevent="$emit('album')">
           <ion-icon name="reorder-four-outline" />
@@ -27,22 +27,17 @@
         </a>
       </div>
       <div class="app-footer-icon">
-        <a @click.stop.prevent="$emit('setting')">
-          <ion-icon name="restaurant-outline" />
-          <p>せってい</p>
+        <a @click.stop.prevent="$emit('activity')">
+          <ion-icon name="leaf-outline" />
+          <p>かつどう</p>
+          <CaBadge :num="5" />
         </a>
       </div>
     </template>
     <!-- chat -->
     <template v-if="mode == 'albamlist'">
       <div class="app-footer-icon">
-        <a @click.stop.prevent="$emit('menu')">
-          <ion-icon name="log-in-outline" />
-          <p>メニュー</p>
-        </a>
-      </div>
-      <div class="app-footer-icon">
-        <a @click.stop.prevent="$emit('home')">
+        <a @click.stop.prevent="goTop">
           <ion-icon name="leaf" />
           <p>ホーム</p>
         </a>
@@ -60,9 +55,9 @@
         </a>
       </div>
       <div class="app-footer-icon">
-        <a @click.stop.prevent="$emit('setting')">
-          <ion-icon name="restaurant-outline" />
-          <p>せってい</p>
+        <a @click.stop.prevent="$emit('activity')">
+          <ion-icon name="leaf-outline" />
+          <p>かつどう</p>
         </a>
       </div>
     </template>
@@ -81,9 +76,9 @@
         </a>
       </div>
       <div class="app-footer-icon">
-        <a @click.stop.prevent="$emit('setting')">
-          <ion-icon name="restaurant-outline" />
-          <p>せってい</p>
+        <a @click.stop.prevent="$emit('activity')">
+          <ion-icon name="leaf-outline" />
+          <p>かつどう</p>
         </a>
       </div>
     </template>
@@ -151,6 +146,7 @@ export default Vue.extend({
 }
 
 .app-footer-icon {
+  position: relative;
   a {
     display: block;
     text-align: center;
@@ -173,6 +169,11 @@ export default Vue.extend({
   ion-icon {
     font-size: 26px;
     color: inherit;
+  }
+  .ca-badge {
+    position: absolute;
+    top: 5px;
+    right: -5px;
   }
 }
 .app-footer-input {

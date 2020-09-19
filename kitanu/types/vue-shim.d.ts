@@ -8,7 +8,9 @@ declare module 'vue/types/vue' {
   interface Vue {
     openView: any;
     openModal: any;
+    openDialog: any;
     showConfirm: any;
+    showLoading: any;
     drillDown: any;
     $router: any;
   }

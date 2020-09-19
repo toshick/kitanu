@@ -2,7 +2,7 @@
   <div class="loading">
     <CaModalScroll>
       <CaModalViewBody>
-        <div class="loader loader--style1" title="0">
+        <!-- <div class="loader loader--style1" title="0">
           <svg id="loader-1" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="40px" height="40px" viewBox="0 0 40 40" enable-background="new 0 0 40 40" xml:space="preserve">
             <path
               opacity="1"
@@ -19,6 +19,9 @@
               <animateTransform attributeType="xml" attributeName="transform" type="rotate" from="0 20 20" to="360 20 20" dur="0.5s" repeatCount="indefinite" />
             </path>
           </svg>
+        </div> -->
+        <div class="loading-img">
+          <img src="/img/top/tanu-white.png" class="tanu-white" alt="kitanu-header" />
         </div>
       </CaModalViewBody>
     </CaModalScroll>
@@ -73,11 +76,36 @@ export default Vue.extend({
   align-items: center;
   justify-content: center;
 }
+
+.loading-img {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 40px;
+}
+.tanu-white {
+  display: block;
+  width: 100%;
+  animation: 1s loadinganime infinite;
+}
+
+@keyframes loadinganime {
+  0% {
+    transform: scaleX(1);
+  }
+  50% {
+    transform: scaleX(1.1);
+  }
+  100% {
+    transform: scaleX(1);
+  }
+}
 </style>
 
 <style lang="scss">
 .ca-modal.-loading {
-  background-color: rgba(#ddcd61, 1);
+  background-color: rgba(#000, 0.2);
   .ca-modalview {
     background-color: transparent;
   }

@@ -9,7 +9,7 @@
       <div class="album-item-cont">
         <div class="album-item-left">
           <div class="album-item-img">
-            <a class="btn-img" @click.stop="selectItem(i)">
+            <a v-longpress="() => removeItem(i)" class="btn-img" @click.stop="selectItem(i)">
               <img class="lazy" :src="placeholderImg" data-src="https://storage.googleapis.com/toshickcom-a7f98.appspot.com/upload_images/Camera_2020-07-24_18.23.00-1595582593445.jpeg" alt="" />
             </a>
             <span class="btn-remove" href=""><ion-icon name="trash"></ion-icon></span>
@@ -68,10 +68,13 @@ export default Vue.extend({
   methods: {
     selectItem(i: AlbumItem) {
       if (this.editing) {
-        this.$emit('delete', i);
+        this.$emit('remove', i);
         return;
       }
       this.$emit('select', i);
+    },
+    removeItem(i: AlbumItem) {
+      this.$emit('remove', i);
     },
   },
 });

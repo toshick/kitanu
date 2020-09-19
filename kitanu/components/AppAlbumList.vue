@@ -1,6 +1,7 @@
 <template>
   <section class="app view albumlist">
     <AppHeader>
+      <img src="/img/top/tanu-white.png" class="tanu-header" alt="kitanu-header" @click="openMenu" />
       <h1>アルバムリスト</h1>
       <!-- right -->
       <template v-slot:right>

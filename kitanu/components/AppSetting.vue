@@ -2,7 +2,7 @@
   <section class="app view">
     <AppHeader>
       <a class="btn-back" @click.stop.prevent="$emit('close')"><ion-icon name="chevron-back" size="medium" /></a>
-      <h1>設定</h1>
+      <h1>せってい</h1>
       <template v-slot:right>
         <a @click.stop.prevent="showModalPolicy"><ion-icon name="finger-print-outline" size="medium" /></a>
       </template>

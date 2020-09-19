@@ -76,6 +76,9 @@ Vue.mixin({
     };
   },
   methods: {
+    goTop() {
+      this.$router.push('/');
+    },
     changeView(name: string) {
       this.$router.push(name);
     },
@@ -90,6 +93,19 @@ Vue.mixin({
     openModal(params: OpenParams) {
       const $t = this.$el.closest('.mobileview') || null;
       openModal({ target: $t, ...params });
+    },
+    openDialog(params: OpenParams) {
+      const $t = this.$el.closest('.mobileview') || null;
+      openDialog({
+        target: $t,
+        ...params,
+        titleIcon: {
+          tag: 'ion-icon',
+          attrs: {
+            name: 'hand-right-outline',
+          },
+        },
+      });
     },
     showLoading(flg: boolean) {
       loading(flg);
@@ -108,15 +124,22 @@ Vue.mixin({
       const $t = this.$el.closest('.mobileview') || null;
       drillDown({ target: $t, component: AppSetting });
     },
-    showConfirm(title: string, onConfirm: () => void) {
+    showConfirm(p: { title: string; text: string; isDanger?: boolean }, onConfirm: () => void) {
       const $t = this.$el.closest('.mobileview') || null;
       openDialog({
-        modalTitle: title,
+        modalTitle: p.title,
         target: $t,
         klass: ['view-textinput'],
         compoParams: {
-          confirmText: 'なんだかしらんけどよろしいですか？なんだかしらんけどよろしいですか？',
+          confirmText: p.text,
           onConfirm,
+          type: p.isDanger ? 'danger' : '',
+        },
+        titleIcon: {
+          tag: 'ion-icon',
+          attrs: {
+            name: 'hand-right-outline',
+          },
         },
       });
     },

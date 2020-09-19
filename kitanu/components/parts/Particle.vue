@@ -1,7 +1,7 @@
 <template>
   <div :class="myClass">
     <ul class="particle-holder">
-      <li v-for="c in 20" :key="c" class="c" />
+      <li v-for="c in 40" :key="c" class="c" />
     </ul>
   </div>
 </template>
@@ -52,7 +52,7 @@ export default Vue.extend({
 <style scoped lang="scss">
 $time: 2s;
 $total: 200; // total particles
-$orb-size: 40px;
+$orb-size: 10px;
 $particle-size: 2px;
 // $base-hue: 10;
 

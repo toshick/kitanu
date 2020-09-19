@@ -97,5 +97,10 @@ export default Vue.extend({
   .ca-badge {
     margin-left: 4px;
   }
+  .tanu-header {
+    width: 20px;
+    margin-right: 0.5em;
+    cursor: pointer;
+  }
 }
 </style>
