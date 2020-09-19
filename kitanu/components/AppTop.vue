@@ -46,6 +46,7 @@
 <script lang="ts">
 import Vue, { PropType } from 'vue';
 import { toast, openDialog, particleEffect } from '@/common/util';
+import { Input } from 'camaleao-design/components/type';
 import AppAlbumDetail from '@/components/AppAlbumDetail.vue';
 import ChatInfo, { ChatInfoItemType } from './ChatInfo.vue';
 import AppHeader from './AppHeader.vue';
@@ -120,7 +121,7 @@ export default Vue.extend({
           confirmText: 'よろしいヌ？',
           btnLabel: 'ヌ',
           onConfirm: () => {
-            toast('アルバムを作成したヌ', { target: $t });
+            toast('アルバムを作成したヌ');
           },
         },
       });
