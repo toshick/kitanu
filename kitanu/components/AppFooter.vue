@@ -64,7 +64,7 @@
     <!-- make -->
     <template v-if="mode == 'make'">
       <ValidationProvider v-slot="{ invalid }" class="talk-input" name="mycomment" :rules="'required'" tag="div">
-        <a :disabled="invalid" class="btn-comment" @click.stop.prevent="$emit('album')">
+        <a :disabled="invalid" class="btn-comment" @click.stop.prevent="submit">
           <ion-icon name="cloud-upload-outline" />
         </a>
         <!-- <CaTextarea v-model="talkText" name="talkText" width="M" placeholder="コメント"></CaTextarea> -->
@@ -81,7 +81,7 @@
         </div>
         <div v-show="imgurls.length == 0" class="uibuttons">
           <div class="app-footer-icon">
-            <FileUpload @loaded="onImgLoaded" />
+            <FileInput @loaded="onImgLoaded" />
           </div>
         </div>
       </ValidationProvider>
@@ -94,7 +94,7 @@
 <script lang="ts">
 import Vue, { PropType } from 'vue';
 import { ValidationProvider } from 'vee-validate';
-import FileUpload from '@/components/parts/FileUpload.vue';
+import FileInput from '@/components/parts/FileInput.vue';
 import { FileItem } from '@/components/types';
 
 type State = {
@@ -105,7 +105,7 @@ type Mode = 'top' | 'chat';
 
 export default Vue.extend({
   name: 'AppFooter',
-  components: { ValidationProvider, FileUpload },
+  components: { ValidationProvider, FileInput },
   props: {
     mode: {
       default: 'top',
@@ -144,8 +144,13 @@ export default Vue.extend({
       });
     },
     onImgLoaded(i: FileItem) {
-      console.log('ロードされた', { ...i });
       this.fileItems.push(i);
+    },
+    submit() {
+      this.$emit('submit', {
+        fileItems: this.fileItems,
+        text: this.talkText,
+      });
     },
   },
 });
@@ -281,7 +286,7 @@ ul.preview {
 }
 .preview-item {
   position: relative;
-  margin-bottom: 10px;
+  margin-bottom: 6px;
   &:last-child {
     margin-bottom: 0;
   }

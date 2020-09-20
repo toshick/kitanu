@@ -35,7 +35,9 @@ function setEvent(el: HTMLElement, binding: VNodeDirective) {
     }, duration);
   }
 
-  function onMouseUp() {
+  function onMouseUp(e: Event) {
+    e.preventDefault();
+    e.stopPropagation();
     if (timerID) clearTimeout(timerID);
     timerID = null;
   }

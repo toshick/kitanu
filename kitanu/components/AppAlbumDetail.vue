@@ -30,7 +30,7 @@
         <p class="album-text -sirowaku -bottom-left">せかいのとしっくです。こちらは謎の池を発見せり</p>
       </div>
     </div>
-    <AppFooter mode="make" @menu="openMenu" @talk="startTalk" />
+    <AppFooter mode="make" @menu="openMenu" @talk="startTalk" @submit="onSubmit" />
   </section>
 </template>
 <!------------------------------->
@@ -39,6 +39,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import { sidemenu, openView } from '@/common/util';
+import { FileItem } from '@/components/types';
 import AppHeader from './AppHeader.vue';
 import AppFooter from './AppFooter.vue';
 import UserIcon from './parts/UserIcon.vue';
@@ -78,6 +79,11 @@ export default Vue.extend({
           },
         },
       });
+    },
+    onSubmit(p: { fileItems: FileItem; text: string }) {
+      const fileItems = p.fileItems;
+      const text = p.text;
+      console.log(text, fileItems);
     },
   },
 });

@@ -62,6 +62,7 @@ $particle-size: 2px;
   left: 50%;
   pointer-events: none;
   z-index: 200;
+  // transform: scale(6);
 }
 .particle-holder {
   position: absolute;
