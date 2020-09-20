@@ -10,3 +10,8 @@ export type AlbumItem = {
   text: string;
   members: User[];
 };
+
+export type FileItem = {
+  file: File;
+  base64str: string;
+};

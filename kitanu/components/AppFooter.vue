@@ -70,19 +70,18 @@
         <!-- <CaTextarea v-model="talkText" name="talkText" width="M" placeholder="コメント"></CaTextarea> -->
         <div class="textarea">
           <textarea v-model="talkText" :rows="talkTextRows" placeholder="しゃべる" />
-          <div v-if="imgurl" class="preview">
-            <img :src="imgurl" alt="" />
-            <a @click="removeImg">
-              <ion-icon name="close-circle" />
-            </a>
-          </div>
+          <ul v-show="imgurls.length > 0" class="preview">
+            <li v-for="url in imgurls" :key="url" class="preview-item">
+              <img :src="url" alt="" />
+              <a @click="() => removeImg(url)">
+                <ion-icon name="close-circle" />
+              </a>
+            </li>
+          </ul>
         </div>
-        <div v-show="imgurl == ''" class="uibuttons">
+        <div v-show="imgurls.length == 0" class="uibuttons">
           <div class="app-footer-icon">
-            <a @click.stop.prevent="addImg">
-              <ion-icon name="duplicate-outline" />
-              <p>画像</p>
-            </a>
+            <FileUpload @loaded="onImgLoaded" />
           </div>
         </div>
       </ValidationProvider>
@@ -95,16 +94,18 @@
 <script lang="ts">
 import Vue, { PropType } from 'vue';
 import { ValidationProvider } from 'vee-validate';
+import FileUpload from '@/components/parts/FileUpload.vue';
+import { FileItem } from '@/components/types';
 
 type State = {
   talkText: string;
-  imgurl: string;
+  fileItems: FileItem[];
 };
 type Mode = 'top' | 'chat';
 
 export default Vue.extend({
   name: 'AppFooter',
-  components: { ValidationProvider },
+  components: { ValidationProvider, FileUpload },
   props: {
     mode: {
       default: 'top',
@@ -114,7 +115,7 @@ export default Vue.extend({
   data(): State {
     return {
       talkText: '',
-      imgurl: '',
+      fileItems: [],
     };
   },
   computed: {
@@ -126,14 +127,25 @@ export default Vue.extend({
     talkTextRows(): number {
       return this.talkText.split('\n').length;
     },
+    imgurls(): string[] {
+      return this.fileItems.map((fileItem: FileItem) => {
+        return fileItem.base64str;
+      });
+    },
   },
   mounted() {},
   methods: {
-    addImg() {
-      this.imgurl = 'https://storage.googleapis.com/toshickcom-a7f98.appspot.com/upload_images/Camera_2020-07-24_18.23.00-1595582593445.jpeg';
+    // addImg() {
+    //   this.imgurls = ['https://storage.googleapis.com/toshickcom-a7f98.appspot.com/upload_images/Camera_2020-07-24_18.23.00-1595582593445.jpeg'];
+    // },
+    removeImg(url: string) {
+      this.fileItems = this.fileItems.filter((fileItem: FileItem) => {
+        return fileItem.base64str !== url;
+      });
     },
-    removeImg() {
-      this.imgurl = '';
+    onImgLoaded(i: FileItem) {
+      console.log('ロードされた', { ...i });
+      this.fileItems.push(i);
     },
   },
 });
@@ -151,6 +163,7 @@ export default Vue.extend({
   min-height: 50px;
   height: min-content;
   border-top: solid 1px #ecde90;
+
   &.-make {
     padding: 4px 10px;
     justify-content: flex-start;
@@ -232,21 +245,23 @@ export default Vue.extend({
     opacity: 0.4;
   }
 }
-.preview {
+ul.preview {
   position: relative;
-  padding: 3px 6px;
-  width: 80px;
+  padding: 3px 6px 3px 10px;
+
   flex: 2 0 auto;
   img {
     display: block;
     border-radius: 3px;
     box-shadow: 0 0 0px 1px rgba(#fff, 0.7);
+    max-width: 80px;
   }
   a {
     display: block;
     position: absolute;
     top: 0px;
-    right: -4px;
+    right: -10px;
+    z-index: 1;
     &::before {
       content: '';
       display: block;
@@ -257,10 +272,18 @@ export default Vue.extend({
       height: 17px;
       border-radius: 8px;
       background-color: #666;
+      z-index: 0;
     }
   }
   ion-icon {
     color: #fff;
+  }
+}
+.preview-item {
+  position: relative;
+  margin-bottom: 10px;
+  &:last-child {
+    margin-bottom: 0;
   }
 }
 .textarea {
