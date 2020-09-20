@@ -98,6 +98,7 @@ export default Vue.extend({
 }
 .album-item {
   margin: 0 0 30px;
+  user-select: none;
   header {
     display: flex;
     align-items: center;
@@ -119,7 +120,6 @@ export default Vue.extend({
 }
 .album-item-img {
   position: relative;
-  user-select: none;
 }
 .btn-img {
   position: relative;
