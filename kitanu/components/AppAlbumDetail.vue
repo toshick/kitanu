@@ -39,7 +39,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import { sidemenu, openView } from '@/common/util';
-import { FileItem } from '@/components/types';
+import { FileItem } from '@/components/types/app';
 import AppHeader from './AppHeader.vue';
 import AppFooter from './AppFooter.vue';
 import UserIcon from './parts/UserIcon.vue';

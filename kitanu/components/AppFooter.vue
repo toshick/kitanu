@@ -95,7 +95,7 @@
 import Vue, { PropType } from 'vue';
 import { ValidationProvider } from 'vee-validate';
 import FileInput from '@/components/parts/FileInput.vue';
-import { FileItem } from '@/components/types';
+import { FileItem } from '@/components/types/app';
 
 type State = {
   talkText: string;

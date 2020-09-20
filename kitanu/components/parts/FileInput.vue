@@ -12,12 +12,8 @@
 <!------------------------------->
 <script lang="ts">
 import Vue from 'vue';
-import { FileItem } from '@/components/types';
+import { FileItem } from '@/components/types/app';
 
-type FileItem = {
-  file: File;
-  base64str: string;
-};
 type State = {
   files: FileItem[];
 };
@@ -40,7 +36,7 @@ export default Vue.extend({
   },
   mounted() {},
   methods: {
-    onFileChange(e: HTMLInputElement) {
+    onFileChange(e: any) {
       const files: File[] = e.target.files || e.dataTransfer.files;
 
       const p: Promise<any>[] = [];
