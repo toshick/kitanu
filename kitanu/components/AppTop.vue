@@ -45,7 +45,7 @@
 <!------------------------------->
 <script lang="ts">
 import Vue, { PropType } from 'vue';
-import { toast, openDialog, particleEffect } from '@/common/util';
+import { toast, particleEffect } from '@/common/util';
 import { Input } from 'camaleao-design/components/type';
 import AppAlbumDetail from '@/components/AppAlbumDetail.vue';
 import ChatInfo, { ChatInfoItemType } from './ChatInfo.vue';

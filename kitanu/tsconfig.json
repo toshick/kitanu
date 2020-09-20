@@ -15,7 +15,8 @@
       "~/*": ["./*"],
       "@/*": ["./*"]
     },
-    "types": ["@types/node", "@nuxt/types", "yall-js"]
+    "types": ["@types/jest", "@types/node", "@nuxt/types", "yall-js"]
   },
   "exclude": ["node_modules", ".nuxt", "dist"]
+  // "transformIgnorePatterns": ["node_modules"]
 }

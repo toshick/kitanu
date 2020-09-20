@@ -7,6 +7,14 @@ import Loading from '@/components/parts/Loading.vue';
 import Particle from '@/components/parts/Particle.vue';
 
 /**
+ * isMobile
+ */
+export const isMobile: boolean = (() => {
+  if (navigator.userAgent.match(/iPhone|Android.+Mobile/)) return true;
+  return false;
+})();
+
+/**
  * 1*1 transparent png img
  */
 export const placeholderImg = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=';

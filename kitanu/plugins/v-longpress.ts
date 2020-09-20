@@ -1,6 +1,7 @@
 import Vue from 'vue';
 // import { VNode, VNodeDirective } from 'vue/types/vnode';
 import { VNodeDirective } from 'vue/types/vnode';
+import { isMobile } from '@/common/util';
 
 /**
  * longpress
@@ -23,6 +24,11 @@ function setEvent(el: HTMLElement, binding: VNodeDirective) {
   const duration: number = binding.arg ? +binding.arg : 800;
   let timerID: NodeJS.Timer | null = null;
 
+  console.log('isMobile', isMobile);
+
+  const eventKeyDown = isMobile ? 'touchstart' : 'mousedown';
+  const eventKeyUp = isMobile ? 'touchend' : 'mouseup';
+
   function onMouseDown(e: Event) {
     e.preventDefault();
     e.stopPropagation();
@@ -40,12 +46,12 @@ function setEvent(el: HTMLElement, binding: VNodeDirective) {
     timerID = null;
   }
 
-  el.addEventListener('mousedown', onMouseDown);
-  el.addEventListener('mouseup', onMouseUp);
+  el.addEventListener(eventKeyDown, onMouseDown);
+  el.addEventListener(eventKeyUp, onMouseUp);
 
   const removeAllHandlers = () => {
-    el.removeEventListener('mousedown', onMouseDown);
-    el.removeEventListener('mouseup', onMouseUp);
+    el.removeEventListener(eventKeyDown, onMouseDown);
+    el.removeEventListener(eventKeyUp, onMouseUp);
     el.removeEventListener('removeAllHandlers', removeAllHandlers);
   };
 

@@ -2,4 +2,4 @@
 
 .PHONY: nuxt
 nuxt:
-	cd kitanu && npm ci && npm run generate
+	cd kitanu && npm test && npm ci && npm run generate

@@ -3,6 +3,7 @@
   "favorites.resources": [
     "plugins/global.ts",
     "assets/css/app.scss",
-    "common/util.ts"
+    "common/util.ts",
+    "package.json"
   ]
 }
