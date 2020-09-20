@@ -29,9 +29,7 @@ function setEvent(el: HTMLElement, binding: VNodeDirective) {
   const eventKeyDown = isMobile ? 'touchstart' : 'mousedown';
   const eventKeyUp = isMobile ? 'touchend' : 'mouseup';
 
-  function onMouseDown(e: Event) {
-    e.preventDefault();
-    e.stopPropagation();
+  function onMouseDown() {
     if (timerID) clearTimeout(timerID);
     timerID = setTimeout(() => {
       if (func) func();
@@ -39,9 +37,7 @@ function setEvent(el: HTMLElement, binding: VNodeDirective) {
     }, duration);
   }
 
-  function onMouseUp(e: Event) {
-    e.preventDefault();
-    e.stopPropagation();
+  function onMouseUp() {
     if (timerID) clearTimeout(timerID);
     timerID = null;
   }
