@@ -119,6 +119,7 @@ export default Vue.extend({
 }
 .album-item-img {
   position: relative;
+  user-select: none;
 }
 .btn-img {
   position: relative;
