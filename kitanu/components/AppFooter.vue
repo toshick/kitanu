@@ -63,24 +63,29 @@
     </template>
     <!-- make -->
     <template v-if="mode == 'make'">
-      <ValidationProvider v-slot="{ invalid }" class="app-footer-input" name="mycomment" :rules="'required'" tag="div">
+      <ValidationProvider v-slot="{ invalid }" class="talk-input" name="mycomment" :rules="'required'" tag="div">
         <a :disabled="invalid" class="btn-comment" @click.stop.prevent="$emit('album')">
           <ion-icon name="cloud-upload-outline" />
         </a>
-        <CaInput v-model="talkText" name="talkText" width="M" placeholder="コメント"></CaInput>
+        <!-- <CaTextarea v-model="talkText" name="talkText" width="M" placeholder="コメント"></CaTextarea> -->
+        <div class="textarea">
+          <textarea v-model="talkText" :rows="talkTextRows" placeholder="しゃべる" />
+          <div v-if="imgurl" class="preview">
+            <img :src="imgurl" alt="" />
+            <a @click="removeImg">
+              <ion-icon name="close-circle" />
+            </a>
+          </div>
+        </div>
+        <div v-show="imgurl == ''" class="uibuttons">
+          <div class="app-footer-icon">
+            <a @click.stop.prevent="addImg">
+              <ion-icon name="duplicate-outline" />
+              <p>画像</p>
+            </a>
+          </div>
+        </div>
       </ValidationProvider>
-      <div class="app-footer-icon">
-        <a @click.stop.prevent="$emit('setting')">
-          <ion-icon name="duplicate-outline" />
-          <p>画像</p>
-        </a>
-      </div>
-      <div class="app-footer-icon">
-        <a @click.stop.prevent="$emit('activity')">
-          <ion-icon name="leaf-outline" />
-          <p>かつどう</p>
-        </a>
-      </div>
     </template>
   </footer>
 </template>
@@ -93,6 +98,7 @@ import { ValidationProvider } from 'vee-validate';
 
 type State = {
   talkText: string;
+  imgurl: string;
 };
 type Mode = 'top' | 'chat';
 
@@ -108,6 +114,7 @@ export default Vue.extend({
   data(): State {
     return {
       talkText: '',
+      imgurl: '',
     };
   },
   computed: {
@@ -116,9 +123,19 @@ export default Vue.extend({
       klass[`-${this.mode}`] = true;
       return klass;
     },
+    talkTextRows(): number {
+      return this.talkText.split('\n').length;
+    },
   },
   mounted() {},
-  methods: {},
+  methods: {
+    addImg() {
+      this.imgurl = 'https://storage.googleapis.com/toshickcom-a7f98.appspot.com/upload_images/Camera_2020-07-24_18.23.00-1595582593445.jpeg';
+    },
+    removeImg() {
+      this.imgurl = '';
+    },
+  },
 });
 </script>
 <!------------------------------->
@@ -131,10 +148,11 @@ export default Vue.extend({
   justify-content: space-between;
   background: linear-gradient(var(--app-base-color) 50%, var(--app-base-color2) 0%);
   padding: 0 30px;
-  height: 50px;
+  min-height: 50px;
+  height: min-content;
   border-top: solid 1px #ecde90;
   &.-make {
-    padding: 0 10px;
+    padding: 4px 10px;
     justify-content: flex-start;
     .app-footer-icon {
       margin-right: 0.5em;
@@ -189,12 +207,83 @@ export default Vue.extend({
   }
 }
 
+.talk-input {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex: auto;
+  .app-footer-icon {
+    position: absolute;
+    top: 6px;
+    right: 5px;
+
+    ion-icon {
+      font-size: 16px !important;
+    }
+  }
+}
+
 .btn-comment {
   display: flex;
   align-items: center;
   margin-right: 0.5em;
+  flex-shrink: 0;
   &[disabled] {
     opacity: 0.4;
   }
+}
+.preview {
+  position: relative;
+  padding: 3px 6px;
+  width: 80px;
+  flex: 2 0 auto;
+  img {
+    display: block;
+    border-radius: 3px;
+    box-shadow: 0 0 0px 1px rgba(#fff, 0.7);
+  }
+  a {
+    display: block;
+    position: absolute;
+    top: 0px;
+    right: -4px;
+    &::before {
+      content: '';
+      display: block;
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      width: 17px;
+      height: 17px;
+      border-radius: 8px;
+      background-color: #666;
+    }
+  }
+  ion-icon {
+    color: #fff;
+  }
+}
+.textarea {
+  display: flex;
+  align-items: center;
+  flex: 2;
+}
+textarea {
+  display: block;
+  width: 100%;
+  border: solid 1px #ccc;
+  border-radius: var(--form-radius);
+  font-size: var(--form-input-fontsize-normal);
+  box-shadow: var(--form-shadow);
+  padding: 6px 2em 6px 12px;
+  color: var(--dark);
+  &:focus {
+    border: solid 1px #ccc;
+    outline: none;
+  }
+}
+.uibuttons {
+  display: flex;
+  align-items: center;
 }
 </style>

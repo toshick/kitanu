@@ -24,8 +24,6 @@ function setEvent(el: HTMLElement, binding: VNodeDirective) {
   const duration: number = binding.arg ? +binding.arg : 800;
   let timerID: NodeJS.Timer | null = null;
 
-  console.log('isMobile', isMobile);
-
   const eventKeyDown = isMobile ? 'touchstart' : 'mousedown';
   const eventKeyUp = isMobile ? 'touchend' : 'mouseup';
 
