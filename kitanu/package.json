@@ -21,8 +21,11 @@
     "animejs": "^3.2.0",
     "axios": "^0.20.0",
     "camaleao-design": "git+https://github.com/toshick/camaleao-design.git",
+    "dayjs": "^1.8.36",
     "nuxt": "^2.14.0",
     "sanitize-html": "^1.27.4",
+    "uuid": "^8.3.0",
+    "vuex-module-decorators": "^1.0.1",
     "yall-js": "^3.2.0"
   },
   "devDependencies": {
@@ -39,6 +42,7 @@
     "@types/jest": "^26.0.14",
     "@types/mocha": "^8.0.3",
     "@types/sanitize-html": "^1.23.3",
+    "@types/uuid": "^8.3.0",
     "@vue/test-utils": "^1.0.3",
     "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "^10.1.0",

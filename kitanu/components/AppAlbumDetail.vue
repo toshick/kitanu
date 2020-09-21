@@ -5,31 +5,20 @@
       <h1>2020.08.08</h1>
       <!-- right -->
       <template v-slot:right>
-        <a class="btn-header margin-left-auto" href=""><ion-icon name="heart-outline" size="medium" /></a>
+        <a class="btn-header margin-left-auto" @click.stop.prevent="changingOrder = true"><ion-icon name="swap-vertical-outline" size="medium" /></a>
         <a class="btn-header" href=""><ion-icon name="log-in-outline" size="medium" /></a>
         <a class="btn-header" href=""><ion-icon name="walk-outline" size="medium" /></a>
       </template>
     </AppHeader>
-    <div class="album-body">
-      <p class="album-text-des">みんなで東北へいってきたよ。<br />変な公園があったんだ。（グレイフォックスのすけ）</p>
-      <div class="album-item">
-        <p class="album-text -sirowaku -bottom-center">我々は不思議なキャットに遭遇した。</p>
-        <img class="lazy" :src="placeholderImg" data-src="https://storage.googleapis.com/toshickcom-a7f98.appspot.com/upload_images/Camera_2020-07-24_18.23.00-1595582593445.jpeg" alt="" />
+    <AppBody>
+      <div class="album-body">
+        <transition-group class="postitems" name="flip-list" tag="ul">
+          <li v-for="(p, index) in postItems" :key="p.text" class="postitems-item">
+            <PostItem :postitem="p" :first="index == 0" :last="index == postItems.length - 1" @orderChange="onOrderChange" />
+          </li>
+        </transition-group>
       </div>
-      <p class="album-text-des">キャットはじっと何かをみつめているよ。（グレイフォックスのすけ）</p>
-      <div class="album-item">
-        <img class="lazy" :src="placeholderImg" data-src="https://storage.googleapis.com/toshickcom-a7f98.appspot.com/upload_images/Camera_2020-07-24_18.23.42-1595582635687.jpeg" alt="" />
-        <p class="album-text -sirowaku -bottom-right">なにかがあるのかしら。</p>
-      </div>
-      <div class="album-item">
-        <img class="lazy" :src="placeholderImg" data-src="https://storage.googleapis.com/toshickcom-a7f98.appspot.com/upload_images/Camera_2020-08-01_13.04.25-1596254669373.jpeg" alt="" />
-        <p class="album-text -sirowaku -bottom-left">なんか綿菓子うっている。</p>
-      </div>
-      <div class="album-item">
-        <img class="lazy" :src="placeholderImg" data-src="https://storage.googleapis.com/toshickcom-a7f98.appspot.com/upload_images/Camera_2020-07-24_18.38.38-1595583527442.jpeg" alt="" />
-        <p class="album-text -sirowaku -bottom-left">せかいのとしっくです。こちらは謎の池を発見せり</p>
-      </div>
-    </div>
+    </AppBody>
     <AppFooter mode="make" @menu="openMenu" @talk="startTalk" @submit="onSubmit" />
   </section>
 </template>
@@ -38,27 +27,37 @@
 <!------------------------------->
 <script lang="ts">
 import Vue from 'vue';
-import { sidemenu, openView } from '@/common/util';
-import { FileItem } from '@/components/types/app';
+import { toast, sidemenu, openView } from '@/common/util';
+import { FileItem, PostItem } from '@/components/types/app';
+import { postStore } from '@/store';
 import AppHeader from './AppHeader.vue';
 import AppFooter from './AppFooter.vue';
-import UserIcon from './parts/UserIcon.vue';
 import TextInputModal from './parts/TextInputModal.vue';
 
-type State = {};
+type State = {
+  changingOrder: boolean;
+};
 
 export default Vue.extend({
-  name: 'AppAlbum',
+  name: 'AppAlbumDetail',
   components: {
     AppHeader,
     AppFooter,
-    UserIcon,
   },
   props: {},
   data(): State {
-    return {};
+    return {
+      changingOrder: false,
+    };
   },
-  mounted() {},
+  computed: {
+    postItems(): PostItem[] {
+      return postStore.postitems;
+    },
+  },
+  mounted() {
+    postStore.FetchPost();
+  },
   methods: {
     openMenu() {
       const $t = this.$el.closest('.mobileview') || null;
@@ -80,10 +79,20 @@ export default Vue.extend({
         },
       });
     },
-    onSubmit(p: { fileItems: FileItem; text: string }) {
-      const fileItems = p.fileItems;
+    onSubmit(p: { fileItems: FileItem; text: string; reset: () => void }) {
+      // const fileItems = p.fileItems;
       const text = p.text;
-      console.log(text, fileItems);
+      console.log('text', text);
+
+      this.showLoading(true);
+      setTimeout(() => {
+        toast('投稿したヌ');
+        p.reset();
+        this.showLoading(false);
+      }, 1000);
+    },
+    onOrderChange(p: { postitem: PostItem; direction: string }) {
+      postStore.ChangeOrder(p);
     },
   },
 });
@@ -133,5 +142,10 @@ export default Vue.extend({
     right: 10px;
     width: max-content;
   }
+}
+
+.flip-list-move {
+  // transition: transform 1s;
+  transition: 0.4s transform cubic-bezier(0.39, 0.575, 0.565, 1);
 }
 </style>

@@ -1,3 +1,8 @@
+export type ActionRes = {
+  error?: boolean;
+  ok?: boolean;
+};
+
 export type User = {
   username: string;
   iconurl: string;
@@ -14,4 +19,12 @@ export type AlbumItem = {
 export type FileItem = {
   file: File;
   base64str: string;
+};
+
+export type PostItem = {
+  id: string;
+  date: string;
+  text: string;
+  imgurl?: string;
+  sortindex: string;
 };

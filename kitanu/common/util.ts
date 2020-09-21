@@ -20,7 +20,7 @@ export const isMobile: boolean = (() => {
 export const placeholderImg = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=';
 
 export const openDialog = (params: OpenParams) => {
-  particleEffect();
+  particleEffect('#ac9934');
   CaModalPG.openDialog({
     ...params,
     klass: params.klass ? [...params.klass, 'view', '-transparentbg'] : ['view', '-transparentbg'],
@@ -102,6 +102,18 @@ export const loading = (flg: boolean) => {
 };
 
 /**
+ * zeropad
+ */
+export const zeropad = (num: number, keta: number = 5) => {
+  let str = `${num}`;
+  if (str.length >= keta) return str;
+  while (str.length < keta) {
+    str = `0${str}`;
+  }
+  return str;
+};
+
+/**
  * shuffle
  */
 export function shuffle(array: Array<any>): Array<any> {
@@ -116,9 +128,22 @@ export function shuffle(array: Array<any>): Array<any> {
 }
 
 /**
+ * asort
+ */
+export function asort(ary: Array<any>, key: string = 'id') {
+  return ary.sort((a, b) => {
+    const A = zeropad(a[key]);
+    const B = zeropad(b[key]);
+    if (A < B) return -1;
+    if (A > B) return 1;
+    return 0;
+  });
+}
+
+/**
  * particleEffect
  */
-export const particleEffect = () => {
+export const particleEffect = (color?: string) => {
   const $el = document.createElement('article');
   const $body: Element = document.body;
   if ($body) {
@@ -141,7 +166,9 @@ export const particleEffect = () => {
     render(h: CreateElement) {
       const self: any = this;
       return h(Particle, {
-        props: {},
+        props: {
+          color,
+        },
         on: {
           finish() {
             self.visible = false;

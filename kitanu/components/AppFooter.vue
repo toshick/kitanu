@@ -150,7 +150,12 @@ export default Vue.extend({
       this.$emit('submit', {
         fileItems: this.fileItems,
         text: this.talkText,
+        reset: this.reset,
       });
+    },
+    reset() {
+      this.fileItems = [];
+      this.talkText = '';
     },
   },
 });
@@ -277,7 +282,7 @@ ul.preview {
       height: 17px;
       border-radius: 8px;
       background-color: #666;
-      z-index: 0;
+      z-index: -1;
     }
   }
   ion-icon {

@@ -1,7 +1,7 @@
 <template>
   <div :class="myClass">
     <ul class="particle-holder">
-      <li v-for="c in 40" :key="c" class="c" />
+      <li v-for="c in 40" :key="c" class="c" :style="myStyle" />
     </ul>
   </div>
 </template>
@@ -17,7 +17,7 @@ export default Vue.extend({
   name: 'Particle',
   components: {},
   props: {
-    size: {
+    color: {
       default: '',
       type: String,
     },
@@ -29,6 +29,14 @@ export default Vue.extend({
     myClass(): any {
       const klass: any = { particle: true };
       return klass;
+    },
+    myStyle(): any {
+      const style: any = {};
+      if (this.color) {
+        style.backgroundColor = this.color;
+      }
+
+      return style;
     },
   },
   mounted() {
