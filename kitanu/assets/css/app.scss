@@ -6,6 +6,7 @@
 @import './variables.scss';
 @import './_modal.scss';
 @import './_yall.scss';
+@import './_form.scss';
 
 *,
 *::before,
@@ -46,6 +47,8 @@ a {
   --modal-sidemenu-width: 70%;
   --modal-sidemenu-scroll-bg-color: #d2bd28;
   --modal-sidemenu-padding: 0px;
+  // textarea
+  --form-textarea-width-normal: 100%;
 }
 
 .app {

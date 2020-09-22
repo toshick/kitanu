@@ -1,15 +1,15 @@
 <template>
-  <AppMember />
+  <AppFriends />
 </template>
 <!------------------------------->
 
 <!------------------------------->
 <script lang="ts">
 import Vue from 'vue';
-import AppMember from '@/components/AppMember.vue';
+import AppFriends from '@/components/AppFriends.vue';
 
 export default Vue.extend({
-  components: { AppMember },
+  components: { AppFriends },
 });
 </script>
 <!------------------------------->

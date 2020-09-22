@@ -69,8 +69,8 @@
     </template>
     <!-- make -->
     <template v-if="mode == 'make'">
-      <ValidationProvider v-slot="{ invalid }" class="talk-input" name="mycomment" :rules="'required'" tag="div">
-        <a :disabled="invalid" class="btn-comment" @click.stop.prevent="submit">
+      <ValidationProvider v-slot="{ valid }" class="talk-input" name="mycomment" :rules="'required'" tag="div">
+        <a :disabled="!canSubmit(valid)" class="btn-comment" @click.stop.prevent="submit">
           <ion-icon name="cloud-upload-outline" />
         </a>
         <!-- <CaTextarea v-model="talkText" name="talkText" width="M" placeholder="コメント"></CaTextarea> -->
@@ -162,6 +162,11 @@ export default Vue.extend({
     reset() {
       this.fileItems = [];
       this.talkText = '';
+    },
+    canSubmit(valid: boolean) {
+      if (valid || this.imgurls.length > 0) return true;
+
+      return false;
     },
   },
 });

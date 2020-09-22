@@ -7,11 +7,11 @@
       <template v-slot:right>
         <div v-show="!editing" class="header-buttons">
           <a class="btn-header" @click.stop.prevent="changeOrder"><ion-icon name="swap-vertical-outline" size="medium" /></a>
-          <a class="btn-header" href=""><ion-icon name="walk-outline" size="medium" /></a>
+          <a class="btn-header" @click.stop.prevent="goAlbumSetting"><ion-icon name="restaurant-outline" size="medium" /></a>
         </div>
         <div v-show="editing" class="header-buttons">
-          <a class="btn-header" @click="() => finishEdit(true)"><span>保存</span></a>
-          <a class="btn-header" @click="() => finishEdit(false)"><span>キャンセル</span></a>
+          <a class="btn-header" @click.stop.prevent="() => finishEdit(true)"><span>保存</span></a>
+          <a class="btn-header" @click.stop.prevent="() => finishEdit(false)"><span>キャンセル</span></a>
         </div>
       </template>
     </AppHeader>
@@ -29,7 +29,7 @@
         </section>
 
         <transition-group class="postitems" name="flip-list" tag="ul">
-          <li v-for="(p, index) in postItems" :key="`${p.text}-${p.date}`" class="postitems-item">
+          <li v-for="(p, index) in postItems" :key="`${p.id}`" class="postitems-item">
             <PostItem :postitem="p" :first="index == 0" :last="index == postItems.length - 1" :changing-order="changingOrder" @orderChange="onOrderChange" @remove="removePost" />
           </li>
         </transition-group>
@@ -43,11 +43,12 @@
 <!------------------------------->
 <script lang="ts">
 import Vue from 'vue';
-import { toast, openView } from '@/common/util';
+import { toast, openView, drillDown } from '@/common/util';
 import { FileItem, PostItem } from '@/components/types/app';
 import { postStore } from '@/store';
 import AppHeader from './AppHeader.vue';
 import AppFooter from './AppFooter.vue';
+import AppAlbumSetting from './AppAlbumSetting.vue';
 import TextInputModal from './parts/TextInputModal.vue';
 import { User } from './types/app';
 
@@ -147,6 +148,9 @@ export default Vue.extend({
     },
     removePost(postitem: PostItem) {
       postStore.REMOVE_POST(postitem.id);
+    },
+    goAlbumSetting() {
+      this.drillDown({ component: AppAlbumSetting });
     },
   },
 });

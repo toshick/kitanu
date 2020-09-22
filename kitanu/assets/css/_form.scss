@@ -1,0 +1,25 @@
+@charset "utf-8";
+
+/* -------------------- 
+ yellow
+ ---------------------*/
+.ca-textarea.-yellow {
+  flex: 1;
+  & > span {
+    & > textarea {
+      background-color: #fff7d6;
+      box-shadow: none;
+      border: solid 1px transparent !important;
+    }
+  }
+}
+
+.ca-input.-yellow {
+  & > span {
+    & > input {
+      background-color: #fff7d6;
+      box-shadow: none;
+      border: solid 1px transparent !important;
+    }
+  }
+}
