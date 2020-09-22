@@ -79,6 +79,9 @@ Vue.mixin({
     goTop() {
       this.$router.push('/');
     },
+    goAlbum() {
+      this.$router.push('/albumlist');
+    },
     changeView(name: string) {
       this.$router.push(name);
     },

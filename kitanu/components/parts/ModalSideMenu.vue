@@ -10,7 +10,13 @@
       <li>
         <a @click.stop.prevent="actionTop">
           <ion-icon name="notifications-outline" />
-          トップへヌ
+          トップへ
+        </a>
+      </li>
+      <li>
+        <a @click.stop.prevent="actionAlbum">
+          <ion-icon name="notifications-outline" />
+          アルバムへ
         </a>
       </li>
     </ul>
@@ -52,6 +58,10 @@ export default Vue.extend({
     actionTop() {
       this.close();
       this.goTop();
+    },
+    actionAlbum() {
+      this.close();
+      this.goAlbum();
     },
   },
 });

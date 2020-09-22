@@ -1,8 +1,7 @@
 <template>
   <section class="app view">
     <AppHeader>
-      <!-- <a class="btn-back" @click.stop.prevent="$emit('close')"><ion-icon name="chevron-back" size="medium" /></a> -->
-      <img src="/img/top/tanu-white.png" class="tanu-header" alt="kitanu-header" @click="openMenu" />
+      <a class="btn-back" @click.stop.prevent="goAlbum"><ion-icon name="chevron-back" size="medium" /></a>
       <h1>2020.08.08</h1>
       <!-- right -->
       <template v-slot:right>
@@ -11,16 +10,27 @@
           <a class="btn-header" href=""><ion-icon name="walk-outline" size="medium" /></a>
         </div>
         <div v-show="editing" class="header-buttons">
-          <a class="btn-header" @click="() => finishEdit(true)"><span>完了</span></a>
+          <a class="btn-header" @click="() => finishEdit(true)"><span>保存</span></a>
           <a class="btn-header" @click="() => finishEdit(false)"><span>キャンセル</span></a>
         </div>
       </template>
     </AppHeader>
     <AppBody>
       <div class="album-body">
+        <section class="album-des">
+          <h1>みんなでピクニックにいってみようの巻</h1>
+          <p>ここはせつめいです</p>
+          <p>今年も春がやってきました。<br />そこでどこぞの公園でピクニックをすることにしましたよ。</p>
+          <ul class="member-list">
+            <li v-for="(u, index) in members" :key="`member-${index}-${u.username}`">
+              <UserIcon :url="u.iconurl" size="S" />
+            </li>
+          </ul>
+        </section>
+
         <transition-group class="postitems" name="flip-list" tag="ul">
           <li v-for="(p, index) in postItems" :key="`${p.text}-${p.date}`" class="postitems-item">
-            <PostItem :postitem="p" :first="index == 0" :last="index == postItems.length - 1" :changing-order="changingOrder" @orderChange="onOrderChange" />
+            <PostItem :postitem="p" :first="index == 0" :last="index == postItems.length - 1" :changing-order="changingOrder" @orderChange="onOrderChange" @remove="removePost" />
           </li>
         </transition-group>
       </div>
@@ -39,10 +49,16 @@ import { postStore } from '@/store';
 import AppHeader from './AppHeader.vue';
 import AppFooter from './AppFooter.vue';
 import TextInputModal from './parts/TextInputModal.vue';
+import { User } from './types/app';
 
 type State = {
   changingOrder: boolean;
+  members: User[];
 };
+
+const members: User[] = [];
+members.push({ username: 'にゃんごろう', iconurl: 'https://avatars3.githubusercontent.com/u/6635142?s=460&v=4', subtext: 'いつだってオレンジ' });
+members.push({ username: 'カマキチ', iconurl: 'https://avatars3.githubusercontent.com/u/6635142?s=460&v=4', subtext: 'そろそろキャンプしたいぞ' });
 
 export default Vue.extend({
   name: 'AppAlbumDetail',
@@ -54,6 +70,7 @@ export default Vue.extend({
   data(): State {
     return {
       changingOrder: false,
+      members,
     };
   },
   computed: {
@@ -128,6 +145,9 @@ export default Vue.extend({
       postStore.REVERT_POST();
       this.changingOrder = false;
     },
+    removePost(postitem: PostItem) {
+      postStore.REMOVE_POST(postitem.id);
+    },
   },
 });
 </script>
@@ -138,43 +158,28 @@ export default Vue.extend({
 .album-body {
   overflow: scroll;
   background-color: #fff;
+  background-image: url('/img/subtle-dark-vertical.png');
 }
-.album-item {
-  position: relative;
-  border-top: solid 1px #fff;
-}
-.album-text-des {
-  font-size: 12px;
-  padding: 25px 10px;
-}
-.album-text {
-  position: absolute;
+.album-des {
+  // margin: 20px;
+  font-size: var(--fontsize-normal);
+  color: #666;
 
-  font-size: 12px;
-  color: #fff;
-  text-shadow: 0 0 1px #333;
-  &.-sirowaku {
-    background-color: #fff;
-    padding: 5px 10px;
-    border-radius: 4px;
-    color: #333;
-    text-shadow: none;
+  padding: 20px;
+  // border-radius: 14px;
+  // background: #ffffff;
+  // box-shadow: -2px 2px 5px #eee, inset 2px -2px 5px #eee, 2px -2px 5px #eee, inset -2px 2px 5px #eee;
+  h1 {
+    font-size: var(--fontsize-medium);
+    margin-bottom: 1em;
   }
-  &.-bottom-center {
-    bottom: 10px;
-    left: 50%;
-    transform: translate(-50%, 0);
-    width: max-content;
-  }
-  &.-bottom-left {
-    bottom: 10px;
-    left: 10px;
-    width: max-content;
-  }
-  &.-bottom-right {
-    bottom: 10px;
-    right: 10px;
-    width: max-content;
+}
+
+.member-list {
+  display: flex;
+  margin-top: 0.5em;
+  li {
+    margin-right: 0.5em;
   }
 }
 

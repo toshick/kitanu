@@ -54,8 +54,8 @@ export default class MyClass extends VuexModule {
   }
 
   @Mutation
-  REMOVE_POST(url: string) {
-    this.postitems = this.postitems.filter((i: PostItem) => i.imgurl !== url);
+  REMOVE_POST(id: string) {
+    this.postitems = this.postitems.filter((i: PostItem) => i.id !== id);
   }
 
   @Mutation

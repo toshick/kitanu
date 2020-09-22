@@ -69,7 +69,7 @@
         </a>
         <!-- <CaTextarea v-model="talkText" name="talkText" width="M" placeholder="コメント"></CaTextarea> -->
         <div class="textarea">
-          <textarea v-model="talkText" :rows="talkTextRows" placeholder="しゃべる" />
+          <textarea v-model="talkText" :rows="talkTextRows" placeholder="おもいでをついか" />
           <ul v-show="imgurls.length > 0" class="preview">
             <li v-for="url in imgurls" :key="url" class="preview-item">
               <img :src="url" alt="" />

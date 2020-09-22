@@ -1,14 +1,15 @@
 <template>
   <div :class="myClass">
-    <p v-if="text" class="postitem-text -top-left" v-html="$sanitize(text)"></p>
-    <img v-if="imgurl" class="postitem-img lazy" :src="placeholderImg" :data-src="imgurl" alt="" />
+    <p v-show="text" class="postitem-text -top-left" v-html="$sanitize(text)"></p>
+    <img v-show="imgurl" class="postitem-img lazy" :src="placeholderImg" :data-src="imgurl" alt="postitem" />
     <p class="postitem-index">{{ postitem.sortindex }}</p>
-    <!-- orderButtons -->
-    <div v-if="changingOrder" class="orderButtons">
-      <div class="orderButtons-body">
-        <a class="btn-up" :disabled="first" @click.stop.prevent="up"><ion-icon name="chevron-up-outline" size="medium" /></a>
-        <a class="btn-down" :disabled="last" @click.stop.prevent="down"><ion-icon name="chevron-down-outline" size="medium" /></a>
+    <!-- editUI -->
+    <div v-if="changingOrder" class="editUI">
+      <div class="orderButtons">
+        <a class="btn-up -circle" :disabled="first" @click.stop.prevent="up"><ion-icon name="chevron-up-outline" size="medium" /></a>
+        <a class="btn-down -circle" :disabled="last" @click.stop.prevent="down"><ion-icon name="chevron-down-outline" size="medium" /></a>
       </div>
+      <a class="btn-del -circle" @click.stop.prevent="remove"><ion-icon name="close-outline" size="medium" /></a>
     </div>
   </div>
 </template>
@@ -20,7 +21,9 @@
 import Vue from 'vue';
 import { PostItem } from '@/components/types/app';
 
-type State = {};
+type State = {
+  deleting: boolean;
+};
 
 export default Vue.extend({
   name: 'PostItem',
@@ -44,7 +47,9 @@ export default Vue.extend({
     },
   },
   data(): State {
-    return {};
+    return {
+      deleting: false,
+    };
   },
   computed: {
     myClass(): any {
@@ -59,6 +64,9 @@ export default Vue.extend({
       }
       if (this.last) {
         klass['-last'] = true;
+      }
+      if (this.deleting) {
+        klass['-deleting'] = true;
       }
 
       return klass;
@@ -79,6 +87,24 @@ export default Vue.extend({
     },
     down() {
       this.$emit('orderChange', { postitem: this.postitem, direction: 'down' });
+    },
+    remove() {
+      this.deleting = true;
+      this.$el.addEventListener('transitionend', this.onRemoveAnimationEnd);
+
+      // this.openDialog({
+      //   modalTitle: 'けす',
+      //   compoParams: {
+      //     confirmText: 'よろしいヌ？',
+      //     btnLabel: 'ヌ',
+      //     onConfirm: () => {},
+      //     type: 'danger',
+      //   },
+      // });
+    },
+    onRemoveAnimationEnd() {
+      this.$el.removeEventListener('transitionend', this.onRemoveAnimationEnd);
+      this.$emit('remove', this.postitem);
     },
   },
 });
@@ -109,9 +135,13 @@ export default Vue.extend({
   }
   &.-first,
   &.-last {
-    .orderButtons-body {
-      justify-content: center;
+    .orderButtons {
+      justify-content: flex-end;
     }
+  }
+  &.-deleting {
+    transition: 0.4s opacity cubic-bezier(0.39, 0.575, 0.565, 1);
+    opacity: 0;
   }
 }
 .postitem-text {
@@ -153,7 +183,7 @@ export default Vue.extend({
   min-height: 280px;
 }
 
-.orderButtons {
+.editUI {
   display: flex;
   align-items: center;
   background-color: rgba(#000, 0.3);
@@ -164,29 +194,37 @@ export default Vue.extend({
   width: 100%;
   height: 100%;
 }
-.orderButtons-body {
+.orderButtons {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  top: 15px;
+  right: 10px;
+  // transform: translate(-50%, -50%);
   display: flex;
   justify-content: space-between;
-  width: 100px;
-  a {
-    display: flex;
-    align-items: center;
-    background-color: #fff;
-    border-radius: 50%;
-    padding: 5px;
-    color: #333;
-    box-shadow: 0 0 2px 1px rgba(#000, 0.2);
-    &[disabled] {
-      display: none;
-    }
+  width: 80px;
+}
+.-circle {
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+  border-radius: 50%;
+  padding: 5px;
+  color: #333;
+  box-shadow: 0 0 2px 1px rgba(#000, 0.2);
+  &[disabled] {
+    display: none;
   }
   ion-icon {
     color: inherit;
   }
+}
+.btn-del {
+  position: absolute;
+  top: 15px;
+  left: 10px;
+  background-color: #000;
+  color: #fff;
+  box-shadow: 0 0 3px 1px rgba(#fff, 1);
 }
 .postitem-index {
   position: absolute;
