@@ -28,11 +28,13 @@
           </ul>
         </section>
 
-        <transition-group class="postitems" name="flip-list" tag="ul">
+        <!-- <transition-group class="postitems" name="flip-list" tag="ul"> -->
+        <ul>
           <li v-for="(p, index) in postItems" :key="`${p.text}-${p.date}`" class="postitems-item">
             <PostItem :postitem="p" :first="index == 0" :last="index == postItems.length - 1" :changing-order="changingOrder" @orderChange="onOrderChange" @remove="removePost" />
           </li>
-        </transition-group>
+        </ul>
+        <!-- </transition-group> -->
       </div>
     </AppBody>
     <AppFooter mode="make" @talk="startTalk" @submit="onSubmit" />

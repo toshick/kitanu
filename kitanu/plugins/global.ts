@@ -122,6 +122,7 @@ Vue.mixin({
       // sidemenu({
       //   target: $t,
       // });
+      particleEffect();
       this.$root.$emit('openMenu');
     },
     showSetting() {
