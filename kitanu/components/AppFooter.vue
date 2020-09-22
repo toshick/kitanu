@@ -8,16 +8,22 @@
           <p>メニュー</p>
         </a>
       </div> -->
-      <div class="app-footer-icon">
+      <!-- <div class="app-footer-icon">
         <a @click.stop.prevent="goTop">
           <ion-icon name="leaf" />
           <p>ホーム</p>
         </a>
-      </div>
+      </div> -->
       <div class="app-footer-icon">
         <a @click.stop.prevent="$emit('album')">
           <ion-icon name="reorder-four-outline" />
           <p>アルバム</p>
+        </a>
+      </div>
+      <div class="app-footer-icon">
+        <a @click.stop.prevent="goFriendList">
+          <ion-icon name="bicycle-outline" />
+          <p>ごゆうじん</p>
         </a>
       </div>
       <div class="app-footer-icon">
@@ -37,15 +43,15 @@
     <!-- chat -->
     <template v-if="mode == 'albamlist'">
       <div class="app-footer-icon">
-        <a @click.stop.prevent="goTop">
-          <ion-icon name="leaf" />
-          <p>ホーム</p>
-        </a>
-      </div>
-      <div class="app-footer-icon">
         <a @click.stop.prevent="$emit('album')">
           <ion-icon name="reorder-four-outline" />
           <p>アルバム</p>
+        </a>
+      </div>
+      <div class="app-footer-icon">
+        <a @click.stop.prevent="goFriendList">
+          <ion-icon name="bicycle-outline" />
+          <p>ごゆうじん</p>
         </a>
       </div>
       <div class="app-footer-icon">

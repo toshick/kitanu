@@ -8,6 +8,7 @@ declare module 'vue/types/vue' {
   interface Vue {
     goTop: any;
     goAlbum: any;
+    goFriendList: any;
     openView: any;
     openModal: any;
     openDialog: any;

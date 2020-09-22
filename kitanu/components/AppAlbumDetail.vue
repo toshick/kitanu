@@ -158,7 +158,7 @@ export default Vue.extend({
 .album-body {
   overflow: scroll;
   background-color: #fff;
-  // background-image: url('/img/subtle-dark-vertical.png');
+  background-image: url('/img/subtle-dark-vertical.png');
 }
 .album-des {
   // margin: 20px;

@@ -82,6 +82,9 @@ Vue.mixin({
     goAlbum() {
       this.$router.push('/albumlist');
     },
+    goFriendList() {
+      this.$router.push('/friendlist');
+    },
     changeView(name: string) {
       this.$router.push(name);
     },

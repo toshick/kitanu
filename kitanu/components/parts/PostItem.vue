@@ -1,7 +1,7 @@
 <template>
   <div :class="myClass">
     <p v-show="text" class="postitem-text -top-left" v-html="$sanitize(text)"></p>
-    <img v-show="imgurl" class="postitem-img lazy" :src="placeholderImg" :data-src="imgurl" alt="postitem" />
+    <img v-show="imgurl" class="postitem-img" :src="imgurl" alt="postitem" />
     <p class="postitem-index">{{ postitem.sortindex }}</p>
     <!-- editUI -->
     <div v-if="changingOrder" class="editUI">

@@ -1,7 +1,7 @@
 <template>
   <section class="app view">
     <AppHeader>
-      <a class="btn-back" href=""><ion-icon name="chevron-back" size="medium" /></a>
+      <img src="/img/top/tanu-white.png" class="tanu-header" alt="kitanu-header" @click="openMenu" />
       <h1>Member</h1>
       <!-- right -->
       <template v-slot:right>
@@ -63,18 +63,7 @@ export default Vue.extend({
   },
   mounted() {},
   methods: {
-    addMember() {
-      const $t = this.$el.closest('.mobileview') || null;
-
-      openDialog({
-        modalTitle: '確認しますヨ',
-        confirmText: 'なんだかしらんけどよろしいですか？なんだかしらんけどよろしいですか？',
-        onConfirm: () => {
-          console.log('いえす');
-        },
-        target: $t,
-      });
-    },
+    addMember() {},
   },
 });
 </script>
