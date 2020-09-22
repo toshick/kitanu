@@ -20,9 +20,7 @@
 import Vue from 'vue';
 import { PostItem } from '@/components/types/app';
 
-type State = {
-  changingOrder: boolean;
-};
+type State = {};
 
 export default Vue.extend({
   name: 'PostItem',
@@ -40,11 +38,13 @@ export default Vue.extend({
       type: Boolean,
       default: false,
     },
+    changingOrder: {
+      type: Boolean,
+      default: false,
+    },
   },
   data(): State {
-    return {
-      changingOrder: true,
-    };
+    return {};
   },
   computed: {
     myClass(): any {

@@ -1,7 +1,7 @@
 <template>
   <div :class="myClass">
     <label>
-      <input type="file" multiple @change="onFileChange" />
+      <input type="file" @change="onFileChange" />
       <ion-icon name="duplicate-outline" />
       <p>画像</p>
     </label>

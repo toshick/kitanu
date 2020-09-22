@@ -76,6 +76,8 @@ export default Vue.extend({
   ---------------------*/
   .btn-header {
     margin-left: 10px;
+    text-decoration: none;
+
     & > span {
       color: var(--button-label-color);
       font-size: var(--fontsize-normal);

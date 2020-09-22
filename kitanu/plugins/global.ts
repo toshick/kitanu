@@ -2,7 +2,7 @@ import Vue from 'vue';
 import axios from 'axios';
 import sanitizeHTML from 'sanitize-html';
 import { OpenParams } from 'camaleao-design/components/CaModalPG';
-import { particleEffect, openModal, openDialog, openView, toast, sidemenu, drillDown, loading, placeholderImg } from '@/common/util';
+import { particleEffect, openModal, openDialog, openView, toast, drillDown, loading, placeholderImg } from '@/common/util';
 import AppSetting from '@/components/AppSetting.vue';
 import Particle from '@/components/parts/Particle.vue';
 
@@ -115,10 +115,11 @@ Vue.mixin({
       toast(txt, { target: $t });
     },
     openMenu() {
-      const $t = this.$el.closest('.mobileview') || null;
-      sidemenu({
-        target: $t,
-      });
+      // const $t = this.$el.closest('.mobileview') || null;
+      // sidemenu({
+      //   target: $t,
+      // });
+      this.$root.$emit('openMenu');
     },
     showSetting() {
       const $t = this.$el.closest('.mobileview') || null;

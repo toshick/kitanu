@@ -8,6 +8,7 @@ import { ActionRes, PostItem } from '@/components/types/app';
 @Module({ name: 'post', stateFactory: true, namespaced: true })
 export default class MyClass extends VuexModule {
   postitems: PostItem[] = [];
+  postitemsBK: PostItem[] = [];
 
   // ----------------------
   // Mutation
@@ -16,6 +17,17 @@ export default class MyClass extends VuexModule {
   @Mutation
   RESET_POST() {
     this.postitems = [];
+  }
+
+  @Mutation
+  BACKUP_POST() {
+    this.postitemsBK = [...this.postitems];
+  }
+
+  @Mutation
+  REVERT_POST() {
+    this.postitems = this.postitemsBK;
+    this.postitemsBK = [];
   }
 
   @Mutation
@@ -64,6 +76,7 @@ export default class MyClass extends VuexModule {
 
   @Action
   FetchPost(): Promise<ActionRes> {
+    this.RESET_POST();
     const date = dayjs().format('YYYY.MM.DD HH:mm:ss');
 
     const ary: PostItem[] = [];

@@ -6,6 +6,7 @@ declare module '*.vue' {
 
 declare module 'vue/types/vue' {
   interface Vue {
+    goTop: any;
     openView: any;
     openModal: any;
     openDialog: any;

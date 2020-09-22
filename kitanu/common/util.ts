@@ -64,14 +64,15 @@ export const toast = (text: string, params?: ToastOption) => {
   });
 };
 
-export const sidemenu = (params: OpenParams) => {
-  particleEffect();
-  CaModalPG.modalMenu({
-    ...params,
-    component: ModalSideMenu,
-    klass: ['-sidemenu'],
-  });
-};
+// export const sidemenu = (params: OpenParams) => {
+//   particleEffect();
+
+//   CaModalPG.modalMenu({
+//     ...params,
+//     component: ModalSideMenu,
+//     klass: ['-sidemenu'],
+//   });
+// };
 
 let closeLoading: any | null = null;
 

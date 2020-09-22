@@ -1,14 +1,16 @@
 <template>
   <section>
     <h1>
-      <img data-src="/img/top/tanu.png" :src="placeholderImg" class="tanu lazy" alt="kitanu" />
+      <a class="tanu" @click.stop.prevent="actionTop">
+        <img data-src="/img/top/tanu.png" :src="placeholderImg" class="lazy" alt="kitanu" />
+      </a>
       <p class="comment">{{ comment }}</p>
     </h1>
     <ul>
-      <li v-for="i in 10" :key="i">
-        <a href="">
+      <li>
+        <a @click.stop.prevent="actionTop">
           <ion-icon name="notifications-outline" />
-          キタキータヌ
+          トップへヌ
         </a>
       </li>
     </ul>
@@ -45,10 +47,11 @@ export default Vue.extend({
   },
   methods: {
     close() {
-      this.$emit('close');
+      this.$parent.$emit('close');
     },
-    onClickIcon(icon: string) {
-      console.log('コール', icon);
+    actionTop() {
+      this.close();
+      this.goTop();
     },
   },
 });
@@ -75,6 +78,9 @@ section {
   right: -18px;
   top: 20px;
   width: 100px;
+  img {
+    width: 100%;
+  }
 }
 h1 {
   display: flex;

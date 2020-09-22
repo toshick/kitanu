@@ -1,25 +1,31 @@
 <template>
   <section class="app view">
     <AppHeader>
-      <a class="btn-back" @click.stop.prevent="$emit('close')"><ion-icon name="chevron-back" size="medium" /></a>
+      <!-- <a class="btn-back" @click.stop.prevent="$emit('close')"><ion-icon name="chevron-back" size="medium" /></a> -->
+      <img src="/img/top/tanu-white.png" class="tanu-header" alt="kitanu-header" @click="openMenu" />
       <h1>2020.08.08</h1>
       <!-- right -->
       <template v-slot:right>
-        <a class="btn-header margin-left-auto" @click.stop.prevent="changingOrder = true"><ion-icon name="swap-vertical-outline" size="medium" /></a>
-        <a class="btn-header" href=""><ion-icon name="log-in-outline" size="medium" /></a>
-        <a class="btn-header" href=""><ion-icon name="walk-outline" size="medium" /></a>
+        <div v-show="!editing" class="header-buttons">
+          <a class="btn-header" @click.stop.prevent="changeOrder"><ion-icon name="swap-vertical-outline" size="medium" /></a>
+          <a class="btn-header" href=""><ion-icon name="walk-outline" size="medium" /></a>
+        </div>
+        <div v-show="editing" class="header-buttons">
+          <a class="btn-header" @click="() => finishEdit(true)"><span>完了</span></a>
+          <a class="btn-header" @click="() => finishEdit(false)"><span>キャンセル</span></a>
+        </div>
       </template>
     </AppHeader>
     <AppBody>
       <div class="album-body">
         <transition-group class="postitems" name="flip-list" tag="ul">
-          <li v-for="(p, index) in postItems" :key="p.text" class="postitems-item">
-            <PostItem :postitem="p" :first="index == 0" :last="index == postItems.length - 1" @orderChange="onOrderChange" />
+          <li v-for="(p, index) in postItems" :key="`${p.text}-${p.date}`" class="postitems-item">
+            <PostItem :postitem="p" :first="index == 0" :last="index == postItems.length - 1" :changing-order="changingOrder" @orderChange="onOrderChange" />
           </li>
         </transition-group>
       </div>
     </AppBody>
-    <AppFooter mode="make" @menu="openMenu" @talk="startTalk" @submit="onSubmit" />
+    <AppFooter mode="make" @talk="startTalk" @submit="onSubmit" />
   </section>
 </template>
 <!------------------------------->
@@ -27,7 +33,7 @@
 <!------------------------------->
 <script lang="ts">
 import Vue from 'vue';
-import { toast, sidemenu, openView } from '@/common/util';
+import { toast, openView } from '@/common/util';
 import { FileItem, PostItem } from '@/components/types/app';
 import { postStore } from '@/store';
 import AppHeader from './AppHeader.vue';
@@ -54,16 +60,19 @@ export default Vue.extend({
     postItems(): PostItem[] {
       return postStore.postitems;
     },
+    editing(): boolean {
+      if (this.changingOrder) {
+        return true;
+      }
+      return false;
+    },
   },
   mounted() {
-    postStore.FetchPost();
+    this.fetch();
   },
   methods: {
-    openMenu() {
-      const $t = this.$el.closest('.mobileview') || null;
-      sidemenu({
-        target: $t,
-      });
+    fetch() {
+      return postStore.FetchPost();
     },
     startTalk() {
       const $t = this.$el.closest('.mobileview') || null;
@@ -86,13 +95,38 @@ export default Vue.extend({
 
       this.showLoading(true);
       setTimeout(() => {
-        toast('投稿したヌ');
+        toast('とーこうしたヌ');
         p.reset();
         this.showLoading(false);
       }, 1000);
     },
+    changeOrder() {
+      this.changingOrder = true;
+      postStore.BACKUP_POST();
+    },
     onOrderChange(p: { postitem: PostItem; direction: string }) {
       postStore.ChangeOrder(p);
+    },
+    finishEdit(save: boolean) {
+      if (this.changingOrder) {
+        if (save) {
+          this.saveChange();
+        } else {
+          this.cancelChange();
+        }
+      }
+    },
+    saveChange() {
+      this.showLoading(true);
+      setTimeout(() => {
+        toast('ほぞんしたヌ');
+        this.changingOrder = false;
+        this.showLoading(false);
+      }, 1000);
+    },
+    cancelChange() {
+      postStore.REVERT_POST();
+      this.changingOrder = false;
     },
   },
 });
@@ -144,8 +178,12 @@ export default Vue.extend({
   }
 }
 
+.header-buttons {
+  display: flex;
+  align-items: center;
+}
+
 .flip-list-move {
-  // transition: transform 1s;
   transition: 0.4s transform cubic-bezier(0.39, 0.575, 0.565, 1);
 }
 </style>

@@ -72,9 +72,10 @@ export default Vue.extend({
   mounted() {},
   methods: {
     selectItem() {
-      this.drillDown({
-        component: AppAlbumDetail,
-      });
+      this.$router.push('albumdetail');
+      // this.drillDown({
+      //   component: AppAlbumDetail,
+      // });
     },
     createAlbum() {
       const inputs: Input[] = [];

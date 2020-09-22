@@ -139,9 +139,10 @@ export default Vue.extend({
       });
     },
     selectItem() {
-      this.drillDown({
-        component: AppAlbumDetail,
-      });
+      // this.drillDown({
+      //   component: AppAlbumDetail,
+      // });
+      this.$router.push('albumdetail');
     },
   },
 });
