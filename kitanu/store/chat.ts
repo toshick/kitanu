@@ -97,12 +97,14 @@ export default class MyClass extends VuexModule {
   FetchPost(): Promise<ActionRes> {
     this.RESET_POST();
     // const date = dayjs().format('YYYY.MM.DD HH:mm:ss');
-
-    chatitems.forEach((item: ChatCommentType) => {
-      this.ADD_CHAT(item);
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        chatitems.forEach((item: ChatCommentType) => {
+          this.ADD_CHAT(item);
+        });
+        resolve();
+      }, 1000);
     });
-
-    return Promise.resolve({});
   }
 
   @Action

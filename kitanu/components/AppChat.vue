@@ -67,7 +67,17 @@ export default Vue.extend({
       // infoitems,
     };
   },
-  mounted() {},
+  watch: {
+    chatitems(newdata: ChatCommentType[], olddata: ChatCommentType[]) {
+      if (newdata.length !== olddata.length) {
+        // scroll to bottom
+        this.scrollBottom();
+      }
+    },
+  },
+  mounted() {
+    this.scrollBottom();
+  },
   methods: {
     close() {
       this.$emit('close');
@@ -101,15 +111,15 @@ export default Vue.extend({
       toast('とーこうしたヌ');
       this.showLoading(false);
       p.reset();
-
-      // scroll to bottom
-      Array.from(Array(3)).forEach((_, n: number) => {
+    },
+    scrollBottom() {
+      Array.from(Array(2)).forEach((_, n: number) => {
         setTimeout(() => {
-          this.scrollBottom();
+          this.scrollBottomExe();
         }, 200 * n);
       });
     },
-    scrollBottom() {
+    scrollBottomExe() {
       const $el = this.$el.querySelector('.app-body') as Element;
       const bottom = $el.scrollHeight - $el.clientHeight;
       $el.scrollTo(0, bottom);

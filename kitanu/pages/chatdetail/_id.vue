@@ -23,8 +23,10 @@ export default Vue.extend({
       return chatinfoStore.infoitems;
     },
   },
-  mounted() {
-    chatStore.FetchPost();
+  async mounted() {
+    this.showLoading(true);
+    await chatStore.FetchPost();
+    this.showLoading(false);
   },
 });
 </script>
