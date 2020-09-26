@@ -18,8 +18,8 @@
 <!------------------------------->
 <script lang="ts">
 /* eslint vue/no-v-html: 0 */
-import Vue from 'vue';
-import { PostItem } from '@/components/types/app';
+import Vue, { PropType } from 'vue';
+import { PostItemType } from '@/components/types/app';
 
 type State = {
   deleting: boolean;
@@ -30,7 +30,7 @@ export default Vue.extend({
   components: {},
   props: {
     postitem: {
-      type: Object as () => PostItem,
+      type: Object as PropType<PostItemType>,
       default: null,
     },
     first: {

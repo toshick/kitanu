@@ -12,6 +12,7 @@ declare module 'vue/types/vue' {
     openView: any;
     openModal: any;
     openDialog: any;
+    openActivityList: any;
     showConfirm: any;
     showLoading: any;
     drillDown: any;

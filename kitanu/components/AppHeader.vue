@@ -75,12 +75,18 @@ export default Vue.extend({
     Ionicons
   ---------------------*/
   .btn-header {
-    margin-left: 10px;
+    position: relative;
+    margin-left: 15px;
     text-decoration: none;
 
     & > span {
       color: var(--button-label-color);
       font-size: var(--fontsize-normal);
+    }
+    .ca-badge {
+      position: absolute;
+      top: -3px;
+      right: -10px;
     }
   }
   .btn-back {

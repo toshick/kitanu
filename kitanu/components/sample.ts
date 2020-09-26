@@ -1,10 +1,10 @@
-import { User, AlbumItem } from './types/app';
+import { UserType, AlbumItemType } from './types/app';
 
-export const user: User = {
+export const user: UserType = {
   username: 'ニャオスカマキチ',
   iconurl: 'https://avatars3.githubusercontent.com/u/6635142?s=460&v=4',
 };
-export const albumItems: AlbumItem[] = [
+export const albumItems: AlbumItemType[] = [
   {
     date: '2018-08-08',
     dateDisp: '2018.08.08',

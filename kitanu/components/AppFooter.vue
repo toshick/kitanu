@@ -1,81 +1,48 @@
 <template>
   <footer :class="myClass">
     <!-- top -->
-    <template v-if="mode == 'top'">
-      <!-- <div class="app-footer-icon">
-        <a @click.stop.prevent="$emit('menu')">
-          <ion-icon name="log-in-outline" />
-          <p>メニュー</p>
-        </a>
-      </div> -->
-      <!-- <div class="app-footer-icon">
+    <template v-if="mymode == 'menu'">
+      <div class="app-footer-icon">
         <a @click.stop.prevent="goTop">
-          <ion-icon name="leaf" />
+          <ion-icon name="leaf-outline" />
           <p>ホーム</p>
         </a>
-      </div> -->
+      </div>
       <div class="app-footer-icon">
-        <a @click.stop.prevent="$emit('album')">
+        <a @click.stop.prevent="goChatList">
+          <ion-icon name="chatbubble-ellipses-outline" />
+          <p>しゃべる</p>
+        </a>
+      </div>
+      <div class="app-footer-icon">
+        <a @click.stop.prevent="goAlbum">
           <ion-icon name="reorder-four-outline" />
           <p>アルバム</p>
         </a>
       </div>
       <div class="app-footer-icon">
         <a @click.stop.prevent="goFriendList">
-          <ion-icon name="bicycle-outline" />
+          <ion-icon name="paw-outline" />
           <p>ごゆうじん</p>
         </a>
       </div>
-      <div class="app-footer-icon">
-        <a @click.stop.prevent="$emit('talk')">
-          <ion-icon name="chatbubble-ellipses-outline" />
-          <p>しゃべる</p>
-        </a>
-      </div>
-      <div class="app-footer-icon">
-        <a @click.stop.prevent="$emit('activity')">
-          <ion-icon name="leaf-outline" />
+      <!-- <div class="app-footer-icon">
+        <a @click.stop.prevent="openActivityList">
+          <ion-icon name="bicycle-outline" />
           <p>かつどう</p>
           <CaBadge :num="5" />
         </a>
-      </div>
-    </template>
-    <!-- chat -->
-    <template v-if="mode == 'albamlist'">
-      <div class="app-footer-icon">
-        <a @click.stop.prevent="$emit('album')">
-          <ion-icon name="reorder-four-outline" />
-          <p>アルバム</p>
-        </a>
-      </div>
-      <div class="app-footer-icon">
-        <a @click.stop.prevent="goFriendList">
-          <ion-icon name="bicycle-outline" />
-          <p>ごゆうじん</p>
-        </a>
-      </div>
-      <div class="app-footer-icon">
-        <a @click.stop.prevent="$emit('talk')">
-          <ion-icon name="chatbubble-ellipses-outline" />
-          <p>しゃべる</p>
-        </a>
-      </div>
-      <div class="app-footer-icon">
-        <a @click.stop.prevent="$emit('activity')">
-          <ion-icon name="leaf-outline" />
-          <p>かつどう</p>
-        </a>
-      </div>
+      </div> -->
     </template>
     <!-- make -->
-    <template v-if="mode == 'make'">
+    <template v-if="mymode == 'input'">
       <ValidationProvider v-slot="{ valid }" class="talk-input" name="mycomment" :rules="'required'" tag="div">
         <a :disabled="!canSubmit(valid)" class="btn-comment" @click.stop.prevent="submit">
           <ion-icon name="cloud-upload-outline" />
         </a>
         <!-- <CaTextarea v-model="talkText" name="talkText" width="M" placeholder="コメント"></CaTextarea> -->
         <div class="textarea">
-          <textarea v-model="talkText" :rows="talkTextRows" placeholder="おもいでをついか" />
+          <textarea v-model="talkText" :rows="talkTextRows" :placeholder="placeholder" />
           <ul v-show="imgurls.length > 0" class="preview">
             <li v-for="url in imgurls" :key="url" class="preview-item">
               <img :src="url" alt="" />
@@ -101,21 +68,20 @@
 import Vue, { PropType } from 'vue';
 import { ValidationProvider } from 'vee-validate';
 import FileInput from '@/components/parts/FileInput.vue';
-import { FileItem } from '@/components/types/app';
+import { FileItemType } from '@/components/types/app';
 
 type State = {
   talkText: string;
-  fileItems: FileItem[];
+  fileItems: FileItemType[];
 };
-type Mode = 'top' | 'chat';
 
 export default Vue.extend({
   name: 'AppFooter',
   components: { ValidationProvider, FileInput },
   props: {
     mode: {
-      default: 'top',
-      type: String as PropType<Mode>,
+      default: '',
+      type: String,
     },
   },
   data(): State {
@@ -127,16 +93,31 @@ export default Vue.extend({
   computed: {
     myClass(): any {
       const klass: any = { 'app-footer': true };
-      klass[`-${this.mode}`] = true;
+      // klass[`-${this.mode}`] = true;
+      if (this.mymode === 'input') {
+        klass[`-input`] = true;
+      }
       return klass;
     },
     talkTextRows(): number {
       return this.talkText.split('\n').length;
     },
     imgurls(): string[] {
-      return this.fileItems.map((fileItem: FileItem) => {
+      return this.fileItems.map((fileItem: FileItemType) => {
         return fileItem.base64str;
       });
+    },
+    mymode(): string {
+      if (this.mode === 'chat' || this.mode === 'make') {
+        return 'input';
+      }
+      return 'menu';
+    },
+    placeholder(): string {
+      if (this.mode === 'make') {
+        return 'おもいでをついか';
+      }
+      return 'しゃべる';
     },
   },
   mounted() {},
@@ -145,16 +126,16 @@ export default Vue.extend({
     //   this.imgurls = ['https://storage.googleapis.com/toshickcom-a7f98.appspot.com/upload_images/Camera_2020-07-24_18.23.00-1595582593445.jpeg'];
     // },
     removeImg(url: string) {
-      this.fileItems = this.fileItems.filter((fileItem: FileItem) => {
+      this.fileItems = this.fileItems.filter((fileItem: FileItemType) => {
         return fileItem.base64str !== url;
       });
     },
-    onImgLoaded(i: FileItem) {
+    onImgLoaded(i: FileItemType) {
       this.fileItems.push(i);
     },
     submit() {
       this.$emit('submit', {
-        fileItems: this.fileItems,
+        fileItem: this.fileItems[0],
         text: this.talkText,
         reset: this.reset,
       });
@@ -185,7 +166,7 @@ export default Vue.extend({
   height: min-content;
   border-top: solid 1px #ecde90;
 
-  &.-make {
+  &.-input {
     padding: 4px 10px;
     justify-content: flex-start;
     .app-footer-icon {

@@ -16,15 +16,10 @@
 <!------------------------------->
 <script lang="ts">
 import Vue, { PropType } from 'vue';
+import { ChatInfoItemType } from '@/components/types/app';
 
 type State = {
   urls: string[];
-};
-
-export type ChatInfoItemType = {
-  text: string;
-  username: string;
-  postdate: string;
 };
 
 export default Vue.extend({

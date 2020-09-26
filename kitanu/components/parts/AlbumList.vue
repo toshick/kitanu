@@ -31,7 +31,7 @@
 <!------------------------------->
 <script lang="ts">
 import Vue, { PropType } from 'vue';
-import { AlbumItem } from '../types/app';
+import { AlbumItemType } from '../types/app';
 import UserIcon from './UserIcon.vue';
 
 type State = {};
@@ -54,7 +54,7 @@ export default Vue.extend({
   props: {
     items: {
       default: () => [],
-      type: Array as PropType<AlbumItem[]>,
+      type: Array as PropType<AlbumItemType[]>,
     },
     editing: {
       default: false,
@@ -66,14 +66,14 @@ export default Vue.extend({
   },
   mounted() {},
   methods: {
-    selectItem(i: AlbumItem) {
+    selectItem(i: AlbumItemType) {
       if (this.editing) {
         this.$emit('remove', i);
         return;
       }
       this.$emit('select', i);
     },
-    removeItem(i: AlbumItem) {
+    removeItem(i: AlbumItemType) {
       this.$emit('remove', i);
     },
   },

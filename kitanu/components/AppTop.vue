@@ -7,8 +7,11 @@
 
       <!-- right -->
       <template v-slot:right>
-        <a class="btn-header" @click="showSetting"><ion-icon name="restaurant-outline" size="medium" /></a>
-        <!-- <CaBadge :num="5" /> -->
+        <a class="btn-header" @click.stop.prevent="openActivityList"
+          ><ion-icon name="bicycle-outline" size="medium" />
+          <CaBadge :num="5" />
+        </a>
+        <a class="btn-header" @click.stop.prevent="showSetting"><ion-icon name="restaurant-outline" size="medium" /></a>
       </template>
     </AppHeader>
 
@@ -37,7 +40,7 @@
       </section>
     </div>
 
-    <AppFooter @talk="confirm" @menu="openMenu" @activity="showActivityList" @album="changeView('albumlist')" />
+    <AppFooter @talk="confirm" @menu="openMenu" @album="changeView('albumlist')" />
   </section>
 </template>
 <!------------------------------->
@@ -48,17 +51,17 @@ import Vue, { PropType } from 'vue';
 import { toast, particleEffect } from '@/common/util';
 import { Input } from 'camaleao-design/components/type';
 import AppAlbumDetail from '@/components/AppAlbumDetail.vue';
-import ChatInfo, { ChatInfoItemType } from './ChatInfo.vue';
+import ChatInfo from './parts/ChatInfo.vue';
 import AppHeader from './AppHeader.vue';
 import AppFooter from './AppFooter.vue';
 import AlbumList from './parts/AlbumList.vue';
 import ActivityList from './parts/ActivityList.vue';
 import AboutThisApp from './description/AboutThisApp.vue';
-import { AlbumItem } from './types/app';
+import { AlbumItemType, ChatInfoItemType } from './types/app';
 import { albumItems } from './sample';
 
 type State = {
-  albumItems: AlbumItem[];
+  albumItems: AlbumItemType[];
 };
 
 export default Vue.extend({
@@ -82,14 +85,6 @@ export default Vue.extend({
   },
   mounted() {},
   methods: {
-    showActivityList() {
-      this.openModal({
-        component: ActivityList,
-        klass: ['view-activitylist'],
-        transition: 'modal',
-      });
-    },
-
     about() {
       this.openView({
         component: AboutThisApp,
@@ -126,7 +121,7 @@ export default Vue.extend({
         },
       });
     },
-    startRemoveAlbum(i: AlbumItem) {
+    startRemoveAlbum(i: AlbumItemType) {
       const txt = i.text.length > 15 ? `${i.text.slice(0, 15)}...` : i.text;
       this.showConfirm({ title: 'アルバム削除', text: `「${txt}」<br><br>削除よろしいヌ？`, isDanger: true }, () => {
         console.log('いええす', { ...i });

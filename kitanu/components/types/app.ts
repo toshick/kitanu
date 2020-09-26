@@ -3,28 +3,50 @@ export type ActionRes = {
   ok?: boolean;
 };
 
-export type User = {
+export type UserType = {
   username: string;
   iconurl: string;
   subtext?: string;
 };
 
-export type AlbumItem = {
+export type AlbumItemType = {
   date: string;
   dateDisp: string;
   text: string;
-  members: User[];
+  members: UserType[];
 };
 
-export type FileItem = {
+export type PostSubmitItemType = {
+  fileItem: FileItemType;
+  text: string;
+};
+
+export type FileItemType = {
   file: File;
   base64str: string;
 };
 
-export type PostItem = {
+export type PostItemType = {
   id: string;
   date: string;
   text: string;
   imgurl?: string;
   sortindex: string;
+};
+
+export type ChatCommentType = {
+  id: string;
+  iconurl: string;
+  text: string;
+  username: string;
+  postdate: number;
+  fukitype?: string;
+  imgurl?: string;
+};
+
+export type ChatInfoItemType = {
+  id: string;
+  text: string;
+  username: string;
+  postdate: number;
 };

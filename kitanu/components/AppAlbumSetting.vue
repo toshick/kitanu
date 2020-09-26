@@ -46,15 +46,15 @@ import { toast } from '@/common/util';
 import AppHeader from './AppHeader.vue';
 import AppBody from './AppBody.vue';
 import UserIcon from './parts/UserIcon.vue';
-import { User } from './types/app';
+import { UserType } from './types/app';
 
 type State = {
-  members: User[];
+  members: UserType[];
   title: string;
   des: string;
 };
 
-const members: User[] = [];
+const members: UserType[] = [];
 members.push({ username: 'にゃんごろう', iconurl: 'https://avatars3.githubusercontent.com/u/6635142?s=460&v=4', subtext: 'いつだってオレンジ' });
 members.push({ username: 'カマキチ', iconurl: 'https://avatars3.githubusercontent.com/u/6635142?s=460&v=4', subtext: 'そろそろキャンプしたいぞ' });
 members.push({ username: 'エドブラウン', iconurl: 'https://avatars3.githubusercontent.com/u/6635142?s=460&v=4', subtext: '' });

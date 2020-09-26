@@ -20,9 +20,9 @@
         <CaButton size="S" @click="createAlbum">新規作成</CaButton>
       </div>
       <!-- リスト -->
-      <AlbumList :items="albumItems" :editing="editing" @delete="deleteItem" @select="selectItem" />
+      <AlbumList :items="albumItems" :editing="editing" @remove="startRemoveAlbum" @select="selectItem" />
     </div>
-    <AppFooter mode="albamlist" @talk="toast('ほおええええ')" @menu="openMenu" @setting="showSetting" @album="changeView('albumlist')" @home="changeView('/')" />
+    <AppFooter @talk="toast('ほおええええ')" @menu="openMenu" @setting="showSetting" @album="changeView('albumlist')" @home="changeView('/')" />
   </section>
 </template>
 <!------------------------------->
@@ -32,16 +32,15 @@
 import Vue from 'vue';
 import { openDialog, openView, toast } from '@/common/util';
 import { Input } from 'camaleao-design/components/type';
-import AppAlbumDetail from '@/components/AppAlbumDetail.vue';
 import AppHeader from './AppHeader.vue';
 import AppFooter from './AppFooter.vue';
 import AlbumList from './parts/AlbumList.vue';
 import AboutAlbum from './description/AboutAlbum.vue';
-import { AlbumItem } from './types/app';
+import { AlbumItemType } from './types/app';
 import { albumItems } from './sample';
 
 type State = {
-  albumItems: AlbumItem[];
+  albumItems: AlbumItemType[];
   editing: boolean;
 };
 
@@ -73,9 +72,6 @@ export default Vue.extend({
   methods: {
     selectItem() {
       this.$router.push('albumdetail');
-      // this.drillDown({
-      //   component: AppAlbumDetail,
-      // });
     },
     createAlbum() {
       const inputs: Input[] = [];
@@ -101,19 +97,16 @@ export default Vue.extend({
         },
       });
     },
-    deleteItem(i: AlbumItem) {
-      const $t = this.$el.closest('.mobileview') || null;
-      openDialog({
-        modalTitle: 'このアルバムを削除するぞ',
-        target: $t,
-        compoParams: {
-          confirmText: 'よろしいヌ？',
-          btnLabel: 'ヌ',
-          onConfirm: () => {
-            toast('アルバムを削除したヌ', { target: $t });
-          },
-          type: 'danger',
-        },
+    startRemoveAlbum(i: AlbumItemType) {
+      const txt = i.text.length > 15 ? `${i.text.slice(0, 15)}...` : i.text;
+      this.showConfirm({ title: 'アルバム削除', text: `「${txt}」<br><br>削除よろしいヌ？`, isDanger: true }, () => {
+        console.log('いええす', { ...i });
+
+        this.showLoading(true);
+        setTimeout(() => {
+          toast('アルバムを削除したヌ');
+          this.showLoading(false);
+        }, 3000);
       });
     },
     description() {

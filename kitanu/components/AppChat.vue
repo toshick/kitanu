@@ -1,16 +1,16 @@
 <template>
   <section class="app view">
     <AppHeader>
-      <a class="btn-back" href=""><ion-icon name="chevron-back" size="medium" /></a>
-      <img class="chat-usericon lazy" :src="placeholderImg" data-src="https://storage.googleapis.com/toshickcom-a7f98.appspot.com/upload_images/%E3%82%A4%E3%83%A1%E3%83%BC%E3%82%B8-1595803900938.jpeg" alt="" />
-      <p class="chat-username">{{ title }}</p>
+      <a class="btn-back" @click.stop.prevent="goChatList"><ion-icon name="chevron-back" size="medium" /></a>
+
+      <h1>{{ title }}</h1>
       <!-- right -->
       <template v-slot:right>
         <a class="btn-header margin-left-auto" href=""><ion-icon name="log-in" size="medium" /></a>
-        <a class="btn-header" href=""><ion-icon name="log-in-outline" size="medium" /></a>
+        <a class="btn-header" @click="scrollBottom"><ion-icon name="log-in-outline" size="medium" /></a>
       </template>
     </AppHeader>
-    <AppBody>
+    <AppBody ref="appbody">
       <ChatInfo :infoitems="infoitems" />
       <ul>
         <li v-for="(i, index) in chatitems" :key="`${index}-${i.text}`">
@@ -18,7 +18,7 @@
         </li>
       </ul>
     </AppBody>
-    <AppFooter mode="chat" @talk="startTalk" @menu="openMenu" />
+    <AppFooter mode="chat" @talk="startTalk" @menu="openMenu" @submit="onSubmit" />
   </section>
 </template>
 <!------------------------------->
@@ -26,9 +26,11 @@
 <!------------------------------->
 <script lang="ts">
 import Vue, { PropType } from 'vue';
-import { openView } from '@/common/util';
-import ChatComment, { ChatCommentType } from './ChatComment.vue';
-import ChatInfo, { ChatInfoItemType } from './ChatInfo.vue';
+import { openView, toast } from '@/common/util';
+import { ChatCommentType, ChatInfoItemType, FileItemType, PostSubmitItemType } from '@/components/types/app';
+import { chatStore } from '@/store';
+import ChatComment from './parts/ChatComment.vue';
+import ChatInfo from './parts/ChatInfo.vue';
 import AppBody from './AppBody.vue';
 import AppFooter from './AppFooter.vue';
 import AppHeader from './AppHeader.vue';
@@ -85,6 +87,32 @@ export default Vue.extend({
           },
         },
       });
+    },
+    async onSubmit(p: { fileItem: FileItemType; text: string; reset: () => void }) {
+      // const fileItem = p.fileItem;
+
+      this.showLoading(true);
+
+      const param: PostSubmitItemType = {
+        fileItem: p.fileItem,
+        text: p.text,
+      };
+      await chatStore.PostChat(param);
+      toast('とーこうしたヌ');
+      this.showLoading(false);
+      p.reset();
+
+      // scroll to bottom
+      Array.from(Array(3)).forEach((_, n: number) => {
+        setTimeout(() => {
+          this.scrollBottom();
+        }, 200 * n);
+      });
+    },
+    scrollBottom() {
+      const $el = this.$el.querySelector('.app-body') as Element;
+      const bottom = $el.scrollHeight - $el.clientHeight;
+      $el.scrollTo(0, bottom);
     },
   },
 });

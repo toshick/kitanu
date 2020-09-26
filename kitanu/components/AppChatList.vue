@@ -1,26 +1,23 @@
 <template>
-  <section class="app view">
+  <section class="app view chatlist">
     <AppHeader>
       <img src="/img/top/tanu-white.png" class="tanu-header" alt="kitanu-header" @click="openMenu" />
-      <h1>Member</h1>
+      <h1>おしゃべりヌ</h1>
       <!-- right -->
       <template v-slot:right>
-        <a href=""><ion-icon name="restaurant-outline" size="medium" /></a>
+        <!-- <a href=""><ion-icon name="restaurant-outline" size="medium" /></a> -->
       </template>
     </AppHeader>
     <AppBody>
-      <h2><input class="ca-input-editablelabel" value="アジをたんと釣りにいこうの会" /></h2>
-      <div class="member-add">
-        <CaButton size="S" class="btn-add-member" @click="addMember"> メンバー追加 </CaButton>
-      </div>
-
-      <ul class="member-list">
+      <ul class="chat-list">
         <li v-for="(u, index) in members" :key="`member-${index}-${u.username}`">
-          <UserIcon :url="u.iconurl" />
-          <div class="member-label">
-            <h3>{{ u.username }}</h3>
-            <p v-if="u.subtext">{{ u.subtext }}</p>
-          </div>
+          <a class="chat-item" @click="() => goChatDetail()">
+            <UserIcon :url="u.iconurl" />
+            <div class="chat-item-body">
+              <h3>{{ u.username }}</h3>
+              <p v-if="u.subtext">{{ u.subtext }}</p>
+            </div>
+          </a>
         </li>
       </ul>
     </AppBody>
@@ -50,7 +47,7 @@ members.push({ username: 'エドブラウン', iconurl: 'https://avatars3.github
 members.push({ username: 'サルバトーレトスカニーニ', iconurl: 'https://avatars3.githubusercontent.com/u/6635142?s=460&v=4', subtext: 'スパゲティつくってみた' });
 
 export default Vue.extend({
-  name: 'AppMember',
+  name: 'AppChatList',
   components: {
     AppHeader,
     AppBody,
@@ -64,7 +61,9 @@ export default Vue.extend({
   },
   mounted() {},
   methods: {
-    addMember() {},
+    goChatDetail() {
+      this.$router.push('/chatdetail/444');
+    },
   },
 });
 </script>
@@ -72,9 +71,8 @@ export default Vue.extend({
 
 <!------------------------------->
 <style scoped lang="scss">
-.setting-body {
-  padding: 20px;
-  color: var(--app-color-dark);
+.chatlist {
+  background-color: #fff;
 }
 h2 {
   padding: 30px;
@@ -83,24 +81,25 @@ h2 {
   color: var(--app-color-dark);
   text-align: center;
 }
-.member-list {
-  padding: 20px;
-  li {
-    display: flex;
-    align-items: center;
-    padding: 10px 0;
-  }
+.chat-list {
 }
-.member-label {
+.chat-item {
+  display: flex;
+  align-items: center;
+  padding: 10px 10px;
+  border-bottom: dotted 1px #aaa;
+}
+.chat-item-body {
   margin-left: 1em;
   color: var(--app-color-dark);
   h3 {
-    font-size: var(--fontsize-medium);
+    font-size: var(--fontsize-normal);
   }
   p {
     font-size: var(--fontsize-small);
   }
 }
+
 .ca-input-editablelabel {
   width: 100%;
   text-align: center;

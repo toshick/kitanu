@@ -4,6 +4,8 @@ import sanitizeHTML from 'sanitize-html';
 import { OpenParams } from 'camaleao-design/components/CaModalPG';
 import { particleEffect, openModal, openDialog, openView, toast, drillDown, loading, placeholderImg } from '@/common/util';
 import AppSetting from '@/components/AppSetting.vue';
+import ActivityList from '@/components/parts/ActivityList.vue';
+
 import Particle from '@/components/parts/Particle.vue';
 
 import 'camaleao-design/components/install';
@@ -85,6 +87,9 @@ Vue.mixin({
     goFriendList() {
       this.$router.push('/friendlist');
     },
+    goChatList() {
+      this.$router.push('/chatlist');
+    },
     changeView(name: string) {
       this.$router.push(name);
     },
@@ -111,6 +116,13 @@ Vue.mixin({
             name: 'hand-right-outline',
           },
         },
+      });
+    },
+    openActivityList() {
+      this.openModal({
+        component: ActivityList,
+        klass: ['view-activitylist'],
+        transition: 'modal',
       });
     },
     showLoading(flg: boolean) {

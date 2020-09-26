@@ -2,13 +2,13 @@ import dayjs from 'dayjs';
 import { v4 as uuidv4 } from 'uuid';
 import { Module, VuexModule, Mutation, Action } from 'vuex-module-decorators';
 import { asort } from '@/common/util';
-import { ActionRes, PostItem } from '@/components/types/app';
+import { ActionRes, PostItemType } from '@/components/types/app';
 // import { setUpPostImg, firebase, postImgRef, tagRef, Tag, PostImg, PostImgUpdate, TagUpdate, PostImgRequest } from '@/plugins/firebase.ts';
 
 @Module({ name: 'post', stateFactory: true, namespaced: true })
 export default class MyClass extends VuexModule {
-  postitems: PostItem[] = [];
-  postitemsBK: PostItem[] = [];
+  postitems: PostItemType[] = [];
+  postitemsBK: PostItemType[] = [];
 
   // ----------------------
   // Mutation
@@ -31,16 +31,16 @@ export default class MyClass extends VuexModule {
   }
 
   @Mutation
-  ADD_POST(postitem: PostItem) {
+  ADD_POST(postitem: PostItemType) {
     const ary = [...this.postitems];
     ary.unshift(postitem);
     this.postitems = asort(ary, 'sortindex').reverse();
   }
 
   @Mutation
-  CHANGE_ORDER_POST(p: { postitem: PostItem; direction: string }) {
+  CHANGE_ORDER_POST(p: { postitem: PostItemType; direction: string }) {
     const { postitem, direction } = p;
-    let index = this.postitems.findIndex((p: PostItem) => p.id === postitem.id);
+    let index = this.postitems.findIndex((p: PostItemType) => p.id === postitem.id);
 
     if (index !== undefined) {
       if (direction === 'down') {
@@ -55,14 +55,14 @@ export default class MyClass extends VuexModule {
 
   @Mutation
   REMOVE_POST(id: string) {
-    this.postitems = this.postitems.filter((i: PostItem) => i.id !== id);
+    this.postitems = this.postitems.filter((i: PostItemType) => i.id !== id);
   }
 
   @Mutation
-  UPDATE_POST(postitem: PostItem) {
+  UPDATE_POST(postitem: PostItemType) {
     console.log('UPDATE_POST', postitem);
 
-    // this.postitems = this.postitems.map((i: PostItem) => {
+    // this.postitems = this.postitems.map((i: PostItemType) => {
     //   if (i.id === postitem.id) {
     //     i = postitem;
     //   }
@@ -79,7 +79,36 @@ export default class MyClass extends VuexModule {
     this.RESET_POST();
     const date = dayjs().format('YYYY.MM.DD HH:mm:ss');
 
-    const ary: PostItem[] = [];
+    const ary: PostItemType[] = [];
+    ary.push({
+      id: uuidv4(),
+      date,
+      text: 'せかいのとしっくです。0000099',
+      imgurl: 'https://storage.googleapis.com/toshickcom-a7f98.appspot.com/upload_images/Camera_2020-07-24_18.38.38-1595583527442.jpeg',
+      sortindex: '0000099',
+    });
+    ary.push({
+      id: uuidv4(),
+      date,
+      text: 'せかいのとしっくです。0000099',
+      imgurl: 'https://storage.googleapis.com/toshickcom-a7f98.appspot.com/upload_images/Camera_2020-07-24_18.38.38-1595583527442.jpeg',
+      sortindex: '0000098',
+    });
+    ary.push({
+      id: uuidv4(),
+      date,
+      text: 'せかいのとしっくです。0000099',
+      imgurl: 'https://storage.googleapis.com/toshickcom-a7f98.appspot.com/upload_images/Camera_2020-07-24_18.38.38-1595583527442.jpeg',
+      sortindex: '0000097',
+    });
+    ary.push({
+      id: uuidv4(),
+      date,
+      text: 'せかいのとしっくです。0000099',
+      imgurl: 'https://storage.googleapis.com/toshickcom-a7f98.appspot.com/upload_images/Camera_2020-07-24_18.38.38-1595583527442.jpeg',
+      sortindex: '0000096',
+    });
+    // ddddd
     ary.push({
       id: uuidv4(),
       date,
@@ -115,7 +144,7 @@ export default class MyClass extends VuexModule {
       sortindex: '0000006',
     });
 
-    ary.forEach((item: PostItem) => {
+    ary.forEach((item: PostItemType) => {
       this.ADD_POST(item);
     });
 
@@ -123,7 +152,7 @@ export default class MyClass extends VuexModule {
   }
 
   @Action
-  ChangeOrder(p: { postitem: PostItem; direction: string }): Promise<ActionRes> {
+  ChangeOrder(p: { postitem: PostItemType; direction: string }): Promise<ActionRes> {
     this.CHANGE_ORDER_POST(p);
 
     return Promise.resolve({});

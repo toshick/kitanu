@@ -1,20 +1,20 @@
 <template>
   <div v-if="myitem" :class="myclass">
     <div class="chatitem-icon">
-      <img class="chat-usericon" :src="placeholderImg" :data-src="myitem.iconurl" alt="" />
+      <img class="chat-usericon lazy" :src="placeholderImg" :data-src="myitem.iconurl" alt="" />
     </div>
     <div class="chatitem-body">
-      <p class="chatitem-body-text" v-html="text"></p>
+      <p class="chatitem-body-text" v-html="$sanitize(text)"></p>
 
       <p v-for="u in urls" :key="u" class="chatitem-body-img">
-        <img :src="placeholderImg" :data-src="u" alt="" />
+        <img class="lazy" :src="placeholderImg" :data-src="u" alt="" />
       </p>
 
       <div class="chatitem-bottom">
         <p><a class="chatitem-good" @click="good">いいね</a></p>
         <div class="chatitem-postinfo">
           （{{ myitem.username }}
-          <span>{{ myitem.postdate }}</span>
+          <span>{{ postdate }}</span>
           ）
         </div>
       </div>
@@ -25,15 +25,10 @@
 
 <!------------------------------->
 <script lang="ts">
+/* eslint vue/no-v-html: 0 */
+import dayjs from 'dayjs';
 import Vue, { PropType } from 'vue';
-
-export type ChatCommentType = {
-  iconurl: string;
-  text: string;
-  username: string;
-  postdate: string;
-  fukitype?: string;
-};
+import { ChatCommentType } from '@/components/types/app';
 
 type State = {
   urls: string[];
@@ -47,8 +42,8 @@ export default Vue.extend({
       type: Boolean,
     },
     myitem: {
-      default: null,
       type: Object as PropType<ChatCommentType>,
+      required: true,
     },
   },
   data(): State {
@@ -62,14 +57,18 @@ export default Vue.extend({
       if (this.opposite) {
         ret['--opposite'] = true;
       }
-      if (this.myitem.fukitype) {
+      if (this.myitem && this.myitem.fukitype) {
         ret['--fuki'] = true;
         ret[`--${this.myitem.fukitype}`] = true;
       }
       return ret;
     },
     text(): string {
+      if (!this.myitem) return '';
       return this.myitem.text.replace(/http.*[a-zA-Z]?/, '').replace(/[\n]/g, '<br>');
+    },
+    postdate(): string {
+      return dayjs(this.myitem.postdate).format('YYYY.MM.DD HH:mm:ss');
     },
   },
   mounted() {
@@ -77,11 +76,11 @@ export default Vue.extend({
     if (links && links.length > 0) {
       this.urls = links;
     }
+    if (this.myitem.imgurl) {
+      this.urls.push(this.myitem.imgurl);
+    }
   },
   methods: {
-    close() {
-      this.$emit('close');
-    },
     good() {},
   },
 });
@@ -89,13 +88,47 @@ export default Vue.extend({
 <!------------------------------->
 
 <!------------------------------->
-<style scoped>
+<style scoped lang="scss">
 .chatitem {
   position: relative;
   display: flex;
   padding: 10px 20px 10px 20px;
-  /* margin: 10px 0 20px; */
   color: var(--app-comment-color);
+  &.--fuki {
+    .chatitem-body {
+      background-color: transparent;
+      text-indent: initial;
+    }
+    .chatitem-body-text {
+      display: flex;
+      align-items: center;
+      text-indent: 0;
+
+      background-size: 100% 100%;
+      background-repeat: no-repeat;
+      font-size: 14px;
+      padding: 40px 60px;
+      min-height: 230px;
+    }
+  }
+  &.--fuki1 .chatitem-body-text {
+    background-image: url('/img/e0520_1.png');
+  }
+  &.--fuki2 .chatitem-body-text {
+    background-image: url('/img/e0308_1.png');
+    padding: 80px 60px 40px;
+    min-height: 260px;
+  }
+  &.--fuki3 .chatitem-body-text {
+    background-image: url('/img/e0684_1.png');
+    padding: 30px 60px;
+    min-height: 160px;
+  }
+  &.--fuki4 .chatitem-body-text {
+    background-image: url('/img/e0272_1.png');
+    padding: 30px 60px 30px;
+    min-height: 100px;
+  }
 }
 .chatitem-icon {
   position: absolute;
@@ -107,9 +140,9 @@ export default Vue.extend({
   font-size: 12px;
   line-height: 1.5;
   background-color: rgba(255, 255, 255, 0.9);
-  border-radius: 6px;
+  border-radius: 3px;
   padding: 10px 0px 0;
-  text-indent: 1.5em;
+
   /* border: solid 1px #fff; */
   /* background-color: #fff6d3; */
   /* box-shadow: 5px 5px 5px #ecdea3, -5px -5px 5px #ecdea3; */
@@ -117,6 +150,7 @@ export default Vue.extend({
 .chatitem-body-text {
   font-size: 12px;
   padding: 0px 10px 0 10px;
+  text-indent: 1.5em;
 }
 .chatitem-body-img {
   margin: 10px 0;
@@ -137,44 +171,11 @@ export default Vue.extend({
 /* fuki */
 /* ------------------ */
 
-.chatitem.--fuki .chatitem-body {
-  background-color: transparent;
-  text-indent: initial;
-}
-.chatitem.--fuki .chatitem-body-text {
-  display: flex;
-  align-items: center;
-
-  background-size: 100% 100%;
-  background-repeat: no-repeat;
-  font-size: 14px;
-  padding: 40px 60px;
-  min-height: 230px;
-}
-.chatitem.--fuki .chatitem-bottom {
-  border-top: none;
-  padding-top: 0;
-  padding-bottom: 0;
-}
-
-.chatitem.--fuki1 .chatitem-body-text {
-  background-image: url('/img/e0520_1.png');
-}
-.chatitem.--fuki2 .chatitem-body-text {
-  background-image: url('/img/e0308_1.png');
-  padding: 80px 60px 40px;
-  min-height: 260px;
-}
-.chatitem.--fuki3 .chatitem-body-text {
-  background-image: url('/img/e0684_1.png');
-  padding: 30px 60px;
-  min-height: 160px;
-}
-.chatitem.--fuki4 .chatitem-body-text {
-  background-image: url('/img/e0272_1.png');
-  padding: 30px 60px 30px;
-  min-height: 100px;
-}
+// .chatitem.--fuki .chatitem.--fuki .chatitem-bottom {
+//   border-top: none;
+//   padding-top: 0;
+//   padding-bottom: 0;
+// }
 
 .chatitem-bottom {
   display: flex;

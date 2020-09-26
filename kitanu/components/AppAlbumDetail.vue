@@ -27,10 +27,10 @@
             </li>
           </ul>
         </section>
-
-        <transition-group class="postitems" name="flip-list" tag="ul">
-          <li v-for="(p, index) in postItems" :key="`${p.id}`" class="postitems-item">
-            <PostItem :postitem="p" :first="index == 0" :last="index == postItems.length - 1" :changing-order="changingOrder" @orderChange="onOrderChange" @remove="removePost" />
+        <!-- postitem list -->
+        <transition-group class="postitem-list" tag="ul" name="flip-list">
+          <li v-for="p in postItems" :key="`${p.id}`" class="postitems-item">
+            <PostItem :postitem="p" :changing-order="changingOrder" @orderChange="onOrderChange" @remove="onRemovePost" />
           </li>
         </transition-group>
       </div>
@@ -44,20 +44,21 @@
 <script lang="ts">
 import Vue from 'vue';
 import { toast, openView, drillDown } from '@/common/util';
-import { FileItem, PostItem } from '@/components/types/app';
+import { FileItemType, PostItemType } from '@/components/types/app';
 import { postStore } from '@/store';
 import AppHeader from './AppHeader.vue';
 import AppFooter from './AppFooter.vue';
 import AppAlbumSetting from './AppAlbumSetting.vue';
 import TextInputModal from './parts/TextInputModal.vue';
-import { User } from './types/app';
+import PostItem from './parts/PostItem.vue';
+import { UserType } from './types/app';
 
 type State = {
   changingOrder: boolean;
-  members: User[];
+  members: UserType[];
 };
 
-const members: User[] = [];
+const members: UserType[] = [];
 members.push({ username: 'にゃんごろう', iconurl: 'https://avatars3.githubusercontent.com/u/6635142?s=460&v=4', subtext: 'いつだってオレンジ' });
 members.push({ username: 'カマキチ', iconurl: 'https://avatars3.githubusercontent.com/u/6635142?s=460&v=4', subtext: 'そろそろキャンプしたいぞ' });
 
@@ -66,6 +67,7 @@ export default Vue.extend({
   components: {
     AppHeader,
     AppFooter,
+    PostItem,
   },
   props: {},
   data(): State {
@@ -75,7 +77,7 @@ export default Vue.extend({
     };
   },
   computed: {
-    postItems(): PostItem[] {
+    postItems(): PostItemType[] {
       return postStore.postitems;
     },
     editing(): boolean {
@@ -106,8 +108,8 @@ export default Vue.extend({
         },
       });
     },
-    onSubmit(p: { fileItems: FileItem; text: string; reset: () => void }) {
-      // const fileItems = p.fileItems;
+    onSubmit(p: { fileItem: FileItemType; text: string; reset: () => void }) {
+      // const fileItem = p.fileItem;
       const text = p.text;
       console.log('text', text);
 
@@ -122,7 +124,7 @@ export default Vue.extend({
       this.changingOrder = true;
       postStore.BACKUP_POST();
     },
-    onOrderChange(p: { postitem: PostItem; direction: string }) {
+    onOrderChange(p: { postitem: PostItemType; direction: string }) {
       postStore.ChangeOrder(p);
     },
     finishEdit(save: boolean) {
@@ -146,7 +148,7 @@ export default Vue.extend({
       postStore.REVERT_POST();
       this.changingOrder = false;
     },
-    removePost(postitem: PostItem) {
+    onRemovePost(postitem: PostItemType) {
       postStore.REMOVE_POST(postitem.id);
     },
     goAlbumSetting() {
@@ -160,7 +162,6 @@ export default Vue.extend({
 <!------------------------------->
 <style scoped lang="scss">
 .album-body {
-  overflow: scroll;
   background-color: #fff;
   background-image: url('/img/subtle-dark-vertical.png');
 }

@@ -26,11 +26,11 @@
 <!------------------------------->
 <script lang="ts">
 import Vue from 'vue';
-import { User } from '../types/app';
+import { UserType } from '../types/app';
 import UserIcon from './UserIcon.vue';
 
 type Item = {
-  user: User;
+  user: UserType;
   text: string;
   date: string;
   tag?: string[];

@@ -1,9 +1,25 @@
 @charset "utf-8";
 
+/**
+ * Remove the margin in Firefox and Safari.
+ */
+button,
+input,
+optgroup,
+select,
+textarea {
+  margin: 0;
+}
+
+ul {
+  padding: 0;
+  margin: 0;
+}
+
 @import '../../node_modules/camaleao-design/css/reset.css';
 @import '../../node_modules/camaleao-design/css/camaleao.css';
-@import './mixins.scss';
-@import './variables.scss';
+@import './_mixins.scss';
+@import './_variables.scss';
 @import './_modal.scss';
 @import './_yall.scss';
 @import './_form.scss';
@@ -17,11 +33,6 @@
 html {
   font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
   user-select: none;
-}
-
-ul {
-  padding: 0;
-  margin: 0;
 }
 
 a {
