@@ -17,5 +17,7 @@ declare module 'vue/types/vue' {
     showLoading: any;
     drillDown: any;
     $router: any;
+    // mixin
+    scrollBottom: any;
   }
 }

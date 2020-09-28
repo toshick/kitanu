@@ -33,6 +33,7 @@
             <PostItem :postitem="p" :changing-order="changingOrder" @orderChange="onOrderChange" @remove="onRemovePost" />
           </li>
         </transition-group>
+        <LoadingInline v-show="visbleInlineLoading" />
       </div>
     </AppBody>
     <AppFooter mode="make" @talk="startTalk" @submit="onSubmit" />
@@ -44,6 +45,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import { toast, openView, drillDown } from '@/common/util';
+import mixinScrollview from '@/mixin/mxinScrollview';
 import { FileItemType, PostItemType } from '@/components/types/app';
 import { postStore } from '@/store';
 import AppHeader from './AppHeader.vue';
@@ -51,11 +53,13 @@ import AppFooter from './AppFooter.vue';
 import AppAlbumSetting from './AppAlbumSetting.vue';
 import TextInputModal from './parts/TextInputModal.vue';
 import PostItem from './parts/PostItem.vue';
+import LoadingInline from './parts/LoadingInline.vue';
 import { UserType } from './types/app';
 
 type State = {
   changingOrder: boolean;
   members: UserType[];
+  sending: boolean;
 };
 
 const members: UserType[] = [];
@@ -68,12 +72,15 @@ export default Vue.extend({
     AppHeader,
     AppFooter,
     PostItem,
+    LoadingInline,
   },
+  mixins: [mixinScrollview],
   props: {},
   data(): State {
     return {
       changingOrder: false,
       members,
+      sending: false,
     };
   },
   computed: {
@@ -85,6 +92,9 @@ export default Vue.extend({
         return true;
       }
       return false;
+    },
+    visbleInlineLoading(): boolean {
+      return this.sending;
     },
   },
   mounted() {
@@ -113,11 +123,11 @@ export default Vue.extend({
       const text = p.text;
       console.log('text', text);
 
-      this.showLoading(true);
+      this.showInlineLoading(true);
       setTimeout(() => {
         toast('とーこうしたヌ');
         p.reset();
-        this.showLoading(false);
+        this.showInlineLoading(false);
       }, 1000);
     },
     changeOrder() {
@@ -137,11 +147,11 @@ export default Vue.extend({
       }
     },
     saveChange() {
-      this.showLoading(true);
+      this.showInlineLoading(true);
       setTimeout(() => {
         toast('ほぞんしたヌ');
         this.changingOrder = false;
-        this.showLoading(false);
+        this.showInlineLoading(false);
       }, 1000);
     },
     cancelChange() {
@@ -153,6 +163,10 @@ export default Vue.extend({
     },
     goAlbumSetting() {
       this.drillDown({ component: AppAlbumSetting });
+    },
+    showInlineLoading(flg: boolean) {
+      this.sending = flg;
+      this.scrollBottom();
     },
   },
 });

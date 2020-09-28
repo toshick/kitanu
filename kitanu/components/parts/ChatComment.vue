@@ -4,12 +4,28 @@
       <img class="chat-usericon lazy" :src="placeholderImg" :data-src="myitem.iconurl" alt="" />
     </div>
     <div class="chatitem-body">
-      <p class="chatitem-body-text" v-html="$sanitize(text)"></p>
-
+      <!-- text -->
+      <p v-if="!isGood" class="chatitem-body-text" v-html="$sanitize(text)"></p>
+      <!-- good -->
+      <p v-if="isGood" class="chatitem-body-good">
+        <template v-if="myitem.good === 1">
+          <ion-icon name="beer" />
+        </template>
+        <template v-if="myitem.good === 2">
+          <ion-icon name="beer" />
+          <ion-icon name="beer" />
+        </template>
+        <template v-if="myitem.good === 3">
+          <ion-icon name="beer" />
+          <ion-icon name="beer" />
+          <ion-icon name="beer" />
+        </template>
+      </p>
+      <!-- imgs -->
       <p v-for="u in urls" :key="u" class="chatitem-body-img">
         <img class="lazy" :src="placeholderImg" :data-src="u" alt="" />
       </p>
-
+      <!-- bottom -->
       <div class="chatitem-bottom">
         <p><a class="chatitem-good" @click="good">いいね</a></p>
         <div class="chatitem-postinfo">
@@ -61,6 +77,9 @@ export default Vue.extend({
         ret['--fuki'] = true;
         ret[`--${this.myitem.fukitype}`] = true;
       }
+      if (this.isGood) {
+        ret['--fuki'] = true;
+      }
       return ret;
     },
     text(): string {
@@ -69,6 +88,10 @@ export default Vue.extend({
     },
     postdate(): string {
       return dayjs(this.myitem.postdate).format('YYYY.MM.DD HH:mm:ss');
+    },
+    isGood(): boolean {
+      if (!this.myitem.good) return false;
+      return this.myitem.good > 0;
     },
   },
   mounted() {
@@ -98,10 +121,12 @@ export default Vue.extend({
     .chatitem-body {
       background-color: transparent;
       text-indent: initial;
+      box-shadow: none;
     }
     .chatitem-body-text {
       display: flex;
       align-items: center;
+      justify-content: center;
       text-indent: 0;
 
       background-size: 100% 100%;
@@ -120,7 +145,7 @@ export default Vue.extend({
     min-height: 260px;
   }
   &.--fuki3 .chatitem-body-text {
-    background-image: url('/img/e0684_1.png');
+    background-image: url('/img/e0391_1.svg');
     padding: 30px 60px;
     min-height: 160px;
   }
@@ -139,9 +164,11 @@ export default Vue.extend({
   flex: 1;
   font-size: 12px;
   line-height: 1.5;
-  background-color: rgba(255, 255, 255, 0.9);
-  border-radius: 3px;
-  padding: 10px 0px 0;
+  background-color: #fff;
+  padding: 10px 5px 0;
+
+  border-radius: 8px;
+  box-shadow: -2px 2px 2px #eee, 2px -2px 2px #eee;
 
   /* border: solid 1px #fff; */
   /* background-color: #fff6d3; */
@@ -150,7 +177,16 @@ export default Vue.extend({
 .chatitem-body-text {
   font-size: 12px;
   padding: 0px 10px 0 10px;
-  text-indent: 1.5em;
+  text-indent: 1em;
+}
+.chatitem-body-good {
+  display: flex;
+  justify-content: center;
+  padding: 0 0 30px;
+  ion-icon {
+    font-size: 63px;
+    color: #ecde90;
+  }
 }
 .chatitem-body-img {
   margin: 10px 0;

@@ -32,6 +32,25 @@ function mobileNoScroll(e: any) {
 }
 
 /**
+ * ダブルタップ禁止
+ */
+let touchendFlag = false;
+document.addEventListener(
+  'touchend',
+  (e) => {
+    if (touchendFlag) {
+      e.preventDefault();
+    } else {
+      touchendFlag = true;
+      setTimeout(() => {
+        touchendFlag = false;
+      }, 500);
+    }
+  },
+  true,
+);
+
+/**
  * yall
  */
 // tslint:disable-next-line:no-var-requires

@@ -1,5 +1,5 @@
 <template>
-  <section class="app view">
+  <section class="app view chat">
     <AppHeader>
       <a class="btn-back" @click.stop.prevent="goChatList"><ion-icon name="chevron-back" size="medium" /></a>
 
@@ -17,6 +17,7 @@
           <ChatComment :myitem="i" :opposite="index % 2 === 1" />
         </li>
       </ul>
+      <LoadingInline v-show="visbleInlineLoading" />
     </AppBody>
     <AppFooter mode="chat" @talk="startTalk" @menu="openMenu" @submit="onSubmit" />
   </section>
@@ -27,6 +28,7 @@
 <script lang="ts">
 import Vue, { PropType } from 'vue';
 import { openView, toast } from '@/common/util';
+import mixinScrollview from '@/mixin/mxinScrollview';
 import { ChatCommentType, ChatInfoItemType, FileItemType, PostSubmitItemType } from '@/components/types/app';
 import { chatStore } from '@/store';
 import ChatComment from './parts/ChatComment.vue';
@@ -35,8 +37,11 @@ import AppBody from './AppBody.vue';
 import AppFooter from './AppFooter.vue';
 import AppHeader from './AppHeader.vue';
 import TextInputModal from './parts/TextInputModal.vue';
+import LoadingInline from './parts/LoadingInline.vue';
 
-type State = {};
+type State = {
+  sending: boolean;
+};
 
 export default Vue.extend({
   name: 'AppChat',
@@ -46,7 +51,9 @@ export default Vue.extend({
     AppFooter,
     AppHeader,
     AppBody,
+    LoadingInline,
   },
+  mixins: [mixinScrollview],
   props: {
     title: {
       default: 'むだい',
@@ -60,17 +67,24 @@ export default Vue.extend({
       default: () => [],
       type: Array as PropType<ChatInfoItemType[]>,
     },
+    connecting: {
+      default: false,
+      type: Boolean,
+    },
   },
   data(): State {
     return {
-      // items: items.concat(items),
-      // infoitems,
+      sending: false,
     };
+  },
+  computed: {
+    visbleInlineLoading(): boolean {
+      return this.connecting || this.sending;
+    },
   },
   watch: {
     chatitems(newdata: ChatCommentType[], olddata: ChatCommentType[]) {
       if (newdata.length !== olddata.length) {
-        // scroll to bottom
         this.scrollBottom();
       }
     },
@@ -98,31 +112,24 @@ export default Vue.extend({
         },
       });
     },
-    async onSubmit(p: { fileItem: FileItemType; text: string; reset: () => void }) {
-      // const fileItem = p.fileItem;
-
-      this.showLoading(true);
+    async onSubmit(p: { fileItem?: FileItemType; text: string; reset?: () => void; good?: number; fukitype: string }) {
+      this.showInlineLoading(true);
 
       const param: PostSubmitItemType = {
-        fileItem: p.fileItem,
+        fileItem: p.fileItem || null,
         text: p.text,
+        good: p.good || null,
+        fukitype: p.fukitype,
       };
       await chatStore.PostChat(param);
       toast('とーこうしたヌ');
-      this.showLoading(false);
-      p.reset();
+      this.showInlineLoading(false);
+      if (p.reset) p.reset();
     },
-    scrollBottom() {
-      Array.from(Array(2)).forEach((_, n: number) => {
-        setTimeout(() => {
-          this.scrollBottomExe();
-        }, 200 * n);
-      });
-    },
-    scrollBottomExe() {
-      const $el = this.$el.querySelector('.app-body') as Element;
-      const bottom = $el.scrollHeight - $el.clientHeight;
-      $el.scrollTo(0, bottom);
+
+    showInlineLoading(flg: boolean) {
+      this.sending = flg;
+      this.scrollBottom();
     },
   },
 });
@@ -133,5 +140,8 @@ export default Vue.extend({
 <style scoped lang="scss">
 ul {
   padding: 10px 0 30px;
+}
+.chat {
+  background-color: #fff;
 }
 </style>

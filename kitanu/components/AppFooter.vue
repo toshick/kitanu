@@ -37,13 +37,13 @@
     <!-- make -->
     <template v-if="mymode == 'input'">
       <ValidationProvider v-slot="{ valid }" class="talk-input" name="mycomment" :rules="'required'" tag="div">
-        <a :disabled="!canSubmit(valid)" class="btn-comment" @click.stop.prevent="submit">
+        <a :disabled="!canSubmit(valid)" class="btn-icon btn-comment" @click.stop.prevent="() => submit()">
           <ion-icon name="cloud-upload-outline" />
         </a>
         <!-- <CaTextarea v-model="talkText" name="talkText" width="M" placeholder="コメント"></CaTextarea> -->
         <div class="textarea">
           <textarea v-model="talkText" :rows="talkTextRows" :placeholder="placeholder" />
-          <ul v-show="imgurls.length > 0" class="preview">
+          <ul v-show="imgSelected" class="preview">
             <li v-for="url in imgurls" :key="url" class="preview-item">
               <img :src="url" alt="" />
               <a @click="() => removeImg(url)">
@@ -51,11 +51,20 @@
               </a>
             </li>
           </ul>
-        </div>
-        <div v-show="imgurls.length == 0" class="uibuttons">
-          <div class="app-footer-icon">
-            <FileInput @loaded="onImgLoaded" />
+          <div v-show="!imgSelected" class="fileInput">
+            <div class="app-footer-icon">
+              <FileInput @loaded="onImgLoaded" />
+            </div>
           </div>
+        </div>
+        <div v-show="!imgSelected" class="buttonsRight">
+          <a :disabled="!canSubmit(valid)" class="btn-icon btn-comment" @click.stop.prevent="() => submit(true)">
+            <ion-icon name="flash-outline" />
+          </a>
+          <!-- good button -->
+          <a class="btn-icon btn-good" @click.stop.prevent="doGood">
+            <ion-icon name="beer-outline" />
+          </a>
         </div>
       </ValidationProvider>
     </template>
@@ -93,7 +102,6 @@ export default Vue.extend({
   computed: {
     myClass(): any {
       const klass: any = { 'app-footer': true };
-      // klass[`-${this.mode}`] = true;
       if (this.mymode === 'input') {
         klass[`-input`] = true;
       }
@@ -119,6 +127,9 @@ export default Vue.extend({
       }
       return 'しゃべる';
     },
+    imgSelected(): boolean {
+      return this.imgurls.length > 0;
+    },
   },
   mounted() {},
   methods: {
@@ -133,11 +144,13 @@ export default Vue.extend({
     onImgLoaded(i: FileItemType) {
       this.fileItems.push(i);
     },
-    submit() {
+    submit(withFuki: boolean = false) {
+      const fukitype = withFuki ? `fuki${Math.ceil(Math.random() * 4)}` : '';
       this.$emit('submit', {
         fileItem: this.fileItems[0],
         text: this.talkText,
         reset: this.reset,
+        fukitype,
       });
     },
     reset() {
@@ -146,8 +159,13 @@ export default Vue.extend({
     },
     canSubmit(valid: boolean) {
       if (valid || this.imgurls.length > 0) return true;
-
       return false;
+    },
+    doGood() {
+      this.$emit('submit', {
+        good: Math.ceil(Math.random() * 3),
+        text: '',
+      });
     },
   },
 });
@@ -238,11 +256,15 @@ export default Vue.extend({
   }
 }
 
-.btn-comment {
+.btn-icon {
   display: flex;
   align-items: center;
-  margin-right: 0.5em;
+
   flex-shrink: 0;
+}
+
+.btn-comment {
+  margin-right: 0.5em;
   &[disabled] {
     opacity: 0.4;
   }
@@ -289,6 +311,7 @@ ul.preview {
   }
 }
 .textarea {
+  position: relative;
   display: flex;
   align-items: center;
   flex: 2;
@@ -307,8 +330,13 @@ textarea {
     outline: none;
   }
 }
-.uibuttons {
+.fileInput {
   display: flex;
   align-items: center;
+}
+.buttonsRight {
+  display: flex;
+  align-items: center;
+  margin-left: 0.5em;
 }
 </style>

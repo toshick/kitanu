@@ -17,8 +17,10 @@ export type AlbumItemType = {
 };
 
 export type PostSubmitItemType = {
-  fileItem: FileItemType;
-  text: string;
+  fileItem?: FileItemType | null;
+  text?: string;
+  good?: number | null;
+  fukitype?: string;
 };
 
 export type FileItemType = {
@@ -42,6 +44,7 @@ export type ChatCommentType = {
   postdate: number;
   fukitype?: string;
   imgurl?: string;
+  good?: number;
 };
 
 export type ChatInfoItemType = {

@@ -1,5 +1,5 @@
 <template>
-  <AppChat :chatitems="chatitems" :infoitems="infoitems" />
+  <AppChat :chatitems="chatitems" :infoitems="infoitems" :connecting="connecting" />
 </template>
 <!------------------------------->
 
@@ -10,11 +10,18 @@ import AppChat from '@/components/AppChat.vue';
 import { ChatCommentType, ChatInfoItemType } from '@/components/types/app';
 import { chatStore, chatinfoStore } from '@/store';
 
-type State = {};
+type State = {
+  connecting: boolean;
+};
 
 export default Vue.extend({
   name: 'PageAppChat',
   components: { AppChat },
+  data(): State {
+    return {
+      connecting: false,
+    };
+  },
   computed: {
     chatitems(): ChatCommentType[] {
       return chatStore.chatitems;
@@ -24,9 +31,9 @@ export default Vue.extend({
     },
   },
   async mounted() {
-    this.showLoading(true);
+    this.connecting = true;
     await chatStore.FetchPost();
-    this.showLoading(false);
+    this.connecting = false;
   },
 });
 </script>

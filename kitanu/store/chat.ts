@@ -114,15 +114,17 @@ export default class MyClass extends VuexModule {
         const item: ChatCommentType = {
           id: uuidv4(),
           iconurl: 'https://storage.googleapis.com/toshickcom-a7f98.appspot.com/upload_images/%E3%82%A4%E3%83%A1%E3%83%BC%E3%82%B8-1595803900938.jpeg',
-          text: p.text,
+          text: p.text || '',
           username: 'にゃおすけ',
           postdate: dayjs().valueOf(),
           imgurl: p.fileItem ? p.fileItem.base64str : '',
+          good: p.good || 0,
+          fukitype: p.fukitype || '',
         };
         this.ADD_CHAT(item);
 
         resolve();
-      }, 200);
+      }, 1200);
     });
   }
 
