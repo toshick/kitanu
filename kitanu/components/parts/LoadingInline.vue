@@ -33,7 +33,7 @@ export default Vue.extend({
 <style scoped lang="scss">
 .line-scale-pulse-out {
   text-align: center;
-  padding: 0px 0 40px;
+
   & > div {
     background-color: #ccc;
 

@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import { v4 as uuidv4 } from 'uuid';
 import { Module, VuexModule, Mutation, Action } from 'vuex-module-decorators';
-import { asort } from '@/common/util';
+import { asort, zeropad } from '@/common/util';
 import { ActionRes, PostItemType } from '@/components/types/app';
 // import { setUpPostImg, firebase, postImgRef, tagRef, Tag, PostImg, PostImgUpdate, TagUpdate, PostImgRequest } from '@/plugins/firebase.ts';
 
@@ -34,7 +34,7 @@ export default class MyClass extends VuexModule {
   ADD_POST(postitem: PostItemType) {
     const ary = [...this.postitems];
     ary.unshift(postitem);
-    this.postitems = asort(ary, 'sortindex').reverse();
+    this.postitems = asort(ary, 'sortindex');
   }
 
   @Mutation
@@ -80,40 +80,16 @@ export default class MyClass extends VuexModule {
     const date = dayjs().format('YYYY.MM.DD HH:mm:ss');
 
     const ary: PostItemType[] = [];
-    ary.push({
-      id: uuidv4(),
-      date,
-      text: 'せかいのとしっくです。0000099',
-      imgurl: 'https://storage.googleapis.com/toshickcom-a7f98.appspot.com/upload_images/Camera_2020-07-24_18.38.38-1595583527442.jpeg',
-      sortindex: '0000099',
-    });
-    ary.push({
-      id: uuidv4(),
-      date,
-      text: 'せかいのとしっくです。0000099',
-      imgurl: 'https://storage.googleapis.com/toshickcom-a7f98.appspot.com/upload_images/Camera_2020-07-24_18.38.38-1595583527442.jpeg',
-      sortindex: '0000098',
-    });
-    ary.push({
-      id: uuidv4(),
-      date,
-      text: 'せかいのとしっくです。0000099',
-      imgurl: 'https://storage.googleapis.com/toshickcom-a7f98.appspot.com/upload_images/Camera_2020-07-24_18.38.38-1595583527442.jpeg',
-      sortindex: '0000097',
-    });
-    ary.push({
-      id: uuidv4(),
-      date,
-      text: 'せかいのとしっくです。0000099',
-      imgurl: 'https://storage.googleapis.com/toshickcom-a7f98.appspot.com/upload_images/Camera_2020-07-24_18.38.38-1595583527442.jpeg',
-      sortindex: '0000096',
-    });
+
     // ddddd
     ary.push({
       id: uuidv4(),
       date,
       text: 'テキストです1',
       sortindex: '0000001',
+      fileItem: {
+        base64str: '',
+      },
     });
     ary.push({ id: uuidv4(), text: 'みんなで東北へいってきたよ。\n変な公園があったんだ。（グレイフォックスのすけ）', imgurl: '', date, sortindex: '0000002' });
     ary.push({
@@ -121,26 +97,35 @@ export default class MyClass extends VuexModule {
       date,
       text: 'テキストです2',
       sortindex: '0000003',
+      fileItem: {
+        base64str: '',
+      },
     });
     ary.push({
       id: uuidv4(),
       date,
       text: 'キャットはじっと何かをみつめているよ。（グレイフォックスのすけ）',
-      imgurl: 'https://storage.googleapis.com/toshickcom-a7f98.appspot.com/upload_images/Camera_2020-07-24_18.23.42-1595582635687.jpeg',
+      fileItem: {
+        base64str: 'https://storage.googleapis.com/toshickcom-a7f98.appspot.com/upload_images/Camera_2020-07-24_18.23.42-1595582635687.jpeg',
+      },
       sortindex: '0000004',
     });
     ary.push({
       id: uuidv4(),
       date,
       text: 'なんか綿菓子うっている。',
-      imgurl: 'https://storage.googleapis.com/toshickcom-a7f98.appspot.com/upload_images/Camera_2020-08-01_13.04.25-1596254669373.jpeg',
+      fileItem: {
+        base64str: 'https://storage.googleapis.com/toshickcom-a7f98.appspot.com/upload_images/Camera_2020-08-01_13.04.25-1596254669373.jpeg',
+      },
       sortindex: '0000005',
     });
     ary.push({
       id: uuidv4(),
       date,
       text: 'せかいのとしっくです。こちらは謎の池を発見せり',
-      imgurl: 'https://storage.googleapis.com/toshickcom-a7f98.appspot.com/upload_images/Camera_2020-07-24_18.38.38-1595583527442.jpeg',
+      fileItem: {
+        base64str: 'https://storage.googleapis.com/toshickcom-a7f98.appspot.com/upload_images/Camera_2020-07-24_18.38.38-1595583527442.jpeg',
+      },
       sortindex: '0000006',
     });
 
@@ -161,5 +146,23 @@ export default class MyClass extends VuexModule {
   @Action
   RemovePost(): Promise<ActionRes> {
     return Promise.resolve({});
+  }
+
+  @Action
+  PostItem(p: PostItemType): Promise<ActionRes> {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        // const item: PostItemType = {
+        //   id: uuidv4(),
+        //   date: dayjs().format('YYYY.MM.DD HH:mm:ss'),
+        //   text: 'せかいのとしっくです。こちらは謎の池を発見せり',
+        //   imgurl: 'https://storage.googleapis.com/toshickcom-a7f98.appspot.com/upload_images/Camera_2020-07-24_18.38.38-1595583527442.jpeg',
+        //   sortindex: '0000006',
+        // };
+        this.ADD_POST({ ...p, sortindex: zeropad(this.postitems.length + 1, 7) });
+
+        resolve();
+      }, 1200);
+    });
   }
 }

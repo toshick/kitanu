@@ -15,7 +15,7 @@ export default Vue.extend({
       Array.from(Array(2)).forEach((_, n: number) => {
         setTimeout(() => {
           this.scrollBottomExe();
-        }, 200 * n);
+        }, 100 * n);
       });
     },
     scrollBottomExe() {

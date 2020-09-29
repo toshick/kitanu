@@ -24,7 +24,7 @@ export type PostSubmitItemType = {
 };
 
 export type FileItemType = {
-  file: File;
+  file?: File;
   base64str: string;
 };
 
@@ -32,8 +32,8 @@ export type PostItemType = {
   id: string;
   date: string;
   text: string;
-  imgurl?: string;
-  sortindex: string;
+  fileItem?: FileItemType | null;
+  sortindex?: string;
 };
 
 export type ChatCommentType = {

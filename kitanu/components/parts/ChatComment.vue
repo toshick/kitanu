@@ -7,27 +7,20 @@
       <!-- text -->
       <p v-if="!isGood" class="chatitem-body-text" v-html="$sanitize(text)"></p>
       <!-- good -->
-      <p v-if="isGood" class="chatitem-body-good">
-        <template v-if="myitem.good === 1">
-          <ion-icon name="beer" />
-        </template>
-        <template v-if="myitem.good === 2">
-          <ion-icon name="beer" />
-          <ion-icon name="beer" />
-        </template>
-        <template v-if="myitem.good === 3">
-          <ion-icon name="beer" />
-          <ion-icon name="beer" />
-          <ion-icon name="beer" />
-        </template>
-      </p>
+      <div v-if="isGood" class="chatitem-body-good">
+        <transition name="fade">
+          <p v-if="visibleGood">
+            <ion-icon v-for="g in +myitem.good" :key="`good${g}`" name="beer" />
+          </p>
+        </transition>
+      </div>
       <!-- imgs -->
       <p v-for="u in urls" :key="u" class="chatitem-body-img">
         <img class="lazy" :src="placeholderImg" :data-src="u" alt="" />
       </p>
       <!-- bottom -->
       <div class="chatitem-bottom">
-        <p><a class="chatitem-good" @click="good">いいね</a></p>
+        <p><a class="chatitem-good" @click="doGood">いいね（45）</a></p>
         <div class="chatitem-postinfo">
           （{{ myitem.username }}
           <span>{{ postdate }}</span>
@@ -48,6 +41,7 @@ import { ChatCommentType } from '@/components/types/app';
 
 type State = {
   urls: string[];
+  visibleGood: boolean;
 };
 
 export default Vue.extend({
@@ -61,10 +55,15 @@ export default Vue.extend({
       type: Object as PropType<ChatCommentType>,
       required: true,
     },
+    last: {
+      type: Boolean,
+      default: false,
+    },
   },
   data(): State {
     return {
       urls: [],
+      visibleGood: false,
     };
   },
   computed: {
@@ -102,9 +101,21 @@ export default Vue.extend({
     if (this.myitem.imgurl) {
       this.urls.push(this.myitem.imgurl);
     }
+    this.showGood();
   },
   methods: {
-    good() {},
+    showGood() {
+      if (this.last) {
+        setTimeout(() => {
+          this.visibleGood = true;
+        }, 500);
+      } else {
+        this.visibleGood = true;
+      }
+    },
+    doGood() {
+      console.log('doGood');
+    },
   },
 });
 </script>
@@ -182,7 +193,8 @@ export default Vue.extend({
 .chatitem-body-good {
   display: flex;
   justify-content: center;
-  padding: 0 0 30px;
+  align-items: center;
+  height: 100px;
   ion-icon {
     font-size: 63px;
     color: #ecde90;

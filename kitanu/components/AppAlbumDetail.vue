@@ -29,11 +29,11 @@
         </section>
         <!-- postitem list -->
         <transition-group class="postitem-list" tag="ul" name="flip-list">
-          <li v-for="p in postItems" :key="`${p.id}`" class="postitems-item">
-            <PostItem :postitem="p" :changing-order="changingOrder" @orderChange="onOrderChange" @remove="onRemovePost" />
+          <li v-for="(p, index) in postItems" :key="`${p.id}`" class="postitems-item">
+            <PostItem :postitem="p" :changing-order="changingOrder" :last="index === postItems.length - 1" @orderChange="onOrderChange" @remove="onRemovePost" />
           </li>
         </transition-group>
-        <LoadingInline v-show="visbleInlineLoading" />
+        <LoadingInline v-show="visbleInlineLoading" class="loading-inline" />
       </div>
     </AppBody>
     <AppFooter mode="make" @talk="startTalk" @submit="onSubmit" />
@@ -44,6 +44,8 @@
 <!------------------------------->
 <script lang="ts">
 import Vue from 'vue';
+import dayjs from 'dayjs';
+import { v4 as uuidv4 } from 'uuid';
 import { toast, openView, drillDown } from '@/common/util';
 import mixinScrollview from '@/mixin/mxinScrollview';
 import { FileItemType, PostItemType } from '@/components/types/app';
@@ -95,6 +97,7 @@ export default Vue.extend({
     },
     visbleInlineLoading(): boolean {
       return this.sending;
+      // return true;
     },
   },
   mounted() {
@@ -118,17 +121,20 @@ export default Vue.extend({
         },
       });
     },
-    onSubmit(p: { fileItem: FileItemType; text: string; reset: () => void }) {
-      // const fileItem = p.fileItem;
-      const text = p.text;
-      console.log('text', text);
-
+    async onSubmit(p: { fileItem: FileItemType; text: string; reset: () => void }) {
       this.showInlineLoading(true);
-      setTimeout(() => {
-        toast('とーこうしたヌ');
-        p.reset();
-        this.showInlineLoading(false);
-      }, 1000);
+
+      const item: PostItemType = {
+        id: uuidv4(),
+        date: dayjs().format('YYYY.MM.DD HH:mm:ss'),
+        text: p.text,
+        fileItem: p.fileItem || null,
+        // imgurl: 'https://storage.googleapis.com/toshickcom-a7f98.appspot.com/upload_images/Camera_2020-07-24_18.38.38-1595583527442.jpeg',
+      };
+      await postStore.PostItem(item);
+      toast('とーこうしたヌ');
+      this.showInlineLoading(false);
+      if (p.reset) p.reset();
     },
     changeOrder() {
       this.changingOrder = true;
@@ -147,11 +153,11 @@ export default Vue.extend({
       }
     },
     saveChange() {
-      this.showInlineLoading(true);
+      this.showLoading(true);
       setTimeout(() => {
         toast('ほぞんしたヌ');
         this.changingOrder = false;
-        this.showInlineLoading(false);
+        this.showLoading(false);
       }, 1000);
     },
     cancelChange() {
@@ -205,6 +211,10 @@ export default Vue.extend({
 .header-buttons {
   display: flex;
   align-items: center;
+}
+
+.loading-inline {
+  padding: 50px 0;
 }
 
 .flip-list-move {

@@ -57,7 +57,7 @@
             </div>
           </div>
         </div>
-        <div v-show="!imgSelected" class="buttonsRight">
+        <div v-if="mode === 'chat'" v-show="!imgSelected" class="buttonsRight">
           <a :disabled="!canSubmit(valid)" class="btn-icon btn-comment" @click.stop.prevent="() => submit(true)">
             <ion-icon name="flash-outline" />
           </a>
@@ -163,7 +163,7 @@ export default Vue.extend({
     },
     doGood() {
       this.$emit('submit', {
-        good: Math.ceil(Math.random() * 3),
+        good: Math.ceil(Math.random() * 5),
         text: '',
       });
     },

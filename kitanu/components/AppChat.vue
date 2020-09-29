@@ -14,10 +14,10 @@
       <ChatInfo :infoitems="infoitems" />
       <ul>
         <li v-for="(i, index) in chatitems" :key="`${index}-${i.text}`">
-          <ChatComment :myitem="i" :opposite="index % 2 === 1" />
+          <ChatComment :myitem="i" :opposite="index % 2 === 1" :last="index === chatitems.length - 1" />
         </li>
       </ul>
-      <LoadingInline v-show="visbleInlineLoading" />
+      <LoadingInline v-show="visbleInlineLoading" class="loading-inline" />
     </AppBody>
     <AppFooter mode="chat" @talk="startTalk" @menu="openMenu" @submit="onSubmit" />
   </section>
@@ -143,5 +143,8 @@ ul {
 }
 .chat {
   background-color: #fff;
+}
+.loading-inline {
+  padding: 0 0 40px;
 }
 </style>

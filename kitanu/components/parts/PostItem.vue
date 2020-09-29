@@ -73,7 +73,7 @@ export default Vue.extend({
     },
     imgurl(): string {
       if (!this.postitem) return '';
-      return this.postitem.imgurl || '';
+      return this.postitem.fileItem ? this.postitem.fileItem.base64str : '';
     },
     text(): string {
       if (!this.postitem) return '';
@@ -180,7 +180,7 @@ export default Vue.extend({
   }
 }
 .postitem-img {
-  min-height: 280px;
+  // min-height: 280px;
 }
 
 .editUI {
