@@ -91,7 +91,15 @@ export default class MyClass extends VuexModule {
         base64str: '',
       },
     });
-    ary.push({ id: uuidv4(), text: 'みんなで東北へいってきたよ。\n変な公園があったんだ。（グレイフォックスのすけ）', imgurl: '', date, sortindex: '0000002' });
+    ary.push({
+      id: uuidv4(),
+      text: 'みんなで東北へいってきたよ。\n変な公園があったんだ。（グレイフォックスのすけ）',
+      fileItem: {
+        base64str: '',
+      },
+      date,
+      sortindex: '0000002',
+    });
     ary.push({
       id: uuidv4(),
       date,
