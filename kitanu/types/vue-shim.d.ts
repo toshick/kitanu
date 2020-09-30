@@ -19,5 +19,6 @@ declare module 'vue/types/vue' {
     $router: any;
     // mixin
     scrollBottom: any;
+    scrollBottomSmooth: any;
   }
 }

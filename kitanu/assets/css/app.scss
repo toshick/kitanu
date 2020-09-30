@@ -152,3 +152,10 @@ ion-icon {
 .ca-button.-positive {
   border: solid 1px #d5cc92 !important;
 }
+
+/* -------------------- 
+ ca-toast
+ ---------------------*/
+.toast-holder {
+  pointer-events: none;
+}

@@ -85,13 +85,13 @@ export default Vue.extend({
   watch: {
     chatitems(newdata: ChatCommentType[], olddata: ChatCommentType[]) {
       if (newdata.length !== olddata.length) {
-        this.scrollBottom();
+        setTimeout(() => {
+          this.scrollBottomSmooth();
+        }, 500);
       }
     },
   },
-  mounted() {
-    this.scrollBottom();
-  },
+  mounted() {},
   methods: {
     close() {
       this.$emit('close');

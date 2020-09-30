@@ -10,7 +10,8 @@
       <div v-if="isGood" class="chatitem-body-good">
         <transition name="fade">
           <p v-if="visibleGood">
-            <ion-icon v-for="g in +myitem.good" :key="`good${g}`" name="beer" />
+            <!-- <ion-icon v-for="g in +myitem.good" :key="`good${g}`" name="beer" /> -->
+            <img class="lazy" :src="placeholderImg" :data-src="`/img/good${myitem.good}.png`" alt="" />
           </p>
         </transition>
       </div>
@@ -194,7 +195,7 @@ export default Vue.extend({
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100px;
+  min-height: 100px;
   ion-icon {
     font-size: 63px;
     color: #ecde90;

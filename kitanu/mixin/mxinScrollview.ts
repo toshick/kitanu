@@ -1,5 +1,6 @@
 // import querystring from 'querystring';
 import Vue from 'vue';
+import anime from 'animejs';
 
 /**
  * scrollMixin
@@ -20,8 +21,18 @@ export default Vue.extend({
     },
     scrollBottomExe() {
       const $el = this.$el.querySelector('.app-body') as Element;
-      const bottom = $el.scrollHeight - $el.clientHeight;
+      const bottom = $el.scrollHeight;
       $el.scrollTo(0, bottom);
+    },
+    scrollBottomSmooth() {
+      const $el = this.$el.querySelector('.app-body') as Element;
+      const bottom = $el.scrollHeight;
+      anime({
+        targets: $el,
+        scrollTop: bottom,
+        duration: 400,
+        easing: 'easeInOutSine',
+      });
     },
   },
 });
