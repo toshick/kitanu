@@ -5,7 +5,7 @@
     </div>
     <div class="chatitem-body">
       <!-- text -->
-      <p v-if="!isGood" class="chatitem-body-text" v-html="$sanitize(text)"></p>
+      <p v-if="!isGood" class="chatitem-body-text wf-nicomoji" v-html="$sanitize(text)"></p>
       <!-- good -->
       <div v-if="isGood" class="chatitem-body-good">
         <transition name="fade">
@@ -109,7 +109,7 @@ export default Vue.extend({
       if (this.last) {
         setTimeout(() => {
           this.visibleGood = true;
-        }, 500);
+        }, 200);
       } else {
         this.visibleGood = true;
       }
@@ -124,11 +124,14 @@ export default Vue.extend({
 
 <!------------------------------->
 <style scoped lang="scss">
+// 吹き出し背景カラー #ECDE90
+
 .chatitem {
   position: relative;
   display: flex;
   padding: 10px 20px 10px 20px;
-  color: var(--app-comment-color);
+  // color: var(--app-comment-color);
+  color: #c1620e;
   &.--fuki {
     .chatitem-body {
       background-color: transparent;
@@ -143,7 +146,7 @@ export default Vue.extend({
 
       background-size: 100% 100%;
       background-repeat: no-repeat;
-      font-size: 14px;
+      // font-size: 14px;
       padding: 40px 60px;
       min-height: 230px;
     }
@@ -152,7 +155,8 @@ export default Vue.extend({
     background-image: url('/img/e0520_1.png');
   }
   &.--fuki2 .chatitem-body-text {
-    background-image: url('/img/e0308_1.png');
+    // background-image: url('/img/e0308_1.png');
+    background-image: url('/img/e0350_1.png');
     padding: 80px 60px 40px;
     min-height: 260px;
   }
@@ -162,9 +166,17 @@ export default Vue.extend({
     min-height: 160px;
   }
   &.--fuki4 .chatitem-body-text {
-    background-image: url('/img/e0272_1.png');
+    // background-image: url('/img/e0272_1.png');
+    background-image: url('/img/e0313_1.svg');
+    background-size: 100% auto;
     padding: 30px 60px 30px;
     min-height: 100px;
+  }
+  &.--waku {
+    background-color: #fff;
+    padding: 10px 5px 0;
+    border-radius: 8px;
+    box-shadow: -2px 2px 2px #eee, 2px -2px 2px #eee;
   }
 }
 .chatitem-icon {
@@ -176,11 +188,6 @@ export default Vue.extend({
   flex: 1;
   font-size: 12px;
   line-height: 1.5;
-  background-color: #fff;
-  padding: 10px 5px 0;
-
-  border-radius: 8px;
-  box-shadow: -2px 2px 2px #eee, 2px -2px 2px #eee;
 
   /* border: solid 1px #fff; */
   /* background-color: #fff6d3; */
@@ -188,8 +195,14 @@ export default Vue.extend({
 }
 .chatitem-body-text {
   font-size: 12px;
-  padding: 0px 10px 0 10px;
-  text-indent: 1em;
+  padding: 0px 10px 10px 10px;
+  text-indent: 0.7em;
+  line-height: 1;
+  text-shadow: 0 0 2px #ffbd41;
+  color: #c1620e;
+  &.wf-nicomoji {
+    font-size: 28px;
+  }
 }
 .chatitem-body-good {
   display: flex;

@@ -49,6 +49,10 @@ export default {
         href: '/ios/AppIcon.appiconset/iphone_app60x60@2x.png',
         sizes: '144x144',
       },
+      {
+        rel: 'stylesheet',
+        href: 'https://fonts.googleapis.com/earlyaccess/nicomoji.css',
+      },
     ],
     script: [
       { src: 'https://unpkg.com/ionicons@5.1.2/dist/ionicons/ionicons.esm.js', type: 'module' },

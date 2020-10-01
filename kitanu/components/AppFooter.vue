@@ -42,7 +42,7 @@
         </a>
         <!-- <CaTextarea v-model="talkText" name="talkText" width="M" placeholder="コメント"></CaTextarea> -->
         <div class="textarea">
-          <textarea v-model="talkText" :rows="talkTextRows" :placeholder="placeholder" />
+          <textarea :value="talkText" :rows="talkTextRows" :placeholder="placeholder" @input="onInput" />
           <ul v-show="imgSelected" class="preview">
             <li v-for="url in imgurls" :key="url" class="preview-item">
               <img :src="url" alt="" />
@@ -78,10 +78,12 @@ import Vue, { PropType } from 'vue';
 import { ValidationProvider } from 'vee-validate';
 import FileInput from '@/components/parts/FileInput.vue';
 import { FileItemType } from '@/components/types/app';
+import { hiraToKana } from '@/common/util';
 
 type State = {
   talkText: string;
   fileItems: FileItemType[];
+  timerIDInput: NodeJS.Timer | null;
 };
 
 export default Vue.extend({
@@ -97,6 +99,7 @@ export default Vue.extend({
     return {
       talkText: '',
       fileItems: [],
+      timerIDInput: null,
     };
   },
   computed: {
@@ -108,7 +111,13 @@ export default Vue.extend({
       return klass;
     },
     talkTextRows(): number {
-      return this.talkText.split('\n').length;
+      if (!this.talkText) return 1;
+      const tmp = this.talkText.split('\n');
+      const count = tmp.reduce((eachValue, currentValue) => {
+        const mycount = Math.floor(currentValue.length / 13);
+        return eachValue + mycount;
+      }, 0);
+      return tmp.length + count;
     },
     imgurls(): string[] {
       return this.fileItems.map((fileItem: FileItemType) => {
@@ -144,11 +153,17 @@ export default Vue.extend({
     onImgLoaded(i: FileItemType) {
       this.fileItems.push(i);
     },
+    onInput(e: InputEvent) {
+      const $el = e.target as HTMLTextAreaElement;
+      this.talkText = $el.value;
+    },
     submit(withFuki: boolean = false) {
       const fukitype = withFuki ? `fuki${Math.ceil(Math.random() * 4)}` : '';
+      // txt = txt.replace(/[^(\u30A1-\u30F6)(^[a-zA-Z0-9!-/:-@¥[-`{-~\]*$\n)]/g, '');
+      const text = hiraToKana(this.talkText).trim();
       this.$emit('submit', {
         fileItem: this.fileItems[0],
-        text: this.talkText,
+        text,
         reset: this.reset,
         fukitype,
       });

@@ -1,5 +1,14 @@
 @charset "utf-8";
 
+@font-face {
+  font-family: 'Nico Moji';
+  // src: url(/path/to/fonts/examplefont.woff) format('woff');
+  src: local('Helvetica Neue Bold');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
 /**
  * Remove the margin in Firefox and Safari.
  */
@@ -34,14 +43,13 @@ html {
   font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
   user-select: none;
 }
+.wf-nicomoji {
+  font-family: 'Nico Moji';
+}
 
 a {
   cursor: pointer;
 }
-
-// .no-js .lazy {
-//   display: none;
-// }
 
 :root {
   // toast
