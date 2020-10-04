@@ -19,7 +19,7 @@
       <ChatInfo :infoitems="infoitems" />
       <section class="sec1">
         <div class="chara">
-          <img data-src="/img/top/tanu.png" :src="placeholderImg" class="tanu lazy" alt="kitanu" />
+          <img data-src="/img/tanu/tanu.png" :src="placeholderImg" class="tanu lazy" alt="kitanu" />
           <img data-src="/img/top/tanu-title.png" :src="placeholderImg" class="tanu-title lazy" alt="kitanu-title" />
           <p>
             キータヌは世話焼きたぬき

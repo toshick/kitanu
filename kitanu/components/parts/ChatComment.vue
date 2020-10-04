@@ -9,9 +9,9 @@
       <!-- good -->
       <div v-if="isGood" class="chatitem-body-good">
         <transition name="fade">
-          <p v-if="visibleGood">
-            <!-- <ion-icon v-for="g in +myitem.good" :key="`good${g}`" name="beer" /> -->
-            <img class="lazy" :src="placeholderImg" :data-src="`/img/good${myitem.good}.png`" alt="" />
+          <p v-if="visibleGood" class="wf-nicomoji">
+            <ion-icon v-for="g in +myitem.good" :key="`good${g}`" name="beer" />
+            <!-- <img class="lazy" :src="placeholderImg" :data-src="`/img/good${myitem.good}.png`" alt="" /> -->
           </p>
         </transition>
       </div>
@@ -78,7 +78,7 @@ export default Vue.extend({
         ret[`--${this.myitem.fukitype}`] = true;
       }
       if (this.isGood) {
-        ret['--fuki'] = true;
+        ret['--good'] = true;
       }
       return ret;
     },
@@ -152,18 +152,48 @@ export default Vue.extend({
     }
   }
   &.--fuki1 .chatitem-body-text {
-    background-image: url('/img/e0520_1.png');
+    position: relative;
+    min-height: auto;
+    padding: 20px;
+    margin: 80px 20px 40px;
+    border-radius: 22px;
+    background-color: #ecde90;
+
+    &::before {
+      content: '';
+      width: 25px;
+      height: 25px;
+      border-radius: 50%;
+      background-color: #ecde90;
+      position: absolute;
+      top: -25px;
+      left: -10px;
+    }
+    &::after {
+      content: '';
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      background-color: #ecde90;
+      position: absolute;
+      top: -44px;
+      left: -15px;
+    }
   }
   &.--fuki2 .chatitem-body-text {
     // background-image: url('/img/e0308_1.png');
-    background-image: url('/img/e0350_1.png');
-    padding: 80px 60px 40px;
+    background-image: url('/img/e0099_0.svg');
+    padding: 40px 60px 40px;
     min-height: 260px;
+    color: #333;
+    text-shadow: none;
+    text-align: center;
   }
   &.--fuki3 .chatitem-body-text {
     background-image: url('/img/e0391_1.svg');
     padding: 30px 60px;
     min-height: 160px;
+    text-align: center;
   }
   &.--fuki4 .chatitem-body-text {
     // background-image: url('/img/e0272_1.png');
@@ -188,10 +218,6 @@ export default Vue.extend({
   flex: 1;
   font-size: 12px;
   line-height: 1.5;
-
-  /* border: solid 1px #fff; */
-  /* background-color: #fff6d3; */
-  /* box-shadow: 5px 5px 5px #ecdea3, -5px -5px 5px #ecdea3; */
 }
 .chatitem-body-text {
   font-size: 12px;
@@ -209,9 +235,17 @@ export default Vue.extend({
   justify-content: center;
   align-items: center;
   min-height: 100px;
+  text-align: center;
+
   ion-icon {
     font-size: 63px;
     color: #ecde90;
+  }
+  p {
+    border: solid 1px #fff;
+    padding: 0px 0 20px 20px;
+    font-size: 54px;
+    line-height: 1;
   }
 }
 .chatitem-body-img {
@@ -223,22 +257,6 @@ export default Vue.extend({
   margin-right: 0.5em;
 }
 
-/* opposite */
-.chatitem.--opposite {
-  /* justify-content: flex-end; */
-  /* background-color: rgba(255, 255, 255, 0.8); */
-}
-
-/* ------------------ */
-/* fuki */
-/* ------------------ */
-
-// .chatitem.--fuki .chatitem.--fuki .chatitem-bottom {
-//   border-top: none;
-//   padding-top: 0;
-//   padding-bottom: 0;
-// }
-
 .chatitem-bottom {
   display: flex;
   align-items: center;
@@ -247,6 +265,7 @@ export default Vue.extend({
   padding: 6px 10px;
   margin: 6px 0 0;
   font-size: 10px;
+  color: #aaa;
 }
 
 .chatitem-postinfo {

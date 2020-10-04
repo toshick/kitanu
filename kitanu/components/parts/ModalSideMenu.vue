@@ -2,7 +2,7 @@
   <section>
     <h1>
       <a class="tanu" @click.stop.prevent="actionTop">
-        <img data-src="/img/top/tanu.png" :src="placeholderImg" class="lazy" alt="kitanu" />
+        <img data-src="/img/top/tanu/tanu.png" :src="placeholderImg" class="lazy" alt="kitanu" />
       </a>
       <p class="comment">{{ comment }}</p>
     </h1>

@@ -3,7 +3,7 @@
     <CaModalScroll>
       <CaModalViewBody>
         <div class="about-body">
-          <img src="/img/top/tanu.png" class="about-tanu" alt="kitanu" />
+          <img src="/img/top/tanu/tanu.png" class="about-tanu" alt="kitanu" />
           <h1>アルバムをつくるヌ</h1>
           <p>
             一人でも、アミーゴとでも

@@ -3,7 +3,7 @@
     <CaModalScroll>
       <CaModalViewBody klass="body">
         <div class="about-body">
-          <img src="/img/top/tanu.png" class="about-tanu" alt="kitanu" />
+          <img src="/img/top/tanu/tanu.png" class="about-tanu" alt="kitanu" />
           <h1>キタキータヌによーきたヌ</h1>
           <p>ここではなにをするのかヌ？</p>
         </div>

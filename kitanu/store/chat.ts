@@ -7,6 +7,7 @@ import { ActionRes, ChatCommentType, PostSubmitItemType } from '@/components/typ
 const chatitems: ChatCommentType[] = [];
 chatitems.push({
   id: uuidv4(),
+  npc: false,
   iconurl: 'https://avatars3.githubusercontent.com/u/6635142?s=460&v=4',
   text: 'そんなときはジンガで呼吸を整えるんだッ',
   username: 'スネークのすけ',
@@ -15,6 +16,7 @@ chatitems.push({
 });
 chatitems.push({
   id: uuidv4(),
+  npc: false,
   iconurl: 'https://avatars3.githubusercontent.com/u/6635142?s=460&v=4',
   text: 'そんなときはジンガで呼吸を整えるんだッ',
   username: 'スネークのすけ',
@@ -23,6 +25,7 @@ chatitems.push({
 });
 chatitems.push({
   id: uuidv4(),
+  npc: false,
   iconurl: 'https://storage.googleapis.com/toshickcom-a7f98.appspot.com/upload_images/%E3%82%A4%E3%83%A1%E3%83%BC%E3%82%B8-1595803900938.jpeg',
   text: '初弾を手動で排莢していたな。考え方はおかしくない。だが聞きかじっただけの行為を実戦で試すもんじゃない',
   username: 'カマキチのすけ',
@@ -30,6 +33,7 @@ chatitems.push({
 });
 chatitems.push({
   id: uuidv4(),
+  npc: false,
   iconurl: 'https://avatars3.githubusercontent.com/u/6635142?s=460&v=4',
   text: 'そんなときはジンガで呼吸を整えるんだッ\nそんなときはジンガで呼吸を整えるんだッ',
   username: 'スネークのすけ',
@@ -38,6 +42,7 @@ chatitems.push({
 });
 chatitems.push({
   id: uuidv4(),
+  npc: false,
   iconurl: 'https://avatars3.githubusercontent.com/u/6635142?s=460&v=4',
   text: '追いこまれた狐はジャッカルより凶暴だ！！ https://storage.googleapis.com/toshickcom-a7f98.appspot.com/upload_images/Camera_2020-07-24_18.23.00-1595582593445.jpeg',
   username: 'スネークのすけ',
@@ -45,12 +50,22 @@ chatitems.push({
 });
 chatitems.push({
   id: uuidv4(),
+  npc: false,
   iconurl: 'https://avatars3.githubusercontent.com/u/6635142?s=460&v=4',
   text: 'スネーク、俺達は政府や誰かの道具じゃない\n戦うことでしか自分を表現できなかったが、いつも自分の意志で戦ってきた。',
   username: 'グレイフォックスのすけ',
   postdate: 1601114926652,
   fukitype: 'fuki2',
 });
+
+const kitanuTalks: string[] = [];
+kitanuTalks.push('ソイツハイイヌ！');
+kitanuTalks.push('グッドヌ');
+kitanuTalks.push('ヤルジャナイ');
+kitanuTalks.push('アンタッテヤツハ！');
+kitanuTalks.push('オレハユメデモミテイルヌ？');
+kitanuTalks.push('イイセンスヌ');
+kitanuTalks.push('マジナハナシ？');
 
 @Module({ name: 'chat', stateFactory: true, namespaced: true })
 export default class MyClass extends VuexModule {
@@ -109,17 +124,24 @@ export default class MyClass extends VuexModule {
 
   @Action
   PostChat(p: PostSubmitItemType): Promise<ActionRes> {
+    let text = p.text || '';
+    let iconurl = 'https://storage.googleapis.com/toshickcom-a7f98.appspot.com/upload_images/%E3%82%A4%E3%83%A1%E3%83%BC%E3%82%B8-1595803900938.jpeg';
+    if (p.npc) {
+      iconurl = '/img/tanu/tanu-120.png';
+      text = kitanuTalks[Math.floor(Math.random() * kitanuTalks.length)];
+    }
     return new Promise((resolve) => {
       setTimeout(() => {
         const item: ChatCommentType = {
           id: uuidv4(),
-          iconurl: 'https://storage.googleapis.com/toshickcom-a7f98.appspot.com/upload_images/%E3%82%A4%E3%83%A1%E3%83%BC%E3%82%B8-1595803900938.jpeg',
-          text: p.text || '',
+          iconurl,
+          text,
           username: 'にゃおすけ',
           postdate: dayjs().valueOf(),
           imgurl: p.fileItem ? p.fileItem.base64str : '',
           good: p.good || 0,
           fukitype: p.fukitype || '',
+          npc: p.npc,
         };
         this.ADD_CHAT(item);
 

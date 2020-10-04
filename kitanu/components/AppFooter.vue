@@ -37,9 +37,11 @@
     <!-- make -->
     <template v-if="mymode == 'input'">
       <ValidationProvider v-slot="{ valid }" class="talk-input" name="mycomment" :rules="'required'" tag="div">
-        <a :disabled="!canSubmit(valid)" class="btn-icon btn-comment" @click.stop.prevent="() => submit()">
-          <ion-icon name="cloud-upload-outline" />
+        <!-- good button -->
+        <a v-show="!imgSelected" class="btn-icon btn-good" @click.stop.prevent="doGood">
+          <ion-icon name="beer-outline" />
         </a>
+
         <!-- <CaTextarea v-model="talkText" name="talkText" width="M" placeholder="コメント"></CaTextarea> -->
         <div class="textarea">
           <textarea :value="talkText" :rows="talkTextRows" :placeholder="placeholder" @input="onInput" />
@@ -57,13 +59,12 @@
             </div>
           </div>
         </div>
-        <div v-if="mode === 'chat'" v-show="!imgSelected" class="buttonsRight">
-          <a :disabled="!canSubmit(valid)" class="btn-icon btn-comment" @click.stop.prevent="() => submit(true)">
-            <ion-icon name="flash-outline" />
+        <div v-if="mode === 'chat'" class="buttonsRight">
+          <a :disabled="!canSubmit(valid)" class="btn-icon btn-comment" @click.stop.prevent="() => submit()">
+            <ion-icon name="cloud-upload-outline" />
           </a>
-          <!-- good button -->
-          <a class="btn-icon btn-good" @click.stop.prevent="doGood">
-            <ion-icon name="beer-outline" />
+          <a v-show="!imgSelected" :disabled="!canSubmit(valid)" class="btn-icon btn-comment2" @click.stop.prevent="() => submit(true)">
+            <ion-icon name="flash-outline" />
           </a>
         </div>
       </ValidationProvider>
@@ -97,7 +98,7 @@ export default Vue.extend({
   },
   data(): State {
     return {
-      talkText: '',
+      talkText: 'コンチクワ',
       fileItems: [],
       timerIDInput: null,
     };
@@ -159,6 +160,7 @@ export default Vue.extend({
     },
     submit(withFuki: boolean = false) {
       const fukitype = withFuki ? `fuki${Math.ceil(Math.random() * 4)}` : '';
+      // const fukitype = withFuki ? `fuki1` : '';
       // txt = txt.replace(/[^(\u30A1-\u30F6)(^[a-zA-Z0-9!-/:-@¥[-`{-~\]*$\n)]/g, '');
       const text = hiraToKana(this.talkText).trim();
       this.$emit('submit', {
@@ -278,8 +280,16 @@ export default Vue.extend({
   flex-shrink: 0;
 }
 
-.btn-comment {
+.btn-good {
   margin-right: 0.5em;
+}
+.btn-comment {
+  &[disabled] {
+    opacity: 0.4;
+  }
+}
+.btn-comment2 {
+  margin-left: 0.5em;
   &[disabled] {
     opacity: 0.4;
   }

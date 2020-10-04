@@ -21,6 +21,7 @@ export type PostSubmitItemType = {
   text?: string;
   good?: number | null;
   fukitype?: string;
+  npc: boolean;
 };
 
 export type FileItemType = {
@@ -38,6 +39,7 @@ export type PostItemType = {
 
 export type ChatCommentType = {
   id: string;
+  npc: boolean;
   iconurl: string;
   text: string;
   username: string;

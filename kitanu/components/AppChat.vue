@@ -14,7 +14,8 @@
       <ChatInfo :infoitems="infoitems" />
       <ul>
         <li v-for="(i, index) in chatitems" :key="`${index}-${i.text}`">
-          <ChatComment :myitem="i" :opposite="index % 2 === 1" :last="index === chatitems.length - 1" />
+          <ChatComment v-if="!i.npc" :myitem="i" :opposite="index % 2 === 1" :last="index === chatitems.length - 1" />
+          <ChatCommentGood v-if="i.npc" :myitem="i" :last="index === chatitems.length - 1" />
         </li>
       </ul>
       <LoadingInline v-show="visbleInlineLoading" class="loading-inline" />
@@ -32,6 +33,7 @@ import mixinScrollview from '@/mixin/mxinScrollview';
 import { ChatCommentType, ChatInfoItemType, FileItemType, PostSubmitItemType } from '@/components/types/app';
 import { chatStore } from '@/store';
 import ChatComment from './parts/ChatComment.vue';
+import ChatCommentGood from './parts/ChatCommentGood.vue';
 import ChatInfo from './parts/ChatInfo.vue';
 import AppBody from './AppBody.vue';
 import AppFooter from './AppFooter.vue';
@@ -47,6 +49,7 @@ export default Vue.extend({
   name: 'AppChat',
   components: {
     ChatComment,
+    ChatCommentGood,
     ChatInfo,
     AppFooter,
     AppHeader,
@@ -120,16 +123,27 @@ export default Vue.extend({
         text: p.text,
         good: p.good || null,
         fukitype: p.fukitype,
+        npc: false,
       };
       await chatStore.PostChat(param);
       toast('とーこうしたヌ');
       this.showInlineLoading(false);
       if (p.reset) p.reset();
+
+      setTimeout(() => {
+        this.kitanuTalk();
+      }, 1000);
     },
 
     showInlineLoading(flg: boolean) {
       this.sending = flg;
       this.scrollBottom();
+    },
+    async kitanuTalk() {
+      const param: PostSubmitItemType = {
+        npc: true,
+      };
+      await chatStore.PostChat(param);
     },
   },
 });
