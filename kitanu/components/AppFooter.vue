@@ -39,7 +39,7 @@
       <ValidationProvider v-slot="{ valid }" class="talk-input" name="mycomment" :rules="'required'" tag="div">
         <!-- good button -->
         <a v-show="!imgSelected" class="btn-icon btn-good" @click.stop.prevent="doGood">
-          <ion-icon name="beer-outline" />
+          <ion-icon name="heart-outline" />
         </a>
 
         <!-- <CaTextarea v-model="talkText" name="talkText" width="M" placeholder="コメント"></CaTextarea> -->
@@ -60,10 +60,10 @@
           </div>
         </div>
         <div v-if="mode === 'chat'" class="buttonsRight">
-          <a :disabled="!canSubmit(valid)" class="btn-icon btn-comment" @click.stop.prevent="() => submit()">
-            <ion-icon name="cloud-upload-outline" />
+          <a :disabled="!canSubmit(valid) || connecting" class="btn-icon btn-comment" @click.stop.prevent="() => submit()">
+            <ion-icon name="chatbubble-ellipses-outline"></ion-icon>
           </a>
-          <a v-show="!imgSelected" :disabled="!canSubmit(valid)" class="btn-icon btn-comment2" @click.stop.prevent="() => submit(true)">
+          <a v-show="!imgSelected" :disabled="!canSubmit(valid) || connecting" class="btn-icon btn-comment2" @click.stop.prevent="() => submit(true)">
             <ion-icon name="flash-outline" />
           </a>
         </div>
@@ -85,6 +85,7 @@ type State = {
   talkText: string;
   fileItems: FileItemType[];
   timerIDInput: NodeJS.Timer | null;
+  connecting: boolean;
 };
 
 export default Vue.extend({
@@ -101,6 +102,7 @@ export default Vue.extend({
       talkText: 'コンチクワ',
       fileItems: [],
       timerIDInput: null,
+      connecting: false,
     };
   },
   computed: {
@@ -159,6 +161,7 @@ export default Vue.extend({
       this.talkText = $el.value;
     },
     submit(withFuki: boolean = false) {
+      this.connecting = true;
       const fukitype = withFuki ? `fuki${Math.ceil(Math.random() * 4)}` : '';
       // const fukitype = withFuki ? `fuki1` : '';
       // txt = txt.replace(/[^(\u30A1-\u30F6)(^[a-zA-Z0-9!-/:-@¥[-`{-~\]*$\n)]/g, '');
@@ -173,6 +176,7 @@ export default Vue.extend({
     reset() {
       this.fileItems = [];
       this.talkText = '';
+      this.connecting = false;
     },
     canSubmit(valid: boolean) {
       if (valid || this.imgurls.length > 0) return true;

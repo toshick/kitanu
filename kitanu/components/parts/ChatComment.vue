@@ -10,7 +10,7 @@
       <div v-if="isGood" class="chatitem-body-good">
         <transition name="fade">
           <p v-if="visibleGood" class="wf-nicomoji">
-            <ion-icon v-for="g in +myitem.good" :key="`good${g}`" name="beer" />
+            <ion-icon v-for="g in +myitem.good" :key="`good${g}`" name="heart-outline" />
             <!-- <img class="lazy" :src="placeholderImg" :data-src="`/img/good${myitem.good}.png`" alt="" /> -->
           </p>
         </transition>
@@ -132,6 +132,7 @@ export default Vue.extend({
   padding: 10px 20px 10px 20px;
   // color: var(--app-comment-color);
   color: #c1620e;
+  overflow: hidden;
   &.--fuki {
     .chatitem-body {
       background-color: transparent;

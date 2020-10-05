@@ -66,6 +66,14 @@ kitanuTalks.push('アンタッテヤツハ！');
 kitanuTalks.push('オレハユメデモミテイルヌ？');
 kitanuTalks.push('イイセンスヌ');
 kitanuTalks.push('マジナハナシ？');
+kitanuTalks.push('ソーキタカ');
+kitanuTalks.push('アンタニマカセルヌ');
+kitanuTalks.push('ジゴクノサタモカネシダイヌ');
+kitanuTalks.push('コヨイハヨイツキゾ');
+kitanuTalks.push('コンヤスベテノバーデヌ');
+kitanuTalks.push('キョウヤラネエヤツハ...アシタモヤラーヌ');
+kitanuTalks.push('ナンダカユウキガワイテキータヌ');
+kitanuTalks.push('キサマラハ、クサッタミカンデハナイヌ');
 
 @Module({ name: 'chat', stateFactory: true, namespaced: true })
 export default class MyClass extends VuexModule {

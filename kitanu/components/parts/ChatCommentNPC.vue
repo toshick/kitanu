@@ -1,28 +1,26 @@
 <template>
   <div v-if="myitem" :class="myclass">
-    <div class="chatitem-icon">
+    <!-- <div class="chatitem-icon">
       <img class="chat-usericon lazy" :src="placeholderImg" :data-src="myitem.iconurl" alt="" />
-    </div>
+    </div> -->
     <div class="chatitem-body">
       <!-- text -->
       <!-- good -->
       <div class="chatitem-body-good">
         <transition name="fade">
-          <p v-if="visibleGood" class="wf-nicomoji">
-            <!-- <ion-icon v-for="g in +myitem.good" :key="`good${g}`" name="beer" /> -->
-            <!-- <img class="lazy" :src="placeholderImg" :data-src="`/img/good${myitem.good}.png`" alt="" /> -->
+          <p v-if="visible" class="wf-nicomoji">
             {{ myitem.text }}
           </p>
         </transition>
       </div>
       <!-- bottom -->
-      <div class="chatitem-bottom">
+      <!-- <div class="chatitem-bottom">
         <div class="chatitem-postinfo">
           （キータヌ
           <span>{{ postdate }}</span>
           ）
         </div>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
@@ -37,7 +35,7 @@ import { ChatCommentType } from '@/components/types/app';
 
 type State = {
   urls: string[];
-  visibleGood: boolean;
+  visible: boolean;
 };
 
 export default Vue.extend({
@@ -55,7 +53,7 @@ export default Vue.extend({
   data(): State {
     return {
       urls: [],
-      visibleGood: false,
+      visible: false,
     };
   },
   computed: {
@@ -86,10 +84,10 @@ export default Vue.extend({
     showGood() {
       if (this.last) {
         setTimeout(() => {
-          this.visibleGood = true;
+          this.visible = true;
         }, 200);
       } else {
-        this.visibleGood = true;
+        this.visible = true;
       }
     },
     doGood() {
@@ -124,22 +122,34 @@ export default Vue.extend({
 
 .chatitem-body-good {
   display: flex;
-  justify-content: flex-start;
+  justify-content: flex-end;
   align-items: center;
   // min-height: 100px;
   padding: 0 0 20px 60px;
 
   p {
-    // text-shadow: 0 0 2px #ccc;
+    position: relative;
     padding: 10px 10px;
     margin: 0 0 0px 20px;
-    font-size: 24px;
+    font-size: 22px;
     line-height: 1;
     border-radius: 6px;
-    // background-color: #fff;
-    // box-shadow: 0 0 2px 1px rgba(#000, 0.2);
-    color: #fff;
-    text-shadow: 0 0 1px #000;
+    background-color: #fff;
+    box-shadow: 0 0 2px 1px #ddcd69;
+    color: #ddcd69;
+    text-shadow: 0 1px 1px #fff;
+    &::after {
+      display: block;
+      content: '';
+      background-image: url('/img/tanu/tanu-120.png');
+      width: 40px;
+      height: 50px;
+      background-repeat: no-repeat;
+      background-size: 100%;
+      position: absolute;
+      top: -10px;
+      left: -36px;
+    }
   }
 }
 
