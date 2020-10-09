@@ -153,6 +153,7 @@ export default Vue.extend({
     }
   }
   &.--fuki1 .chatitem-body-text {
+    display: inline-flex;
     position: relative;
     min-height: auto;
     padding: 20px;
@@ -197,9 +198,9 @@ export default Vue.extend({
     text-align: center;
   }
   &.--fuki4 .chatitem-body-text {
-    // background-image: url('/img/e0272_1.png');
     background-image: url('/img/e0313_1.svg');
     background-size: 100% auto;
+    background-position: 50%;
     padding: 30px 60px 30px;
     min-height: 100px;
   }

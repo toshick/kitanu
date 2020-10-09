@@ -184,7 +184,7 @@ export default Vue.extend({
     },
     doGood() {
       this.$emit('submit', {
-        good: Math.ceil(Math.random() * 6),
+        good: Math.ceil(Math.random() * 3),
         text: '',
       });
     },
