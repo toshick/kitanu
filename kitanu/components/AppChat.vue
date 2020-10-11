@@ -1,26 +1,46 @@
 <template>
   <section class="app view chat">
     <AppHeader>
-      <a class="btn-back" @click.stop.prevent="goChatList"><ion-icon name="chevron-back" size="medium" /></a>
+      <a class="btn-back" @click.stop.prevent="goChatList"
+        ><ion-icon name="chevron-back" size="medium"
+      /></a>
 
       <h1>{{ title }}</h1>
       <!-- right -->
       <template v-slot:right>
-        <a class="btn-header margin-left-auto" href=""><ion-icon name="log-in" size="medium" /></a>
-        <a class="btn-header" @click="scrollBottom"><ion-icon name="log-in-outline" size="medium" /></a>
+        <a class="btn-header margin-left-auto" href=""
+          ><ion-icon name="log-in" size="medium"
+        /></a>
+        <a class="btn-header" @click="scrollBottom"
+          ><ion-icon name="log-in-outline" size="medium"
+        /></a>
       </template>
     </AppHeader>
     <AppBody ref="appbody">
       <ChatInfo :infoitems="infoitems" />
       <ul>
         <li v-for="(i, index) in chatitems" :key="`${index}-${i.text}`">
-          <ChatComment v-if="!i.npc" :myitem="i" :opposite="index % 2 === 1" :last="index === chatitems.length - 1" />
-          <ChatCommentNPC v-if="i.npc" :myitem="i" :last="index === chatitems.length - 1" />
+          <ChatComment
+            v-if="!i.npc"
+            :myitem="i"
+            :opposite="index % 2 === 1"
+            :last="index === chatitems.length - 1"
+          />
+          <ChatCommentNPC
+            v-if="i.npc"
+            :myitem="i"
+            :last="index === chatitems.length - 1"
+          />
         </li>
       </ul>
       <LoadingInline v-show="visbleInlineLoading" class="loading-inline" />
     </AppBody>
-    <AppFooter mode="chat" @talk="startTalk" @menu="openMenu" @submit="onSubmit" />
+    <AppFooter
+      mode="chat"
+      @talk="startTalk"
+      @menu="openMenu"
+      @submit="onSubmit"
+    />
   </section>
 </template>
 <!------------------------------->
@@ -30,14 +50,16 @@
 import Vue, { PropType } from 'vue';
 import { openView, toast } from '@/common/util';
 import mixinScrollview from '@/mixin/mxinScrollview';
-import { ChatCommentType, ChatInfoItemType, FileItemType, PostSubmitItemType } from '@/components/types/app';
+import {
+  ChatCommentType,
+  ChatInfoItemType,
+  FileItemType,
+  PostSubmitItemType,
+} from '@/components/types/app';
 import { chatStore } from '@/store';
 import ChatComment from './parts/ChatComment.vue';
 import ChatCommentNPC from './parts/ChatCommentNPC.vue';
 import ChatInfo from './parts/ChatInfo.vue';
-import AppBody from './AppBody.vue';
-import AppFooter from './AppFooter.vue';
-import AppHeader from './AppHeader.vue';
 import TextInputModal from './parts/TextInputModal.vue';
 import LoadingInline from './parts/LoadingInline.vue';
 
@@ -51,9 +73,6 @@ export default Vue.extend({
     ChatComment,
     ChatCommentNPC,
     ChatInfo,
-    AppFooter,
-    AppHeader,
-    AppBody,
     LoadingInline,
   },
   mixins: [mixinScrollview],
@@ -108,39 +127,18 @@ export default Vue.extend({
         component: TextInputModal,
         klass: ['view-textinput'],
         compoParams: {
-          confirmText: 'なんだかしらんけどよろしいですか？なんだかしらんけどよろしいですか？',
+          confirmText:
+            'なんだかしらんけどよろしいですか？なんだかしらんけどよろしいですか？',
           onConfirm: () => {
             console.log('いえす');
           },
         },
       });
     },
-    async onSubmit(p: { fileItem?: FileItemType; text: string; reset?: () => void; good?: number; fukitype: string }) {
-      this.showInlineLoading(true);
-
-      const param: PostSubmitItemType = {
-        fileItem: p.fileItem || null,
-        text: p.text,
-        good: p.good || null,
-        fukitype: p.fukitype,
-        npc: false,
-      };
-      await chatStore.PostChat(param);
-      toast('とーこうしたヌ');
-      this.showInlineLoading(false);
-      if (p.reset) p.reset();
-
-      if (!p.good) {
-        setTimeout(() => {
-          this.kitanuTalk();
-        }, 1000);
-      }
+    onSubmit(p: any) {
+      this.$emit('submit', p);
     },
 
-    showInlineLoading(flg: boolean) {
-      this.sending = flg;
-      this.scrollBottom();
-    },
     async kitanuTalk() {
       const param: PostSubmitItemType = {
         npc: true,

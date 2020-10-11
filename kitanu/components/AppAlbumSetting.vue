@@ -1,7 +1,9 @@
 <template>
   <section class="app view album-setting">
     <AppHeader>
-      <a class="btn-back" @click.stop.prevent="close"><ion-icon name="chevron-back" size="medium" /></a>
+      <a class="btn-back" @click.stop.prevent="close"
+        ><ion-icon name="chevron-back" size="medium"
+      /></a>
       <h1>アルバム せってい</h1>
       <!-- right -->
       <template v-slot:right>
@@ -13,19 +15,40 @@
 
       <div class="setting-input">
         <div class="ca-inputline">
-          <CaInput v-model="title" class="-yellow" name="title" title="たいとる" rules="max:50" placeholder="アルバムたいとる" width="L"></CaInput>
+          <CaInput
+            v-model="title"
+            class="-yellow"
+            name="title"
+            title="たいとる"
+            rules="max:50"
+            placeholder="アルバムたいとる"
+            width="L"
+          ></CaInput>
         </div>
         <div class="ca-inputline">
-          <CaTextarea v-model="des" class="-yellow" autorows auto-width name="des" title="せつめい" placeholder="アルバムせつめいぶん"></CaTextarea>
+          <CaTextarea
+            v-model="des"
+            class="-yellow"
+            autorows
+            auto-width
+            name="des"
+            title="せつめい"
+            placeholder="アルバムせつめいぶん"
+          ></CaTextarea>
         </div>
       </div>
 
       <div class="member-add">
-        <CaButton size="S" class="btn-add-member" @click="addMember"> メンバー追加 </CaButton>
+        <CaButton size="S" class="btn-add-member" @click="addMember">
+          メンバー追加
+        </CaButton>
       </div>
 
       <ul class="member-list">
-        <li v-for="(u, index) in members" :key="`member-${index}-${u.username}`">
+        <li
+          v-for="(u, index) in members"
+          :key="`member-${index}-${u.username}`"
+        >
           <UserIcon :url="u.iconurl" />
           <div class="member-label">
             <h3>{{ u.username }}</h3>
@@ -43,9 +66,6 @@
 import Vue from 'vue';
 // import CaModalPG from 'camaleao-design/components/CaModalPG';
 import { toast } from '@/common/util';
-import AppHeader from './AppHeader.vue';
-import AppBody from './AppBody.vue';
-import UserIcon from './parts/UserIcon.vue';
 import { UserType } from './types/app';
 
 type State = {
@@ -55,24 +75,37 @@ type State = {
 };
 
 const members: UserType[] = [];
-members.push({ username: 'にゃんごろう', iconurl: 'https://avatars3.githubusercontent.com/u/6635142?s=460&v=4', subtext: 'いつだってオレンジ' });
-members.push({ username: 'カマキチ', iconurl: 'https://avatars3.githubusercontent.com/u/6635142?s=460&v=4', subtext: 'そろそろキャンプしたいぞ' });
-members.push({ username: 'エドブラウン', iconurl: 'https://avatars3.githubusercontent.com/u/6635142?s=460&v=4', subtext: '' });
-members.push({ username: 'サルバトーレトスカニーニ', iconurl: 'https://avatars3.githubusercontent.com/u/6635142?s=460&v=4', subtext: 'スパゲティつくってみた' });
+members.push({
+  username: 'にゃんごろう',
+  iconurl: 'https://avatars3.githubusercontent.com/u/6635142?s=460&v=4',
+  subtext: 'いつだってオレンジ',
+});
+members.push({
+  username: 'カマキチ',
+  iconurl: 'https://avatars3.githubusercontent.com/u/6635142?s=460&v=4',
+  subtext: 'そろそろキャンプしたいぞ',
+});
+members.push({
+  username: 'エドブラウン',
+  iconurl: 'https://avatars3.githubusercontent.com/u/6635142?s=460&v=4',
+  subtext: '',
+});
+members.push({
+  username: 'サルバトーレトスカニーニ',
+  iconurl: 'https://avatars3.githubusercontent.com/u/6635142?s=460&v=4',
+  subtext: 'スパゲティつくってみた',
+});
 
 export default Vue.extend({
   name: 'AppMember',
-  components: {
-    AppHeader,
-    AppBody,
-    UserIcon,
-  },
+  components: {},
   props: {},
   data(): State {
     return {
       members,
       title: 'みんなでピクニックにいってみようの巻',
-      des: 'ここはせつめいです\n今年も春がやってきました。\nそこでどこぞの公園でピクニックをすることにしましたよ。',
+      des:
+        'ここはせつめいです\n今年も春がやってきました。\nそこでどこぞの公園でピクニックをすることにしましたよ。',
     };
   },
   computed: {

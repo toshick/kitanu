@@ -2,7 +2,12 @@
   <section>
     <h1>
       <a class="tanu" @click.stop.prevent="actionTop">
-        <img data-src="/img/top/tanu/tanu.png" :src="placeholderImg" class="lazy" alt="kitanu" />
+        <img
+          data-src="/img/tanu/tanu.png"
+          :src="placeholderImg"
+          class="lazy"
+          alt="kitanu"
+        />
       </a>
       <p class="comment">{{ comment }}</p>
     </h1>
@@ -32,7 +37,20 @@ import { shuffle } from '@/common/util';
 type State = {
   comment: string;
 };
-const comments: string[] = ['今日やらねえ奴は明日もヤラヌ', 'アイリッシュパブにいきたいヌ', 'あさめしはバナナだヌ', 'トマトはそのままでヌ', 'just do イッヌ', '勝てば負けないヌ', '不足を知る物は足る者ヌ', 'ストレイツオ容赦せんヌ', 'そのへんの草でも食わせておけヌ', 'その紙切れ、あの世ではつかえんヌ', 'なぜできないか、やらないからだヌ', 'レモネードで回復ヌ'];
+const comments: string[] = [
+  '今日やらねえ奴は明日もヤラヌ',
+  'アイリッシュパブにいきたいヌ',
+  'あさめしはバナナだヌ',
+  'トマトはそのままでヌ',
+  'just do イッヌ',
+  '勝てば負けないヌ',
+  '不足を知る物は足る者ヌ',
+  'ストレイツオ容赦せんヌ',
+  'そのへんの草でも食わせておけヌ',
+  'その紙切れ、あの世ではつかえんヌ',
+  'なぜできないか、やらないからだヌ',
+  'レモネードで回復ヌ',
+];
 
 export default Vue.extend({
   name: 'ModalSideMenu',

@@ -1,17 +1,27 @@
 <template>
   <section class="app view">
     <AppHeader>
-      <a class="btn-back" @click.stop.prevent="goAlbum"><ion-icon name="chevron-back" size="medium" /></a>
+      <a class="btn-back" @click.stop.prevent="goAlbum"
+        ><ion-icon name="chevron-back" size="medium"
+      /></a>
       <h1>2020.08.08</h1>
       <!-- right -->
       <template v-slot:right>
         <div v-show="!editing" class="header-buttons">
-          <a class="btn-header" @click.stop.prevent="changeOrder"><ion-icon name="swap-vertical-outline" size="medium" /></a>
-          <a class="btn-header" @click.stop.prevent="goAlbumSetting"><ion-icon name="restaurant-outline" size="medium" /></a>
+          <a class="btn-header" @click.stop.prevent="startOrderChange"
+            ><ion-icon name="swap-vertical-outline" size="medium"
+          /></a>
+          <a class="btn-header" @click.stop.prevent="goAlbumSetting"
+            ><ion-icon name="restaurant-outline" size="medium"
+          /></a>
         </div>
         <div v-show="editing" class="header-buttons">
-          <a class="btn-header" @click.stop.prevent="() => finishEdit(true)"><span>保存</span></a>
-          <a class="btn-header" @click.stop.prevent="() => finishEdit(false)"><span>キャンセル</span></a>
+          <a class="btn-header" @click.stop.prevent="() => finishEdit(true)"
+            ><span>保存</span></a
+          >
+          <a class="btn-header" @click.stop.prevent="() => finishEdit(false)"
+            ><span>キャンセル</span></a
+          >
         </div>
       </template>
     </AppHeader>
@@ -20,20 +30,35 @@
         <section class="album-des">
           <h1>みんなでピクニックにいってみようの巻</h1>
           <p>ここはせつめいです</p>
-          <p>今年も春がやってきました。<br />そこでどこぞの公園でピクニックをすることにしましたよ。</p>
+          <p>
+            今年も春がやってきました。<br />そこでどこぞの公園でピクニックをすることにしましたよ。
+          </p>
           <ul class="member-list">
-            <li v-for="(u, index) in members" :key="`member-${index}-${u.username}`">
+            <li
+              v-for="(u, index) in members"
+              :key="`member-${index}-${u.username}`"
+            >
               <UserIcon :url="u.iconurl" size="S" />
             </li>
           </ul>
         </section>
         <!-- postitem list -->
         <transition-group class="postitem-list" tag="ul" name="flip-list">
-          <li v-for="(p, index) in postItems" :key="`${p.id}`" class="postitems-item">
-            <PostItem :postitem="p" :changing-order="changingOrder" :last="index === postItems.length - 1" @orderChange="onOrderChange" @remove="onRemovePost" />
+          <li
+            v-for="(p, index) in postItems"
+            :key="`${p.id}`"
+            class="postitems-item"
+          >
+            <PostItem
+              :postitem="p"
+              :changing-order="changingOrder"
+              :last="index === postItems.length - 1"
+              @orderChange="onOrderChange"
+              @remove="onRemovePost"
+            />
           </li>
         </transition-group>
-        <LoadingInline v-show="visbleInlineLoading" class="loading-inline" />
+        <LoadingInline v-show="sending" class="loading-inline" />
       </div>
     </AppBody>
     <AppFooter mode="make" @talk="startTalk" @submit="onSubmit" />
@@ -43,70 +68,56 @@
 
 <!------------------------------->
 <script lang="ts">
-import Vue from 'vue';
+import Vue, { PropType } from 'vue';
 import dayjs from 'dayjs';
-import { v4 as uuidv4 } from 'uuid';
-import { toast, openView, drillDown } from '@/common/util';
+import { toast, openView } from '@/common/util';
 import mixinScrollview from '@/mixin/mxinScrollview';
-import { FileItemType, PostItemType } from '@/components/types/app';
-import { postStore } from '@/store';
-import AppHeader from './AppHeader.vue';
-import AppFooter from './AppFooter.vue';
+import { UserType, PostItemType } from '@/components/types/app';
 import AppAlbumSetting from './AppAlbumSetting.vue';
 import TextInputModal from './parts/TextInputModal.vue';
 import PostItem from './parts/PostItem.vue';
 import LoadingInline from './parts/LoadingInline.vue';
-import { UserType } from './types/app';
 
 type State = {
   changingOrder: boolean;
-  members: UserType[];
-  sending: boolean;
 };
-
-const members: UserType[] = [];
-members.push({ username: 'にゃんごろう', iconurl: 'https://avatars3.githubusercontent.com/u/6635142?s=460&v=4', subtext: 'いつだってオレンジ' });
-members.push({ username: 'カマキチ', iconurl: 'https://avatars3.githubusercontent.com/u/6635142?s=460&v=4', subtext: 'そろそろキャンプしたいぞ' });
 
 export default Vue.extend({
   name: 'AppAlbumDetail',
   components: {
-    AppHeader,
-    AppFooter,
     PostItem,
     LoadingInline,
   },
   mixins: [mixinScrollview],
-  props: {},
+  props: {
+    sending: {
+      default: false,
+      type: Boolean,
+    },
+    members: {
+      default: [],
+      type: Array as PropType<UserType[]>,
+    },
+    postItems: {
+      default: [],
+      type: Array as PropType<PostItemType[]>,
+    },
+  },
   data(): State {
     return {
       changingOrder: false,
-      members,
-      sending: false,
     };
   },
   computed: {
-    postItems(): PostItemType[] {
-      return postStore.postitems;
-    },
     editing(): boolean {
       if (this.changingOrder) {
         return true;
       }
       return false;
     },
-    visbleInlineLoading(): boolean {
-      return this.sending;
-      // return true;
-    },
   },
-  mounted() {
-    this.fetch();
-  },
+  mounted() {},
   methods: {
-    fetch() {
-      return postStore.FetchPost();
-    },
     startTalk() {
       const $t = this.$el.closest('.mobileview') || null;
 
@@ -121,27 +132,15 @@ export default Vue.extend({
         },
       });
     },
-    async onSubmit(p: { fileItem: FileItemType; text: string; reset: () => void }) {
-      this.showInlineLoading(true);
-
-      const item: PostItemType = {
-        id: uuidv4(),
-        date: dayjs().format('YYYY.MM.DD HH:mm:ss'),
-        text: p.text,
-        fileItem: p.fileItem || null,
-        // imgurl: 'https://storage.googleapis.com/toshickcom-a7f98.appspot.com/upload_images/Camera_2020-07-24_18.38.38-1595583527442.jpeg',
-      };
-      await postStore.PostItem(item);
-      toast('とーこうしたヌ');
-      this.showInlineLoading(false);
-      if (p.reset) p.reset();
+    onSubmit(p: any) {
+      this.$emit('addPost', p);
     },
-    changeOrder() {
+    startOrderChange() {
       this.changingOrder = true;
-      postStore.BACKUP_POST();
+      this.$emit('startOrderChange');
     },
-    onOrderChange(p: { postitem: PostItemType; direction: string }) {
-      postStore.ChangeOrder(p);
+    onOrderChange(p) {
+      this.$emit('orderChange', p);
     },
     finishEdit(save: boolean) {
       if (this.changingOrder) {
@@ -161,18 +160,14 @@ export default Vue.extend({
       }, 1000);
     },
     cancelChange() {
-      postStore.REVERT_POST();
+      this.$emit('cancelChange');
       this.changingOrder = false;
     },
     onRemovePost(postitem: PostItemType) {
-      postStore.REMOVE_POST(postitem.id);
+      this.$emit('removePost', postitem.id);
     },
     goAlbumSetting() {
       this.drillDown({ component: AppAlbumSetting });
-    },
-    showInlineLoading(flg: boolean) {
-      this.sending = flg;
-      this.scrollBottom();
     },
   },
 });

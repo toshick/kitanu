@@ -1,9 +1,12 @@
 <template>
-  <div class="about ca-modal-scroll-wrapper" @click.stop.prevent="$emit('close')">
+  <div
+    class="about ca-modal-scroll-wrapper"
+    @click.stop.prevent="$emit('close')"
+  >
     <CaModalScroll>
       <CaModalViewBody klass="body">
         <div class="about-body">
-          <img src="/img/top/tanu/tanu.png" class="about-tanu" alt="kitanu" />
+          <img src="/img/tanu/tanu.png" class="about-tanu" alt="kitanu" />
           <h1>キタキータヌによーきたヌ</h1>
           <p>ここではなにをするのかヌ？</p>
         </div>

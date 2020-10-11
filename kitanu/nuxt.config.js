@@ -17,7 +17,10 @@ export default {
     title: process.env.npm_package_name || '',
     meta: [
       { charset: 'utf-8' },
-      { name: 'viewport', content: 'width=device-width, initial-scale=1, minimum-scale=1' },
+      {
+        name: 'viewport',
+        content: 'width=device-width, initial-scale=1, minimum-scale=1',
+      },
       {
         hid: 'description',
         name: 'description',
@@ -55,8 +58,14 @@ export default {
       },
     ],
     script: [
-      { src: 'https://unpkg.com/ionicons@5.1.2/dist/ionicons/ionicons.esm.js', type: 'module' },
-      { src: 'https://unpkg.com/ionicons@5.1.2/dist/ionicons/ionicons.js', nomodule: '' },
+      {
+        src: 'https://unpkg.com/ionicons@5.1.2/dist/ionicons/ionicons.esm.js',
+        type: 'module',
+      },
+      {
+        src: 'https://unpkg.com/ionicons@5.1.2/dist/ionicons/ionicons.js',
+        nomodule: '',
+      },
     ],
   },
   /*

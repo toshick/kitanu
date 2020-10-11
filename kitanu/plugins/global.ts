@@ -2,15 +2,31 @@ import Vue from 'vue';
 import axios from 'axios';
 import sanitizeHTML from 'sanitize-html';
 import { OpenParams } from 'camaleao-design/components/CaModalPG';
-import { particleEffect, openModal, openDialog, openView, toast, drillDown, loading, placeholderImg } from '@/common/util';
+import {
+  particleEffect,
+  openModal,
+  openDialog,
+  openView,
+  toast,
+  drillDown,
+  loading,
+  placeholderImg,
+} from '@/common/util';
 import AppSetting from '@/components/AppSetting.vue';
 import ActivityList from '@/components/parts/ActivityList.vue';
-
 import Particle from '@/components/parts/Particle.vue';
-
+import UserIcon from '@/components/parts/UserIcon.vue';
+import AppHeader from '@/components/AppHeader.vue';
+import AppBody from '@/components/AppBody.vue';
+import AppFooter from '@/components/AppFooter.vue';
 import 'camaleao-design/components/install';
 import 'camaleao-design/form/validation.ts';
+
+Vue.component('AppBody', AppBody);
+Vue.component('AppHeader', AppHeader);
+Vue.component('AppFooter', AppFooter);
 Vue.component('Particle', Particle);
+Vue.component('UserIcon', UserIcon);
 
 Vue.prototype.$sanitize = sanitizeHTML;
 
@@ -63,7 +79,10 @@ document.addEventListener('DOMContentLoaded', () => {
       // which is the event. The corresponding value can be the callback if you
       // don't want to send any options to `addEventListener`.
       load(e: any) {
-        if (!e.target.classList.contains('lazy') && e.target.nodeName === 'IMG') {
+        if (
+          !e.target.classList.contains('lazy') &&
+          e.target.nodeName === 'IMG'
+        ) {
           e.target.classList.add('yall-loaded');
         }
       },
@@ -72,7 +91,10 @@ document.addEventListener('DOMContentLoaded', () => {
       error: {
         // Here, the `listener` member is the callback.
         listener(e: any) {
-          if (!e.target.classList.contains('lazy') && e.target.nodeName === 'IMG') {
+          if (
+            !e.target.classList.contains('lazy') &&
+            e.target.nodeName === 'IMG'
+          ) {
             e.target.classList.add('yall-error');
           }
         },
@@ -163,7 +185,10 @@ Vue.mixin({
       const $t = this.$el.closest('.mobileview') || null;
       drillDown({ target: $t, component: AppSetting });
     },
-    showConfirm(p: { title: string; text: string; isDanger?: boolean }, onConfirm: () => void) {
+    showConfirm(
+      p: { title: string; text: string; isDanger?: boolean },
+      onConfirm: () => void,
+    ) {
       const $t = this.$el.closest('.mobileview') || null;
       openDialog({
         modalTitle: p.title,
@@ -207,7 +232,10 @@ if ('serviceWorker' in navigator) {
     .register('/sw.js')
     .then(function (registration) {
       // 登録成功
-      console.log('ServiceWorker の登録に成功しました。スコープ: ', registration.scope);
+      console.log(
+        'ServiceWorker の登録に成功しました。スコープ: ',
+        registration.scope,
+      );
     })
     .catch(function (err) {
       // 登録失敗

@@ -9,21 +9,39 @@
       <div class="album-item-cont">
         <div class="album-item-left">
           <div class="album-item-img">
-            <a v-longpress="() => removeItem(i)" class="btn-img" @click.stop="selectItem(i)">
-              <img class="lazy" :src="placeholderImg" data-src="https://storage.googleapis.com/toshickcom-a7f98.appspot.com/upload_images/Camera_2020-07-24_18.23.00-1595582593445.jpeg" alt="" />
+            <a
+              v-longpress="() => removeItem(i)"
+              class="btn-img"
+              @click.stop="selectItem(i)"
+            >
+              <img
+                class="lazy"
+                :src="placeholderImg"
+                data-src="https://storage.googleapis.com/toshickcom-a7f98.appspot.com/upload_images/Camera_2020-07-24_18.23.00-1595582593445.jpeg"
+                alt=""
+              />
             </a>
-            <span class="btn-remove" href=""><ion-icon name="trash"></ion-icon></span>
+            <span class="btn-remove" href=""
+              ><ion-icon name="trash"></ion-icon
+            ></span>
           </div>
         </div>
         <div class="album-item-body">
           <p>{{ i.text }}</p>
           <p class="album-item-member">
-            <UserIcon v-for="(u, index) in i.members" :key="`${index}-${u.iconurl}`" :url="u.iconurl" size="S" />
+            <UserIcon
+              v-for="(u, index) in i.members"
+              :key="`${index}-${u.iconurl}`"
+              :url="u.iconurl"
+              size="S"
+            />
           </p>
         </div>
       </div>
     </div>
-    <a class="btn-more" href=""><ion-icon name="chevron-down-outline" size="large" /></a>
+    <a class="btn-more" href=""
+      ><ion-icon name="chevron-down-outline" size="large"
+    /></a>
   </section>
 </template>
 <!------------------------------->
@@ -32,15 +50,12 @@
 <script lang="ts">
 import Vue, { PropType } from 'vue';
 import { AlbumItemType } from '../types/app';
-import UserIcon from './UserIcon.vue';
 
 type State = {};
 
 export default Vue.extend({
   name: 'AlbumList',
-  components: {
-    UserIcon,
-  },
+  components: {},
   computed: {
     myClass(): any {
       const klass: any = { albumlist: true };

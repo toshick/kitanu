@@ -2,7 +2,12 @@
   <section class="app view">
     <AppHeader>
       <!-- <a class="btn-back" @click="openMenu"><ion-icon name="log-in-outline" size="medium" /></a> -->
-      <img src="/img/top/tanu-white.png" class="tanu-header" alt="kitanu-header" @click="openMenu" />
+      <img
+        src="/img/top/tanu-white.png"
+        class="tanu-header"
+        alt="kitanu-header"
+        @click="openMenu"
+      />
       <h1>キタキータヌ</h1>
 
       <!-- right -->
@@ -11,7 +16,9 @@
           ><ion-icon name="bicycle-outline" size="medium" />
           <CaBadge :num="5" />
         </a>
-        <a class="btn-header" @click.stop.prevent="showSetting"><ion-icon name="restaurant-outline" size="medium" /></a>
+        <a class="btn-header" @click.stop.prevent="showSetting"
+          ><ion-icon name="restaurant-outline" size="medium"
+        /></a>
       </template>
     </AppHeader>
 
@@ -19,11 +26,23 @@
       <ChatInfo :infoitems="infoitems" />
       <section class="sec1">
         <div class="chara">
-          <img data-src="/img/tanu/tanu.png" :src="placeholderImg" class="tanu lazy" alt="kitanu" />
-          <img data-src="/img/top/tanu-title.png" :src="placeholderImg" class="tanu-title lazy" alt="kitanu-title" />
+          <img
+            data-src="/img/tanu/tanu.png"
+            :src="placeholderImg"
+            class="tanu lazy"
+            alt="kitanu"
+          />
+          <img
+            data-src="/img/top/tanu-title.png"
+            :src="placeholderImg"
+            class="tanu-title lazy"
+            alt="kitanu-title"
+          />
           <p>
             キータヌは世話焼きたぬき
-            <a class="kitanu" @click="about"><ion-icon name="finger-print-outline"></ion-icon></a>
+            <a class="kitanu" @click="about"
+              ><ion-icon name="finger-print-outline"></ion-icon
+            ></a>
             <br />
             キータヌに自分のアクティビティをみてもらおーぬ
           </p>
@@ -36,11 +55,19 @@
         </header>
 
         <!-- リスト -->
-        <AlbumList :items="albumItems" @remove="startRemoveAlbum" @select="selectItem" />
+        <AlbumList
+          :items="albumItems"
+          @remove="startRemoveAlbum"
+          @select="selectItem"
+        />
       </section>
     </div>
 
-    <AppFooter @talk="confirm" @menu="openMenu" @album="changeView('albumlist')" />
+    <AppFooter
+      @talk="confirm"
+      @menu="openMenu"
+      @album="changeView('albumlist')"
+    />
   </section>
 </template>
 <!------------------------------->
@@ -52,8 +79,6 @@ import { toast, particleEffect } from '@/common/util';
 import { Input } from 'camaleao-design/components/type';
 import AppAlbumDetail from '@/components/AppAlbumDetail.vue';
 import ChatInfo from './parts/ChatInfo.vue';
-import AppHeader from './AppHeader.vue';
-import AppFooter from './AppFooter.vue';
 import AlbumList from './parts/AlbumList.vue';
 import ActivityList from './parts/ActivityList.vue';
 import AboutThisApp from './description/AboutThisApp.vue';
@@ -67,8 +92,6 @@ type State = {
 export default Vue.extend({
   name: 'AppTop',
   components: {
-    AppHeader,
-    AppFooter,
     AlbumList,
     ChatInfo,
   },
@@ -123,15 +146,22 @@ export default Vue.extend({
     },
     startRemoveAlbum(i: AlbumItemType) {
       const txt = i.text.length > 15 ? `${i.text.slice(0, 15)}...` : i.text;
-      this.showConfirm({ title: 'アルバム削除', text: `「${txt}」<br><br>削除よろしいヌ？`, isDanger: true }, () => {
-        console.log('いええす', { ...i });
+      this.showConfirm(
+        {
+          title: 'アルバム削除',
+          text: `「${txt}」<br><br>削除よろしいヌ？`,
+          isDanger: true,
+        },
+        () => {
+          console.log('いええす', { ...i });
 
-        this.showLoading(true);
-        setTimeout(() => {
-          toast('アルバムを削除したヌ');
-          this.showLoading(false);
-        }, 3000);
-      });
+          this.showLoading(true);
+          setTimeout(() => {
+            toast('アルバムを削除したヌ');
+            this.showLoading(false);
+          }, 3000);
+        },
+      );
     },
     selectItem() {
       // this.drillDown({

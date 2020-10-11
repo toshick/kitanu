@@ -4,6 +4,7 @@ export type ActionRes = {
 };
 
 export type UserType = {
+  id: string;
   username: string;
   iconurl: string;
   subtext?: string;

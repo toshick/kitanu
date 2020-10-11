@@ -1,5 +1,10 @@
 <template>
-  <AppChat :chatitems="chatitems" :infoitems="infoitems" :connecting="connecting" />
+  <AppChat
+    :chatitems="chatitems"
+    :infoitems="infoitems"
+    :connecting="connecting"
+    :submit="onSubmit"
+  />
 </template>
 <!------------------------------->
 
@@ -34,6 +39,39 @@ export default Vue.extend({
     this.connecting = true;
     await chatStore.FetchPost();
     this.connecting = false;
+  },
+  methods: {
+    async onSubmit(p: {
+      fileItem?: FileItemType;
+      text: string;
+      reset?: () => void;
+      good?: number;
+      fukitype: string;
+    }) {
+      this.showInlineLoading(true);
+
+      const param: PostSubmitItemType = {
+        fileItem: p.fileItem || null,
+        text: p.text,
+        good: p.good || null,
+        fukitype: p.fukitype,
+        npc: false,
+      };
+      await chatStore.PostChat(param);
+      toast('とーこうしたヌ');
+      this.showInlineLoading(false);
+      if (p.reset) p.reset();
+
+      if (!p.good) {
+        setTimeout(() => {
+          this.kitanuTalk();
+        }, 1000);
+      }
+    },
+    showInlineLoading(flg: boolean) {
+      this.sending = flg;
+      this.scrollBottom();
+    },
   },
 });
 </script>

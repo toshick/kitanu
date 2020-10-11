@@ -1,7 +1,12 @@
 <template>
   <section class="app view albumlist">
     <AppHeader>
-      <img src="/img/top/tanu-white.png" class="tanu-header" alt="kitanu-header" @click="openMenu" />
+      <img
+        src="/img/top/tanu-white.png"
+        class="tanu-header"
+        alt="kitanu-header"
+        @click="openMenu"
+      />
       <h1>アルバムリスト</h1>
       <!-- right -->
       <template v-slot:right>
@@ -15,14 +20,30 @@
       <div class="album-body-head">
         <p class="album-text-des">
           アルバムだヌ
-          <a class="btn-des" :disabled="editing" @click.stop.prevent="description"><ion-icon name="finger-print-outline"></ion-icon></a>
+          <a
+            class="btn-des"
+            :disabled="editing"
+            @click.stop.prevent="description"
+            ><ion-icon name="finger-print-outline"></ion-icon
+          ></a>
         </p>
         <CaButton size="S" @click="createAlbum">新規作成</CaButton>
       </div>
       <!-- リスト -->
-      <AlbumList :items="albumItems" :editing="editing" @remove="startRemoveAlbum" @select="selectItem" />
+      <AlbumList
+        :items="albumItems"
+        :editing="editing"
+        @remove="startRemoveAlbum"
+        @select="selectItem"
+      />
     </div>
-    <AppFooter @talk="toast('ほおええええ')" @menu="openMenu" @setting="showSetting" @album="changeView('albumlist')" @home="changeView('/')" />
+    <AppFooter
+      @talk="toast('ほおええええ')"
+      @menu="openMenu"
+      @setting="showSetting"
+      @album="changeView('albumlist')"
+      @home="changeView('/')"
+    />
   </section>
 </template>
 <!------------------------------->
@@ -32,8 +53,6 @@
 import Vue from 'vue';
 import { openDialog, openView, toast } from '@/common/util';
 import { Input } from 'camaleao-design/components/type';
-import AppHeader from './AppHeader.vue';
-import AppFooter from './AppFooter.vue';
 import AlbumList from './parts/AlbumList.vue';
 import AboutAlbum from './description/AboutAlbum.vue';
 import { AlbumItemType } from './types/app';
@@ -47,8 +66,6 @@ type State = {
 export default Vue.extend({
   name: 'AppAlbumList',
   components: {
-    AppHeader,
-    AppFooter,
     AlbumList,
   },
   props: {},
@@ -99,15 +116,22 @@ export default Vue.extend({
     },
     startRemoveAlbum(i: AlbumItemType) {
       const txt = i.text.length > 15 ? `${i.text.slice(0, 15)}...` : i.text;
-      this.showConfirm({ title: 'アルバム削除', text: `「${txt}」<br><br>削除よろしいヌ？`, isDanger: true }, () => {
-        console.log('いええす', { ...i });
+      this.showConfirm(
+        {
+          title: 'アルバム削除',
+          text: `「${txt}」<br><br>削除よろしいヌ？`,
+          isDanger: true,
+        },
+        () => {
+          console.log('いええす', { ...i });
 
-        this.showLoading(true);
-        setTimeout(() => {
-          toast('アルバムを削除したヌ');
-          this.showLoading(false);
-        }, 3000);
-      });
+          this.showLoading(true);
+          setTimeout(() => {
+            toast('アルバムを削除したヌ');
+            this.showLoading(false);
+          }, 3000);
+        },
+      );
     },
     description() {
       const $t = this.$el.closest('.mobileview') || null;

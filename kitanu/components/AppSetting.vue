@@ -1,15 +1,21 @@
 <template>
   <section class="app view">
     <AppHeader>
-      <a class="btn-back" @click.stop.prevent="$emit('close')"><ion-icon name="chevron-back" size="medium" /></a>
+      <a class="btn-back" @click.stop.prevent="$emit('close')"
+        ><ion-icon name="chevron-back" size="medium"
+      /></a>
       <h1>せってい</h1>
       <template v-slot:right>
-        <a @click.stop.prevent="showModalPolicy"><ion-icon name="finger-print-outline" size="medium" /></a>
+        <a @click.stop.prevent="showModalPolicy"
+          ><ion-icon name="finger-print-outline" size="medium"
+        /></a>
       </template>
     </AppHeader>
     <AppBody>
       <div class="setting-user">
-        <UserIcon url="https://avatars3.githubusercontent.com/u/6635142?s=460&v=4" />
+        <UserIcon
+          url="https://avatars3.githubusercontent.com/u/6635142?s=460&v=4"
+        />
         <p>せかいのとしっく</p>
       </div>
 
@@ -40,9 +46,6 @@
 <script lang="ts">
 import Vue from 'vue';
 import { openModal, openDialog } from '@/common/util';
-import AppHeader from './AppHeader.vue';
-import AppBody from './AppBody.vue';
-import UserIcon from './parts/UserIcon.vue';
 import PrivacyPolicy from './parts/PrivacyPolicy.vue';
 import Kiyaku from './parts/Kiyaku.vue';
 
@@ -50,11 +53,7 @@ type State = {};
 
 export default Vue.extend({
   name: 'AppSetting',
-  components: {
-    AppHeader,
-    AppBody,
-    UserIcon,
-  },
+  components: {},
   props: {},
   data(): State {
     return {};

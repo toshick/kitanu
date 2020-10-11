@@ -1,6 +1,11 @@
 <template>
   <div :class="myClass">
-    <img class="lazy" :src="placeholderImg" data-src="https://avatars3.githubusercontent.com/u/6635142?s=460&v=4" alt="" />
+    <img
+      class="lazy"
+      :src="placeholderImg"
+      data-src="https://avatars3.githubusercontent.com/u/6635142?s=460&v=4"
+      alt=""
+    />
   </div>
 </template>
 <!------------------------------->
@@ -30,6 +35,8 @@ export default Vue.extend({
       let size = '';
       if (this.size && this.size === 'S') {
         size = '-size-s';
+      } else if (this.size && this.size === 'M') {
+        size = '-size-m';
       } else if (this.size && this.size === 'L') {
         size = '-size-l';
       }
@@ -52,6 +59,15 @@ export default Vue.extend({
     width: var(--size);
     height: var(--size);
     border-radius: calc(var(--size) * 0.5);
+  }
+  &.-size-m {
+    --size: 30px;
+    img {
+      display: block;
+      width: var(--size);
+      height: var(--size);
+      border-radius: calc(var(--size) * 0.5);
+    }
   }
   &.-size-s {
     --size: 20px;

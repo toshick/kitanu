@@ -1,7 +1,12 @@
 <template>
   <section class="app view">
     <AppHeader>
-      <img src="/img/top/tanu-white.png" class="tanu-header" alt="kitanu-header" @click="openMenu" />
+      <img
+        src="/img/top/tanu-white.png"
+        class="tanu-header"
+        alt="kitanu-header"
+        @click="openMenu"
+      />
       <h1>Member</h1>
       <!-- right -->
       <template v-slot:right>
@@ -9,13 +14,23 @@
       </template>
     </AppHeader>
     <AppBody>
-      <h2><input class="ca-input-editablelabel" value="アジをたんと釣りにいこうの会" /></h2>
+      <h2>
+        <input
+          class="ca-input-editablelabel"
+          value="アジをたんと釣りにいこうの会"
+        />
+      </h2>
       <div class="member-add">
-        <CaButton size="S" class="btn-add-member" @click="addMember"> メンバー追加 </CaButton>
+        <CaButton size="S" class="btn-add-member" @click="addMember">
+          メンバー追加
+        </CaButton>
       </div>
 
       <ul class="member-list">
-        <li v-for="(u, index) in members" :key="`member-${index}-${u.username}`">
+        <li
+          v-for="(u, index) in members"
+          :key="`member-${index}-${u.username}`"
+        >
           <UserIcon :url="u.iconurl" />
           <div class="member-label">
             <h3>{{ u.username }}</h3>
@@ -24,7 +39,12 @@
         </li>
       </ul>
     </AppBody>
-    <AppFooter @talk="toast('ほおええええ')" @menu="openMenu" @setting="showSetting" @home="changeView('/')" />
+    <AppFooter
+      @talk="toast('ほおええええ')"
+      @menu="openMenu"
+      @setting="showSetting"
+      @home="changeView('/')"
+    />
   </section>
 </template>
 <!------------------------------->
@@ -34,9 +54,6 @@
 import Vue from 'vue';
 import CaModalPG from 'camaleao-design/components/CaModalPG';
 import { openDialog } from '@/common/util';
-import AppHeader from './AppHeader.vue';
-import AppBody from './AppBody.vue';
-import UserIcon from './parts/UserIcon.vue';
 import { UserType } from './types/app';
 
 type State = {
@@ -44,18 +61,30 @@ type State = {
 };
 
 const members: UserType[] = [];
-members.push({ username: 'にゃんごろう', iconurl: 'https://avatars3.githubusercontent.com/u/6635142?s=460&v=4', subtext: 'いつだってオレンジ' });
-members.push({ username: 'カマキチ', iconurl: 'https://avatars3.githubusercontent.com/u/6635142?s=460&v=4', subtext: 'そろそろキャンプしたいぞ' });
-members.push({ username: 'エドブラウン', iconurl: 'https://avatars3.githubusercontent.com/u/6635142?s=460&v=4', subtext: '' });
-members.push({ username: 'サルバトーレトスカニーニ', iconurl: 'https://avatars3.githubusercontent.com/u/6635142?s=460&v=4', subtext: 'スパゲティつくってみた' });
+members.push({
+  username: 'にゃんごろう',
+  iconurl: 'https://avatars3.githubusercontent.com/u/6635142?s=460&v=4',
+  subtext: 'いつだってオレンジ',
+});
+members.push({
+  username: 'カマキチ',
+  iconurl: 'https://avatars3.githubusercontent.com/u/6635142?s=460&v=4',
+  subtext: 'そろそろキャンプしたいぞ',
+});
+members.push({
+  username: 'エドブラウン',
+  iconurl: 'https://avatars3.githubusercontent.com/u/6635142?s=460&v=4',
+  subtext: '',
+});
+members.push({
+  username: 'サルバトーレトスカニーニ',
+  iconurl: 'https://avatars3.githubusercontent.com/u/6635142?s=460&v=4',
+  subtext: 'スパゲティつくってみた',
+});
 
 export default Vue.extend({
   name: 'AppMember',
-  components: {
-    AppHeader,
-    AppBody,
-    UserIcon,
-  },
+  components: {},
   props: {},
   data(): State {
     return {
