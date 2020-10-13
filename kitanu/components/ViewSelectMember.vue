@@ -1,18 +1,18 @@
 <template>
   <section class="app view">
-    <AppHeader>
+    <ViewHeader>
       <a class="btn-back" @click.stop.prevent="$emit('close')"
         ><ion-icon name="chevron-down" size="medium"
       /></a>
-      <h1>ご友人をせんたくヌ</h1>
+      <h1>チャットにご友人を追加ヌ</h1>
       <!-- right -->
       <template v-slot:right>
         <a class="btn-header" :disabled="selectedCount === 0" @click="save"
           ><span>保存</span></a
         >
       </template>
-    </AppHeader>
-    <AppBody>
+    </ViewHeader>
+    <ViewBody>
       <div class="member-total">{{ selectedCount }}人</div>
       <ul class="member-list">
         <li
@@ -43,7 +43,7 @@
           </label>
         </li>
       </ul>
-    </AppBody>
+    </ViewBody>
   </section>
 </template>
 <!------------------------------->
@@ -52,14 +52,14 @@
 <script lang="ts">
 import Vue, { PropType } from 'vue';
 // import { openDialog } from '@/common/util';
-import { UserType } from './types/app';
+import { UserType } from '@/components/types/app';
 
 type State = {
   selectedMap: { [key: string]: string };
 };
 
 export default Vue.extend({
-  name: 'AppSelectMember',
+  name: 'ViewSelectMember',
   components: {},
   props: {
     members: {
@@ -147,11 +147,14 @@ export default Vue.extend({
         // color: #fff;
       }
     }
-    input[type='checkbox']:checked + div > b {
-      background-color: var(--app-base-color);
-      border: solid 2px #fff;
-      ion-icon {
-        display: block;
+    input[type='checkbox']:checked + div {
+      font-weight: bold;
+      & > b {
+        background-color: var(--app-base-color);
+        border: solid 2px #fff;
+        ion-icon {
+          display: block;
+        }
       }
     }
   }

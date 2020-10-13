@@ -1,5 +1,5 @@
 <template>
-  <AlbumDetail />
+  <ViewTop />
 </template>
 <!------------------------------->
 
@@ -9,14 +9,14 @@ import Vue from 'vue';
 // import dayjs from 'dayjs';
 // import { v4 as uuidv4 } from 'uuid';
 // import { toast } from '@/common/util';
-// import { FileItemType, PostItemType, UserType } from '@/components/types/app';
-import AlbumDetail from '@/container/AlbumDetail.vue';
+// import { UserType } from '@/components/types/app';
+import ViewTop from '@/components/ViewTop.vue';
 // import { postStore } from '@/store';
 
 type State = {};
 
 export default Vue.extend({
-  components: { AlbumDetail },
+  components: { ViewTop },
   data(): State {
     return {};
   },

@@ -1,6 +1,6 @@
 <template>
   <section class="app view chatlist">
-    <AppHeader>
+    <ViewHeader>
       <img
         src="/img/top/tanu-white.png"
         class="tanu-header"
@@ -12,8 +12,8 @@
       <template v-slot:right>
         <!-- <a href=""><ion-icon name="restaurant-outline" size="medium" /></a> -->
       </template>
-    </AppHeader>
-    <AppBody>
+    </ViewHeader>
+    <ViewBody>
       <ul class="chat-list">
         <li
           v-for="(u, index) in members"
@@ -28,8 +28,8 @@
           </a>
         </li>
       </ul>
-    </AppBody>
-    <AppFooter
+    </ViewBody>
+    <ViewFooter
       @talk="toast('ほおええええ')"
       @menu="openMenu"
       @setting="showSetting"
@@ -41,45 +41,24 @@
 
 <!------------------------------->
 <script lang="ts">
-import Vue from 'vue';
+import Vue, { PropType } from 'vue';
 import CaModalPG from 'camaleao-design/components/CaModalPG';
-import { openDialog } from '@/common/util';
+// import { openDialog } from '@/common/util';
 import { UserType } from './types/app';
 
-type State = {
-  members: UserType[];
-};
-
-const members: UserType[] = [];
-members.push({
-  username: 'にゃんごろう',
-  iconurl: 'https://avatars3.githubusercontent.com/u/6635142?s=460&v=4',
-  subtext: 'いつだってオレンジ',
-});
-members.push({
-  username: 'カマキチ',
-  iconurl: 'https://avatars3.githubusercontent.com/u/6635142?s=460&v=4',
-  subtext: 'そろそろキャンプしたいぞ',
-});
-members.push({
-  username: 'エドブラウン',
-  iconurl: 'https://avatars3.githubusercontent.com/u/6635142?s=460&v=4',
-  subtext: '',
-});
-members.push({
-  username: 'サルバトーレトスカニーニ',
-  iconurl: 'https://avatars3.githubusercontent.com/u/6635142?s=460&v=4',
-  subtext: 'スパゲティつくってみた',
-});
+type State = {};
 
 export default Vue.extend({
-  name: 'AppChatList',
+  name: 'ViewChatList',
   components: {},
-  props: {},
+  props: {
+    members: {
+      default: [],
+      type: Array as PropType<UserType[]>,
+    },
+  },
   data(): State {
-    return {
-      members,
-    };
+    return {};
   },
   mounted() {},
   methods: {

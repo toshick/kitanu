@@ -1,5 +1,5 @@
 <template>
-  <AlbumDetail />
+  <ViewAlbumList />
 </template>
 <!------------------------------->
 
@@ -10,13 +10,13 @@ import Vue from 'vue';
 // import { v4 as uuidv4 } from 'uuid';
 // import { toast } from '@/common/util';
 // import { FileItemType, PostItemType, UserType } from '@/components/types/app';
-import AlbumDetail from '@/container/AlbumDetail.vue';
+import ViewAlbumList from '@/components/ViewAlbumList.vue';
 // import { postStore } from '@/store';
 
 type State = {};
 
 export default Vue.extend({
-  components: { AlbumDetail },
+  components: { ViewAlbumList },
   data(): State {
     return {};
   },

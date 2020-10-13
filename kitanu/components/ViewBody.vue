@@ -12,7 +12,7 @@ import Vue from 'vue';
 type State = {};
 
 export default Vue.extend({
-  name: 'AppBody',
+  name: 'ViewBody',
   components: {},
   props: {
     klass: {

@@ -1,15 +1,23 @@
 <template>
-  <Setting />
+  <ViewActivityList @close="$emit('close')" />
 </template>
 <!------------------------------->
 
 <!------------------------------->
 <script lang="ts">
 import Vue from 'vue';
-import Setting from '@/container/Setting.vue';
+import ViewActivityList from '@/components/ViewActivityList.vue';
+
+type State = {};
 
 export default Vue.extend({
-  components: { Setting },
+  components: { ViewActivityList },
+  data(): State {
+    return {};
+  },
+  computed: {},
+  mounted() {},
+  methods: {},
 });
 </script>
 <!------------------------------->

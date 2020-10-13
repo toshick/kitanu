@@ -7,9 +7,10 @@ import '@/plugins/v-longpress.ts';
 
 import AppTop from '@/components/AppTop.vue';
 import AppSetting from '@/components/AppSetting.vue';
-import AppAlbumDetail from '@/components/AppAlbumDetail.vue';
+import AlbumDetail from '@/components/AlbumDetail.vue';
 import AppAlbumList from '@/components/AppAlbumList.vue';
 import AppSelectMember from '@/components/AppSelectMember.vue';
+import AppChatList from '@/components/AppChatList.vue';
 import AppChat from '@/components/AppChat.vue';
 
 import { infoitems, chatitems, postItems, members } from './dummydata.js';
@@ -19,10 +20,11 @@ Vue.prototype.$sanitize = sanitizeHTML;
 
 storiesOf('キータヌ', module).add('チャット', () => ({
   components: {
+    AppChatList,
     AppChat,
     AppTop,
     AppSetting,
-    AppAlbumDetail,
+    AlbumDetail,
     AppAlbumList,
     AppSelectMember,
   },
@@ -41,10 +43,11 @@ storiesOf('キータヌ', module).add('チャット', () => ({
   </div>
   <section class="appviews">
   <div class="mobileview"><AppTop :infoitems="infoitems" :chatitems="chatitems" /></div>
-  <div class="mobileview"><AppChat :chatitems="chatitems" :infoitems="infoitems" /></div>
+  <div class="mobileview"><AppChatList :members="members" /></div>
+  <div class="mobileview"><AppChat :chatitems="chatitems" :infoitems="infoitems" :members="members" /></div>
   <div class="mobileview"><AppSetting /></div>
   <div class="mobileview"><AppAlbumList /></div>
-  <div class="mobileview"><AppAlbumDetail :members="members" :post-items="postItems" /></div>
+  <div class="mobileview"><AlbumDetail :members="members" :post-items="postItems" /></div>
 
   <div class="mobileview"><AppSelectMember :members="members" /></div>
   

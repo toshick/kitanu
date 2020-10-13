@@ -1,6 +1,6 @@
 <template>
   <section class="app view">
-    <AppHeader>
+    <ViewHeader>
       <a class="btn-back" @click.stop.prevent="goAlbum"
         ><ion-icon name="chevron-back" size="medium"
       /></a>
@@ -24,8 +24,8 @@
           >
         </div>
       </template>
-    </AppHeader>
-    <AppBody>
+    </ViewHeader>
+    <ViewBody>
       <div class="album-body">
         <section class="album-des">
           <h1>みんなでピクニックにいってみようの巻</h1>
@@ -60,8 +60,8 @@
         </transition-group>
         <LoadingInline v-show="sending" class="loading-inline" />
       </div>
-    </AppBody>
-    <AppFooter mode="make" @talk="startTalk" @submit="onSubmit" />
+    </ViewBody>
+    <ViewFooter mode="make" @talk="startTalk" @submit="onSubmit" />
   </section>
 </template>
 <!------------------------------->
@@ -73,7 +73,7 @@ import dayjs from 'dayjs';
 import { toast, openView } from '@/common/util';
 import mixinScrollview from '@/mixin/mxinScrollview';
 import { UserType, PostItemType } from '@/components/types/app';
-import AppAlbumSetting from './AppAlbumSetting.vue';
+// import AppAlbumSetting from './AppAlbumSetting.vue';
 import TextInputModal from './parts/TextInputModal.vue';
 import PostItem from './parts/PostItem.vue';
 import LoadingInline from './parts/LoadingInline.vue';
@@ -83,7 +83,7 @@ type State = {
 };
 
 export default Vue.extend({
-  name: 'AppAlbumDetail',
+  name: 'ViewAlbumDetail',
   components: {
     PostItem,
     LoadingInline,
@@ -139,7 +139,7 @@ export default Vue.extend({
       this.changingOrder = true;
       this.$emit('startOrderChange');
     },
-    onOrderChange(p) {
+    onOrderChange(p: any) {
       this.$emit('orderChange', p);
     },
     finishEdit(save: boolean) {
@@ -167,7 +167,7 @@ export default Vue.extend({
       this.$emit('removePost', postitem.id);
     },
     goAlbumSetting() {
-      this.drillDown({ component: AppAlbumSetting });
+      // this.drillDown({ component: AppAlbumSetting });
     },
   },
 });

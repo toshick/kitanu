@@ -1,15 +1,23 @@
 <template>
-  <AppChatList />
+  <ChatList />
 </template>
 <!------------------------------->
 
 <!------------------------------->
 <script lang="ts">
 import Vue from 'vue';
-import AppChatList from '@/components/AppChatList.vue';
+import ChatList from '@/container/ChatList.vue';
+// import { UserType } from '@/components/types/app';
+
+type State = {};
 
 export default Vue.extend({
-  components: { AppChatList },
+  components: { ChatList },
+  data(): State {
+    return {};
+  },
+  mounted() {},
+  methods: {},
 });
 </script>
 <!------------------------------->

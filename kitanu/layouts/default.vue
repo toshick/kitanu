@@ -3,7 +3,11 @@
     <Nuxt />
     <!-- side menu -->
     <transition name="fade">
-      <CaModal v-if="visibleMenu" class="-sidemenu" @close="visibleMenu = false">
+      <CaModal
+        v-if="visibleMenu"
+        class="-sidemenu"
+        @close="visibleMenu = false"
+      >
         <CaModalSideMenu>
           <ModalSideMenu />
         </CaModalSideMenu>

@@ -1,6 +1,6 @@
 <template>
   <section class="app view albumlist">
-    <AppHeader>
+    <ViewHeader>
       <img
         src="/img/top/tanu-white.png"
         class="tanu-header"
@@ -15,7 +15,7 @@
           <span v-else>完了</span>
         </a>
       </template>
-    </AppHeader>
+    </ViewHeader>
     <div :class="myClass">
       <div class="album-body-head">
         <p class="album-text-des">
@@ -37,7 +37,7 @@
         @select="selectItem"
       />
     </div>
-    <AppFooter
+    <ViewFooter
       @talk="toast('ほおええええ')"
       @menu="openMenu"
       @setting="showSetting"
@@ -64,7 +64,7 @@ type State = {
 };
 
 export default Vue.extend({
-  name: 'AppAlbumList',
+  name: 'ViewAlbumList',
   components: {
     AlbumList,
   },

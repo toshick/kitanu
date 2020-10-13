@@ -1,15 +1,15 @@
 <template>
-  <AppFriends />
+  <FriendList />
 </template>
 <!------------------------------->
 
 <!------------------------------->
 <script lang="ts">
 import Vue from 'vue';
-import AppFriends from '@/components/AppFriends.vue';
+import FriendList from '@/container/FriendList.vue';
 
 export default Vue.extend({
-  components: { AppFriends },
+  components: { FriendList },
 });
 </script>
 <!------------------------------->

@@ -12,19 +12,19 @@ import {
   loading,
   placeholderImg,
 } from '@/common/util';
-import AppSetting from '@/components/AppSetting.vue';
-import ActivityList from '@/components/parts/ActivityList.vue';
+import Setting from '@/container/Setting.vue';
+import ActivityList from '@/container/ActivityList.vue';
 import Particle from '@/components/parts/Particle.vue';
 import UserIcon from '@/components/parts/UserIcon.vue';
-import AppHeader from '@/components/AppHeader.vue';
-import AppBody from '@/components/AppBody.vue';
-import AppFooter from '@/components/AppFooter.vue';
+import ViewHeader from '@/components/ViewHeader.vue';
+import ViewBody from '@/components/ViewBody.vue';
+import ViewFooter from '@/components/ViewFooter.vue';
 import 'camaleao-design/components/install';
 import 'camaleao-design/form/validation.ts';
 
-Vue.component('AppBody', AppBody);
-Vue.component('AppHeader', AppHeader);
-Vue.component('AppFooter', AppFooter);
+Vue.component('ViewBody', ViewBody);
+Vue.component('ViewHeader', ViewHeader);
+Vue.component('ViewFooter', ViewFooter);
 Vue.component('Particle', Particle);
 Vue.component('UserIcon', UserIcon);
 
@@ -183,7 +183,7 @@ Vue.mixin({
     },
     showSetting() {
       const $t = this.$el.closest('.mobileview') || null;
-      drillDown({ target: $t, component: AppSetting });
+      drillDown({ target: $t, component: Setting });
     },
     showConfirm(
       p: { title: string; text: string; isDanger?: boolean },

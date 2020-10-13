@@ -1,15 +1,15 @@
 <template>
-  <AppTop />
+  <Top />
 </template>
 <!------------------------------->
 
 <!------------------------------->
 <script lang="ts">
 import Vue from 'vue';
-import AppTop from '@/components/AppTop.vue';
+import Top from '@/container/Top.vue';
 
 export default Vue.extend({
-  components: { AppTop },
+  components: { Top },
 });
 </script>
 <!------------------------------->

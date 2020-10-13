@@ -15,7 +15,7 @@ import Vue from 'vue';
 type State = {};
 
 export default Vue.extend({
-  name: 'AppHeader',
+  name: 'ViewHeader',
   components: {},
   props: {},
   data(): State {
@@ -36,7 +36,10 @@ export default Vue.extend({
   position: relative;
   display: flex;
   align-items: center;
-  background: linear-gradient(var(--app-base-color) 60%, var(--app-base-color2) 0%);
+  background: linear-gradient(
+    var(--app-base-color) 60%,
+    var(--app-base-color2) 0%
+  );
   padding: 0px 15px 0 10px;
   height: 40px;
   border-bottom: solid 1px #ecde90;

@@ -1,15 +1,15 @@
 <template>
-  <AppAlbumList />
+  <AlbumList />
 </template>
 <!------------------------------->
 
 <!------------------------------->
 <script lang="ts">
 import Vue from 'vue';
-import AppAlbumList from '@/components/AppAlbumList.vue';
+import AlbumList from '@/container/AlbumList.vue';
 
 export default Vue.extend({
-  components: { AppAlbumList },
+  components: { AlbumList },
 });
 </script>
 <!------------------------------->

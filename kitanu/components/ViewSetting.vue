@@ -1,6 +1,6 @@
 <template>
   <section class="app view">
-    <AppHeader>
+    <ViewHeader>
       <a class="btn-back" @click.stop.prevent="$emit('close')"
         ><ion-icon name="chevron-back" size="medium"
       /></a>
@@ -10,8 +10,8 @@
           ><ion-icon name="finger-print-outline" size="medium"
         /></a>
       </template>
-    </AppHeader>
-    <AppBody>
+    </ViewHeader>
+    <ViewBody>
       <div class="setting-user">
         <UserIcon
           url="https://avatars3.githubusercontent.com/u/6635142?s=460&v=4"
@@ -37,7 +37,7 @@
           <a @click.stop.prevent="logout">ログアウト</a>
         </li>
       </ul>
-    </AppBody>
+    </ViewBody>
   </section>
 </template>
 <!------------------------------->
@@ -52,7 +52,7 @@ import Kiyaku from './parts/Kiyaku.vue';
 type State = {};
 
 export default Vue.extend({
-  name: 'AppSetting',
+  name: 'ViewSetting',
   components: {},
   props: {},
   data(): State {

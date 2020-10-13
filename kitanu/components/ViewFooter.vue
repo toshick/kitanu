@@ -36,15 +36,30 @@
     </template>
     <!-- make -->
     <template v-if="mymode == 'input'">
-      <ValidationProvider v-slot="{ valid }" class="talk-input" name="mycomment" :rules="'required'" tag="div">
+      <ValidationProvider
+        v-slot="{ valid }"
+        class="talk-input"
+        name="mycomment"
+        :rules="'required'"
+        tag="div"
+      >
         <!-- good button -->
-        <a v-show="!imgSelected" class="btn-icon btn-good" @click.stop.prevent="doGood">
+        <a
+          v-show="!imgSelected"
+          class="btn-icon btn-good"
+          @click.stop.prevent="doGood"
+        >
           <ion-icon name="heart-outline" />
         </a>
 
         <!-- <CaTextarea v-model="talkText" name="talkText" width="M" placeholder="コメント"></CaTextarea> -->
         <div class="textarea">
-          <textarea :value="talkText" :rows="talkTextRows" :placeholder="placeholder" @input="onInput" />
+          <textarea
+            :value="talkText"
+            :rows="talkTextRows"
+            :placeholder="placeholder"
+            @input="onInput"
+          />
           <ul v-show="imgSelected" class="preview">
             <li v-for="url in imgurls" :key="url" class="preview-item">
               <img :src="url" alt="" />
@@ -60,10 +75,19 @@
           </div>
         </div>
         <div v-if="mode === 'chat'" class="buttonsRight">
-          <a :disabled="!canSubmit(valid) || connecting" class="btn-icon btn-comment" @click.stop.prevent="() => submit()">
+          <a
+            :disabled="!canSubmit(valid) || connecting"
+            class="btn-icon btn-comment"
+            @click.stop.prevent="() => submit()"
+          >
             <ion-icon name="chatbubble-ellipses-outline"></ion-icon>
           </a>
-          <a v-show="!imgSelected" :disabled="!canSubmit(valid) || connecting" class="btn-icon btn-comment2" @click.stop.prevent="() => submit(true)">
+          <a
+            v-show="!imgSelected"
+            :disabled="!canSubmit(valid) || connecting"
+            class="btn-icon btn-comment2"
+            @click.stop.prevent="() => submit(true)"
+          >
             <ion-icon name="flash-outline" />
           </a>
         </div>
@@ -89,7 +113,7 @@ type State = {
 };
 
 export default Vue.extend({
-  name: 'AppFooter',
+  name: 'ViewFooter',
   components: { ValidationProvider, FileInput },
   props: {
     mode: {
@@ -199,7 +223,10 @@ export default Vue.extend({
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: linear-gradient(var(--app-base-color) 50%, var(--app-base-color2) 0%);
+  background: linear-gradient(
+    var(--app-base-color) 50%,
+    var(--app-base-color2) 0%
+  );
   padding: 0 30px;
   min-height: 50px;
   height: min-content;

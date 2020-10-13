@@ -1,6 +1,6 @@
 <template>
   <section class="app view">
-    <AppHeader>
+    <ViewHeader>
       <!-- <a class="btn-back" @click="openMenu"><ion-icon name="log-in-outline" size="medium" /></a> -->
       <img
         src="/img/top/tanu-white.png"
@@ -20,7 +20,7 @@
           ><ion-icon name="restaurant-outline" size="medium"
         /></a>
       </template>
-    </AppHeader>
+    </ViewHeader>
 
     <div class="top-body">
       <ChatInfo :infoitems="infoitems" />
@@ -63,7 +63,7 @@
       </section>
     </div>
 
-    <AppFooter
+    <ViewFooter
       @talk="confirm"
       @menu="openMenu"
       @album="changeView('albumlist')"
@@ -77,7 +77,6 @@
 import Vue, { PropType } from 'vue';
 import { toast, particleEffect } from '@/common/util';
 import { Input } from 'camaleao-design/components/type';
-import AppAlbumDetail from '@/components/AppAlbumDetail.vue';
 import ChatInfo from './parts/ChatInfo.vue';
 import AlbumList from './parts/AlbumList.vue';
 import ActivityList from './parts/ActivityList.vue';
@@ -90,7 +89,7 @@ type State = {
 };
 
 export default Vue.extend({
-  name: 'AppTop',
+  name: 'ViewTop',
   components: {
     AlbumList,
     ChatInfo,
@@ -164,9 +163,6 @@ export default Vue.extend({
       );
     },
     selectItem() {
-      // this.drillDown({
-      //   component: AppAlbumDetail,
-      // });
       this.$router.push('albumdetail');
     },
   },

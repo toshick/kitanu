@@ -1,6 +1,6 @@
 <template>
   <section class="app view chat">
-    <AppHeader>
+    <ViewHeader>
       <a class="btn-back" @click.stop.prevent="goChatList"
         ><ion-icon name="chevron-back" size="medium"
       /></a>
@@ -8,16 +8,15 @@
       <h1>{{ title }}</h1>
       <!-- right -->
       <template v-slot:right>
-        <a class="btn-header margin-left-auto" href=""
-          ><ion-icon name="log-in" size="medium"
-        /></a>
-        <a class="btn-header" @click="scrollBottom"
-          ><ion-icon name="log-in-outline" size="medium"
-        /></a>
+        <a
+          class="btn-header margin-left-auto"
+          @click.stop.prevent="selectMember"
+        >
+          <ion-icon name="skull-outline" size="medium"></ion-icon>
+        </a>
       </template>
-    </AppHeader>
-    <AppBody ref="appbody">
-      <ChatInfo :infoitems="infoitems" />
+    </ViewHeader>
+    <ViewBody ref="appbody">
       <ul>
         <li v-for="(i, index) in chatitems" :key="`${index}-${i.text}`">
           <ChatComment
@@ -34,13 +33,8 @@
         </li>
       </ul>
       <LoadingInline v-show="visbleInlineLoading" class="loading-inline" />
-    </AppBody>
-    <AppFooter
-      mode="chat"
-      @talk="startTalk"
-      @menu="openMenu"
-      @submit="onSubmit"
-    />
+    </ViewBody>
+    <ViewFooter mode="chat" @submit="onSubmit" />
   </section>
 </template>
 <!------------------------------->
@@ -48,31 +42,24 @@
 <!------------------------------->
 <script lang="ts">
 import Vue, { PropType } from 'vue';
-import { openView, toast } from '@/common/util';
 import mixinScrollview from '@/mixin/mxinScrollview';
 import {
   ChatCommentType,
   ChatInfoItemType,
-  FileItemType,
-  PostSubmitItemType,
+  UserType,
 } from '@/components/types/app';
-import { chatStore } from '@/store';
+
 import ChatComment from './parts/ChatComment.vue';
 import ChatCommentNPC from './parts/ChatCommentNPC.vue';
-import ChatInfo from './parts/ChatInfo.vue';
-import TextInputModal from './parts/TextInputModal.vue';
 import LoadingInline from './parts/LoadingInline.vue';
 
-type State = {
-  sending: boolean;
-};
+type State = {};
 
 export default Vue.extend({
   name: 'AppChat',
   components: {
     ChatComment,
     ChatCommentNPC,
-    ChatInfo,
     LoadingInline,
   },
   mixins: [mixinScrollview],
@@ -89,15 +76,21 @@ export default Vue.extend({
       default: () => [],
       type: Array as PropType<ChatInfoItemType[]>,
     },
+    members: {
+      default: () => [],
+      type: Array as PropType<UserType[]>,
+    },
     connecting: {
+      default: false,
+      type: Boolean,
+    },
+    sending: {
       default: false,
       type: Boolean,
     },
   },
   data(): State {
-    return {
-      sending: false,
-    };
+    return {};
   },
   computed: {
     visbleInlineLoading(): boolean {
@@ -118,32 +111,28 @@ export default Vue.extend({
     close() {
       this.$emit('close');
     },
-    startTalk() {
-      const $t = this.$el.closest('.mobileview') || null;
+    // startTalk() {
+    //   const $t = this.$el.closest('.mobileview') || null;
 
-      openView({
-        modalTitle: '確認しますヨ',
-        target: $t,
-        component: TextInputModal,
-        klass: ['view-textinput'],
-        compoParams: {
-          confirmText:
-            'なんだかしらんけどよろしいですか？なんだかしらんけどよろしいですか？',
-          onConfirm: () => {
-            console.log('いえす');
-          },
-        },
-      });
-    },
+    //   this.openView({
+    //     modalTitle: '確認しますヨ',
+    //     target: $t,
+    //     component: TextInputModal,
+    //     klass: ['view-textinput'],
+    //     compoParams: {
+    //       confirmText:
+    //         'なんだかしらんけどよろしいですか？なんだかしらんけどよろしいですか？',
+    //       onConfirm: () => {
+    //         console.log('いえす');
+    //       },
+    //     },
+    //   });
+    // },
     onSubmit(p: any) {
       this.$emit('submit', p);
     },
-
-    async kitanuTalk() {
-      const param: PostSubmitItemType = {
-        npc: true,
-      };
-      await chatStore.PostChat(param);
+    selectMember() {
+      this.$emit('selectMember');
     },
   },
 });
