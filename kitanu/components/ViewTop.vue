@@ -81,11 +81,11 @@ import ChatInfo from './parts/ChatInfo.vue';
 import AlbumList from './parts/AlbumList.vue';
 import ActivityList from './parts/ActivityList.vue';
 import AboutThisApp from './description/AboutThisApp.vue';
-import { AlbumItemType, ChatInfoItemType } from './types/app';
+import { TypeAlbumItem, TypeChatInfoItem } from './types/app';
 import { albumItems } from './sample';
 
 type State = {
-  albumItems: AlbumItemType[];
+  albumItems: TypeAlbumItem[];
 };
 
 export default Vue.extend({
@@ -97,7 +97,7 @@ export default Vue.extend({
   props: {
     infoitems: {
       default: () => [],
-      type: Array as PropType<ChatInfoItemType[]>,
+      type: Array as PropType<TypeChatInfoItem[]>,
     },
   },
   data(): State {
@@ -143,7 +143,7 @@ export default Vue.extend({
         },
       });
     },
-    startRemoveAlbum(i: AlbumItemType) {
+    startRemoveAlbum(i: TypeAlbumItem) {
       const txt = i.text.length > 15 ? `${i.text.slice(0, 15)}...` : i.text;
       this.showConfirm(
         {

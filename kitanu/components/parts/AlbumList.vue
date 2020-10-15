@@ -49,7 +49,7 @@
 <!------------------------------->
 <script lang="ts">
 import Vue, { PropType } from 'vue';
-import { AlbumItemType } from '../types/app';
+import { TypeAlbumItem } from '../types/app';
 
 type State = {};
 
@@ -69,7 +69,7 @@ export default Vue.extend({
   props: {
     items: {
       default: () => [],
-      type: Array as PropType<AlbumItemType[]>,
+      type: Array as PropType<TypeAlbumItem[]>,
     },
     editing: {
       default: false,
@@ -81,14 +81,14 @@ export default Vue.extend({
   },
   mounted() {},
   methods: {
-    selectItem(i: AlbumItemType) {
+    selectItem(i: TypeAlbumItem) {
       if (this.editing) {
         this.$emit('remove', i);
         return;
       }
       this.$emit('select', i);
     },
-    removeItem(i: AlbumItemType) {
+    removeItem(i: TypeAlbumItem) {
       this.$emit('remove', i);
     },
   },

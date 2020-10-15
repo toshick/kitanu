@@ -1,7 +1,11 @@
 <template>
   <div :class="myclass">
     <ul>
-      <li v-for="(i, index) in infoitems" :key="`info-${index}`" class="chatinfo-item">
+      <li
+        v-for="(i, index) in infoitems"
+        :key="`info-${index}`"
+        class="chatinfo-item"
+      >
         <div class="chatinfo-item-body">
           <p>{{ i.text }}</p>
           <div class="chatinfo-item-unread"><CaBadge :num="5" /></div>
@@ -16,7 +20,7 @@
 <!------------------------------->
 <script lang="ts">
 import Vue, { PropType } from 'vue';
-import { ChatInfoItemType } from '@/components/types/app';
+import { TypeChatInfoItem } from '@/components/types/app';
 
 type State = {
   urls: string[];
@@ -27,7 +31,7 @@ export default Vue.extend({
   props: {
     infoitems: {
       default: [],
-      type: Array as PropType<ChatInfoItemType[]>,
+      type: Array as PropType<TypeChatInfoItem[]>,
     },
   },
   data(): State {

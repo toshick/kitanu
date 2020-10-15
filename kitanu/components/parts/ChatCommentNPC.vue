@@ -31,7 +31,7 @@
 /* eslint vue/no-v-html: 0 */
 import dayjs from 'dayjs';
 import Vue, { PropType } from 'vue';
-import { ChatCommentType } from '@/components/types/app';
+import { TypeChatComment } from '@/components/types/app';
 
 type State = {
   urls: string[];
@@ -42,7 +42,7 @@ export default Vue.extend({
   name: 'ChatComment',
   props: {
     myitem: {
-      type: Object as PropType<ChatCommentType>,
+      type: Object as PropType<TypeChatComment>,
       required: true,
     },
     last: {
@@ -64,7 +64,9 @@ export default Vue.extend({
     },
     text(): string {
       if (!this.myitem) return '';
-      return this.myitem.text.replace(/http.*[a-zA-Z]?/, '').replace(/[\n]/g, '<br>');
+      return this.myitem.text
+        .replace(/http.*[a-zA-Z]?/, '')
+        .replace(/[\n]/g, '<br>');
     },
     postdate(): string {
       return dayjs(this.myitem.postdate).format('YYYY.MM.DD HH:mm:ss');

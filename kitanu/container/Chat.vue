@@ -28,11 +28,11 @@ import { toast } from '@/common/util';
 import ViewChat from '@/components/ViewChat.vue';
 import SelectMember from '@/container/SelectMember.vue';
 import {
-  ChatCommentType,
-  ChatInfoItemType,
-  PostSubmitItemType,
-  FileItemType,
-  UserType,
+  TypeChatComment,
+  TypeChatInfoItem,
+  TypePostSubmitItem,
+  TypeFileItem,
+  TypeUser,
 } from '@/components/types/app';
 import { chatStore, chatinfoStore } from '@/store';
 
@@ -52,13 +52,13 @@ export default Vue.extend({
     };
   },
   computed: {
-    chatitems(): ChatCommentType[] {
+    chatitems(): TypeChatComment[] {
       return chatStore.chatitems;
     },
-    infoitems(): ChatInfoItemType[] {
+    infoitems(): TypeChatInfoItem[] {
       return chatinfoStore.infoitems;
     },
-    members(): UserType[] {
+    members(): TypeUser[] {
       return chatStore.members;
     },
   },
@@ -69,7 +69,7 @@ export default Vue.extend({
   },
   methods: {
     async onSubmit(p: {
-      fileItem?: FileItemType;
+      fileItem?: TypeFileItem;
       text: string;
       reset?: () => void;
       good?: number;
@@ -77,7 +77,7 @@ export default Vue.extend({
     }) {
       this.showInlineLoading(true);
 
-      const param: PostSubmitItemType = {
+      const param: TypePostSubmitItem = {
         fileItem: p.fileItem || null,
         text: p.text,
         good: p.good || null,

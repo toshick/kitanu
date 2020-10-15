@@ -66,15 +66,15 @@
 import Vue from 'vue';
 // import CaModalPG from 'camaleao-design/components/CaModalPG';
 import { toast } from '@/common/util';
-import { UserType } from './types/app';
+import { TypeUser } from './types/app';
 
 type State = {
-  members: UserType[];
+  members: TypeUser[];
   title: string;
   des: string;
 };
 
-const members: UserType[] = [];
+const members: TypeUser[] = [];
 members.push({
   id: '0000001',
   username: 'にゃんごろう',

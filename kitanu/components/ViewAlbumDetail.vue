@@ -72,7 +72,7 @@ import Vue, { PropType } from 'vue';
 import dayjs from 'dayjs';
 import { toast, openView } from '@/common/util';
 import mixinScrollview from '@/mixin/mxinScrollview';
-import { UserType, PostItemType } from '@/components/types/app';
+import { TypeUser, TypePostItem } from '@/components/types/app';
 // import AppAlbumSetting from './AppAlbumSetting.vue';
 import TextInputModal from './parts/TextInputModal.vue';
 import PostItem from './parts/PostItem.vue';
@@ -96,11 +96,11 @@ export default Vue.extend({
     },
     members: {
       default: [],
-      type: Array as PropType<UserType[]>,
+      type: Array as PropType<TypeUser[]>,
     },
     postItems: {
       default: [],
-      type: Array as PropType<PostItemType[]>,
+      type: Array as PropType<TypePostItem[]>,
     },
   },
   data(): State {
@@ -163,7 +163,7 @@ export default Vue.extend({
       this.$emit('cancelChange');
       this.changingOrder = false;
     },
-    onRemovePost(postitem: PostItemType) {
+    onRemovePost(postitem: TypePostItem) {
       this.$emit('removePost', postitem.id);
     },
     goAlbumSetting() {

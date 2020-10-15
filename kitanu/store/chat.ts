@@ -4,12 +4,12 @@ import { Module, VuexModule, Mutation, Action } from 'vuex-module-decorators';
 import { asort } from '@/common/util';
 import {
   ActionRes,
-  ChatCommentType,
-  PostSubmitItemType,
-  UserType,
+  TypeChatComment,
+  TypePostSubmitItem,
+  TypeUser,
 } from '@/components/types/app';
 
-const members: UserType[] = [];
+const members: TypeUser[] = [];
 members.push({
   id: '0000001',
   username: 'にゃんごろう',
@@ -35,7 +35,7 @@ members.push({
   subtext: 'スパゲティつくってみた',
 });
 
-const chatitems: ChatCommentType[] = [];
+const chatitems: TypeChatComment[] = [];
 chatitems.push({
   id: uuidv4(),
   npc: false,
@@ -138,8 +138,8 @@ kitanuTalks.push('');
 
 @Module({ name: 'chat', stateFactory: true, namespaced: true })
 export default class MyClass extends VuexModule {
-  chatitems: ChatCommentType[] = [];
-  members: UserType[] = members;
+  chatitems: TypeChatComment[] = [];
+  members: TypeUser[] = members;
 
   // ----------------------
   // Mutation
@@ -151,7 +151,7 @@ export default class MyClass extends VuexModule {
   }
 
   @Mutation
-  ADD_CHAT(postitem: ChatCommentType) {
+  ADD_CHAT(postitem: TypeChatComment) {
     const ary = [...this.chatitems];
     ary.unshift(postitem);
     this.chatitems = asort(ary, 'postdate');
@@ -159,14 +159,14 @@ export default class MyClass extends VuexModule {
 
   @Mutation
   REMOVE_POST(id: string) {
-    this.chatitems = this.chatitems.filter((i: ChatCommentType) => i.id !== id);
+    this.chatitems = this.chatitems.filter((i: TypeChatComment) => i.id !== id);
   }
 
   @Mutation
-  UPDATE_POST(postitem: ChatCommentType) {
+  UPDATE_POST(postitem: TypeChatComment) {
     console.log('UPDATE_POST', postitem);
 
-    // this.chatitems = this.chatitems.map((i: ChatCommentType) => {
+    // this.chatitems = this.chatitems.map((i: TypeChatComment) => {
     //   if (i.id === postitem.id) {
     //     i = postitem;
     //   }
@@ -184,7 +184,7 @@ export default class MyClass extends VuexModule {
     // const date = dayjs().format('YYYY.MM.DD HH:mm:ss');
     return new Promise((resolve) => {
       setTimeout(() => {
-        chatitems.forEach((item: ChatCommentType) => {
+        chatitems.forEach((item: TypeChatComment) => {
           this.ADD_CHAT(item);
         });
         resolve();
@@ -193,7 +193,7 @@ export default class MyClass extends VuexModule {
   }
 
   @Action
-  PostChat(p: PostSubmitItemType): Promise<ActionRes> {
+  PostChat(p: TypePostSubmitItem): Promise<ActionRes> {
     let text = p.text || '';
     let iconurl =
       'https://storage.googleapis.com/toshickcom-a7f98.appspot.com/upload_images/%E3%82%A4%E3%83%A1%E3%83%BC%E3%82%B8-1595803900938.jpeg';
@@ -203,7 +203,7 @@ export default class MyClass extends VuexModule {
     }
     return new Promise((resolve) => {
       setTimeout(() => {
-        const item: ChatCommentType = {
+        const item: TypeChatComment = {
           id: uuidv4(),
           iconurl,
           text,

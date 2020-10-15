@@ -9,15 +9,15 @@ import Vue from 'vue';
 // import dayjs from 'dayjs';
 // import { v4 as uuidv4 } from 'uuid';
 // import { toast } from '@/common/util';
-import { UserType } from '@/components/types/app';
+import { TypeUser } from '@/components/types/app';
 import ViewChatList from '@/components/ViewChatList.vue';
 // import { postStore } from '@/store';
 
 type State = {
-  members: UserType[];
+  members: TypeUser[];
 };
 
-const members: UserType[] = [];
+const members: TypeUser[] = [];
 members.push({
   id: '898808392',
   username: 'にゃんごろう',

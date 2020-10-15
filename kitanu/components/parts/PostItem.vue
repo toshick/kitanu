@@ -1,15 +1,31 @@
 <template>
   <div :class="myClass">
-    <p v-show="text" class="postitem-text -top-left" v-html="$sanitize(text)"></p>
-    <img v-show="imgurl" class="postitem-img lazy" :src="placeholderImg" :data-src="imgurl" :alt="postitem.id" />
+    <p
+      v-show="text"
+      class="postitem-text -top-left"
+      v-html="$sanitize(text)"
+    ></p>
+    <img
+      v-show="imgurl"
+      class="postitem-img lazy"
+      :src="placeholderImg"
+      :data-src="imgurl"
+      :alt="postitem.id"
+    />
     <p class="postitem-index">{{ postitem.sortindex }}</p>
     <!-- editUI -->
     <div v-if="changingOrder" class="editUI">
       <div class="orderButtons">
-        <a class="btn-up -circle" :disabled="first" @click.stop.prevent="up"><ion-icon name="chevron-up-outline" size="medium" /></a>
-        <a class="btn-down -circle" :disabled="last" @click.stop.prevent="down"><ion-icon name="chevron-down-outline" size="medium" /></a>
+        <a class="btn-up -circle" :disabled="first" @click.stop.prevent="up"
+          ><ion-icon name="chevron-up-outline" size="medium"
+        /></a>
+        <a class="btn-down -circle" :disabled="last" @click.stop.prevent="down"
+          ><ion-icon name="chevron-down-outline" size="medium"
+        /></a>
       </div>
-      <a class="btn-del -circle" @click.stop.prevent="remove"><ion-icon name="close-outline" size="medium" /></a>
+      <a class="btn-del -circle" @click.stop.prevent="remove"
+        ><ion-icon name="close-outline" size="medium"
+      /></a>
     </div>
   </div>
 </template>
@@ -19,7 +35,7 @@
 <script lang="ts">
 /* eslint vue/no-v-html: 0 */
 import Vue, { PropType } from 'vue';
-import { PostItemType } from '@/components/types/app';
+import { TypePostItem } from '@/components/types/app';
 
 type State = {
   deleting: boolean;
@@ -30,7 +46,7 @@ export default Vue.extend({
   components: {},
   props: {
     postitem: {
-      type: Object as PropType<PostItemType>,
+      type: Object as PropType<TypePostItem>,
       default: null,
     },
     first: {

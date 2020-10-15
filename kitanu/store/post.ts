@@ -2,13 +2,13 @@ import dayjs from 'dayjs';
 import { v4 as uuidv4 } from 'uuid';
 import { Module, VuexModule, Mutation, Action } from 'vuex-module-decorators';
 import { asort, zeropad } from '@/common/util';
-import { ActionRes, PostItemType } from '@/components/types/app';
+import { ActionRes, TypePostItem } from '@/components/types/app';
 // import { setUpPostImg, firebase, postImgRef, tagRef, Tag, PostImg, PostImgUpdate, TagUpdate, PostImgRequest } from '@/plugins/firebase.ts';
 
 @Module({ name: 'post', stateFactory: true, namespaced: true })
 export default class MyClass extends VuexModule {
-  postitems: PostItemType[] = [];
-  postitemsBK: PostItemType[] = [];
+  postitems: TypePostItem[] = [];
+  postitemsBK: TypePostItem[] = [];
 
   // ----------------------
   // Mutation
@@ -31,16 +31,16 @@ export default class MyClass extends VuexModule {
   }
 
   @Mutation
-  ADD_POST(postitem: PostItemType) {
+  ADD_POST(postitem: TypePostItem) {
     const ary = [...this.postitems];
     ary.unshift(postitem);
     this.postitems = asort(ary, 'sortindex');
   }
 
   @Mutation
-  CHANGE_ORDER_POST(p: { postitem: PostItemType; direction: string }) {
+  CHANGE_ORDER_POST(p: { postitem: TypePostItem; direction: string }) {
     const { postitem, direction } = p;
-    let index = this.postitems.findIndex((p: PostItemType) => p.id === postitem.id);
+    let index = this.postitems.findIndex((p: TypePostItem) => p.id === postitem.id);
 
     if (index !== undefined) {
       if (direction === 'down') {
@@ -55,14 +55,14 @@ export default class MyClass extends VuexModule {
 
   @Mutation
   REMOVE_POST(id: string) {
-    this.postitems = this.postitems.filter((i: PostItemType) => i.id !== id);
+    this.postitems = this.postitems.filter((i: TypePostItem) => i.id !== id);
   }
 
   @Mutation
-  UPDATE_POST(postitem: PostItemType) {
+  UPDATE_POST(postitem: TypePostItem) {
     console.log('UPDATE_POST', postitem);
 
-    // this.postitems = this.postitems.map((i: PostItemType) => {
+    // this.postitems = this.postitems.map((i: TypePostItem) => {
     //   if (i.id === postitem.id) {
     //     i = postitem;
     //   }
@@ -79,7 +79,7 @@ export default class MyClass extends VuexModule {
     this.RESET_POST();
     const date = dayjs().format('YYYY.MM.DD HH:mm:ss');
 
-    const ary: PostItemType[] = [];
+    const ary: TypePostItem[] = [];
 
     // ddddd
     ary.push({
@@ -137,7 +137,7 @@ export default class MyClass extends VuexModule {
       sortindex: '0000006',
     });
 
-    ary.forEach((item: PostItemType) => {
+    ary.forEach((item: TypePostItem) => {
       this.ADD_POST(item);
     });
 
@@ -145,7 +145,7 @@ export default class MyClass extends VuexModule {
   }
 
   @Action
-  ChangeOrder(p: { postitem: PostItemType; direction: string }): Promise<ActionRes> {
+  ChangeOrder(p: { postitem: TypePostItem; direction: string }): Promise<ActionRes> {
     this.CHANGE_ORDER_POST(p);
 
     return Promise.resolve({});
@@ -157,10 +157,10 @@ export default class MyClass extends VuexModule {
   }
 
   @Action
-  PostItem(p: PostItemType): Promise<ActionRes> {
+  PostItem(p: TypePostItem): Promise<ActionRes> {
     return new Promise((resolve) => {
       setTimeout(() => {
-        // const item: PostItemType = {
+        // const item: TypePostItem = {
         //   id: uuidv4(),
         //   date: dayjs().format('YYYY.MM.DD HH:mm:ss'),
         //   text: 'せかいのとしっくです。こちらは謎の池を発見せり',

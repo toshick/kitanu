@@ -44,9 +44,9 @@
 import Vue, { PropType } from 'vue';
 import mixinScrollview from '@/mixin/mxinScrollview';
 import {
-  ChatCommentType,
-  ChatInfoItemType,
-  UserType,
+  TypeChatComment,
+  TypeChatInfoItem,
+  TypeUser,
 } from '@/components/types/app';
 
 import ChatComment from './parts/ChatComment.vue';
@@ -70,15 +70,15 @@ export default Vue.extend({
     },
     chatitems: {
       default: () => [],
-      type: Array as PropType<ChatCommentType[]>,
+      type: Array as PropType<TypeChatComment[]>,
     },
     infoitems: {
       default: () => [],
-      type: Array as PropType<ChatInfoItemType[]>,
+      type: Array as PropType<TypeChatInfoItem[]>,
     },
     members: {
       default: () => [],
-      type: Array as PropType<UserType[]>,
+      type: Array as PropType<TypeUser[]>,
     },
     connecting: {
       default: false,
@@ -98,7 +98,7 @@ export default Vue.extend({
     },
   },
   watch: {
-    chatitems(newdata: ChatCommentType[], olddata: ChatCommentType[]) {
+    chatitems(newdata: TypeChatComment[], olddata: TypeChatComment[]) {
       if (newdata.length !== olddata.length) {
         setTimeout(() => {
           this.scrollBottomSmooth();

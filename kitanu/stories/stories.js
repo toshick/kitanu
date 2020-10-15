@@ -5,28 +5,28 @@ import 'camaleao-design/components/install';
 import '@/plugins/global.ts';
 import '@/plugins/v-longpress.ts';
 
-import AppTop from '@/components/AppTop.vue';
-import AppSetting from '@/components/AppSetting.vue';
-import AlbumDetail from '@/components/AlbumDetail.vue';
-import AppAlbumList from '@/components/AppAlbumList.vue';
-import AppSelectMember from '@/components/AppSelectMember.vue';
-import AppChatList from '@/components/AppChatList.vue';
-import AppChat from '@/components/AppChat.vue';
+import ViewTop from '@/components/ViewTop.vue';
+import ViewSetting from '@/components/ViewSetting.vue';
+import ViewAlbumDetail from '@/components/ViewAlbumDetail.vue';
+import ViewAlbumList from '@/components/ViewAlbumList.vue';
+import ViewSelectMember from '@/components/ViewSelectMember.vue';
+import ViewChatList from '@/components/ViewChatList.vue';
+import ViewChat from '@/components/ViewChat.vue';
 
-import { infoitems, chatitems, postItems, members } from './dummydata.js';
+import { infoitems, chatitems, postItems, members, albumItems } from './dummydata.js';
 
 Vue.config.ignoredElements = ['ion-icon'];
 Vue.prototype.$sanitize = sanitizeHTML;
 
 storiesOf('キータヌ', module).add('チャット', () => ({
   components: {
-    AppChatList,
-    AppChat,
-    AppTop,
-    AppSetting,
-    AlbumDetail,
-    AppAlbumList,
-    AppSelectMember,
+    ViewChatList,
+    ViewChat,
+    ViewTop,
+    ViewSetting,
+    ViewAlbumDetail,
+    ViewAlbumList,
+    ViewSelectMember,
   },
   data: () => {
     return {
@@ -34,6 +34,7 @@ storiesOf('キータヌ', module).add('チャット', () => ({
       infoitems,
       postItems,
       members,
+      albumItems,
     };
   },
   template: `<main>
@@ -42,14 +43,14 @@ storiesOf('キータヌ', module).add('チャット', () => ({
     ・スワイプいれる？
   </div>
   <section class="appviews">
-  <div class="mobileview"><AppTop :infoitems="infoitems" :chatitems="chatitems" /></div>
-  <div class="mobileview"><AppChatList :members="members" /></div>
-  <div class="mobileview"><AppChat :chatitems="chatitems" :infoitems="infoitems" :members="members" /></div>
-  <div class="mobileview"><AppSetting /></div>
-  <div class="mobileview"><AppAlbumList /></div>
-  <div class="mobileview"><AlbumDetail :members="members" :post-items="postItems" /></div>
+  <div class="mobileview"><ViewTop :infoitems="infoitems" :chatitems="chatitems" /></div>
+  <div class="mobileview"><ViewChatList :members="members" /></div>
+  <div class="mobileview"><ViewChat :chatitems="chatitems" :infoitems="infoitems" :members="members" /></div>
+  <div class="mobileview"><ViewSetting /></div>
+  <div class="mobileview"><ViewAlbumList :albumItems="albumItems" /></div>
+  <div class="mobileview"><ViewAlbumDetail :members="members" :post-items="postItems" /></div>
 
-  <div class="mobileview"><AppSelectMember :members="members" /></div>
+  <div class="mobileview"><ViewSelectMember :members="members" /></div>
   
 
   

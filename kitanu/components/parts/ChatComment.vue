@@ -1,16 +1,29 @@
 <template>
   <div v-if="myitem" :class="myclass">
     <div class="chatitem-icon">
-      <img class="chat-usericon lazy" :src="placeholderImg" :data-src="myitem.iconurl" alt="" />
+      <img
+        class="chat-usericon lazy"
+        :src="placeholderImg"
+        :data-src="myitem.iconurl"
+        alt=""
+      />
     </div>
     <div class="chatitem-body">
       <!-- text -->
-      <p v-if="!isGood" class="chatitem-body-text wf-nicomoji" v-html="$sanitize(text)"></p>
+      <p
+        v-if="!isGood"
+        class="chatitem-body-text wf-nicomoji"
+        v-html="$sanitize(text)"
+      ></p>
       <!-- good -->
       <div v-if="isGood" class="chatitem-body-good">
         <transition name="fade">
           <p v-if="visibleGood" class="wf-nicomoji">
-            <ion-icon v-for="g in +myitem.good" :key="`good${g}`" name="heart-outline" />
+            <ion-icon
+              v-for="g in +myitem.good"
+              :key="`good${g}`"
+              name="heart-outline"
+            />
             <!-- <img class="lazy" :src="placeholderImg" :data-src="`/img/good${myitem.good}.png`" alt="" /> -->
           </p>
         </transition>
@@ -38,7 +51,7 @@
 /* eslint vue/no-v-html: 0 */
 import dayjs from 'dayjs';
 import Vue, { PropType } from 'vue';
-import { ChatCommentType } from '@/components/types/app';
+import { TypeChatComment } from '@/components/types/app';
 
 type State = {
   urls: string[];
@@ -53,7 +66,7 @@ export default Vue.extend({
       type: Boolean,
     },
     myitem: {
-      type: Object as PropType<ChatCommentType>,
+      type: Object as PropType<TypeChatComment>,
       required: true,
     },
     last: {
@@ -84,7 +97,9 @@ export default Vue.extend({
     },
     text(): string {
       if (!this.myitem) return '';
-      return this.myitem.text.replace(/http.*[a-zA-Z]?/, '').replace(/[\n]/g, '<br>');
+      return this.myitem.text
+        .replace(/http.*[a-zA-Z]?/, '')
+        .replace(/[\n]/g, '<br>');
     },
     postdate(): string {
       return dayjs(this.myitem.postdate).format('YYYY.MM.DD HH:mm:ss');

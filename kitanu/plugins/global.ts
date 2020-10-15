@@ -120,18 +120,23 @@ Vue.mixin({
   },
   methods: {
     goTop() {
+      if (!this.$router) return;
       this.$router.push('/');
     },
     goAlbum() {
+      if (!this.$router) return;
       this.$router.push('/albumlist');
     },
     goFriendList() {
+      if (!this.$router) return;
       this.$router.push('/friendlist');
     },
     goChatList() {
+      if (!this.$router) return;
       this.$router.push('/chatlist');
     },
     changeView(name: string) {
+      if (!this.$router) return;
       this.$router.push(name);
     },
     drillDown(params: OpenParams) {

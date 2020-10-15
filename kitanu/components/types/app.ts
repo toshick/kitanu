@@ -3,42 +3,43 @@ export type ActionRes = {
   ok?: boolean;
 };
 
-export type UserType = {
+export type TypeUser = {
   id: string;
   username: string;
   iconurl: string;
   subtext?: string;
 };
 
-export type AlbumItemType = {
+export type TypeAlbumItem = {
+  id: string;
   date: string;
   dateDisp: string;
   text: string;
-  members: UserType[];
+  members: TypeUser[];
 };
 
-export type PostSubmitItemType = {
-  fileItem?: FileItemType | null;
+export type TypePostSubmitItem = {
+  fileItem?: TypeFileItem | null;
   text?: string;
   good?: number | null;
   fukitype?: string;
   npc: boolean;
 };
 
-export type FileItemType = {
+export type TypeFileItem = {
   file?: File;
   base64str: string;
 };
 
-export type PostItemType = {
+export type TypePostItem = {
   id: string;
   date: string;
   text: string;
-  fileItem?: FileItemType | null;
+  fileItem?: TypeFileItem | null;
   sortindex?: string;
 };
 
-export type ChatCommentType = {
+export type TypeChatComment = {
   id: string;
   npc: boolean;
   iconurl: string;
@@ -50,7 +51,7 @@ export type ChatCommentType = {
   good?: number;
 };
 
-export type ChatInfoItemType = {
+export type TypeChatInfoItem = {
   id: string;
   text: string;
   username: string;

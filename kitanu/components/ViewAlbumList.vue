@@ -55,11 +55,9 @@ import { openDialog, openView, toast } from '@/common/util';
 import { Input } from 'camaleao-design/components/type';
 import AlbumList from './parts/AlbumList.vue';
 import AboutAlbum from './description/AboutAlbum.vue';
-import { AlbumItemType } from './types/app';
-import { albumItems } from './sample';
+import { TypeAlbumItem } from './types/app';
 
 type State = {
-  albumItems: AlbumItemType[];
   editing: boolean;
 };
 
@@ -68,10 +66,14 @@ export default Vue.extend({
   components: {
     AlbumList,
   },
-  props: {},
+  props: {
+    albumItems: {
+      default: () => [],
+      type: Array as PropType<TypeAlbumItem[]>,
+    },
+  },
   data(): State {
     return {
-      albumItems,
       editing: false,
     };
   },
@@ -87,8 +89,8 @@ export default Vue.extend({
   },
   mounted() {},
   methods: {
-    selectItem() {
-      this.$router.push('albumdetail');
+    selectItem(i: TypeAlbumItem) {
+      this.$emit('selected', i.id);
     },
     createAlbum() {
       const inputs: Input[] = [];
@@ -114,7 +116,7 @@ export default Vue.extend({
         },
       });
     },
-    startRemoveAlbum(i: AlbumItemType) {
+    startRemoveAlbum(i: TypeAlbumItem) {
       const txt = i.text.length > 15 ? `${i.text.slice(0, 15)}...` : i.text;
       this.showConfirm(
         {

@@ -7,7 +7,7 @@
 <script lang="ts">
 import Vue, { PropType } from 'vue';
 import ViewSelectMember from '@/components/ViewSelectMember.vue';
-import { UserType } from '@/components/types/app';
+import { TypeUser } from '@/components/types/app';
 
 type State = {};
 
@@ -16,7 +16,7 @@ export default Vue.extend({
   props: {
     members: {
       default: () => [],
-      type: Array as PropType<UserType[]>,
+      type: Array as PropType<TypeUser[]>,
     },
   },
   data(): State {

@@ -2,9 +2,9 @@ import dayjs from 'dayjs';
 import { v4 as uuidv4 } from 'uuid';
 import { Module, VuexModule, Mutation, Action } from 'vuex-module-decorators';
 import { asort } from '@/common/util';
-import { ActionRes, ChatInfoItemType } from '@/components/types/app';
+import { ActionRes, TypeChatInfoItem } from '@/components/types/app';
 
-const infoitems: ChatInfoItemType[] = [];
+const infoitems: TypeChatInfoItem[] = [];
 infoitems.push({
   id: uuidv4(),
   text: '来れる人は1230に第二リフト乗り場下のレストランに集合だぞ',
@@ -26,7 +26,7 @@ infoitems.push({
 
 @Module({ name: 'chatinfo', stateFactory: true, namespaced: true })
 export default class MyClass extends VuexModule {
-  infoitems: ChatInfoItemType[] = [];
+  infoitems: TypeChatInfoItem[] = [];
 
   // ----------------------
   // Mutation
@@ -38,7 +38,7 @@ export default class MyClass extends VuexModule {
   }
 
   @Mutation
-  ADD_CHAT(postitem: ChatInfoItemType) {
+  ADD_CHAT(postitem: TypeChatInfoItem) {
     const ary = [...this.infoitems];
     ary.unshift(postitem);
     this.infoitems = asort(ary, 'postdate').reverse();
@@ -46,14 +46,16 @@ export default class MyClass extends VuexModule {
 
   @Mutation
   REMOVE_POST(id: string) {
-    this.infoitems = this.infoitems.filter((i: ChatInfoItemType) => i.id !== id);
+    this.infoitems = this.infoitems.filter(
+      (i: TypeChatInfoItem) => i.id !== id,
+    );
   }
 
   @Mutation
-  UPDATE_POST(postitem: ChatInfoItemType) {
+  UPDATE_POST(postitem: TypeChatInfoItem) {
     console.log('UPDATE_POST', postitem);
 
-    // this.chatitems = this.chatitems.map((i: ChatInfoItemType) => {
+    // this.chatitems = this.chatitems.map((i: TypeChatInfoItem) => {
     //   if (i.id === postitem.id) {
     //     i = postitem;
     //   }
@@ -70,7 +72,7 @@ export default class MyClass extends VuexModule {
     this.RESET_POST();
     // const date = dayjs().format('YYYY.MM.DD HH:mm:ss');
 
-    infoitems.forEach((item: ChatInfoItemType) => {
+    infoitems.forEach((item: TypeChatInfoItem) => {
       this.ADD_CHAT(item);
     });
 

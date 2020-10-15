@@ -34,11 +34,11 @@
 <!------------------------------->
 <script lang="ts">
 import Vue from 'vue';
-import { UserType } from '@/components/types/app';
+import { TypeUser } from '@/components/types/app';
 import UserIcon from '@/components/parts/UserIcon.vue';
 
 type Item = {
-  user: UserType;
+  user: TypeUser;
   text: string;
   date: string;
   tag?: string[];

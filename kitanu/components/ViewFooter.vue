@@ -102,12 +102,12 @@
 import Vue, { PropType } from 'vue';
 import { ValidationProvider } from 'vee-validate';
 import FileInput from '@/components/parts/FileInput.vue';
-import { FileItemType } from '@/components/types/app';
+import { TypeFileItem } from '@/components/types/app';
 import { hiraToKana } from '@/common/util';
 
 type State = {
   talkText: string;
-  fileItems: FileItemType[];
+  fileItems: TypeFileItem[];
   timerIDInput: NodeJS.Timer | null;
   connecting: boolean;
 };
@@ -147,7 +147,7 @@ export default Vue.extend({
       return tmp.length + count;
     },
     imgurls(): string[] {
-      return this.fileItems.map((fileItem: FileItemType) => {
+      return this.fileItems.map((fileItem: TypeFileItem) => {
         return fileItem.base64str;
       });
     },
@@ -173,11 +173,11 @@ export default Vue.extend({
     //   this.imgurls = ['https://storage.googleapis.com/toshickcom-a7f98.appspot.com/upload_images/Camera_2020-07-24_18.23.00-1595582593445.jpeg'];
     // },
     removeImg(url: string) {
-      this.fileItems = this.fileItems.filter((fileItem: FileItemType) => {
+      this.fileItems = this.fileItems.filter((fileItem: TypeFileItem) => {
         return fileItem.base64str !== url;
       });
     },
-    onImgLoaded(i: FileItemType) {
+    onImgLoaded(i: TypeFileItem) {
       this.fileItems.push(i);
     },
     onInput(e: InputEvent) {

@@ -54,7 +54,7 @@
 import Vue, { PropType } from 'vue';
 import CaModalPG from 'camaleao-design/components/CaModalPG';
 // import { openDialog } from '@/common/util';
-import { UserType } from './types/app';
+import { TypeUser } from './types/app';
 
 type State = {};
 
@@ -64,7 +64,7 @@ export default Vue.extend({
   props: {
     members: {
       default: [],
-      type: Array as PropType<UserType[]>,
+      type: Array as PropType<TypeUser[]>,
     },
   },
   data(): State {

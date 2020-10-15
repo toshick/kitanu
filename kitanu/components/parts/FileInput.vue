@@ -12,10 +12,10 @@
 <!------------------------------->
 <script lang="ts">
 import Vue from 'vue';
-import { FileItemType } from '@/components/types/app';
+import { TypeFileItem } from '@/components/types/app';
 
 type State = {
-  files: FileItemType[];
+  files: TypeFileItem[];
 };
 
 export default Vue.extend({
@@ -47,7 +47,7 @@ export default Vue.extend({
             reader.onload = (e: Event) => {
               const fr = e.target as FileReader;
               const base64str: string = fr.result as string;
-              const fitem: FileItemType = {
+              const fitem: TypeFileItem = {
                 file: f,
                 base64str,
               };
