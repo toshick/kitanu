@@ -6,6 +6,7 @@
       :connecting="connecting"
       :sending="sending"
       :submit="onSubmit"
+      :close="$emit('close')"
       @selectMember="visibleSelectMember = true"
     />
     <!-- SelectMember -->

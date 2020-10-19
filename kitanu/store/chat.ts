@@ -120,7 +120,7 @@ kitanuTalks.push('オレハシバラクチカニモグルヌ');
 kitanuTalks.push('マッタククレイジーナジャポネーゼダゼ');
 kitanuTalks.push('ソロソロシゴトノハナシヲシナイカネ');
 kitanuTalks.push('イマサライノチゴイカ');
-kitanuTalks.push('ソレハチャーハンヨリカチガアルノカ？');
+kitanuTalks.push('ソレハチャーハンヨリカチガアルノカヌ？');
 kitanuTalks.push('マイニチガエブリデイ');
 kitanuTalks.push(
   'コノチキュウジョウニ、ジブンタチヨリツヨイチカラガソンザイスルコトヲオシエテヤロウヌ',
@@ -133,7 +133,7 @@ kitanuTalks.push('カエッタラニホンシュダゾ');
 kitanuTalks.push('ソーイウカンガエカタモアルノネ');
 kitanuTalks.push('ソンナトキハ、ジンガデコキュウヲトトノエロ');
 kitanuTalks.push('イマノハワルクナカッタヌ');
-kitanuTalks.push('');
+kitanuTalks.push('ジュッチュウハックワナダヌ');
 kitanuTalks.push('');
 
 @Module({ name: 'chat', stateFactory: true, namespaced: true })

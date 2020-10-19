@@ -6,6 +6,7 @@
     "common/util.ts",
     "package.json",
     "types/vue-shim.d.ts",
-    "components/types/app.ts"
+    "components/types/app.ts",
+    "store"
   ]
 }

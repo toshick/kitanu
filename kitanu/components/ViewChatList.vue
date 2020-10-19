@@ -19,7 +19,7 @@
           v-for="(u, index) in members"
           :key="`member-${index}-${u.username}`"
         >
-          <a class="chat-item" @click="() => goChatDetail()">
+          <a class="chat-item" @click="() => goChatDetail(u.id)">
             <UserIcon :url="u.iconurl" />
             <div class="chat-item-body">
               <h3>{{ u.username }}</h3>
@@ -62,9 +62,8 @@ export default Vue.extend({
   },
   mounted() {},
   methods: {
-    goChatDetail() {
-      // this.$router.push('/chatdetail/444');
-      this.$emit('selected', 444);
+    goChatDetail(id: string) {
+      this.$emit('selected', id);
     },
   },
 });

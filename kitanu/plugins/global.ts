@@ -20,7 +20,7 @@ import ViewHeader from '@/components/ViewHeader.vue';
 import ViewBody from '@/components/ViewBody.vue';
 import ViewFooter from '@/components/ViewFooter.vue';
 import 'camaleao-design/components/install';
-import 'camaleao-design/form/validation.ts';
+import 'camaleao-design/form/validation';
 
 Vue.component('ViewBody', ViewBody);
 Vue.component('ViewHeader', ViewHeader);

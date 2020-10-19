@@ -1,8 +1,5 @@
 import { shuffle, hiraToKana } from '../util';
 
-jest.mock('camaleao-design/components/CaModalPG');
-jest.mock('camaleao-design/components/CaToastPG');
-
 describe('shuffle', () => {
   test('shuffle', () => {
     const ary1 = Array.from(Array(10)).map((_, index: number) => index);

@@ -39,7 +39,7 @@
         </div>
       </div>
     </div>
-    <a class="btn-more" href=""
+    <a class="btn-more" @click.stop.prevent="$emit('more')"
       ><ion-icon name="chevron-down-outline" size="large"
     /></a>
   </section>

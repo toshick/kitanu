@@ -35,6 +35,7 @@
         :editing="editing"
         @remove="startRemoveAlbum"
         @select="selectItem"
+        @more="more"
       />
     </div>
     <ViewFooter
@@ -50,7 +51,7 @@
 
 <!------------------------------->
 <script lang="ts">
-import Vue from 'vue';
+import Vue, { PropType } from 'vue';
 import { openDialog, openView, toast } from '@/common/util';
 import { Input } from 'camaleao-design/components/type';
 import AlbumList from './parts/AlbumList.vue';
@@ -142,6 +143,9 @@ export default Vue.extend({
         component: AboutAlbum,
         klass: ['view-about'],
       });
+    },
+    more() {
+      this.$emit('more');
     },
   },
 });

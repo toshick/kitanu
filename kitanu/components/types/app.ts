@@ -45,7 +45,7 @@ export type TypeChatComment = {
   iconurl: string;
   text: string;
   username: string;
-  postdate: number;
+  postdate: string;
   fukitype?: string;
   imgurl?: string;
   good?: number;

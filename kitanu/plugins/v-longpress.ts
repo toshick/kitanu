@@ -29,7 +29,7 @@ function setEvent(el: HTMLElement, binding: VNodeDirective) {
 
   function onMouseDown() {
     if (timerID) clearTimeout(timerID);
-    timerID = setTimeout(() => {
+    timerID = <any>setTimeout(() => {
       if (func) func();
       timerID = null;
     }, duration);

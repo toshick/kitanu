@@ -1,17 +1,13 @@
 <template>
-  <ViewChatList :members="members" />
+  <ViewChatList :members="members" @selected="onSelected" />
 </template>
 <!------------------------------->
 
 <!------------------------------->
 <script lang="ts">
 import Vue from 'vue';
-// import dayjs from 'dayjs';
-// import { v4 as uuidv4 } from 'uuid';
-// import { toast } from '@/common/util';
 import { TypeUser } from '@/components/types/app';
 import ViewChatList from '@/components/ViewChatList.vue';
-// import { postStore } from '@/store';
 
 type State = {
   members: TypeUser[];
@@ -40,7 +36,11 @@ export default Vue.extend({
   },
   computed: {},
   mounted() {},
-  methods: {},
+  methods: {
+    onSelected(id: string) {
+      this.$router.push(`/chatdetail/${id}`);
+    },
+  },
 });
 </script>
 <!------------------------------->
