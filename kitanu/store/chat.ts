@@ -42,7 +42,7 @@ chatitems.push({
   iconurl: 'https://avatars3.githubusercontent.com/u/6635142?s=460&v=4',
   text: 'そんなときはジンガで呼吸を整えるんだッ',
   username: 'スネークのすけ',
-  postdate: 1601114526252,
+  postdate: '1601114526252',
   imgurl:
     'https://storage.googleapis.com/toshickcom-a7f98.appspot.com/upload_images/%E3%82%A4%E3%83%A1%E3%83%BC%E3%82%B8-1595803900938.jpeg',
 });
@@ -52,7 +52,7 @@ chatitems.push({
   iconurl: 'https://avatars3.githubusercontent.com/u/6635142?s=460&v=4',
   text: 'そんなときはジンガで呼吸を整えるんだッ',
   username: 'スネークのすけ',
-  postdate: 1601114626252,
+  postdate: '1601114626252',
   fukitype: 'fuki3',
 });
 chatitems.push({
@@ -63,7 +63,7 @@ chatitems.push({
   text:
     '初弾を手動で排莢していたな。考え方はおかしくない。だが聞きかじっただけの行為を実戦で試すもんじゃない',
   username: 'カマキチのすけ',
-  postdate: 1601114726252,
+  postdate: '1601114726252',
 });
 chatitems.push({
   id: uuidv4(),
@@ -72,7 +72,7 @@ chatitems.push({
   text:
     'そんなときはジンガで呼吸を整えるんだッ\nそんなときはジンガで呼吸を整えるんだッ',
   username: 'スネークのすけ',
-  postdate: 1601114826252,
+  postdate: '1601114826252',
   fukitype: 'fuki4',
 });
 chatitems.push({
@@ -82,7 +82,7 @@ chatitems.push({
   text:
     '追いこまれた狐はジャッカルより凶暴だ！！ https://storage.googleapis.com/toshickcom-a7f98.appspot.com/upload_images/Camera_2020-07-24_18.23.00-1595582593445.jpeg',
   username: 'スネークのすけ',
-  postdate: 1601114926252,
+  postdate: '1601114926252',
 });
 chatitems.push({
   id: uuidv4(),
@@ -91,7 +91,7 @@ chatitems.push({
   text:
     'スネーク、俺達は政府や誰かの道具じゃない\n戦うことでしか自分を表現できなかったが、いつも自分の意志で戦ってきた。',
   username: 'グレイフォックスのすけ',
-  postdate: 1601114926652,
+  postdate: '1601114926652',
   fukitype: 'fuki2',
 });
 
@@ -208,7 +208,7 @@ export default class MyClass extends VuexModule {
           iconurl,
           text,
           username: 'にゃおすけ',
-          postdate: dayjs().valueOf(),
+          postdate: `${dayjs().valueOf()}`,
           imgurl: p.fileItem ? p.fileItem.base64str : '',
           good: p.good || 0,
           fukitype: p.fukitype || '',
