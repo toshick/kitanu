@@ -1,5 +1,9 @@
 <template>
-  <ViewAlbumList :album-items="albumItems" @selected="onSelected" />
+  <ViewAlbumList
+    :album-items="albumItems"
+    @selected="onSelected"
+    @more="onMore"
+  />
 </template>
 <!------------------------------->
 
@@ -31,6 +35,10 @@ export default Vue.extend({
     },
     onSelected(albumId: number) {
       console.log('selected', albumId);
+      this.$router.push(`/albumlist/${albumId}`);
+    },
+    onMore() {
+      console.log('onMore');
     },
   },
 });

@@ -38,13 +38,7 @@
         @more="more"
       />
     </div>
-    <ViewFooter
-      @talk="toast('ほおええええ')"
-      @menu="openMenu"
-      @setting="showSetting"
-      @album="changeView('albumlist')"
-      @home="changeView('/')"
-    />
+    <ViewFooter />
   </section>
 </template>
 <!------------------------------->

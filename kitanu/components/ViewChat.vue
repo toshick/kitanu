@@ -10,7 +10,7 @@
       <template v-slot:right>
         <a
           class="btn-header margin-left-auto"
-          @click.stop.prevent="selectMember"
+          @click.stop.prevent="$emit('select-member')"
         >
           <ion-icon name="skull-outline" size="medium"></ion-icon>
         </a>
@@ -34,7 +34,11 @@
       </ul>
       <LoadingInline v-show="visbleInlineLoading" class="loading-inline" />
     </ViewBody>
-    <ViewFooter mode="chat" @submit="onSubmit" />
+    <ViewFooter
+      mode="chat"
+      :connecting="connecting || sending"
+      @submit="(p) => $emit('submit', p)"
+    />
   </section>
 </template>
 <!------------------------------->
@@ -42,7 +46,7 @@
 <!------------------------------->
 <script lang="ts">
 import Vue, { PropType } from 'vue';
-import mixinScrollview from '@/mixin/mxinScrollview';
+
 import {
   TypeChatComment,
   TypeChatInfoItem,
@@ -62,7 +66,6 @@ export default Vue.extend({
     ChatCommentNPC,
     LoadingInline,
   },
-  mixins: [mixinScrollview],
   props: {
     title: {
       default: 'むだい',
@@ -97,23 +100,13 @@ export default Vue.extend({
       return this.connecting || this.sending;
     },
   },
-  watch: {
-    chatitems(newdata: TypeChatComment[], olddata: TypeChatComment[]) {
-      if (newdata.length !== olddata.length) {
-        setTimeout(() => {
-          this.scrollBottomSmooth();
-        }, 500);
-      }
-    },
-  },
   mounted() {},
   methods: {
-    close() {
-      this.$emit('close');
-    },
+    // close() {
+    //   this.$emit('close');
+    // },
     // startTalk() {
     //   const $t = this.$el.closest('.mobileview') || null;
-
     //   this.openView({
     //     modalTitle: '確認しますヨ',
     //     target: $t,
@@ -128,12 +121,12 @@ export default Vue.extend({
     //     },
     //   });
     // },
-    onSubmit(p: any) {
-      this.$emit('submit', p);
-    },
-    selectMember() {
-      this.$emit('selectMember');
-    },
+    // onSubmit(p: any) {
+    //   this.$emit('submit', p);
+    // },
+    // selectMember() {
+    //   this.$emit('selectMember');
+    // },
   },
 });
 </script>

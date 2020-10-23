@@ -5,9 +5,8 @@
       :infoitems="infoitems"
       :connecting="connecting"
       :sending="sending"
-      :submit="onSubmit"
-      :close="$emit('close')"
-      @selectMember="visibleSelectMember = true"
+      @submit="onSubmit"
+      @select-member="visibleSelectMember = true"
     />
     <!-- SelectMember -->
     <transition name="modal">
@@ -25,6 +24,7 @@
 <!------------------------------->
 <script lang="ts">
 import Vue from 'vue';
+import mixinScrollview from '@/mixin/mxinScrollview';
 import { toast } from '@/common/util';
 import ViewChat from '@/components/ViewChat.vue';
 import SelectMember from '@/container/SelectMember.vue';
@@ -45,6 +45,7 @@ type State = {
 
 export default Vue.extend({
   components: { ViewChat, SelectMember },
+  mixins: [mixinScrollview],
   data(): State {
     return {
       connecting: false,
@@ -63,6 +64,15 @@ export default Vue.extend({
       return chatStore.members;
     },
   },
+  watch: {
+    chatitems(newdata: TypeChatComment[], olddata: TypeChatComment[]) {
+      if (newdata.length !== olddata.length) {
+        setTimeout(() => {
+          this.scrollBottomSmooth();
+        }, 500);
+      }
+    },
+  },
   async mounted() {
     this.connecting = true;
     await chatStore.FetchPost();
@@ -72,7 +82,7 @@ export default Vue.extend({
     async onSubmit(p: {
       fileItem?: TypeFileItem;
       text: string;
-      reset?: () => void;
+      // reset?: () => void;
       good?: number;
       fukitype: string;
     }) {
@@ -86,9 +96,9 @@ export default Vue.extend({
         npc: false,
       };
       await chatStore.PostChat(param);
-      toast('とーこうしたヌ');
+      toast('とーこうしタヌ');
       this.showInlineLoading(false);
-      if (p.reset) p.reset();
+      // if (p.reset) p.reset();
 
       if (!p.good) {
         setTimeout(() => {

@@ -9,6 +9,10 @@
       />
     </div>
     <div class="chatitem-body">
+      <p class="chatitem-body-name">
+        {{ myitem.username }}
+        <span>（{{ postdate }}）</span>
+      </p>
       <!-- text -->
       <p
         v-if="!isGood"
@@ -22,7 +26,7 @@
             <ion-icon
               v-for="g in +myitem.good"
               :key="`good${g}`"
-              name="heart-outline"
+              name="heart"
             />
             <!-- <img class="lazy" :src="placeholderImg" :data-src="`/img/good${myitem.good}.png`" alt="" /> -->
           </p>
@@ -34,7 +38,7 @@
       </p>
       <!-- bottom -->
       <div class="chatitem-bottom">
-        <p><a class="chatitem-good" @click="doGood">いいね（45）</a></p>
+        <!-- <p><a class="chatitem-good" @click="doGood">いいね（45）</a></p> -->
         <div class="chatitem-postinfo">
           （{{ myitem.username }}
           <span>{{ postdate }}</span>
@@ -172,7 +176,7 @@ export default Vue.extend({
     position: relative;
     min-height: auto;
     padding: 20px;
-    margin: 80px 20px 40px;
+    margin: 60px 20px 40px;
     border-radius: 22px;
     background-color: #ecde90;
 
@@ -236,6 +240,11 @@ export default Vue.extend({
   font-size: 12px;
   line-height: 1.5;
 }
+.chatitem-body-name {
+  padding: 0 0 10px 30px;
+  font-size: 10px;
+  color: #333;
+}
 .chatitem-body-text {
   font-size: 12px;
   padding: 0px 10px 10px 10px;
@@ -286,6 +295,7 @@ export default Vue.extend({
 }
 
 .chatitem-postinfo {
+  display: none;
   font-size: 10px;
   text-align: right;
   margin-left: auto;

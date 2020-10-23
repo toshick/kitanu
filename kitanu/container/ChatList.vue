@@ -38,7 +38,7 @@ export default Vue.extend({
   mounted() {},
   methods: {
     onSelected(id: string) {
-      this.$router.push(`/chatdetail/${id}`);
+      this.$router.push(`/chatlist/${id}`);
     },
   },
 });

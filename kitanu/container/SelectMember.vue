@@ -1,5 +1,9 @@
 <template>
-  <ViewSelectMember :members="members" @close="$emit('close')" />
+  <ViewSelectMember
+    :members="members"
+    @close="$emit('close')"
+    @save="(map) => $emit('save', map)"
+  />
 </template>
 <!------------------------------->
 

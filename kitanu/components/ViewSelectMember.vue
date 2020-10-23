@@ -108,7 +108,7 @@ export default Vue.extend({
 .member-list {
   padding: 0 20px;
   li {
-    padding: 5px 0;
+    padding: 10px 0;
     input {
       display: none;
     }
@@ -116,7 +116,7 @@ export default Vue.extend({
 }
 .member-item {
   label {
-    display: inline-block;
+    display: block;
     color: var(--app-color-dark);
     & > div {
       display: flex;
@@ -124,7 +124,6 @@ export default Vue.extend({
       cursor: pointer;
     }
     p {
-      display: inline-block;
       margin-left: 0.5em;
       font-size: var(--fontsize-small);
     }

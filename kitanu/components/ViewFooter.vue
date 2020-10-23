@@ -48,6 +48,7 @@
           v-show="!imgSelected"
           class="btn-icon btn-good"
           @click.stop.prevent="doGood"
+          :disabled="connecting"
         >
           <ion-icon name="heart-outline" />
         </a>
@@ -70,7 +71,7 @@
           </ul>
           <div v-show="!imgSelected" class="fileInput">
             <div class="app-footer-icon">
-              <FileInput @loaded="onImgLoaded" />
+              <FileInput @loaded="onImgLoaded" :disabled="connecting" />
             </div>
           </div>
         </div>
@@ -108,8 +109,8 @@ import { hiraToKana } from '@/common/util';
 type State = {
   talkText: string;
   fileItems: TypeFileItem[];
-  timerIDInput: NodeJS.Timer | null;
-  connecting: boolean;
+  timerIDGood: NodeJS.Timer | null;
+  goodCount: number;
 };
 
 export default Vue.extend({
@@ -120,13 +121,17 @@ export default Vue.extend({
       default: '',
       type: String,
     },
+    connecting: {
+      default: false,
+      type: Boolean,
+    },
   },
   data(): State {
     return {
       talkText: 'コンチクワ',
       fileItems: [],
-      timerIDInput: null,
-      connecting: false,
+      timerIDGood: null,
+      goodCount: 0,
     };
   },
   computed: {
@@ -185,7 +190,6 @@ export default Vue.extend({
       this.talkText = $el.value;
     },
     submit(withFuki: boolean = false) {
-      this.connecting = true;
       const fukitype = withFuki ? `fuki${Math.ceil(Math.random() * 4)}` : '';
       // const fukitype = withFuki ? `fuki1` : '';
       // txt = txt.replace(/[^(\u30A1-\u30F6)(^[a-zA-Z0-9!-/:-@¥[-`{-~\]*$\n)]/g, '');
@@ -193,24 +197,35 @@ export default Vue.extend({
       this.$emit('submit', {
         fileItem: this.fileItems[0],
         text,
-        reset: this.reset,
+        // reset: this.reset,
         fukitype,
       });
+      this.reset();
     },
     reset() {
       this.fileItems = [];
       this.talkText = '';
-      this.connecting = false;
     },
     canSubmit(valid: boolean) {
       if (valid || this.imgurls.length > 0) return true;
       return false;
     },
     doGood() {
+      this.goodCount += 1;
+      if (this.goodCount >= 10) return;
+      if (this.timerIDGood) {
+        clearTimeout(this.timerIDGood);
+      }
+      this.timerIDGood = <any>setTimeout(() => {
+        this.doGoodExe();
+      }, 200);
+    },
+    doGoodExe() {
       this.$emit('submit', {
-        good: Math.ceil(Math.random() * 3),
+        good: this.goodCount,
         text: '',
       });
+      this.goodCount = 0;
     },
   },
 });
@@ -313,6 +328,9 @@ export default Vue.extend({
 
 .btn-good {
   margin-right: 0.5em;
+  &[disabled] {
+    opacity: 0.4;
+  }
 }
 .btn-comment {
   &[disabled] {

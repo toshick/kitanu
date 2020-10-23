@@ -21,7 +21,12 @@ type State = {
 export default Vue.extend({
   name: 'FileUpload',
   components: {},
-  props: {},
+  props: {
+    disabled: {
+      default: false,
+      type: Boolean,
+    },
+  },
   data(): State {
     return {
       files: [],
@@ -30,6 +35,9 @@ export default Vue.extend({
   computed: {
     myClass(): any {
       const klass: any = { fileupload: true };
+      if (this.disabled) {
+        klass['-disabled'] = true;
+      }
 
       return klass;
     },
@@ -89,6 +97,12 @@ export default Vue.extend({
     padding: 0;
     margin: -3px 0 0;
     color: inherit;
+  }
+  &.-disabled {
+    pointer-events: none;
+    label {
+      opacity: 0.4;
+    }
   }
 }
 input[type='file'] {
