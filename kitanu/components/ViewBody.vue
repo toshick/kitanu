@@ -14,21 +14,14 @@ type State = {};
 export default Vue.extend({
   name: 'ViewBody',
   components: {},
-  props: {
-    klass: {
-      default: '',
-      type: String,
-    },
-  },
+  props: {},
   data(): State {
     return {};
   },
   computed: {
     myClass(): any {
       const klass: any = { 'app-body': true };
-      if (this.klass) {
-        klass[this.klass] = true;
-      }
+
       return klass;
     },
   },

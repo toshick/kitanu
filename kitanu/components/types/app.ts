@@ -16,6 +16,8 @@ export type TypeAlbumItem = {
   dateDisp: string;
   text: string;
   members: TypeUser[];
+  imgurl?: string;
+  createdAt: string;
 };
 
 export type TypePostSubmitItem = {

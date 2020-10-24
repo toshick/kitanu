@@ -1,5 +1,5 @@
 <template>
-  <footer :class="myClass">
+  <footer :class="myClass" ref="footer">
     <!-- top -->
     <template v-if="mymode == 'menu'">
       <div class="app-footer-icon">
@@ -44,14 +44,14 @@
         tag="div"
       >
         <!-- good button -->
-        <a
+        <ParticleButton
           v-show="!imgSelected"
-          class="btn-icon btn-good"
-          @click.stop.prevent="doGood"
+          class="btn-good"
+          @click="doGood"
           :disabled="connecting"
         >
           <ion-icon name="heart-outline" />
-        </a>
+        </ParticleButton>
 
         <!-- <CaTextarea v-model="talkText" name="talkText" width="M" placeholder="コメント"></CaTextarea> -->
         <div class="textarea">
@@ -76,21 +76,21 @@
           </div>
         </div>
         <div v-if="mode === 'chat'" class="buttonsRight">
-          <a
+          <ParticleButton
             :disabled="!canSubmit(valid) || connecting"
             class="btn-icon btn-comment"
-            @click.stop.prevent="() => submit()"
+            @click.stop.prevent="(e) => submit(e)"
           >
             <ion-icon name="chatbubble-ellipses-outline"></ion-icon>
-          </a>
-          <a
+          </ParticleButton>
+          <ParticleButton
             v-show="!imgSelected"
             :disabled="!canSubmit(valid) || connecting"
             class="btn-icon btn-comment2"
-            @click.stop.prevent="() => submit(true)"
+            @click.stop.prevent="(e) => submit(e, true)"
           >
             <ion-icon name="flash-outline" />
-          </a>
+          </ParticleButton>
         </div>
       </ValidationProvider>
     </template>
@@ -104,7 +104,7 @@ import Vue, { PropType } from 'vue';
 import { ValidationProvider } from 'vee-validate';
 import FileInput from '@/components/parts/FileInput.vue';
 import { TypeFileItem } from '@/components/types/app';
-import { hiraToKana } from '@/common/util';
+import { hiraToKana, particleEffect } from '@/common/util';
 
 type State = {
   talkText: string;
@@ -189,7 +189,9 @@ export default Vue.extend({
       const $el = e.target as HTMLTextAreaElement;
       this.talkText = $el.value;
     },
-    submit(withFuki: boolean = false) {
+    submit(e: Event, withFuki: boolean = false) {
+      const t = e.currentTarget as Element;
+      particleEffect('#fff', t.parentElement);
       const fukitype = withFuki ? `fuki${Math.ceil(Math.random() * 4)}` : '';
       // const fukitype = withFuki ? `fuki1` : '';
       // txt = txt.replace(/[^(\u30A1-\u30F6)(^[a-zA-Z0-9!-/:-@¥[-`{-~\]*$\n)]/g, '');
@@ -210,12 +212,13 @@ export default Vue.extend({
       if (valid || this.imgurls.length > 0) return true;
       return false;
     },
-    doGood() {
-      this.goodCount += 1;
+    doGood(e: Event) {
       if (this.goodCount >= 10) return;
+      this.goodCount += 1;
       if (this.timerIDGood) {
         clearTimeout(this.timerIDGood);
       }
+
       this.timerIDGood = <any>setTimeout(() => {
         this.doGoodExe();
       }, 200);
@@ -301,6 +304,9 @@ export default Vue.extend({
   .ca-input-errors {
     display: none !important;
   }
+}
+.actionbtn {
+  position: relative;
 }
 
 .talk-input {

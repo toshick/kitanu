@@ -5,15 +5,15 @@
         src="/img/top/tanu-white.png"
         class="tanu-header"
         alt="kitanu-header"
-        @click="openMenu"
+        @click="goTop"
       />
       <h1>アルバムリスト</h1>
       <!-- right -->
       <template v-slot:right>
-        <a class="btn-header" @click.stop="editing = !editing">
+        <!-- <a class="btn-header" @click.stop="editing = !editing">
           <ion-icon v-if="!editing" name="restaurant-outline" size="medium" />
           <span v-else>完了</span>
-        </a>
+        </a> -->
       </template>
     </ViewHeader>
     <div :class="myClass">
@@ -23,19 +23,18 @@
           <a
             class="btn-des"
             :disabled="editing"
-            @click.stop.prevent="description"
+            @click.stop.prevent="$emit('description')"
             ><ion-icon name="finger-print-outline"></ion-icon
           ></a>
         </p>
-        <CaButton size="S" @click="createAlbum">新規作成</CaButton>
+        <CaButton size="S" @click="$emit('create-album')">新規作成</CaButton>
       </div>
       <!-- リスト -->
       <AlbumList
-        :items="albumItems"
-        :editing="editing"
-        @remove="startRemoveAlbum"
-        @select="selectItem"
-        @more="more"
+        :albumitems="albumItems"
+        @remove="(i) => $emit('remove', i)"
+        @select="(i) => $emit('selected', i)"
+        @more="$emit('more')"
       />
     </div>
     <ViewFooter />
@@ -46,11 +45,8 @@
 <!------------------------------->
 <script lang="ts">
 import Vue, { PropType } from 'vue';
-import { openDialog, openView, toast } from '@/common/util';
-import { Input } from 'camaleao-design/components/type';
-import AlbumList from './parts/AlbumList.vue';
-import AboutAlbum from './description/AboutAlbum.vue';
-import { TypeAlbumItem } from './types/app';
+import AlbumList from '@/components/parts/AlbumList.vue';
+import { TypeAlbumItem } from '@/components/types/app';
 
 type State = {
   editing: boolean;
@@ -75,7 +71,6 @@ export default Vue.extend({
   computed: {
     myClass(): any {
       const klass: any = { 'album-body': true };
-
       if (this.editing) {
         klass['-editing'] = true;
       }
@@ -83,65 +78,7 @@ export default Vue.extend({
     },
   },
   mounted() {},
-  methods: {
-    selectItem(i: TypeAlbumItem) {
-      this.$emit('selected', i.id);
-    },
-    createAlbum() {
-      const inputs: Input[] = [];
-      inputs.push({
-        name: 'album_name',
-        value: '',
-        placeholder: 'アルバム名',
-        width: 'M',
-        rules: 'required',
-      });
-
-      const $t = this.$el.closest('.mobileview') || null;
-      openDialog({
-        modalTitle: '新しいアルバムをつくるぞ',
-        target: $t,
-        compoParams: {
-          inputs,
-          confirmText: 'よろしいヌ？',
-          btnLabel: 'ヌ',
-          onConfirm: () => {
-            toast('アルバムを作成したヌ', { target: $t });
-          },
-        },
-      });
-    },
-    startRemoveAlbum(i: TypeAlbumItem) {
-      const txt = i.text.length > 15 ? `${i.text.slice(0, 15)}...` : i.text;
-      this.showConfirm(
-        {
-          title: 'アルバム削除',
-          text: `「${txt}」<br><br>削除よろしいヌ？`,
-          isDanger: true,
-        },
-        () => {
-          console.log('いええす', { ...i });
-
-          this.showLoading(true);
-          setTimeout(() => {
-            toast('アルバムを削除したヌ');
-            this.showLoading(false);
-          }, 3000);
-        },
-      );
-    },
-    description() {
-      const $t = this.$el.closest('.mobileview') || null;
-      openView({
-        target: $t,
-        component: AboutAlbum,
-        klass: ['view-about'],
-      });
-    },
-    more() {
-      this.$emit('more');
-    },
-  },
+  methods: {},
 });
 </script>
 <!------------------------------->

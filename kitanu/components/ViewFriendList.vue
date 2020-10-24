@@ -5,7 +5,7 @@
         src="/img/top/tanu-white.png"
         class="tanu-header"
         alt="kitanu-header"
-        @click="openMenu"
+        @click="goTop"
       />
       <h1>Member</h1>
       <!-- right -->

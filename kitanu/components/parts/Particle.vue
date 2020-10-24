@@ -65,7 +65,7 @@ $particle-size: 2px;
 // $base-hue: 10;
 
 .particle {
-  position: fixed;
+  position: absolute;
   top: 50%;
   left: 50%;
   pointer-events: none;
@@ -124,7 +124,8 @@ $particle-size: 2px;
     // }
 
     100% {
-      transform: rotateZ(-$z) rotateY($y) translateX(($orb-size * 3)) rotateZ($z);
+      transform: rotateZ(-$z) rotateY($y) translateX(($orb-size * 3))
+        rotateZ($z);
       opacity: 0;
     }
   }

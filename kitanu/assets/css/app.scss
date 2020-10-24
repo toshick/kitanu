@@ -52,6 +52,7 @@ a {
 }
 
 :root {
+  --ok: #aeaf6c;
   // toast
   --toast-bg-color: #ac9934;
   // tag
@@ -60,14 +61,17 @@ a {
   --tag-radius-small: 6px;
   // modal
   --modal-bg-color: #f0e7a6;
-  --modal-bg-img: url('/img/subtle-dark-vertical.png');
-  // --modalbody-header-color: #974c28;
+  --modal-bg-img: none;
+  --modalbody-header-color: #aeaf6c;
   // sidemenu
   --modal-sidemenu-width: 70%;
   --modal-sidemenu-scroll-bg-color: #d2bd28;
   --modal-sidemenu-padding: 0px;
   // textarea
   --form-textarea-width-normal: 100%;
+  --form-shadow: 0 0 1px 1px rgba(51, 51, 51, 0.05);
+  // button
+  --button-radius: 16px;
 }
 
 .app {
@@ -169,4 +173,8 @@ ion-icon {
  ---------------------*/
 .toast-holder {
   pointer-events: none;
+}
+
+.ca-inputline{
+  padding-bottom: 10px;
 }

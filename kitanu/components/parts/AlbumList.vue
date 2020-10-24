@@ -1,9 +1,12 @@
 <template>
   <section :class="myClass">
-    <div v-for="(i, index) in items" :key="`item${index}`" class="album-item">
+    <div
+      v-for="(i, index) in albumitems"
+      :key="`item${index}`"
+      class="album-item"
+    >
       <header>
         <h2>{{ i.dateDisp }}</h2>
-        <!-- <CaTag class="update" type="yellow" size="S">update: 3min ago</CaTag> -->
         <p class="update">update: 5days ago</p>
       </header>
       <div class="album-item-cont">
@@ -11,13 +14,14 @@
           <div class="album-item-img">
             <a
               v-longpress="() => removeItem(i)"
-              class="btn-img"
+              :class="{ 'btn-img': true, '-noimg': !i.imgurl }"
               @click.stop="selectItem(i)"
             >
               <img
+                v-show="i.imgurl"
                 class="lazy"
                 :src="placeholderImg"
-                data-src="https://storage.googleapis.com/toshickcom-a7f98.appspot.com/upload_images/Camera_2020-07-24_18.23.00-1595582593445.jpeg"
+                :data-src="i.imgurl"
                 alt=""
               />
             </a>
@@ -39,6 +43,7 @@
         </div>
       </div>
     </div>
+    <!-- more -->
     <a class="btn-more" @click.stop.prevent="$emit('more')"
       ><ion-icon name="chevron-down-outline" size="large"
     /></a>
@@ -56,18 +61,8 @@ type State = {};
 export default Vue.extend({
   name: 'AlbumList',
   components: {},
-  computed: {
-    myClass(): any {
-      const klass: any = { albumlist: true };
-
-      if (this.editing) {
-        klass['-editing'] = true;
-      }
-      return klass;
-    },
-  },
   props: {
-    items: {
+    albumitems: {
       default: () => [],
       type: Array as PropType<TypeAlbumItem[]>,
     },
@@ -78,6 +73,16 @@ export default Vue.extend({
   },
   data(): State {
     return {};
+  },
+  computed: {
+    myClass(): any {
+      const klass: any = { albumlist: true };
+
+      if (this.editing) {
+        klass['-editing'] = true;
+      }
+      return klass;
+    },
   },
   mounted() {},
   methods: {
@@ -98,6 +103,7 @@ export default Vue.extend({
 
 <!------------------------------->
 <style scoped lang="scss">
+@import '@/assets/css/_mixins.scss';
 .albumlist {
   &.-editing {
     img {
@@ -112,7 +118,7 @@ export default Vue.extend({
   }
 }
 .album-item {
-  margin: 0 0 30px;
+  margin: 0 0 20px;
   user-select: none;
   header {
     display: flex;
@@ -145,6 +151,18 @@ export default Vue.extend({
 
   overflow: hidden;
   cursor: pointer;
+  &.-noimg {
+    background-color: #fff;
+    &::before {
+      content: 'NO IMG';
+      display: block;
+      color: #ddd;
+      font-weight: bold;
+      @include center();
+      width: 100%;
+      text-align: center;
+    }
+  }
 }
 img {
   display: block;

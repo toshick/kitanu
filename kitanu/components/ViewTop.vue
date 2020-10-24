@@ -12,7 +12,7 @@
 
       <!-- right -->
       <template v-slot:right>
-        <a class="btn-header" @click.stop.prevent="openActivityList"
+        <a class="btn-header" @click.stop.prevent="$emit('open-activitylist')"
           ><ion-icon name="bicycle-outline" size="medium" />
           <CaBadge :num="5" />
         </a>
@@ -21,10 +21,12 @@
         /></a>
       </template>
     </ViewHeader>
-
-    <div class="top-body">
+    <ViewBody class="top-body">
       <ChatInfo :infoitems="infoitems" />
       <section class="sec1">
+        <img class="cloud1" src="/img/top/cloud1.png" alt="" />
+        <img class="cloud2" src="/img/top/cloud2.png" alt="" />
+        <p class="moon"></p>
         <div class="chara">
           <img
             data-src="/img/tanu/tanu.png"
@@ -40,7 +42,7 @@
           />
           <p>
             キータヌは世話焼きたぬき
-            <a class="kitanu" @click="about"
+            <a class="kitanu" @click="$emit('about')"
               ><ion-icon name="finger-print-outline"></ion-icon
             ></a>
             <br />
@@ -50,24 +52,20 @@
       </section>
       <section class="sec2 activity">
         <header>
-          <h2>最近のアクティビティ</h2>
-          <CaButton size="S" @click="createAlbum">新規作成</CaButton>
+          <h2>最近のアルバム</h2>
+          <CaButton size="S" @click="$emit('create-album')">新規作成</CaButton>
         </header>
 
         <!-- リスト -->
         <AlbumList
-          :items="albumItems"
-          @remove="startRemoveAlbum"
-          @select="selectItem"
+          :albumitems="albumItems"
+          @remove="(i) => $emit('remove-album', i)"
+          @select="(i) => $emit('select-album', i)"
+          @more="$emit('more')"
         />
       </section>
-    </div>
-
-    <ViewFooter
-      @talk="confirm"
-      @menu="openMenu"
-      @album="changeView('albumlist')"
-    />
+    </ViewBody>
+    <ViewFooter />
   </section>
 </template>
 <!------------------------------->
@@ -75,18 +73,12 @@
 <!------------------------------->
 <script lang="ts">
 import Vue, { PropType } from 'vue';
-import { toast, particleEffect } from '@/common/util';
-import { Input } from 'camaleao-design/components/type';
-import ChatInfo from './parts/ChatInfo.vue';
-import AlbumList from './parts/AlbumList.vue';
-import ActivityList from './parts/ActivityList.vue';
-import AboutThisApp from './description/AboutThisApp.vue';
-import { TypeAlbumItem, TypeChatInfoItem } from './types/app';
-import { albumItems } from './sample';
 
-type State = {
-  albumItems: TypeAlbumItem[];
-};
+import ChatInfo from '@/components/parts/ChatInfo.vue';
+import AlbumList from '@/components/parts/AlbumList.vue';
+import { TypeAlbumItem, TypeChatInfoItem } from '@/components/types/app';
+
+type State = {};
 
 export default Vue.extend({
   name: 'ViewTop',
@@ -99,73 +91,16 @@ export default Vue.extend({
       default: () => [],
       type: Array as PropType<TypeChatInfoItem[]>,
     },
+    albumItems: {
+      default: () => [],
+      type: Array as PropType<TypeAlbumItem[]>,
+    },
   },
   data(): State {
-    return {
-      albumItems,
-    };
+    return {};
   },
   mounted() {},
-  methods: {
-    about() {
-      this.openView({
-        component: AboutThisApp,
-        klass: ['view-about'],
-      });
-    },
-    confirm() {
-      this.showConfirm({ title: 'にゃお', text: 'ニャーーーゴ' }, () => {
-        console.log('いええす');
-      });
-    },
-    showParticle() {
-      particleEffect();
-    },
-    createAlbum() {
-      const inputs: Input[] = [];
-      inputs.push({
-        name: 'album_name',
-        value: '',
-        placeholder: 'アルバム名',
-        width: 'M',
-        rules: 'required',
-      });
-
-      this.openDialog({
-        modalTitle: '新しいアルバムをつくるぞ',
-        compoParams: {
-          inputs,
-          confirmText: 'よろしいヌ？',
-          btnLabel: 'ヌ',
-          onConfirm: () => {
-            toast('アルバムを作成したヌ');
-          },
-        },
-      });
-    },
-    startRemoveAlbum(i: TypeAlbumItem) {
-      const txt = i.text.length > 15 ? `${i.text.slice(0, 15)}...` : i.text;
-      this.showConfirm(
-        {
-          title: 'アルバム削除',
-          text: `「${txt}」<br><br>削除よろしいヌ？`,
-          isDanger: true,
-        },
-        () => {
-          console.log('いええす', { ...i });
-
-          this.showLoading(true);
-          setTimeout(() => {
-            toast('アルバムを削除したヌ');
-            this.showLoading(false);
-          }, 3000);
-        },
-      );
-    },
-    selectItem() {
-      this.$router.push('albumdetail');
-    },
-  },
+  methods: {},
 });
 </script>
 <!------------------------------->
@@ -211,6 +146,8 @@ export default Vue.extend({
 }
 
 .chara {
+  position: relative;
+  z-index: 10;
   margin-top: -100px;
   margin-bottom: 0px;
 }
@@ -233,5 +170,53 @@ export default Vue.extend({
   top: 50%;
   left: 50%;
   border: solid 1px #ff0000;
+}
+
+$cloud-duration: 6s;
+.cloud1 {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  width: 100px;
+  animation-name: moveCloud1;
+  animation-duration: $cloud-duration;
+  animation-iteration-count: infinite;
+  animation-timing-function: step-end;
+}
+.cloud2 {
+  position: absolute;
+  top: 80px;
+  left: 240px;
+  width: 100px;
+  animation-name: moveCloud2;
+  animation-duration: $cloud-duration;
+  animation-iteration-count: infinite;
+  animation-timing-function: step-end;
+}
+.moon {
+  position: absolute;
+  top: -10px;
+  left: 260px;
+  width: 40px;
+  height: 40px;
+  background-color: #fff;
+  border-radius: 50%;
+}
+
+@keyframes moveCloud1 {
+  0% {
+    transform: translateX(0px);
+  }
+  50% {
+    transform: translateX(20px);
+  }
+}
+@keyframes moveCloud2 {
+  0% {
+    transform: translateX(0px);
+  }
+  50% {
+    transform: translateX(-20px);
+  }
 }
 </style>

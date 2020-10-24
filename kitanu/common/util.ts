@@ -1,7 +1,9 @@
 import Vue from 'vue';
 import { CreateElement } from 'vue/types/umd';
 import CaModalPG, { OpenParams } from 'camaleao-design/components/CaModalPG';
-import CaToastPG, { OpenParamsToast } from 'camaleao-design/components/CaToastPG';
+import CaToastPG, {
+  OpenParamsToast,
+} from 'camaleao-design/components/CaToastPG';
 import ModalSideMenu from '@/components/parts/ModalSideMenu.vue';
 import Loading from '@/components/parts/Loading.vue';
 import Particle from '@/components/parts/Particle.vue';
@@ -17,20 +19,23 @@ export const isMobile: boolean = (() => {
 /**
  * 1*1 transparent png img
  */
-export const placeholderImg = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=';
+export const placeholderImg =
+  'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=';
 
 export const openDialog = (params: OpenParams) => {
-  particleEffect('#ac9934');
+  // particleEffect('#ac9934');
   CaModalPG.openDialog({
     ...params,
-    klass: params.klass ? [...params.klass, 'view', '-transparentbg'] : ['view', '-transparentbg'],
+    klass: params.klass
+      ? [...params.klass, 'view', '-transparentbg']
+      : ['view', '-transparentbg'],
     transition: params.transition || 'scalefade',
     easyClose: params.easyClose || false,
   });
 };
 
 export const openView = (params: OpenParams) => {
-  particleEffect();
+  // particleEffect();
   CaModalPG.openView({
     ...params,
     klass: params.klass ? [...params.klass, 'view'] : ['view'],
@@ -39,7 +44,7 @@ export const openView = (params: OpenParams) => {
 };
 
 export const openModal = (params: OpenParams) => {
-  particleEffect();
+  // particleEffect();
   CaModalPG.openView({
     ...params,
     klass: params.klass ? [...params.klass, 'view'] : ['view'],
@@ -48,7 +53,7 @@ export const openModal = (params: OpenParams) => {
 };
 
 export const drillDown = (params: OpenParams) => {
-  particleEffect();
+  // particleEffect();
   CaModalPG.drillDown({
     ...params,
     klass: params.klass ? [...params.klass, 'view'] : ['view'],
@@ -144,9 +149,9 @@ export function asort(ary: Array<any>, key: string = 'id') {
 /**
  * particleEffect
  */
-export const particleEffect = (color?: string) => {
+export const particleEffect = (color?: string, target?: Element | null) => {
   const $el = document.createElement('article');
-  const $body: Element = document.body;
+  const $body: Element = target || document.body;
   if ($body) {
     $body.appendChild($el);
   }

@@ -8,12 +8,12 @@
       <h1>{{ title }}</h1>
       <!-- right -->
       <template v-slot:right>
-        <a
+        <ParticleButton
           class="btn-header margin-left-auto"
-          @click.stop.prevent="$emit('select-member')"
+          @click="$emit('select-member')"
         >
           <ion-icon name="skull-outline" size="medium"></ion-icon>
-        </a>
+        </ParticleButton>
       </template>
     </ViewHeader>
     <ViewBody ref="appbody">

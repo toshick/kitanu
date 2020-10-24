@@ -1,3 +1,13 @@
+// mixins
+
+@mixin center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+
 $gap: 0;
 
 // 960, 1152, and 1344 have been chosen because they are divisible by both 12 and 16

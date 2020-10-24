@@ -1,10 +1,16 @@
 @charset "utf-8";
 
+
+.ca-modal-body{
+  border: none !important;
+  background-image: none !important;
+}
+
 /* -------------------- 
  transparentbg
  ---------------------*/
 .ca-modal.-transparentbg {
-  background-color: rgba(#fbecad, 0.8) !important;
+  background-color: rgba(#fbecad, 0.9) !important;
 }
 
 /* -------------------- 
