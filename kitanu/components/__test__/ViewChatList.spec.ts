@@ -1,14 +1,14 @@
 // import Vue, { PropType } from 'vue';
 import { mount } from '@vue/test-utils';
 import ViewChatList from '@/components/ViewChatList.vue';
-import { members } from '@/mock/mockdata';
+import { chatrooms } from '@/mock/mockdata';
 
 describe('ViewChatList', () => {
   let wrapper: any = null;
   beforeEach(() => {
     wrapper = mount(ViewChatList, {
       propsData: {
-        members,
+        chatrooms,
       },
       stubs: ['ion-icon'],
     });
@@ -16,26 +16,40 @@ describe('ViewChatList', () => {
   describe('render', () => {
     it('should render correctly', () => {
       expect(wrapper.vm).toBeTruthy();
-      expect(wrapper.findAll('.chat-list > li').length).toBe(4);
-
+      expect(wrapper.findAll('.chat-list > li').length).toBe(3);
+      // item1
       expect(
         wrapper
           .find('.chat-list > li:nth-child(1)')
           .html()
-          .includes('にゃんごろう'),
+          .includes('チャットルームタイトル1'),
       ).toBe(true);
-      expect(
-        wrapper
-          .find('.chat-list > li:nth-child(1)')
-          .html()
-          .includes('ニャオスカンゲキ'),
-      ).toBe(true);
+      expect(wrapper.findAll('.chat-list > li:nth-child(1) li').length).toBe(1);
+      // item2
       expect(
         wrapper
           .find('.chat-list > li:nth-child(2)')
           .html()
-          .includes('カマキチ'),
+          .includes('チャットルームタイトル2'),
       ).toBe(true);
+      expect(wrapper.findAll('.chat-list > li:nth-child(2) li').length).toBe(4);
+      // item3
+      expect(
+        wrapper
+          .find('.chat-list > li:nth-child(3)')
+          .html()
+          .includes('チャットルームタイトル3'),
+      ).toBe(true);
+      expect(wrapper.findAll('.chat-list > li:nth-child(3) li').length).toBe(2);
+    });
+    it('should render nodata', () => {
+      const mywrapper = mount(ViewChatList, {
+        propsData: {
+          chatrooms: [],
+        },
+        stubs: ['ion-icon'],
+      });
+      expect(mywrapper.findAll('.nodata').length).toBe(1);
     });
   });
 

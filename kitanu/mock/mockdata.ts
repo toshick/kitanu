@@ -3,6 +3,7 @@ import {
   TypePostItem,
   TypeChatComment,
   TypeAlbumItem,
+  TypeChatRoom,
 } from '@/components/types/app';
 
 /**
@@ -125,7 +126,7 @@ export const albumItems: TypeAlbumItem[] = [
     dateDisp: '2018.08.08',
     text:
       'みんなで東北へいってきたよ。みんなで東北へいってきたよ。みんなで東北へいってきたよ。',
-    members: [user, user, user],
+    members: [user],
     createdAt: '1601114626252',
   },
   {
@@ -152,6 +153,38 @@ export const albumItems: TypeAlbumItem[] = [
     text:
       'みんなで東北へいってきたよ。みんなで東北へいってきたよ。みんなで東北へいってきたよ。',
     members: [user],
+    createdAt: '1601114626252',
+  },
+];
+
+export const chatrooms: TypeChatRoom[] = [
+  {
+    id: '0000000000000001',
+    members: [user],
+    createdBy: user,
+    title: 'チャットルームタイトル1',
+    createdAt: '1601114626252',
+  },
+  {
+    id: '0000000000000002',
+    members: [
+      { ...user, id: '0000001' },
+      { ...user, id: '0000002' },
+      { ...user, id: '0000003' },
+      { ...user, id: '0000004' },
+    ],
+    createdBy: user,
+    title: 'チャットルームタイトル2',
+    createdAt: '1601114626252',
+  },
+  {
+    id: '0000000000000003',
+    members: [
+      { ...user, id: '0000001' },
+      { ...user, id: '0000002' },
+    ],
+    createdBy: user,
+    title: 'チャットルームタイトル3',
     createdAt: '1601114626252',
   },
 ];
