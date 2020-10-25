@@ -69,11 +69,9 @@
 <!------------------------------->
 <script lang="ts">
 import Vue, { PropType } from 'vue';
-import dayjs from 'dayjs';
 import { toast, openView } from '@/common/util';
 import mixinScrollview from '@/mixin/mxinScrollview';
 import { TypeUser, TypePostItem } from '@/components/types/app';
-// import AppAlbumSetting from './AppAlbumSetting.vue';
 import TextInputModal from './parts/TextInputModal.vue';
 import PostItem from './parts/PostItem.vue';
 import LoadingInline from './parts/LoadingInline.vue';

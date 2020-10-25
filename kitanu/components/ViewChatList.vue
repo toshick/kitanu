@@ -53,8 +53,7 @@
 <!------------------------------->
 <script lang="ts">
 import Vue, { PropType } from 'vue';
-// import { openDialog } from '@/common/util';
-import { TypeUser, TypeChatRoom } from './types/app';
+import { TypeChatRoom } from './types/app';
 
 type State = {};
 

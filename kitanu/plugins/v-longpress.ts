@@ -35,7 +35,7 @@ function setEvent(el: HTMLElement, binding: VNodeDirective) {
     }, duration);
   }
 
-  function onMouseUp(e: Event) {
+  function onMouseUp() {
     if (timerID) clearTimeout(timerID);
     timerID = null;
   }

@@ -21,7 +21,11 @@
           </svg>
         </div> -->
         <div class="loading-img">
-          <img src="/img/top/tanu-white.png" class="tanu-white" alt="kitanu-header" />
+          <img
+            src="/img/top/tanu-white.png"
+            class="tanu-white"
+            alt="kitanu-header"
+          />
         </div>
       </CaModalViewBody>
     </CaModalScroll>

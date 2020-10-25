@@ -52,8 +52,6 @@
 <!------------------------------->
 <script lang="ts">
 import Vue, { PropType } from 'vue';
-import CaModalPG from 'camaleao-design/components/CaModalPG';
-// import { openDialog } from '@/common/util';
 import { TypeUser } from './types/app';
 
 type State = {};

@@ -1,15 +1,29 @@
 <template>
-  <ValidationObserver v-slot="{ invalid, handleSubmit }" tag="form" class="form">
+  <ValidationObserver
+    v-slot="{ invalid, handleSubmit }"
+    tag="form"
+    class="form"
+  >
     <div class="ca-modal-scroll-wrapper">
       <CaModalScroll>
         <CaModalViewHeader title="タイトルである" @close="close">
           <!-- icons -->
           <div class="ca-modalview-header-icons">
-            <a class="btn-header-action" :disabled="invalid" @click.stop.prevent="handleSubmit(save)">投稿ヌ</a>
+            <a
+              class="btn-header-action"
+              :disabled="invalid"
+              @click.stop.prevent="handleSubmit(save)"
+              >投稿ヌ</a
+            >
           </div>
         </CaModalViewHeader>
         <CaModalViewBody>
-          <CaTextarea v-model="text" name="kanso" rules="required" placeholder="テキスト入力ヌ"></CaTextarea>
+          <CaTextarea
+            v-model="text"
+            name="kanso"
+            rules="required"
+            placeholder="テキスト入力ヌ"
+          ></CaTextarea>
         </CaModalViewBody>
       </CaModalScroll>
     </div>

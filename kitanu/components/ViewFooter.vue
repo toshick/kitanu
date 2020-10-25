@@ -1,5 +1,5 @@
 <template>
-  <footer :class="myClass" ref="footer">
+  <footer ref="footer" :class="myClass">
     <!-- top -->
     <template v-if="mymode == 'menu'">
       <div class="app-footer-icon">
@@ -26,13 +26,6 @@
           <p>ごゆうじん</p>
         </a>
       </div>
-      <!-- <div class="app-footer-icon">
-        <a @click.stop.prevent="openActivityList">
-          <ion-icon name="bicycle-outline" />
-          <p>かつどう</p>
-          <CaBadge :num="5" />
-        </a>
-      </div> -->
     </template>
     <!-- make -->
     <template v-if="mymode == 'input'">
@@ -47,8 +40,8 @@
         <ParticleButton
           v-show="!imgSelected"
           class="btn-good"
-          @click="doGood"
           :disabled="connecting"
+          @click="doGood"
         >
           <ion-icon name="heart-outline" />
         </ParticleButton>
@@ -71,7 +64,7 @@
           </ul>
           <div v-show="!imgSelected" class="fileInput">
             <div class="app-footer-icon">
-              <FileInput @loaded="onImgLoaded" :disabled="connecting" />
+              <FileInput :disabled="connecting" @loaded="onImgLoaded" />
             </div>
           </div>
         </div>
@@ -219,7 +212,7 @@ export default Vue.extend({
         clearTimeout(this.timerIDGood);
       }
 
-      this.timerIDGood = <any>setTimeout(() => {
+      this.timerIDGood = setTimeout(() => {
         this.doGoodExe();
       }, 200);
     },
