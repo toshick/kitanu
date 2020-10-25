@@ -10,31 +10,42 @@
       <h1>おしゃべりヌ</h1>
       <!-- right -->
       <template v-slot:right>
-        <!-- <a href=""><ion-icon name="restaurant-outline" size="medium" /></a> -->
+        <a class="btn-header" @click.stop.prevent="$emit('addchat')"
+          ><ion-icon name="add-outline" size="medium"
+        /></a>
       </template>
     </ViewHeader>
     <ViewBody>
-      <ul class="chat-list">
-        <li
-          v-for="(u, index) in members"
-          :key="`member-${index}-${u.username}`"
-        >
-          <a class="chat-item" @click="() => goChatDetail(u.id)">
-            <UserIcon :url="u.iconurl" />
-            <div class="chat-item-body">
-              <h3>{{ u.username }}</h3>
-              <p v-if="u.subtext">{{ u.subtext }}</p>
-            </div>
-          </a>
-        </li>
-      </ul>
+      <section>
+        <ul v-if="chatrooms.length > 0" class="chat-list">
+          <li v-for="(u, index) in chatrooms" :key="`member-${index}-${u.id}`">
+            <a class="chat-item" @click="() => goChatDetail(u.id)">
+              <UserIcon :url="u.members[0].iconurl" />
+              <div class="chat-item-body">
+                <h3>{{ u.title }}</h3>
+                <p v-if="u.members[0].subtext">{{ u.members[0].subtext }}</p>
+                <ul>
+                  <li v-for="m in u.members" :key="`icon-${m.id}`">
+                    <UserIcon :url="m.iconurl" size="S" />
+                  </li>
+                </ul>
+              </div>
+            </a>
+          </li>
+        </ul>
+        <!-- notice-area -->
+        <div v-else class="notice-area -gray nodata">
+          <p class="text -white">
+            <ion-icon name="rainy-outline" size="large" />
+            <br />
+            チャットはまだないよーだヌ
+            <br />
+            チャットをしてみよーヌ
+          </p>
+        </div>
+      </section>
     </ViewBody>
-    <ViewFooter
-      @talk="toast('ほおええええ')"
-      @menu="openMenu"
-      @setting="showSetting"
-      @home="changeView('/')"
-    />
+    <ViewFooter />
   </section>
 </template>
 <!------------------------------->
@@ -42,9 +53,8 @@
 <!------------------------------->
 <script lang="ts">
 import Vue, { PropType } from 'vue';
-import CaModalPG from 'camaleao-design/components/CaModalPG';
 // import { openDialog } from '@/common/util';
-import { TypeUser } from './types/app';
+import { TypeUser, TypeChatRoom } from './types/app';
 
 type State = {};
 
@@ -52,14 +62,15 @@ export default Vue.extend({
   name: 'ViewChatList',
   components: {},
   props: {
-    members: {
-      default: [],
-      type: Array as PropType<TypeUser[]>,
+    chatrooms: {
+      default: () => [],
+      type: Array as PropType<TypeChatRoom[]>,
     },
   },
   data(): State {
     return {};
   },
+  computed: {},
   mounted() {},
   methods: {
     goChatDetail(id: string) {
@@ -89,6 +100,14 @@ h2 {
   align-items: center;
   padding: 10px 10px;
   border-bottom: dotted 1px #aaa;
+  ul {
+    display: flex;
+    align-items: center;
+    margin-top: 4px;
+  }
+  li {
+    margin-right: 4px;
+  }
 }
 .chat-item-body {
   margin-left: 1em;
@@ -107,11 +126,8 @@ h2 {
   font-size: var(--fontsize-medium);
   color: var(--app-color-dark);
 }
-.member-add {
-  text-align: center;
-}
-.btn-add-member {
-  // display: inline-flex;
-  // align-items: center;
+
+.nodata {
+  margin: 20px auto 30px;
 }
 </style>

@@ -137,6 +137,10 @@ Vue.mixin({
       if (!this.$router) return;
       this.$router.push('/chatlist');
     },
+    goSignup() {
+      if (!this.$router) return;
+      this.$router.push('/signup');
+    },
     changeView(name: string) {
       if (!this.$router) return;
       this.$router.push(name);
@@ -193,18 +197,30 @@ Vue.mixin({
       drillDown({ target: $t, component: Setting });
     },
     showConfirm(
-      p: { title: string; text: string; isDanger?: boolean },
+      p: {
+        title: string;
+        text: string;
+        isDanger?: boolean;
+        withCancel?: boolean;
+        btnLabel?: string;
+      },
       onConfirm: () => void,
     ) {
       const $t = this.$el.closest('.mobileview') || null;
+      const klass = ['view-textinput'];
+      if (p.isDanger) {
+        klass.push('-danger');
+      }
       openDialog({
         modalTitle: p.title,
         target: $t,
-        klass: ['view-textinput'],
+        klass,
         compoParams: {
           confirmText: p.text,
           onConfirm,
           type: p.isDanger ? 'danger' : '',
+          btnLabel: p.btnLabel || '',
+          withCancel: p.withCancel !== false,
         },
         titleIcon: {
           tag: 'ion-icon',

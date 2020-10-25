@@ -33,6 +33,7 @@
             :src="placeholderImg"
             class="tanu lazy"
             alt="kitanu"
+            @click="$emit('kitanu')"
           />
           <img
             data-src="/img/top/tanu-title.png"
@@ -43,8 +44,8 @@
           <p>
             キータヌは世話焼きたぬき
             <a class="kitanu" @click="$emit('about')"
-              ><ion-icon name="finger-print-outline"></ion-icon
-            ></a>
+              ><ion-icon name="finger-print-outline"
+            /></a>
             <br />
             キータヌに自分のアクティビティをみてもらおーぬ
           </p>
@@ -58,11 +59,22 @@
 
         <!-- リスト -->
         <AlbumList
+          v-if="albumItems.length > 0"
           :albumitems="albumItems"
           @remove="(i) => $emit('remove-album', i)"
           @select="(i) => $emit('select-album', i)"
           @more="$emit('more')"
         />
+        <!-- notice-area -->
+        <div v-else class="notice-area nodata">
+          <p class="text -white">
+            <ion-icon name="rainy-outline" size="large" />
+            <br />
+            アルバムはまだないよーだヌ
+            <br />
+            アルバムをつくってみよーヌ
+          </p>
+        </div>
       </section>
     </ViewBody>
     <ViewFooter />
@@ -218,5 +230,8 @@ $cloud-duration: 6s;
   50% {
     transform: translateX(-20px);
   }
+}
+.nodata {
+  margin: 0 auto 30px;
 }
 </style>

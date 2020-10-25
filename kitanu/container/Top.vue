@@ -6,6 +6,7 @@
     @open-activitylist="openActivityList"
     @select-album="selectItem"
     @more="more"
+    @kitanu="goSignup"
   />
 </template>
 <!------------------------------->

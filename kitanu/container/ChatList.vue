@@ -1,44 +1,60 @@
 <template>
-  <ViewChatList :members="members" @selected="onSelected" />
+  <div>
+    <ViewChatList
+      :chatrooms="chatrooms"
+      @selected="onSelected"
+      @addchat="visibleSelectMember = true"
+    />
+    <!-- SelectMember -->
+    <transition name="modal">
+      <SelectMember
+        v-if="visibleSelectMember"
+        @close="visibleSelectMember = false"
+        @save="onSaveSelectMember"
+      />
+    </transition>
+  </div>
 </template>
 <!------------------------------->
 
 <!------------------------------->
 <script lang="ts">
 import Vue from 'vue';
-import { TypeUser } from '@/components/types/app';
+import { TypeUser, TypeChatRoom } from '@/components/types/app';
 import ViewChatList from '@/components/ViewChatList.vue';
+import SelectMember from '@/container/SelectMember.vue';
+import { appStore, chatStore } from '@/store';
 
 type State = {
-  members: TypeUser[];
+  visibleSelectMember: boolean;
 };
 
-const members: TypeUser[] = [];
-members.push({
-  id: '898808392',
-  username: 'にゃんごろう',
-  iconurl: 'https://avatars3.githubusercontent.com/u/6635142?s=460&v=4',
-  subtext: 'いつだってオレンジ',
-});
-members.push({
-  id: '898808393',
-  username: 'カマキチ',
-  iconurl: 'https://avatars3.githubusercontent.com/u/6635142?s=460&v=4',
-  subtext: 'そろそろキャンプしたいぞ',
-});
-
 export default Vue.extend({
-  components: { ViewChatList },
+  components: { ViewChatList, SelectMember },
   data(): State {
     return {
-      members,
+      visibleSelectMember: false,
     };
   },
-  computed: {},
+  computed: {
+    chatrooms(): TypeChatRoom[] {
+      return chatStore.chatrooms;
+    },
+  },
   mounted() {},
   methods: {
     onSelected(id: string) {
       this.$router.push(`/chatlist/${id}`);
+    },
+    async onSaveSelectMember(members: TypeUser[]) {
+      console.log('onSaveSelectMember', members.length);
+
+      await chatStore.CreateChatRoom({
+        loginuser: appStore.logined,
+        users: members,
+      });
+
+      this.visibleSelectMember = false;
     },
   },
 });

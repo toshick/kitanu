@@ -7,6 +7,7 @@ import {
   TypeChatComment,
   TypePostSubmitItem,
   TypeUser,
+  TypeChatRoom,
 } from '@/components/types/app';
 
 const members: TypeUser[] = [];
@@ -140,6 +141,7 @@ kitanuTalks.push('');
 export default class MyClass extends VuexModule {
   chatitems: TypeChatComment[] = [];
   members: TypeUser[] = members;
+  chatrooms: TypeChatRoom[] = [];
 
   // ----------------------
   // Mutation
@@ -163,15 +165,13 @@ export default class MyClass extends VuexModule {
   }
 
   @Mutation
-  UPDATE_POST(postitem: TypeChatComment) {
-    console.log('UPDATE_POST', postitem);
+  UPDATE_POST(postitem: TypeChatComment) {}
 
-    // this.chatitems = this.chatitems.map((i: TypeChatComment) => {
-    //   if (i.id === postitem.id) {
-    //     i = postitem;
-    //   }
-    //   return i;
-    // });
+  @Mutation
+  ADD_CHATROOM(chatroom: TypeChatRoom) {
+    const ary = [...this.chatrooms];
+    ary.push(chatroom);
+    this.chatrooms = asort(ary, 'createdAt').reverse();
   }
 
   // ----------------------
@@ -223,6 +223,22 @@ export default class MyClass extends VuexModule {
 
   @Action
   RemovePost(): Promise<ActionRes> {
+    return Promise.resolve({});
+  }
+
+  @Action
+  CreateChatRoom(p: {
+    loginuser: TypeUser;
+    users: TypeUser[];
+  }): Promise<ActionRes> {
+    const room: TypeChatRoom = {
+      id: uuidv4(),
+      members: p.users,
+      createdBy: p.loginuser,
+      title: '新規チャット',
+      createdAt: `${dayjs().valueOf()}`,
+    };
+    this.ADD_CHATROOM(room);
     return Promise.resolve({});
   }
 }

@@ -102,9 +102,9 @@ export default class MyClass extends VuexModule {
       };
       this.ADD_ALBUM(item);
     } else {
-      albumItems.forEach((item: TypeAlbumItem) => {
-        this.ADD_ALBUM(item);
-      });
+      // albumItems.forEach((item: TypeAlbumItem) => {
+      //   this.ADD_ALBUM(item);
+      // });
     }
 
     return Promise.resolve({});

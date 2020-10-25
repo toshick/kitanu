@@ -1,6 +1,6 @@
 export type ActionRes = {
   error?: boolean;
-  ok?: boolean;
+  msg?: string;
 };
 
 export type TypeUser = {
@@ -58,4 +58,12 @@ export type TypeChatInfoItem = {
   text: string;
   username: string;
   postdate: number;
+};
+
+export type TypeChatRoom = {
+  id: string;
+  members: TypeUser[];
+  createdBy: TypeUser;
+  title?: string;
+  createdAt: string;
 };

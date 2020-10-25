@@ -1,9 +1,13 @@
 @charset "utf-8";
 
-
-.ca-modal-body{
+.ca-modal-body {
   border: none !important;
-  background-image: none !important;
+  width: 100% !important;
+  max-width: 340px !important;
+  & > header {
+    box-shadow: none !important;
+    border-bottom: dotted 1px #ccc;
+  }
 }
 
 /* -------------------- 
@@ -11,6 +15,22 @@
  ---------------------*/
 .ca-modal.-transparentbg {
   background-color: rgba(#fbecad, 0.9) !important;
+}
+
+/* -------------------- 
+ view-about
+ ---------------------*/
+.ca-modal.-danger {
+  header {
+    h1 {
+      color: #ecb092;
+    }
+  }
+  article {
+    h1 {
+      color: #ecb092;
+    }
+  }
 }
 
 /* -------------------- 
@@ -41,9 +61,6 @@
   .about {
     color: #fff;
     font-size: var(--fontsize-small);
-  }
-
-  .about-body {
   }
 
   h1 {

@@ -1,10 +1,19 @@
+import { v4 as uuidv4 } from 'uuid';
 import Vue from 'vue';
 import { Module, VuexModule, Mutation, Action } from 'vuex-module-decorators';
+import { ActionRes, TypeUser } from '@/components/types/app';
+
 // import { firebase } from '@/plugins/firebase.ts';
+
+const loginUser = {
+  id: uuidv4(),
+  username: 'ログインしているユーザさん',
+  iconurl: 'https://avatars3.githubusercontent.com/u/6635142?s=460&v=4',
+};
 
 @Module({ name: 'app', stateFactory: true, namespaced: true })
 export default class MyClass extends VuexModule {
-  logined: boolean = false;
+  logined: TypeUser = loginUser;
   isAdmin: boolean = false;
   // ----------------------
   // Mutation
@@ -15,8 +24,8 @@ export default class MyClass extends VuexModule {
   }
 
   @Mutation
-  SET_LOGIN_USER(logined: boolean) {
-    this.logined = logined;
+  SET_LOGIN_USER(user: TypeUser) {
+    this.logined = user;
   }
 
   // ----------------------
@@ -35,14 +44,19 @@ export default class MyClass extends VuexModule {
   //     });
   // }
 
-  // @Action
-  // async FetchEntries() {
-  //   return await client.getEntries({
-  //     content_type: process.env.CTF_BLOG_POST_TYPE_ID,
-  //     order: '-sys.createdAt',
-  //     limit: 20,
-  //   });
-  // }
+  @Action
+  Register(data: { name: string; mail: string }): Promise<ActionRes> {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        console.log('とうろく', data);
+        // resolve(<ActionRes>{
+        //   error: true,
+        //   msg: 'なんか登録に失敗しました。メンゴでござる',
+        // });
+        resolve(<ActionRes>{});
+      }, 1200);
+    });
+  }
 
   // ----------------------
   // get

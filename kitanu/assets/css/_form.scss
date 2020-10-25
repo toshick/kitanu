@@ -1,5 +1,11 @@
 @charset "utf-8";
 
+// .ca-input > span > input{
+//   border: none !important;
+//   box-shadow: none !important;
+//   background-color: #fff;
+// }
+
 /* -------------------- 
  yellow
  ---------------------*/
@@ -19,6 +25,16 @@
     & > input {
       background-color: #fff7d6;
       box-shadow: none;
+      border: solid 1px transparent !important;
+    }
+  }
+}
+
+.ca-input.-white {
+  & > span {
+    & > input {
+      background-color: #fff;
+      box-shadow: none !important;
       border: solid 1px transparent !important;
     }
   }

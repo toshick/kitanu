@@ -4,11 +4,11 @@
       <a class="btn-back" @click.stop.prevent="$emit('close')"
         ><ion-icon name="chevron-down" size="medium"
       /></a>
-      <h1>チャットにご友人を追加ヌ</h1>
+      <h1>メンバせんたくヌ</h1>
       <!-- right -->
       <template v-slot:right>
         <a class="btn-header" :disabled="selectedCount === 0" @click="save"
-          ><span>保存</span></a
+          ><span>OK</span></a
         >
       </template>
     </ViewHeader>
@@ -20,13 +20,6 @@
           :key="`member-${index}-${u.username}`"
           class="member-item"
         >
-          <!-- <a @click="() => select(u)">
-            
-            <div class="member-label">
-              <p>{{ u.username }}</p>
-            </div>
-            
-          </a> -->
           <label>
             <input
               v-model="selectedMap[u.id]"
@@ -74,9 +67,9 @@ export default Vue.extend({
   },
   computed: {
     membersList(): any {
-      return this.members.map((m) => {
+      return this.members.map((m: TypeUser) => {
         const selected = this.selectedMap[m.id] || false;
-        return { ...m, selected };
+        return { user: m, selected };
       });
     },
     selectedCount(): number {
@@ -92,7 +85,13 @@ export default Vue.extend({
   mounted() {},
   methods: {
     save() {
-      this.$emit('save', this.selectedMap);
+      const list: TypeUser[] = [];
+      this.membersList.forEach((m: { user: TypeUser; selected: boolean }) => {
+        if (m.selected) {
+          list.push(m.user);
+        }
+      });
+      this.$emit('save', list);
     },
   },
 });
