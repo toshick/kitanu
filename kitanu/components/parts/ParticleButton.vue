@@ -49,6 +49,7 @@ a {
   display: inline-flex;
   align-items: center;
   position: relative;
+  color: inherit;
   &[disabled] {
     opacity: 0.4;
   }

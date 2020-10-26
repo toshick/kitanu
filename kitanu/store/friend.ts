@@ -4,16 +4,19 @@ import { Module, VuexModule, Mutation, Action } from 'vuex-module-decorators';
 import { asort } from '@/common/util';
 import { ActionRes, TypeUser } from '@/components/types/app';
 
+const FRIEND_LINK_BASE = 'https://kitakitanu.netlify.app';
 const friends: TypeUser[] = [];
 friends.push({
   id: uuidv4(),
   username: 'ニャオスカマキチ',
   iconurl: 'https://avatars3.githubusercontent.com/u/6635142?s=460&v=4',
+  subtext: '今宵はよい月である',
 });
 friends.push({
   id: uuidv4(),
   username: 'えだじまへいはちさん',
   iconurl: 'https://avatars3.githubusercontent.com/u/6635142?s=460&v=4',
+  subtext: '男塾塾長である',
 });
 
 @Module({ name: 'friend', stateFactory: true, namespaced: true })
@@ -58,5 +61,19 @@ export default class MyClass extends VuexModule {
   @Action
   RemovePost(): Promise<ActionRes> {
     return Promise.resolve({});
+  }
+
+  @Action
+  CreateFriendLink(): Promise<ActionRes> {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        const link = `キタキータヌにごしょーたいヌ\n${FRIEND_LINK_BASE}/?invite=${uuidv4()}`;
+        if (navigator.clipboard) {
+          navigator.clipboard.writeText(link);
+        }
+
+        resolve();
+      }, 1000);
+    });
   }
 }

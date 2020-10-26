@@ -7,25 +7,15 @@
         alt="kitanu-header"
         @click="goTop"
       />
-      <h1>Member</h1>
+      <h1>トモダチ</h1>
       <!-- right -->
       <template v-slot:right>
-        <a href=""><ion-icon name="restaurant-outline" size="medium" /></a>
+        <a class="btn-header" @click.stop.prevent="$emit('add-friend')"
+          ><ion-icon name="add-outline" size="medium"
+        /></a>
       </template>
     </ViewHeader>
     <ViewBody>
-      <h2>
-        <input
-          class="ca-input-editablelabel"
-          value="アジをたんと釣りにいこうの会"
-        />
-      </h2>
-      <div class="member-add">
-        <CaButton size="S" class="btn-add-member" @click="addMember">
-          メンバー追加
-        </CaButton>
-      </div>
-
       <ul class="member-list">
         <li
           v-for="(u, index) in members"
@@ -107,12 +97,7 @@ h2 {
     font-size: var(--fontsize-small);
   }
 }
-.ca-input-editablelabel {
-  width: 100%;
-  text-align: center;
-  font-size: var(--fontsize-medium);
-  color: var(--app-color-dark);
-}
+
 .member-add {
   text-align: center;
 }
