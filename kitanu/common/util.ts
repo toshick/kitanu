@@ -204,3 +204,16 @@ export function hiraToKana(str: string) {
     return String.fromCharCode(chr);
   });
 }
+
+/**
+ * setClipBoard
+ */
+export function setClipBoard(str: string) {
+  const $input = document.createElement('input');
+  $input.setAttribute('style', 'opacity: 0');
+  $input.value = str;
+  document.body.appendChild($input);
+  $input.select();
+  document.execCommand('copy');
+  $input.parentNode?.removeChild($input);
+}

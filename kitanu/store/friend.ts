@@ -1,7 +1,7 @@
 // import dayjs from 'dayjs';
 import { v4 as uuidv4 } from 'uuid';
 import { Module, VuexModule, Mutation, Action } from 'vuex-module-decorators';
-import { asort } from '@/common/util';
+import { asort, setClipBoard } from '@/common/util';
 import { ActionRes, TypeUser } from '@/components/types/app';
 
 const FRIEND_LINK_BASE = 'https://kitakitanu.netlify.app';
@@ -68,12 +68,13 @@ export default class MyClass extends VuexModule {
     return new Promise((resolve) => {
       setTimeout(() => {
         const link = `キタキータヌにごしょーたいヌ\n${FRIEND_LINK_BASE}/?invite=${uuidv4()}`;
-        if (navigator.clipboard) {
-          navigator.clipboard.writeText(link);
-        }
+        // if (navigator.clipboard) {
+        //   navigator.clipboard.writeText(link);
+        // }
+        setClipBoard(link);
 
         resolve();
-      }, 1000);
+      }, 0);
     });
   }
 }
