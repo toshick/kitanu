@@ -10,9 +10,9 @@
       <h1>おしゃべりヌ</h1>
       <!-- right -->
       <template v-slot:right>
-        <a class="btn-header" @click.stop.prevent="$emit('addchat')"
+        <ParticleButton class="btn-header" @click="$emit('addchat')"
           ><ion-icon name="add-outline" size="medium"
-        /></a>
+        /></ParticleButton>
       </template>
     </ViewHeader>
     <ViewBody>
@@ -127,6 +127,6 @@ h2 {
 }
 
 .nodata {
-  margin: 20px auto 30px;
+  margin: 60px auto 30px;
 }
 </style>

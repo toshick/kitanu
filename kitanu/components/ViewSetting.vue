@@ -46,8 +46,8 @@
 <script lang="ts">
 import Vue from 'vue';
 import { openModal, openDialog } from '@/common/util';
-import PrivacyPolicy from './parts/PrivacyPolicy.vue';
-import Kiyaku from './parts/Kiyaku.vue';
+import ViewPrivacyPolicy from '@/components/ViewPrivacyPolicy.vue';
+import ViewKiyaku from '@/components/ViewKiyaku.vue';
 
 type State = {};
 
@@ -65,7 +65,7 @@ export default Vue.extend({
       openModal({
         modalTitle: 'プライバシーポリシーヌ',
         target: $t,
-        component: PrivacyPolicy,
+        component: ViewPrivacyPolicy,
         klass: ['view-orange'],
       });
     },
@@ -74,7 +74,7 @@ export default Vue.extend({
       openModal({
         modalTitle: '利用規約ヌ',
         target: $t,
-        component: Kiyaku,
+        component: ViewKiyaku,
         klass: ['view-orange'],
       });
     },

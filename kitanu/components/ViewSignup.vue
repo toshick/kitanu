@@ -65,6 +65,14 @@
             ></CaInput>
           </div>
           <div class="ca-inputline">
+            <CaSwitch
+              v-model="kiyaku"
+              rules="required"
+              label="規約に同意するヌ"
+              required
+            />
+          </div>
+          <div class="ca-inputline">
             <CaButton
               class="btn-signup"
               :disabled="invalid"
@@ -100,6 +108,8 @@
 <!------------------------------->
 <script lang="ts">
 import Vue from 'vue';
+import { openModal } from '@/common/util';
+import ViewKiyaku from '@/components/ViewKiyaku.vue';
 import { ValidationObserver } from 'vee-validate';
 
 type State = {
@@ -107,6 +117,7 @@ type State = {
     name: string;
     mail: string;
   };
+  kiyaku: boolean;
 };
 
 export default Vue.extend({
@@ -126,7 +137,15 @@ export default Vue.extend({
         name: '',
         mail: '',
       },
+      kiyaku: false,
     };
+  },
+  watch: {
+    kiyaku(newdata: boolean) {
+      if (newdata) {
+        this.showModalKiyauku();
+      }
+    },
   },
   mounted() {},
   methods: {
@@ -136,6 +155,13 @@ export default Vue.extend({
         mail: this.form.mail.trim(),
       };
       this.$emit('submit', data);
+    },
+    showModalKiyauku() {
+      this.openModal({
+        modalTitle: '利用規約ヌ',
+        component: ViewKiyaku,
+        klass: ['view-orange'],
+      });
     },
   },
 });
@@ -192,9 +218,8 @@ export default Vue.extend({
   margin: 60px auto 0;
 }
 .ca-inputline {
-  .ca-input {
-    margin: 0 auto;
-  }
+  width: 300px;
+  margin: 0 auto;
 }
 
 $cloud-duration: 6s;

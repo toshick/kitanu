@@ -31,7 +31,7 @@ import Vue from 'vue';
 type State = {};
 
 export default Vue.extend({
-  name: 'PrivacyPolicy',
+  name: 'ViewPrivacyPolicy',
   components: {},
   props: {},
   data(): State {

@@ -12,13 +12,13 @@
 
       <!-- right -->
       <template v-slot:right>
-        <a class="btn-header" @click.stop.prevent="$emit('open-activitylist')"
+        <ParticleButton class="btn-header" @click="$emit('open-activitylist')"
           ><ion-icon name="bicycle-outline" size="medium" />
           <CaBadge :num="5" />
-        </a>
-        <a class="btn-header" @click.stop.prevent="showSetting"
+        </ParticleButton>
+        <ParticleButton class="btn-header" @click="showSetting"
           ><ion-icon name="restaurant-outline" size="medium"
-        /></a>
+        /></ParticleButton>
       </template>
     </ViewHeader>
     <ViewBody class="top-body">
