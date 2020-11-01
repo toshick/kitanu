@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "lib": ["es2016", "dom"],
+    "module": "es2015",
+    "declaration": false,
+    "declarationMap": false,
+    "downlevelIteration": true,
+    "strictNullChecks": false,
+    "noImplicitAny": true,
+    // "resolveJsonModule": true,
+    "baseUrl": ".",
+    "paths": {
+      "~/*": ["./*"],
+      "@/*": ["./*"]
+      // "@cypress/*": ["./cypress/*"],
+      // "@mock/*": ["./mock/*"]
+    },
+    "types": ["cypress", "@testing-library/cypress"],
+    // "target": "es5",
+    //
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true
+  },
+  // "include": ["./cypress/**/*", "./mock/fixtures/**/*.ts", "./mock/endpoints.ts", "./src/types/**/*.ts"],
+  "include": ["cypress/**/*"],
+  "exclude": ["node_modules"]
+}
