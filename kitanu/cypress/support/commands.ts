@@ -23,16 +23,3 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
-
-import '@testing-library/cypress/add-commands';
-
-// import endpoints from '@mock/endpoints';
-// Cypress.Commands.add('mock', () => {
-//   cy.server();
-//   const allEndpoints = Object.keys(endpoints);
-//   allEndpoints.forEach(endpoint => {
-//     const fileName = endpoint.replace(/\//g, '-') + '.ts';
-//     const res = require(`@mock/fixtures/${fileName}`);
-//     cy.route('POST', `/api/${endpoint}`, res.default());
-//   });
-// });

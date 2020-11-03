@@ -17,5 +17,48 @@
 import '@testing-library/cypress/add-commands';
 import './commands';
 
-// Alternatively you can use CommonJS syntax:
-// require('./commands')
+/**
+ * assertions
+ */
+Cypress.Commands.add('assertText', { prevSubject: true }, (subject, text) => {
+  cy.get(subject).findByText(text).should('exist');
+  cy.get(subject).then((subj) => {
+    return subj;
+  });
+});
+
+Cypress.Commands.add(
+  'assertInput',
+  { prevSubject: true },
+  (subject, placeholder) => {
+    cy.get(subject).find(`input[placeholder=${placeholder}]`).should('exist');
+    cy.get(subject).then((subj) => {
+      return subj;
+    });
+  },
+);
+
+Cypress.Commands.add(
+  'assertButton',
+  { prevSubject: true },
+  (subject, label) => {
+    cy.get(subject).find('button').findByText(label).should('exist');
+    cy.get(subject).then((subj) => {
+      return subj;
+    });
+  },
+);
+
+/**
+ * update
+ */
+Cypress.Commands.add(
+  'updateInput',
+  { prevSubject: true },
+  (subject, placeholder, str) => {
+    cy.get(subject).find(`input[placeholder=${placeholder}]`).type(str);
+    cy.get(subject).then((subj) => {
+      return subj;
+    });
+  },
+);

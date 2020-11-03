@@ -1,13 +1,15 @@
 {
   "compilerOptions": {
-    "lib": ["es2016", "dom"],
-    "module": "es2015",
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "lib": ["ESNext", "ESNext.AsyncIterable", "DOM"],
+    "target": "ES2018",
+    "module": "ESNext",
     "declaration": false,
     "declarationMap": false,
     "downlevelIteration": true,
     "strictNullChecks": false,
     "noImplicitAny": true,
-    // "resolveJsonModule": true,
     "baseUrl": ".",
     "paths": {
       "~/*": ["./*"],
@@ -15,11 +17,7 @@
       // "@cypress/*": ["./cypress/*"],
       // "@mock/*": ["./mock/*"]
     },
-    "types": ["cypress", "@testing-library/cypress"],
-    // "target": "es5",
-    //
-    "moduleResolution": "node",
-    "allowSyntheticDefaultImports": true
+    "types": ["cypress", "@testing-library/cypress"]
   },
   // "include": ["./cypress/**/*", "./mock/fixtures/**/*.ts", "./mock/endpoints.ts", "./src/types/**/*.ts"],
   "include": ["cypress/**/*"],
