@@ -1,0 +1,7 @@
+{
+  "viewportWidth": 1366,
+  "viewportHeight": 900,
+  "video": false,
+  "retries": 2,
+  "numTestsKeptInMemory": 25
+}
