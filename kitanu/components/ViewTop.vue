@@ -24,9 +24,12 @@
     <ViewBody class="top-body">
       <ChatInfo :infoitems="infoitems" />
       <section class="sec1">
-        <img class="cloud1" src="/img/top/cloud1.png" alt="" />
-        <img class="cloud2" src="/img/top/cloud2.png" alt="" />
-        <p class="moon"></p>
+        <div class="yozora">
+          <img class="cloud1" src="/img/top/cloud1.png" alt="" />
+          <img class="cloud2" src="/img/top/cloud2.png" alt="" />
+          <p class="moon"></p>
+        </div>
+
         <div class="chara">
           <img
             data-src="/img/tanu/tanu.png"
@@ -131,6 +134,7 @@ export default Vue.extend({
 .sec1 {
   margin-top: 160px;
 }
+
 .activity {
   header {
     display: flex;
@@ -177,13 +181,13 @@ export default Vue.extend({
   position: relative;
 }
 
-.myparticle {
+.yozora {
   position: absolute;
-  top: 50%;
+  top: 0;
   left: 50%;
-  border: solid 1px #ff0000;
+  margin-left: -160px;
+  width: 320px;
 }
-
 $cloud-duration: 6s;
 .cloud1 {
   position: absolute;
@@ -198,7 +202,7 @@ $cloud-duration: 6s;
 .cloud2 {
   position: absolute;
   top: 80px;
-  left: 240px;
+  left: 220px;
   width: 100px;
   animation-name: moveCloud2;
   animation-duration: $cloud-duration;
@@ -208,7 +212,7 @@ $cloud-duration: 6s;
 .moon {
   position: absolute;
   top: -10px;
-  left: 260px;
+  left: 220px;
   width: 40px;
   height: 40px;
   background-color: #fff;

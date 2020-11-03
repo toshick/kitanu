@@ -13,6 +13,7 @@ import ViewSelectMember from '@/components/ViewSelectMember.vue';
 import ViewChatList from '@/components/ViewChatList.vue';
 import ViewChat from '@/components/ViewChat.vue';
 import ViewSignup from '@/components/ViewSignup.vue';
+import ViewLogin from '@/components/ViewLogin.vue';
 
 import { infoitems, chatitems, postItems, members, albumItems } from './dummydata.js';
 
@@ -29,6 +30,7 @@ storiesOf('キータヌ', module).add('チャット', () => ({
     ViewAlbumList,
     ViewSelectMember,
     ViewSignup,
+    ViewLogin,
   },
   data: () => {
     return {
@@ -54,6 +56,7 @@ storiesOf('キータヌ', module).add('チャット', () => ({
 
   <div class="mobileview"><ViewSelectMember :members="members" /></div>
   <div class="mobileview"><ViewSignup /></div>
+  <div class="mobileview"><ViewLogin /></div>
   
 
   

@@ -7,31 +7,38 @@
         alt="kitanu-header"
       />
       <h1>サインアップヌ</h1>
+      <template v-slot:right>
+        <p class="btn-header">
+          <router-link to="/login" tag="span">login</router-link>
+        </p>
+      </template>
     </ViewHeader>
     <ViewBody class="signup-body">
       <section class="sec-intro">
-        <img class="cloud1" src="/img/top/cloud1.png" alt="" />
-        <img class="cloud2" src="/img/top/cloud2.png" alt="" />
-        <div class="title">
-          <div class="title-cont">
-            <img
-              data-src="/img/tanu/tanu.png"
-              :src="placeholderImg"
-              class="tanu lazy"
-              alt="kitanu"
-            />
-            <img
-              data-src="/img/top/tanu-title.png"
-              :src="placeholderImg"
-              class="tanu-title lazy"
-              alt="kitanu-title"
-            />
-          </div>
-          <div class="chara">
-            <p>
-              よーこそキタキータヌへ<br />
-              キタキータヌではアルバムを共同で作成したりおしゃべりできるヌ。
-            </p>
+        <div class="intro-body">
+          <img class="cloud1" src="/img/top/cloud1.png" alt="" />
+          <img class="cloud2" src="/img/top/cloud2.png" alt="" />
+          <div class="title">
+            <div class="title-cont">
+              <img
+                data-src="/img/tanu/tanu.png"
+                :src="placeholderImg"
+                class="tanu lazy"
+                alt="kitanu"
+              />
+              <img
+                data-src="/img/top/tanu-title.png"
+                :src="placeholderImg"
+                class="tanu-title lazy"
+                alt="kitanu-title"
+              />
+            </div>
+            <div class="des">
+              <p>
+                よーこそキタキータヌへ<br />
+                キタキータヌではアルバムを共同で作成したりおしゃべりできるヌ。
+              </p>
+            </div>
           </div>
         </div>
       </section>
@@ -175,8 +182,13 @@ export default Vue.extend({
   overflow: hidden;
 }
 .sec-intro {
-  padding: 10px 20px;
   background-color: #ddcd61;
+  padding: 20px 20px;
+}
+.intro-body {
+  position: relative;
+  margin: 0 auto;
+  width: 320px;
 }
 .title {
   position: relative;
@@ -198,12 +210,10 @@ export default Vue.extend({
   height: 60px;
   margin-left: 10px;
 }
-.chara {
+.des {
   & > p {
-    font-size: var(--fontsize-medium);
+    font-size: var(--fontsize-normal);
     color: #fff;
-    margin: 20px auto;
-    width: 260px;
   }
 }
 .sec-signup {
@@ -225,8 +235,8 @@ export default Vue.extend({
 $cloud-duration: 6s;
 .cloud1 {
   position: absolute;
-  top: 20px;
-  left: 10px;
+  top: 0px;
+  left: -10px;
   width: 100px;
   animation-name: moveCloud1;
   animation-duration: $cloud-duration;
@@ -235,7 +245,7 @@ $cloud-duration: 6s;
 }
 .cloud2 {
   position: absolute;
-  top: 80px;
+  top: 40px;
   left: 280px;
   width: 100px;
   animation-name: moveCloud2;
@@ -264,6 +274,9 @@ $cloud-duration: 6s;
 .sec-registered {
   padding: 20px 20px 0;
   text-align: center;
+  h1 {
+    padding: 10px 0 0;
+  }
 }
 .btn-start {
   margin: 60px auto 0;
