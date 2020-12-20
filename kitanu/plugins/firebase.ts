@@ -59,7 +59,7 @@ export default ({
       // リダイレクトを無視するpath
       if (['kiyaku', 'policy', 'login'].some((path) => pathname.includes(path)))
         return;
-      redirect(302, '/login');
+      return redirect(302, '/login');
     }
   });
 };

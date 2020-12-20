@@ -12,6 +12,7 @@ const initialUser: TypeLoginUser = {
   isAdmin: false,
   isAnonymous: false,
 };
+// 'https://avatars3.githubusercontent.com/u/6635142?s=460&v=4'
 
 @Module({ name: 'user', stateFactory: true, namespaced: true })
 export default class MyClass extends VuexModule {
@@ -145,18 +146,25 @@ export default class MyClass extends VuexModule {
    */
   @Action({})
   UpdateLoginUser(data: {
-    displayName: string;
-    photoURL: string;
+    displayName?: string;
+    photoURL?: string;
   }): Promise<boolean> {
     const user = firebase.auth().currentUser;
     if (!user) return Promise.resolve(false);
     return user
       .updateProfile(data)
-      .then(function () {
-        // Email sent.
+      .then(() => {
+        const newdata = { ...this._logined };
+        if (data.displayName) {
+          newdata.displayName = data.displayName;
+        }
+        if (typeof data.photoURL === 'string') {
+          newdata.photoURL = data.photoURL;
+        }
+        this.SET_LOGIN_USER(newdata);
         return true;
       })
-      .catch(function (error) {
+      .catch((error) => {
         // An error happened.
         logError(error);
         return false;

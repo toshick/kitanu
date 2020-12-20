@@ -53,18 +53,21 @@ export default {
         sizes: '144x144',
       },
       {
-        rel: 'stylesheet',
+        rel: 'preload',
         href: 'https://fonts.googleapis.com/earlyaccess/nicomoji.css',
+        as: 'style',
       },
     ],
     script: [
       {
         src: 'https://unpkg.com/ionicons@5.1.2/dist/ionicons/ionicons.esm.js',
         type: 'module',
+        rel: 'preload',
       },
       {
         src: 'https://unpkg.com/ionicons@5.1.2/dist/ionicons/ionicons.js',
         nomodule: '',
+        rel: 'preload',
       },
     ],
   },

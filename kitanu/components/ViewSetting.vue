@@ -13,10 +13,17 @@
     </ViewHeader>
     <ViewBody>
       <div class="setting-user">
-        <UserIcon
-          url="https://avatars3.githubusercontent.com/u/6635142?s=460&v=4"
-        />
-        <p>せかいのとしっく</p>
+        <a @click="editIcon">
+          <UserIcon
+            :url="loginedUser.photoURL"
+            :username="loginedUser.displayName"
+          />
+        </a>
+        <p>
+          <a @click="editUserName">
+            {{ loginedUser.displayName }}
+          </a>
+        </p>
       </div>
 
       <ul class="setting-menu">
@@ -48,6 +55,9 @@ import Vue from 'vue';
 import { openModal, openDialog } from '@/common/util';
 import ViewPrivacyPolicy from '@/components/ViewPrivacyPolicy.vue';
 import ViewKiyaku from '@/components/ViewKiyaku.vue';
+import { userStore } from '@/store';
+import { Input } from 'camaleao-design/components/type';
+import { TypeLoginUser } from '@/components/types/app';
 
 type State = {};
 
@@ -57,6 +67,11 @@ export default Vue.extend({
   props: {},
   data(): State {
     return {};
+  },
+  computed: {
+    loginedUser(): TypeLoginUser {
+      return userStore.loginedUser;
+    },
   },
   mounted() {},
   methods: {
@@ -89,6 +104,53 @@ export default Vue.extend({
             this.$emit('logout');
           },
           confirmText: 'よろしいヌ？',
+        },
+      });
+    },
+    editIcon() {
+      const inputs: Input[] = [];
+      inputs.push({
+        name: 'iconUrl',
+        value: this.loginedUser.photoURL || '',
+        placeholder: 'アイコンurl',
+        width: 'L',
+        // rules: 'required',
+      });
+
+      const $t = this.$el.closest('.mobileview') || null;
+      openDialog({
+        modalTitle: 'アイコンのurlをセット',
+        target: $t,
+        compoParams: {
+          inputs,
+          confirmText: 'よろしいヌ？',
+          btnLabel: 'ヌ',
+          onConfirm: ({ iconUrl }: { iconUrl: string }) => {
+            this.$emit('update-iconurl', iconUrl);
+          },
+        },
+      });
+    },
+    editUserName() {
+      const inputs: Input[] = [];
+      inputs.push({
+        name: 'displayName',
+        value: this.loginedUser.displayName || '',
+        placeholder: 'オナマエ',
+        width: 'L',
+      });
+
+      const $t = this.$el.closest('.mobileview') || null;
+      openDialog({
+        modalTitle: 'オナマエの変更だ',
+        target: $t,
+        compoParams: {
+          inputs,
+          confirmText: 'よろしいヌ？',
+          btnLabel: 'ヌ',
+          onConfirm: ({ displayName }: { displayName: string }) => {
+            this.$emit('update-username', displayName);
+          },
         },
       });
     },

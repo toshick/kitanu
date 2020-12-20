@@ -1,11 +1,15 @@
 <template>
   <div :class="myClass">
     <img
+      v-if="iconUrl"
       class="lazy"
       :src="placeholderImg"
-      data-src="https://avatars3.githubusercontent.com/u/6635142?s=460&v=4"
+      :data-src="iconUrl"
       alt=""
     />
+    <p v-else class="initialStamp">
+      <span>{{ initialStr }}</span>
+    </p>
   </div>
 </template>
 <!------------------------------->
@@ -21,6 +25,14 @@ export default Vue.extend({
   components: {},
   props: {
     size: {
+      default: '',
+      type: String,
+    },
+    url: {
+      default: '',
+      type: String,
+    },
+    username: {
       default: '',
       type: String,
     },
@@ -43,6 +55,12 @@ export default Vue.extend({
       klass[size] = true;
       return klass;
     },
+    iconUrl(): string {
+      return this.url;
+    },
+    initialStr(): string {
+      return this.username.slice(0, 2);
+    },
   },
   mounted() {},
   methods: {},
@@ -52,6 +70,7 @@ export default Vue.extend({
 
 <!------------------------------->
 <style scoped lang="scss">
+@import '@/assets/css/_mixins.scss';
 .usericon {
   --size: 50px;
   img {
@@ -77,6 +96,20 @@ export default Vue.extend({
       height: var(--size);
       border-radius: calc(var(--size) * 0.5);
     }
+  }
+}
+.initialStamp {
+  --size: 50px;
+  position: relative;
+  width: var(--size);
+  height: var(--size);
+  background-color: #fff;
+  border-radius: 50%;
+
+  span {
+    @include center();
+    font-size: var(--fontsize-medium);
+    white-space: nowrap;
   }
 }
 </style>
