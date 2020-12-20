@@ -8,6 +8,8 @@ import ChatClass from '~/store/chat';
 import ChatInfoClass from '~/store/chatinfo';
 import AlbumClass from '~/store/album';
 import FriendClass from '~/store/friend';
+import FirebaseClass from '~/store/firebase';
+import UserClass from '~/store/user';
 
 let appStore: AppClass;
 let postStore: PostClass;
@@ -15,6 +17,8 @@ let chatStore: ChatClass;
 let chatinfoStore: ChatInfoClass;
 let albumStore: AlbumClass;
 let friendStore: FriendClass;
+let firebaseStore: FirebaseClass;
+let userStore: UserClass;
 
 /**
  * initialiseStores
@@ -26,6 +30,8 @@ function initialiseStores(store: Store<any>): void {
   chatinfoStore = getModule(ChatInfoClass, store);
   albumStore = getModule(AlbumClass, store);
   friendStore = getModule(FriendClass, store);
+  firebaseStore = getModule(FirebaseClass, store);
+  userStore = getModule(UserClass, store);
 }
 
 export {
@@ -36,4 +42,6 @@ export {
   chatinfoStore,
   albumStore,
   friendStore,
+  firebaseStore,
+  userStore,
 };

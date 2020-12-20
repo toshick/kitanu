@@ -1,11 +1,10 @@
 import { v4 as uuidv4 } from 'uuid';
-import Vue from 'vue';
+import firebase from 'firebase/app';
 import { Module, VuexModule, Mutation, Action } from 'vuex-module-decorators';
-import { ActionRes, TypeUser } from '@/components/types/app';
+import { ActionRes, TypeLoginUser } from '@/components/types/app';
+import { logError } from '@/common/error';
 
-// import { firebase } from '@/plugins/firebase.ts';
-
-@Module({ name: 'app', stateFactory: true, namespaced: true })
+@Module({ name: 'firebase', stateFactory: true, namespaced: true })
 export default class MyClass extends VuexModule {
   // ----------------------
   // Mutation

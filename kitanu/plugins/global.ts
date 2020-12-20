@@ -11,6 +11,7 @@ import {
   drillDown,
   loading,
   placeholderImg,
+  isLocal,
 } from '@/common/util';
 import Setting from '@/container/Setting.vue';
 import ActivityList from '@/container/ActivityList.vue';
@@ -119,6 +120,11 @@ Vue.mixin({
     return {
       placeholderImg,
     };
+  },
+  computed: {
+    isLocal(): boolean {
+      return isLocal;
+    },
   },
   methods: {
     goTop() {

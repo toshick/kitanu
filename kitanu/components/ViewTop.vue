@@ -52,6 +52,7 @@
             <br />
             キータヌに自分のアクティビティをみてもらおーぬ
           </p>
+          <p>{{ loginedUser }}</p>
         </div>
       </section>
       <section class="sec2 activity">
@@ -91,7 +92,12 @@ import Vue, { PropType } from 'vue';
 
 import ChatInfo from '@/components/parts/ChatInfo.vue';
 import AlbumList from '@/components/parts/AlbumList.vue';
-import { TypeAlbumItem, TypeChatInfoItem } from '@/components/types/app';
+import {
+  TypeAlbumItem,
+  TypeChatInfoItem,
+  TypeLoginUser,
+} from '@/components/types/app';
+import { userStore } from '@/store';
 
 type State = {};
 
@@ -113,6 +119,11 @@ export default Vue.extend({
   },
   data(): State {
     return {};
+  },
+  computed: {
+    loginedUser(): TypeLoginUser {
+      return userStore.loginedUser;
+    },
   },
   mounted() {},
   methods: {},

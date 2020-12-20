@@ -9,6 +9,14 @@ import Loading from '@/components/parts/Loading.vue';
 import Particle from '@/components/parts/Particle.vue';
 
 /**
+ * isLocal
+ */
+export const isLocal: boolean = (() => {
+  if (document.URL.includes('localhost')) return true;
+  return false;
+})();
+
+/**
  * isMobile
  */
 export const isMobile: boolean = (() => {

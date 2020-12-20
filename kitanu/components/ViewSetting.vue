@@ -85,8 +85,8 @@ export default Vue.extend({
         target: $t,
         compoParams: {
           btnLabel: 'ヌ',
-          onConfirm: () => {
-            console.log('いえす');
+          onConfirm: async () => {
+            this.$emit('logout');
           },
           confirmText: 'よろしいヌ？',
         },

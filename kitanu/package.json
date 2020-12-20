@@ -25,6 +25,7 @@
     "camaleao-design": "git+https://github.com/toshick/camaleao-design.git",
     "cypress": "^5.5.0",
     "dayjs": "^1.8.36",
+    "firebase": "^8.1.2",
     "nuxt": "^2.14.0",
     "sanitize-html": "^1.27.4",
     "uuid": "^8.3.0",

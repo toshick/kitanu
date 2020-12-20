@@ -1,17 +1,14 @@
 <template>
-  <ViewSetting @close="$emit('close')" />
+  <ViewSetting @close="$emit('close')" @logout="logout" />
 </template>
 <!------------------------------->
 
 <!------------------------------->
 <script lang="ts">
 import Vue from 'vue';
-// import dayjs from 'dayjs';
-// import { v4 as uuidv4 } from 'uuid';
-// import { toast } from '@/common/util';
-// import { TypeUser } from '@/components/types/app';
+import { toast } from '@/common/util';
 import ViewSetting from '@/components/ViewSetting.vue';
-// import { postStore } from '@/store';
+import { userStore } from '@/store';
 
 type State = {};
 
@@ -22,7 +19,21 @@ export default Vue.extend({
   },
   computed: {},
   mounted() {},
-  methods: {},
+  methods: {
+    async logout() {
+      const res = await userStore.Logout();
+
+      if (res) {
+        this.$emit('close');
+      } else {
+        this.showConfirm({
+          title: 'ログアウトにしっぱいヌ',
+          text: `元気だせヨ`,
+          withCancel: false,
+        });
+      }
+    },
+  },
 });
 </script>
 <!------------------------------->

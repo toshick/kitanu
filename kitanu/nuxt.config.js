@@ -76,7 +76,7 @@ export default {
    ** Plugins to load before mounting the App
    ** https://nuxtjs.org/guide/plugins
    */
-  plugins: ['plugins/global.ts', 'plugins/v-longpress'],
+  plugins: ['plugins/global.ts', 'plugins/v-longpress', 'plugins/firebase'],
   /*
    ** Auto import components
    ** See https://nuxtjs.org/api/configuration-components
@@ -104,4 +104,20 @@ export default {
    ** See https://nuxtjs.org/api/configuration-build/
    */
   build: {},
+  /**
+   * publicRuntimeConfig
+   */
+  publicRuntimeConfig: {
+    // firebase
+    FIREBASE_API_KEY: process.env.FIREBASE_API_KEY || '',
+    FIREBASE_AUTH_DOMAIN: process.env.FIREBASE_AUTH_DOMAIN || '',
+    FIREBASE_DB_URL: process.env.FIREBASE_DB_URL || '',
+    FIREBASE_PROJECT_ID: process.env.FIREBASE_PROJECT_ID || '',
+    FIREBASE_STORAGE_BUCKET: process.env.FIREBASE_STORAGE_BUCKET || '',
+    FIREBASE_MGS_SENDER_ID: process.env.FIREBASE_MGS_SENDER_ID || '',
+    FIREBASE_APP_ID: process.env.FIREBASE_APP_ID || '',
+    // firebase login
+    DEV_USER_EMAIL: process.env.DEV_USER_EMAIL || '',
+    DEV_USER_PASS: process.env.DEV_USER_PASS || '',
+  },
 };

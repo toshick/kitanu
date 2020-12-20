@@ -57,6 +57,15 @@
               Googleでログインヌ</CaButton
             >
           </li>
+          <li v-if="isLocal">
+            <CaButton class="btn-login" width="L" @click="loginByDev">
+              <ion-icon name="finger-print-outline" size="medium" />
+              開発ログインヌ</CaButton
+            >
+          </li>
+          <li>
+            <a class="btn-text" @click="resetPassword">リセットパスワード</a>
+          </li>
         </ul>
       </section>
     </ViewBody>
@@ -67,35 +76,30 @@
 <!------------------------------->
 <script lang="ts">
 import Vue from 'vue';
-// import { openModal } from '@/common/util';
-import ViewKiyaku from '@/components/ViewKiyaku.vue';
 
-type State = {
-  kiyaku: boolean;
-};
+type State = {};
 
 export default Vue.extend({
   name: 'ViewLogin',
   components: {},
-  props: {
-    registered: {
-      required: true,
-      type: Boolean,
-    },
-  },
+  props: {},
   data(): State {
-    return {
-      kiyaku: false,
-    };
+    return {};
   },
 
   mounted() {},
   methods: {
     loginByFacebook() {
-      console.log('loginByFacebook');
+      this.$emit('login-facebook');
     },
     loginByGoogle() {
-      console.log('loginByGoogle');
+      this.$emit('login-google');
+    },
+    loginByDev() {
+      this.$emit('login-dev');
+    },
+    resetPassword() {
+      this.$emit('reset-password');
     },
   },
 });
@@ -152,7 +156,7 @@ export default Vue.extend({
 }
 
 .sec-login {
-  padding: 30px 0 0;
+  padding: 20px 0 0;
   h1 {
     color: var(--app-base-color2);
     font-size: var(--fontsize-large);
@@ -167,7 +171,7 @@ export default Vue.extend({
 .buttons {
   text-align: center;
   li {
-    margin-bottom: 40px;
+    margin-bottom: 20px;
   }
 }
 

@@ -1,3 +1,12 @@
+export type TypeLoginUser = {
+  email: string;
+  emailVerified: boolean;
+  displayName: string;
+  photoURL: string;
+  isAdmin: boolean;
+  isAnonymous: boolean;
+};
+
 export type ActionRes = {
   error?: boolean;
   msg?: string;

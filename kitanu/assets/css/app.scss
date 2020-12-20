@@ -1,6 +1,7 @@
 @charset "utf-8";
 
 @font-face {
+  font-display: swap;
   font-family: 'Nico Moji';
   // src: url(/path/to/fonts/examplefont.woff) format('woff');
   src: local('Helvetica Neue Bold');
@@ -40,7 +41,8 @@ ul {
 }
 
 html {
-  font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
+  font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN',
+    'Hiragino Sans', Meiryo, sans-serif;
   user-select: none;
 }
 .wf-nicomoji {
@@ -142,6 +144,11 @@ a {
 }
 .btn-header[disabled] {
   opacity: 0.4;
+}
+
+.btn-text {
+  font-size: var(--fontsize-normal);
+  color: var(--app-color-dark);
 }
 
 .alert-text {

@@ -1,51 +1,103 @@
 <template>
-  <ViewLogin ref="view" :registered="registered" @submit="onRegister" />
+  <ViewLogin
+    ref="view"
+    @login-facebook="loginByFacebook"
+    @login-google="loginByGoogle"
+    @login-dev="loginByDev"
+    @reset-password="resetPassword"
+  />
 </template>
 <!------------------------------->
 
 <!------------------------------->
 <script lang="ts">
 import Vue from 'vue';
-import { toast } from '@/common/util';
 import ViewLogin from '@/components/ViewLogin.vue';
-import { appStore } from '@/store';
-
+import { userStore } from '@/store';
 type State = {
-  registered: boolean;
+  connecting: boolean;
 };
 
 export default Vue.extend({
   components: { ViewLogin },
   data(): State {
     return {
-      registered: false,
+      connecting: false,
     };
   },
   computed: {},
   mounted() {},
   methods: {
-    onRegister(data: { name: string; mail: string }) {
+    async loginByFacebook() {
+      if (this.connecting) return;
+      this.connecting = true;
+      const res = await userStore.LoginByFacebook();
+      this.connecting = false;
+      if (res) {
+        this.$router.push('/');
+      } else {
+        this.showConfirm({
+          title: 'FBログイン失敗',
+          text: `元気だせヨ`,
+          withCancel: false,
+          isDanger: true,
+        });
+      }
+    },
+    async loginByGoogle() {
+      if (this.connecting) return;
+      this.connecting = true;
+      const res = await userStore.LoginByGoogle();
+      this.connecting = false;
+      if (res) {
+        this.$router.push('/');
+      } else {
+        this.showConfirm({
+          title: 'Googleログイン失敗',
+          text: `元気だせヨ`,
+          withCancel: false,
+          isDanger: true,
+        });
+      }
+    },
+    async loginByDev() {
+      if (this.connecting) return;
+      this.connecting = true;
+      const res = await userStore.LoginWithPassword({
+        email: this.$config.DEV_USER_EMAIL,
+        password: this.$config.DEV_USER_PASS,
+      });
+      this.connecting = false;
+      if (res) {
+        this.$router.push('/');
+      } else {
+        this.showConfirm({
+          title: 'ログイン失敗',
+          text: `元気だせヨ`,
+          withCancel: false,
+          isDanger: true,
+        });
+      }
+    },
+    resetPassword() {
+      if (this.connecting) return;
+      const { email } = userStore.loginedUser;
       this.showConfirm(
         {
-          title: 'キタキータヌに登録ヌ',
-          text: `「${data.name}」<br>「${data.mail}」<br>よろしいヌ？`,
+          title: 'パスワードのリセットするヌ？',
+          text: `リセットメールがとぶよ`,
         },
         async () => {
-          this.showLoading(true);
-          const res = await appStore.Register(data);
-          this.showLoading(false);
-          if (res.error) {
+          this.connecting = true;
+          const res = await userStore.SendPasswordResetEmail(email);
+          this.connecting = false;
+          if (res) {
             this.showConfirm({
-              title: 'しっぱいヌ',
-              text: `${res.msg}`,
-              isDanger: true,
+              title: 'パスワードのリセット成功ヌ',
+              text: `パスワードのリセットメールがとんだヌ`,
               withCancel: false,
-              btnLabel: 'なるほど',
             });
-            return;
           }
-          toast('成功ヌ');
-          this.registered = true;
         },
       );
     },

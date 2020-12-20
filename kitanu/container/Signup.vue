@@ -8,7 +8,7 @@
 import Vue from 'vue';
 import { toast } from '@/common/util';
 import ViewSignup from '@/components/ViewSignup.vue';
-import { appStore } from '@/store';
+import { userStore } from '@/store';
 
 type State = {
   registered: boolean;
@@ -32,7 +32,7 @@ export default Vue.extend({
         },
         async () => {
           this.showLoading(true);
-          const res = await appStore.Register(data);
+          const res = await userStore.Register(data);
           this.showLoading(false);
           if (res.error) {
             this.showConfirm({
