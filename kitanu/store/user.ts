@@ -37,23 +37,23 @@ export default class MyClass extends VuexModule {
   }: {
     email: string;
     password: string;
-  }): Promise<boolean> {
+  }): Promise<ActionRes> {
     return firebase
       .auth()
       .signInWithEmailAndPassword(email, password)
       .then((user: any) => {
         console.log('パスワードログイン成功', user);
-        return true;
+        return {};
       })
       .catch((error) => {
         console.log('パスワードログイン失敗');
         logError(error, 'LoginWithPassword');
-        return false;
+        return { errorCode: error.code, errorMsg: error.message };
       });
   }
 
   @Action({})
-  LoginByFacebook(): Promise<boolean> {
+  LoginByFacebook(): Promise<ActionRes> {
     const provider = new firebase.auth.FacebookAuthProvider();
     // provider.setCustomParameters({
     //   display: 'popup',
@@ -62,15 +62,15 @@ export default class MyClass extends VuexModule {
     return firebase
       .auth()
       .signInWithRedirect(provider)
-      .then(function (result: any) {
+      .then((result: any) => {
         // This gives you a Facebook Access Token. You can use it to access the Facebook API.
         // var token = result.credential.accessToken;
         // The signed-in user info.
         const user = result.user;
         console.log('LoginByFacebook', user);
-        return true;
+        return {};
       })
-      .catch(function (error) {
+      .catch((error) => {
         // Handle Errors here.
         // var errorCode = error.code;
         // var errorMessage = error.message;
@@ -81,13 +81,13 @@ export default class MyClass extends VuexModule {
         // // ...
 
         logError(error, 'LoginByFacebook');
-        return false;
+        return { errorCode: error.code, errorMsg: error.message };
       });
   }
 
   @Action({})
-  LoginByGoogle(): Promise<boolean> {
-    return Promise.resolve(false);
+  LoginByGoogle(): Promise<ActionRes> {
+    return Promise.resolve({ errorMsg: 'no-develop' });
   }
 
   @Action({})
@@ -97,48 +97,68 @@ export default class MyClass extends VuexModule {
   CreateUserWithEmailAndPassword(
     email: string,
     password: string,
-  ): Promise<boolean> {
+  ): Promise<ActionRes> {
     return firebase
       .auth()
       .createUserWithEmailAndPassword(email, password)
       .then((user) => {
         console.log('ユーザ作成せり', user);
-        return true;
+        return {};
       })
       .catch((error) => {
         logError(error);
-        return false;
+        return { errorCode: error.code, errorMsg: error.message };
       });
   }
 
   @Action({})
-  Logout(): Promise<boolean> {
+  Logout(): Promise<ActionRes> {
     return firebase
       .auth()
       .signOut()
-      .then(function () {
+      .then(() => {
         // Sign-out successful.
-        return true;
+        return {};
       })
-      .catch(function (error) {
+      .catch((error) => {
         // An error happened.
         logError(error);
-        return false;
+        return { errorCode: error.code, errorMsg: error.message };
       });
   }
 
   @Action({})
-  Register(data: { name: string; mail: string }): Promise<ActionRes> {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        console.log('とうろく', data);
-        // resolve(<ActionRes>{
-        //   error: true,
-        //   msg: 'なんか登録に失敗しました。メンゴでござる',
-        // });
-        resolve(<ActionRes>{});
-      }, 1200);
-    });
+  Register(data: { password: string; email: string }): Promise<ActionRes> {
+    return firebase
+      .auth()
+      .createUserWithEmailAndPassword(data.email, data.password)
+      .then((_user) => {
+        // Signed in
+        return {};
+      })
+      .catch((error) => {
+        logError(error);
+        return { errorCode: error.code, errorMsg: error.message };
+      });
+  }
+
+  @Action({})
+  UnRegister(): Promise<ActionRes> {
+    const user = firebase.auth().currentUser;
+    if (!user) return Promise.resolve({ errorMsg: 'no-auth' });
+
+    return user
+      .delete()
+      .then(() => {
+        // User deleted.
+        this.Logout();
+        return {};
+      })
+      .catch((error) => {
+        // An error happened.
+        logError(error);
+        return { errorCode: error.code, errorMsg: error.message };
+      });
   }
 
   /**
@@ -148,9 +168,9 @@ export default class MyClass extends VuexModule {
   UpdateLoginUser(data: {
     displayName?: string;
     photoURL?: string;
-  }): Promise<boolean> {
+  }): Promise<ActionRes> {
     const user = firebase.auth().currentUser;
-    if (!user) return Promise.resolve(false);
+    if (!user) return Promise.resolve({ errorMsg: 'no-auth' });
     return user
       .updateProfile(data)
       .then(() => {
@@ -162,12 +182,12 @@ export default class MyClass extends VuexModule {
           newdata.photoURL = data.photoURL;
         }
         this.SET_LOGIN_USER(newdata);
-        return true;
+        return {};
       })
       .catch((error) => {
         // An error happened.
         logError(error);
-        return false;
+        return { errorCode: error.code, errorMsg: error.message };
       });
   }
 
@@ -175,19 +195,19 @@ export default class MyClass extends VuexModule {
    * パスワード更新
    */
   @Action({})
-  UpdatePassword(password: string): Promise<boolean> {
+  UpdatePassword(password: string): Promise<ActionRes> {
     const user = firebase.auth().currentUser;
-    if (!user) return Promise.resolve(false);
+    if (!user) return Promise.resolve({ errorMsg: 'no-auth' });
     return user
       .updatePassword(password)
-      .then(function () {
+      .then(() => {
         // Email sent.
-        return true;
+        return {};
       })
-      .catch(function (error) {
+      .catch((error) => {
         // An error happened.
         logError(error);
-        return false;
+        return { errorCode: error.code, errorMsg: error.message };
       });
   }
 
@@ -195,18 +215,19 @@ export default class MyClass extends VuexModule {
    * パスワードリセットメール送信
    */
   @Action({})
-  SendPasswordResetEmail(email: string): Promise<boolean> {
+  SendPasswordResetEmail(email: string): Promise<ActionRes> {
+    if (!email) return Promise.resolve({ errorMsg: 'no-email' });
     const auth = firebase.auth();
     return auth
       .sendPasswordResetEmail(email)
-      .then(function () {
+      .then(() => {
         // Email sent.
-        return true;
+        return {};
       })
-      .catch(function (error) {
+      .catch((error) => {
         // An error happened.
         logError(error);
-        return false;
+        return { errorCode: error.code, errorMsg: error.message };
       });
   }
 
@@ -214,19 +235,19 @@ export default class MyClass extends VuexModule {
    * ログインユーザのメールの更新
    */
   @Action({})
-  UpdateLoginUserEmail(email: string): Promise<boolean> {
+  UpdateLoginUserEmail(email: string): Promise<ActionRes> {
     const user = firebase.auth().currentUser;
-    if (!user) return Promise.resolve(false);
+    if (!user) return Promise.resolve({ errorMsg: 'no-auth' });
     return user
       .updateEmail(email)
-      .then(function () {
+      .then(() => {
         // Email sent.
-        return true;
+        return {};
       })
-      .catch(function (error) {
+      .catch((error) => {
         // An error happened.
         logError(error);
-        return false;
+        return { errorCode: error.code, errorMsg: error.message };
       });
   }
 
@@ -234,19 +255,19 @@ export default class MyClass extends VuexModule {
    * 確認メール送信
    */
   @Action({})
-  SendEmailVerification(): Promise<boolean> {
+  SendEmailVerification(): Promise<ActionRes> {
     const user = firebase.auth().currentUser;
-    if (!user) return Promise.resolve(false);
+    if (!user) return Promise.resolve({ errorMsg: 'no-auth' });
     return user
       .sendEmailVerification()
-      .then(function () {
+      .then(() => {
         // Email sent.
-        return true;
+        return {};
       })
-      .catch(function (error) {
+      .catch((error) => {
         // An error happened.
         logError(error);
-        return false;
+        return { errorCode: error.code, errorMsg: error.message };
       });
   }
 

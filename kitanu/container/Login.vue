@@ -14,92 +14,92 @@
 import Vue from 'vue';
 import ViewLogin from '@/components/ViewLogin.vue';
 import { userStore } from '@/store';
-type State = {
-  connecting: boolean;
+type State = {};
+
+const errorMsgLogin: { [key: string]: string } = {
+  'auth/user-not-found': 'しっぱいした。元気だせヨ',
+  'auth/wrong-password': 'ダメだった。元気だせヨ',
 };
 
 export default Vue.extend({
   components: { ViewLogin },
   data(): State {
-    return {
-      connecting: false,
-    };
+    return {};
   },
   computed: {},
   mounted() {},
   methods: {
     async loginByFacebook() {
       if (this.connecting) return;
-      this.connecting = true;
+      this.showLoading(true);
       const res = await userStore.LoginByFacebook();
-      this.connecting = false;
-      if (res) {
-        this.$router.push('/');
-      } else {
+      this.showLoading(false);
+      if (res.errorCode) {
         this.showConfirm({
           title: 'FBログイン失敗',
           text: `元気だせヨ`,
           withCancel: false,
           isDanger: true,
         });
+        return;
       }
+      this.$router.push('/');
     },
     async loginByGoogle() {
       if (this.connecting) return;
-      this.connecting = true;
+      this.showLoading(true);
       const res = await userStore.LoginByGoogle();
-      this.connecting = false;
-      if (res) {
-        this.$router.push('/');
-      } else {
+      this.showLoading(false);
+      if (res.errorCode) {
         this.showConfirm({
           title: 'Googleログイン失敗',
           text: `元気だせヨ`,
           withCancel: false,
           isDanger: true,
         });
+        return;
       }
+      this.$router.push('/');
     },
-    async loginByDev() {
+    async loginByDev(data: { email: string; password: string }) {
       if (this.connecting) return;
-      this.connecting = true;
+      this.showLoading(true);
+      const { email, password } = data;
       const res = await userStore.LoginWithPassword({
-        email: this.$config.DEV_USER_EMAIL,
-        password: this.$config.DEV_USER_PASS,
+        email,
+        password,
       });
-      this.connecting = false;
-      if (res) {
-        this.$router.push('/');
-      } else {
+      this.showLoading(false);
+      if (res.errorCode) {
         this.showConfirm({
           title: 'ログイン失敗',
+          text: errorMsgLogin[res.errorCode] || `元気だせヨ`,
+          withCancel: false,
+          isDanger: true,
+        });
+        return;
+      }
+      this.$router.push('/');
+    },
+    async resetPassword(email: string) {
+      if (this.connecting) return;
+      this.showLoading(true);
+      const res = await userStore.SendPasswordResetEmail(email);
+      this.showLoading(false);
+      if (res.errorCode) {
+        this.showConfirm({
+          title: 'リセット失敗',
           text: `元気だせヨ`,
           withCancel: false,
           isDanger: true,
         });
+        return;
       }
-    },
-    resetPassword() {
-      if (this.connecting) return;
-      const { email } = userStore.loginedUser;
-      this.showConfirm(
-        {
-          title: 'パスワードのリセットするヌ？',
-          text: `リセットメールがとぶよ`,
-        },
-        async () => {
-          this.connecting = true;
-          const res = await userStore.SendPasswordResetEmail(email);
-          this.connecting = false;
-          if (res) {
-            this.showConfirm({
-              title: 'パスワードのリセット成功ヌ',
-              text: `パスワードのリセットメールがとんだヌ`,
-              withCancel: false,
-            });
-          }
-        },
-      );
+      this.showConfirm({
+        title: 'パスワードのリセット成功ヌ',
+        text: `パスワードのリセットメールがとんだヌ`,
+        withCancel: false,
+      });
     },
   },
 });

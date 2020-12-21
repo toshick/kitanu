@@ -32,6 +32,7 @@ export default ({
 
   // Initialize Firebase
   firebase.initializeApp(firebaseConfig);
+  firebase.auth().languageCode = 'jp';
   // const firestore = firebase.firestore();
   // const storage = firebase.storage();
 

@@ -119,6 +119,7 @@ Vue.mixin({
   data() {
     return {
       placeholderImg,
+      connecting: false,
     };
   },
   computed: {
@@ -185,6 +186,7 @@ Vue.mixin({
     },
     showLoading(flg: boolean) {
       loading(flg);
+      this.connecting = flg;
     },
     toast(txt: string) {
       const $t = this.$el.closest('.mobileview') || null;

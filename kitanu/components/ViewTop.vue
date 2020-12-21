@@ -45,6 +45,7 @@
             alt="kitanu-title"
           />
           <p>
+            よーこそキタキータヌヘ<br />
             キータヌは世話焼きたぬき
             <a class="kitanu" @click="$emit('about')"
               ><ion-icon name="finger-print-outline"
@@ -134,8 +135,6 @@ export default Vue.extend({
 <!------------------------------->
 <style scoped lang="scss">
 .top-body {
-  overflow: scroll;
-
   & > section {
     padding: 10px 20px;
     background-color: #ddcd61;

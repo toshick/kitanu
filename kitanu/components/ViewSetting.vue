@@ -5,11 +5,11 @@
         ><ion-icon name="chevron-back" size="medium"
       /></a>
       <h1>せってい</h1>
-      <template v-slot:right>
+      <!-- <template v-slot:right>
         <a @click.stop.prevent="showModalPolicy"
           ><ion-icon name="finger-print-outline" size="medium"
         /></a>
-      </template>
+      </template> -->
     </ViewHeader>
     <ViewBody>
       <div class="setting-user">
@@ -27,11 +27,11 @@
       </div>
 
       <ul class="setting-menu">
+        <!-- <li>
+          <a disabled @click.stop.prevent="showModalPolicy">本人確認</a>
+        </li> -->
         <li>
-          <a @click.stop.prevent="showModalPolicy">本人確認</a>
-        </li>
-        <li>
-          <a @click.stop.prevent="showModalPolicy">ともだちリスト</a>
+          <a disabled @click.stop.prevent="showModalPolicy">ともだちリスト</a>
         </li>
         <li>
           <a @click.stop.prevent="showModalPolicy">プライバシーポリシー</a>
@@ -39,12 +39,25 @@
         <li>
           <a @click.stop.prevent="showModalKiyauku">利用規約</a>
         </li>
+        <li>
+          <a @click.stop.prevent="showModalPassword">パスワード再設定</a>
+        </li>
 
         <li>
           <a @click.stop.prevent="logout">ログアウト</a>
         </li>
       </ul>
     </ViewBody>
+    <div class="bottom">
+      <CaButton
+        class="btn-unregister"
+        size="S"
+        width="L"
+        type="danger"
+        @click="unRegister"
+        >退会</CaButton
+      >
+    </div>
   </section>
 </template>
 <!------------------------------->
@@ -75,6 +88,18 @@ export default Vue.extend({
   },
   mounted() {},
   methods: {
+    showModalPassword() {
+      this.showConfirm(
+        {
+          title: 'パスワード再設定ヌ',
+          text: `メールを送るヨ`,
+          isDanger: true,
+        },
+        () => {
+          this.$emit('reset-password');
+        },
+      );
+    },
     showModalPolicy() {
       const $t = this.$el.closest('.mobileview') || null;
       openModal({
@@ -154,6 +179,28 @@ export default Vue.extend({
         },
       });
     },
+    unRegister() {
+      this.showConfirm(
+        {
+          title: '退会するヌ',
+          text: `マジなハナシかい？`,
+          isDanger: true,
+        },
+        () => {
+          // this.$emit('unregister');
+          this.showConfirm(
+            {
+              title: 'マジで退会するヌ',
+              text: `冗談では済まされんヌよ`,
+              isDanger: true,
+            },
+            () => {
+              this.$emit('unregister');
+            },
+          );
+        },
+      );
+    },
   },
 });
 </script>
@@ -186,5 +233,10 @@ export default Vue.extend({
     font-size: var(--fontsize-normal);
     color: var(--app-color-dark);
   }
+}
+
+.bottom {
+  text-align: center;
+  padding: 30px 0;
 }
 </style>

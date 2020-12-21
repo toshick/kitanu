@@ -9,7 +9,10 @@
       <h1>サインアップヌ</h1>
       <template v-slot:right>
         <p class="btn-header">
-          <router-link to="/login" tag="span">login</router-link>
+          <router-link to="/login" tag="span">
+            <ion-icon name="swap-horizontal-outline" size="small" />
+            login</router-link
+          >
         </p>
       </template>
     </ViewHeader>
@@ -62,9 +65,9 @@
           </div>
           <div class="ca-inputline">
             <CaInput
-              v-model="form.mail"
+              v-model="form.email"
               class="-white"
-              name="mail"
+              name="email"
               title="メール"
               rules="required|email"
               placeholder="メール"
@@ -96,6 +99,16 @@
           <ion-icon name="checkmark" size="large" />
         </h1>
         <p class="text">
+          よーこそ {{ loginedUser.displayName }}！
+          <br />
+          メールを送ったので
+          <br />
+          パスワード再設定をするがよいヌ
+          <br />
+          でないとログインできなくなるヨ
+        </p>
+        <p class="text">
+          <br />
           いろんなアルバムまっているヌ！
           <br />
           レッツエンジョイキタキータヌ！
@@ -115,14 +128,15 @@
 <!------------------------------->
 <script lang="ts">
 import Vue from 'vue';
-import { openModal } from '@/common/util';
 import ViewKiyaku from '@/components/ViewKiyaku.vue';
 import { ValidationObserver } from 'vee-validate';
+import { TypeLoginUser } from '@/components/types/app';
+import { userStore } from '@/store';
 
 type State = {
   form: {
     name: string;
-    mail: string;
+    email: string;
   };
   kiyaku: boolean;
 };
@@ -142,10 +156,15 @@ export default Vue.extend({
     return {
       form: {
         name: '',
-        mail: '',
+        email: '',
       },
       kiyaku: false,
     };
+  },
+  computed: {
+    loginedUser(): TypeLoginUser {
+      return userStore.loginedUser;
+    },
   },
   watch: {
     kiyaku(newdata: boolean) {
@@ -159,7 +178,7 @@ export default Vue.extend({
     submit() {
       const data = {
         name: this.form.name.trim(),
-        mail: this.form.mail.trim(),
+        email: this.form.email.trim(),
       };
       this.$emit('submit', data);
     },
@@ -276,6 +295,9 @@ $cloud-duration: 6s;
   text-align: center;
   h1 {
     padding: 10px 0 0;
+  }
+  .text {
+    line-height: 1.8;
   }
 }
 .btn-start {

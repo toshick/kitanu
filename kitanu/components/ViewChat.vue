@@ -36,7 +36,7 @@
     </ViewBody>
     <ViewFooter
       mode="chat"
-      :connecting="connecting || sending"
+      :isconnecting="isconnecting || sending"
       @submit="(p) => $emit('submit', p)"
     />
   </section>
@@ -83,7 +83,7 @@ export default Vue.extend({
       default: () => [],
       type: Array as PropType<TypeUser[]>,
     },
-    connecting: {
+    isconnecting: {
       default: false,
       type: Boolean,
     },
@@ -97,7 +97,7 @@ export default Vue.extend({
   },
   computed: {
     visbleInlineLoading(): boolean {
-      return this.connecting || this.sending;
+      return this.isconnecting || this.sending;
     },
   },
   mounted() {},

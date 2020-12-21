@@ -8,8 +8,8 @@ export type TypeLoginUser = {
 };
 
 export type ActionRes = {
-  error?: boolean;
-  msg?: string;
+  errorMsg?: string;
+  errorCode?: string;
 };
 
 export type TypeUser = {

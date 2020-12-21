@@ -9,7 +9,10 @@
       <h1>ログインヌ</h1>
       <template v-slot:right>
         <p class="btn-header">
-          <router-link to="/signup" tag="span">signup</router-link>
+          <router-link to="/signup" tag="span">
+            <ion-icon name="swap-horizontal-outline" size="small" />
+            signup</router-link
+          >
         </p>
       </template>
     </ViewHeader>
@@ -45,28 +48,79 @@
       </section>
       <section class="sec-login">
         <ul class="buttons">
-          <li>
+          <li v-show="!visibleLoginForm">
             <CaButton class="btn-login" width="L" @click="loginByFacebook">
               <ion-icon name="finger-print-outline" size="medium" />
               FaceBookでログインヌ</CaButton
             >
           </li>
-          <li>
+          <li v-show="!visibleLoginForm">
             <CaButton class="btn-login" width="L" @click="loginByGoogle">
               <ion-icon name="finger-print-outline" size="medium" />
               Googleでログインヌ</CaButton
             >
           </li>
-          <li v-if="isLocal">
-            <CaButton class="btn-login" width="L" @click="loginByDev">
+          <li v-show="!visibleLoginForm">
+            <CaButton
+              class="btn-login"
+              width="L"
+              @click="visibleLoginForm = true"
+            >
               <ion-icon name="finger-print-outline" size="medium" />
-              開発ログインヌ</CaButton
+              パスワードでログインヌ</CaButton
             >
           </li>
-          <li>
-            <a class="btn-text" @click="resetPassword">リセットパスワード</a>
-          </li>
         </ul>
+        <div v-if="visibleLoginForm">
+          <ValidationObserver
+            v-slot="{ invalid, handleSubmit }"
+            tag="form"
+            class="form"
+          >
+            <div class="ca-inputline">
+              <CaInput
+                v-model="form.email"
+                class="-white"
+                name="email"
+                title="メールアドレス"
+                rules="required|email"
+                placeholder="メールアドレス"
+                width="L"
+              ></CaInput>
+            </div>
+            <div class="ca-inputline">
+              <CaInput
+                v-model="form.password"
+                class="-white"
+                name="password"
+                title="パスワード"
+                type="password"
+                rules="required"
+                placeholder="パスワード"
+                width="L"
+              ></CaInput>
+            </div>
+            <div class="ca-inputline">
+              <CaButton
+                class="btn-login -bypass"
+                width="L"
+                :disabled="invalid"
+                @click="handleSubmit(loginByPass)"
+              >
+                <ion-icon name="finger-print-outline" size="medium" />
+                パスワードでログインヌ</CaButton
+              >
+            </div>
+            <div class="ca-inputline">
+              <a class="btn-text" @click.stop.prevent="visibleLoginForm = false"
+                >やめる</a
+              >
+            </div>
+          </ValidationObserver>
+        </div>
+        <p class="reset">
+          <a class="btn-text" @click="resetPassword">リセットパスワード</a>
+        </p>
       </section>
     </ViewBody>
   </section>
@@ -76,18 +130,39 @@
 <!------------------------------->
 <script lang="ts">
 import Vue from 'vue';
+import { ValidationObserver } from 'vee-validate';
+import { Input } from 'camaleao-design/components/type';
 
-type State = {};
+type State = {
+  form: {
+    email: string;
+    password: string;
+  };
+  visibleLoginForm: boolean;
+};
 
 export default Vue.extend({
   name: 'ViewLogin',
-  components: {},
+  components: { ValidationObserver },
   props: {},
   data(): State {
-    return {};
+    return {
+      form: {
+        email: '',
+        password: '',
+      },
+      visibleLoginForm: false,
+    };
   },
 
-  mounted() {},
+  mounted() {
+    if (this.isLocal) {
+      this.form = {
+        email: this.$config.DEV_USER_EMAIL,
+        password: this.$config.DEV_USER_PASS,
+      };
+    }
+  },
   methods: {
     loginByFacebook() {
       this.$emit('login-facebook');
@@ -95,11 +170,32 @@ export default Vue.extend({
     loginByGoogle() {
       this.$emit('login-google');
     },
-    loginByDev() {
-      this.$emit('login-dev');
+    showLoginByPassForm() {
+      this.visibleLoginForm = true;
+    },
+    loginByPass() {
+      this.$emit('login-dev', this.form);
     },
     resetPassword() {
-      this.$emit('reset-password');
+      const inputs: Input[] = [];
+      inputs.push({
+        name: 'email',
+        value: '',
+        placeholder: 'メールアドレス',
+        width: 'L',
+        rules: 'required|email',
+      });
+      this.openDialog({
+        modalTitle: 'パスワードのリセットするヌ？',
+        compoParams: {
+          inputs,
+          confirmText: 'リセットメールがとぶよ',
+          btnLabel: 'ヌ',
+          onConfirm: ({ email }: { email: string }) => {
+            this.$emit('reset-password', email.trim());
+          },
+        },
+      });
     },
   },
 });
@@ -107,14 +203,26 @@ export default Vue.extend({
 <!------------------------------->
 
 <!------------------------------->
-<style scoped lang="scss">
+<style lang="scss">
 .login-body {
   position: relative;
-  overflow: hidden;
   background-color: #ddcd61;
+  .ca-input-errors {
+    p {
+      color: #fff;
+    }
+  }
+  .formmark-required,
+  .formmark-passed {
+    color: #fff;
+    border-color: #fff;
+  }
 }
+</style>
+<style scoped lang="scss">
 .sec-intro {
   padding: 20px 20px;
+  overflow: hidden;
 }
 .intro-body {
   position: relative;
@@ -154,7 +262,6 @@ export default Vue.extend({
     line-height: 2;
   }
 }
-
 .sec-login {
   padding: 20px 0 0;
   h1 {
@@ -163,9 +270,15 @@ export default Vue.extend({
     margin-bottom: 20px;
   }
 }
+.ca-inputline {
+  justify-content: center;
+}
 .btn-login {
   ion-icon {
     margin-right: 0.5em;
+  }
+  &.-bypass {
+    margin-top: 10px;
   }
 }
 .buttons {
@@ -173,6 +286,10 @@ export default Vue.extend({
   li {
     margin-bottom: 20px;
   }
+}
+.reset {
+  text-align: center;
+  padding: 20px 0;
 }
 
 $cloud-duration: 6s;
@@ -214,3 +331,4 @@ $cloud-duration: 6s;
   }
 }
 </style>
+

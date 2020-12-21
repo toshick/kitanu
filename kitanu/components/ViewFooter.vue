@@ -40,7 +40,7 @@
         <ParticleButton
           v-show="!imgSelected"
           class="btn-good"
-          :disabled="connecting"
+          :disabled="isconnecting"
           @click="doGood"
         >
           <ion-icon name="heart-outline" />
@@ -64,13 +64,13 @@
           </ul>
           <div v-show="!imgSelected" class="fileInput">
             <div class="app-footer-icon">
-              <FileInput :disabled="connecting" @loaded="onImgLoaded" />
+              <FileInput :disabled="isconnecting" @loaded="onImgLoaded" />
             </div>
           </div>
         </div>
         <div v-if="mode === 'chat'" class="buttonsRight">
           <ParticleButton
-            :disabled="!canSubmit(valid) || connecting"
+            :disabled="!canSubmit(valid) || isconnecting"
             class="btn-icon btn-comment"
             @click.stop.prevent="(e) => submit(e)"
           >
@@ -78,7 +78,7 @@
           </ParticleButton>
           <ParticleButton
             v-show="!imgSelected"
-            :disabled="!canSubmit(valid) || connecting"
+            :disabled="!canSubmit(valid) || isconnecting"
             class="btn-icon btn-comment2"
             @click.stop.prevent="(e) => submit(e, true)"
           >
@@ -114,7 +114,7 @@ export default Vue.extend({
       default: '',
       type: String,
     },
-    connecting: {
+    isconnecting: {
       default: false,
       type: Boolean,
     },

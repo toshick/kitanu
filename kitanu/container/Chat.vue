@@ -3,7 +3,7 @@
     <ViewChat
       :chatitems="chatitems"
       :infoitems="infoitems"
-      :connecting="connecting"
+      :isconnecting="connecting"
       :sending="sending"
       @submit="onSubmit"
       @select-member="visibleSelectMember = true"
@@ -38,7 +38,6 @@ import {
 import { chatStore, chatinfoStore } from '@/store';
 
 type State = {
-  connecting: boolean;
   sending: boolean;
   visibleSelectMember: boolean;
 };
@@ -48,7 +47,6 @@ export default Vue.extend({
   mixins: [mixinScrollview],
   data(): State {
     return {
-      connecting: false,
       sending: false,
       visibleSelectMember: false,
     };
@@ -74,9 +72,9 @@ export default Vue.extend({
     },
   },
   async mounted() {
-    this.connecting = true;
+    this.showLoading(true);
     await chatStore.FetchPost();
-    this.connecting = false;
+    this.showLoading(false);
   },
   methods: {
     async onSubmit(p: {

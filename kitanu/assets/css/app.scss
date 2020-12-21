@@ -52,6 +52,9 @@ html {
 a {
   cursor: pointer;
 }
+a[disabled] {
+  opacity: 0.3;
+}
 
 :root {
   --ok: #aeaf6c;
@@ -142,13 +145,22 @@ a {
 .btn-header-action[disabled] {
   opacity: 0.4;
 }
-.btn-header[disabled] {
-  opacity: 0.4;
+
+.btn-header {
+  &[disabled] {
+    opacity: 0.4;
+  }
+  ion-icon {
+    vertical-align: middle;
+  }
 }
 
 .btn-text {
   font-size: var(--fontsize-normal);
   color: var(--app-color-dark);
+  &.-danger {
+    color: var(--app-color-red);
+  }
 }
 
 .alert-text {
@@ -220,6 +232,10 @@ ion-icon {
  ---------------------*/
 .ca-button.-positive {
   border: solid 1px #d5cc92 !important;
+}
+.ca-button.-danger {
+  box-shadow: none !important;
+  border: none !important;
 }
 
 /* -------------------- 

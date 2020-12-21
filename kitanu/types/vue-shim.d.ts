@@ -18,6 +18,8 @@ declare module 'vue/types/vue' {
     drillDown: any;
     $router: any;
     $sanitize: any;
+    isLocal: boolean;
+    connecting: boolean;
     // mixin
     scrollBottom: any;
     scrollBottomSmooth: any;
