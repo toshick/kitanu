@@ -11,7 +11,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import ViewSelectMember from '@/components/ViewSelectMember.vue';
-import { TypeUser } from '@/components/types/app';
+import { TypeUser } from '@/components/types/apptypes';
 import { appStore, friendStore } from '@/store';
 
 type State = {};

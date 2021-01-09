@@ -45,7 +45,7 @@
 <script lang="ts">
 import Vue, { PropType } from 'vue';
 // import { openDialog } from '@/common/util';
-import { TypeUser } from '@/components/types/app';
+import { TypeUser } from '@/components/types/apptypes';
 
 type State = {
   selectedMap: { [key: string]: string };

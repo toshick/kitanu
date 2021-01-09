@@ -16,8 +16,8 @@ import Vue from 'vue';
 import { openDialog, openView, toast } from '@/common/util';
 import { Input } from 'camaleao-design/components/type';
 import ViewAlbumList from '@/components/ViewAlbumList.vue';
-import { albumStore } from '@/store';
-import { TypeAlbumItem } from '@/components/types/app';
+import { albumStore, userStore } from '@/store';
+import { TypeAlbum } from '@/components/types/apptypestypes';
 import AboutAlbum from '@/components/description/AboutAlbum.vue';
 
 type State = {
@@ -32,8 +32,11 @@ export default Vue.extend({
     };
   },
   computed: {
-    albumItems(): TypeAlbumItem[] {
+    albumItems(): TypeAlbum[] {
       return albumStore.albumItems;
+    },
+    loginUserID(): string {
+      return userStore.loginedUser.id;
     },
   },
   mounted() {
@@ -44,10 +47,11 @@ export default Vue.extend({
     }
   },
   methods: {
-    fetch() {
-      return albumStore.FetchAlbum(this.page);
+    async fetch() {
+      await albumStore.FetchAlbum({ userID: this.loginUserID });
+      await userStore.FetchUsers([this.loginUserID]);
     },
-    onSelected(i: TypeAlbumItem) {
+    onSelected(i: TypeAlbum) {
       this.$router.push(`/albumlist/${i.id}`);
     },
     createAlbum() {
@@ -70,14 +74,18 @@ export default Vue.extend({
           btnLabel: 'ヌ',
           onConfirm: async ({ albumName }: { albumName: string }) => {
             this.showLoading(true);
-            await albumStore.CreateAlbum(albumName);
+
+            await albumStore.CreateAlbum({
+              title: albumName,
+              members: [this.loginUserID],
+            });
             toast('アルバムを作成したヌ');
             this.showLoading(false);
           },
         },
       });
     },
-    startRemoveAlbum(i: TypeAlbumItem) {
+    startRemoveAlbum(i: TypeAlbum) {
       const txt = i.text.length > 15 ? `${i.text.slice(0, 15)}...` : i.text;
       this.showConfirm(
         {

@@ -5,6 +5,6 @@ export function logError(err: Error, debug?: string) {
   if (debug) {
     console.log('エラー[', debug, ']', err);
   } else {
-    console.log('エラーをセット', err);
+    console.log('エラーをセット', err.message ? err.message : err);
   }
 }

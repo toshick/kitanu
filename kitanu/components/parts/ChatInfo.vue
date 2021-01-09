@@ -20,7 +20,7 @@
 <!------------------------------->
 <script lang="ts">
 import Vue, { PropType } from 'vue';
-import { TypeChatInfoItem } from '@/components/types/app';
+import { TypeChatInfoItem } from '@/components/types/apptypes';
 
 type State = {
   urls: string[];

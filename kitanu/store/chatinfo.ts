@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 import { v4 as uuidv4 } from 'uuid';
 import { Module, VuexModule, Mutation, Action } from 'vuex-module-decorators';
 import { asort } from '@/common/util';
-import { ActionRes, TypeChatInfoItem } from '@/components/types/app';
+import { ActionRes, TypeChatInfoItem } from '@/components/types/apptypes';
 
 const infoitems: TypeChatInfoItem[] = [];
 infoitems.push({

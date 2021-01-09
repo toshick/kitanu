@@ -46,7 +46,7 @@
 <script lang="ts">
 import Vue, { PropType } from 'vue';
 import AlbumList from '@/components/parts/AlbumList.vue';
-import { TypeAlbumItem } from '@/components/types/app';
+import { TypeAlbum } from '@/components/types/apptypestypes';
 
 type State = {
   editing: boolean;
@@ -60,7 +60,7 @@ export default Vue.extend({
   props: {
     albumItems: {
       default: () => [],
-      type: Array as PropType<TypeAlbumItem[]>,
+      type: Array as PropType<TypeAlbum[]>,
     },
   },
   data(): State {

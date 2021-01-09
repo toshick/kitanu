@@ -1,22 +1,34 @@
 import { v4 as uuidv4 } from 'uuid';
 import firebase from 'firebase/app';
+import { isLocal } from '@/common/util';
+import { makeUserFromAuthUser } from '@/common/helper';
 import { Module, VuexModule, Mutation, Action } from 'vuex-module-decorators';
-import { ActionRes, TypeLoginUser } from '@/components/types/app';
+import { userRef } from '@/plugins/firebase';
 import { logError } from '@/common/error';
+import {
+  ActionRes,
+  TypeLoginUser,
+  TypeUser,
+} from '@/components/types/apptypes';
 
 const initialUser: TypeLoginUser = {
+  uid: '',
   email: '',
   emailVerified: false,
   displayName: '',
   photoURL: '',
   isAdmin: false,
   isAnonymous: false,
+  searchOK: false,
+  kycOK: false,
+  agreeTermsOK: false,
 };
 // 'https://avatars3.githubusercontent.com/u/6635142?s=460&v=4'
 
 @Module({ name: 'user', stateFactory: true, namespaced: true })
 export default class MyClass extends VuexModule {
   _logined: TypeLoginUser = initialUser;
+  _users: TypeUser[] = [];
 
   // ----------------------
   // Mutation
@@ -30,7 +42,7 @@ export default class MyClass extends VuexModule {
   // ----------------------
   // Action
   // ----------------------
-  @Action({})
+  @Action({ rawError: true })
   LoginWithPassword({
     email,
     password,
@@ -52,7 +64,7 @@ export default class MyClass extends VuexModule {
       });
   }
 
-  @Action({})
+  @Action({ rawError: true })
   LoginByFacebook(): Promise<ActionRes> {
     const provider = new firebase.auth.FacebookAuthProvider();
     // provider.setCustomParameters({
@@ -85,33 +97,65 @@ export default class MyClass extends VuexModule {
       });
   }
 
-  @Action({})
+  @Action({ rawError: true })
   LoginByGoogle(): Promise<ActionRes> {
     return Promise.resolve({ errorMsg: 'no-develop' });
   }
 
-  @Action({})
+  @Action({ rawError: true })
   LoginByDev() {}
 
-  @Action({})
-  CreateUserWithEmailAndPassword(
-    email: string,
-    password: string,
-  ): Promise<ActionRes> {
-    return firebase
+  @Action({ rawError: true })
+  async CreateUserWithEmailAndPassword(p: {
+    email: string;
+    password: string;
+    name: string;
+  }): Promise<ActionRes> {
+    // ユーザ名を作成しログイン状態になる
+    const res: any = await firebase
       .auth()
-      .createUserWithEmailAndPassword(email, password)
-      .then((user) => {
-        console.log('ユーザ作成せり', user);
+      .createUserWithEmailAndPassword(p.email, p.password)
+      .then((res) => {
+        // Signed in
+        return res;
+      })
+      .catch((error) => {
+        logError(error, 'createUserWithEmailAndPassword');
+        return { errorCode: error.code, errorMsg: error.message };
+      });
+
+    if (res.errorCode) {
+      return Promise.reject(res);
+    }
+
+    // ログインユーザ名を更新
+    const res2: any = await this.UpdateLoginUser({
+      displayName: p.name,
+    });
+    if (res2.errorCode) {
+      return Promise.reject(res);
+    }
+
+    // firestoreのusersにも追加する
+    const createdUser: TypeUser = makeUserFromAuthUser({
+      ...res.user,
+      displayName: p.name,
+    });
+
+    return userRef
+      .doc(createdUser.id)
+      .set(createdUser)
+      .then(() => {
+        console.log('ユーザ作成せり', createdUser);
         return {};
       })
       .catch((error) => {
-        logError(error);
+        logError(error, 'makeUserFromAuthUser');
         return { errorCode: error.code, errorMsg: error.message };
       });
   }
 
-  @Action({})
+  @Action({ rawError: true })
   Logout(): Promise<ActionRes> {
     return firebase
       .auth()
@@ -122,12 +166,12 @@ export default class MyClass extends VuexModule {
       })
       .catch((error) => {
         // An error happened.
-        logError(error);
+        logError(error, 'Logout');
         return { errorCode: error.code, errorMsg: error.message };
       });
   }
 
-  @Action({})
+  @Action({ rawError: true })
   Register(data: { password: string; email: string }): Promise<ActionRes> {
     return firebase
       .auth()
@@ -137,12 +181,12 @@ export default class MyClass extends VuexModule {
         return {};
       })
       .catch((error) => {
-        logError(error);
+        logError(error, 'Register');
         return { errorCode: error.code, errorMsg: error.message };
       });
   }
 
-  @Action({})
+  @Action({ rawError: true })
   UnRegister(): Promise<ActionRes> {
     const user = firebase.auth().currentUser;
     if (!user) return Promise.resolve({ errorMsg: 'no-auth' });
@@ -156,7 +200,7 @@ export default class MyClass extends VuexModule {
       })
       .catch((error) => {
         // An error happened.
-        logError(error);
+        logError(error, 'UnRegister');
         return { errorCode: error.code, errorMsg: error.message };
       });
   }
@@ -164,7 +208,7 @@ export default class MyClass extends VuexModule {
   /**
    * ログインユーザの更新
    */
-  @Action({})
+  @Action({ rawError: true })
   UpdateLoginUser(data: {
     displayName?: string;
     photoURL?: string;
@@ -186,7 +230,7 @@ export default class MyClass extends VuexModule {
       })
       .catch((error) => {
         // An error happened.
-        logError(error);
+        logError(error, 'UpdateLoginUser');
         return { errorCode: error.code, errorMsg: error.message };
       });
   }
@@ -194,7 +238,7 @@ export default class MyClass extends VuexModule {
   /**
    * パスワード更新
    */
-  @Action({})
+  @Action({ rawError: true })
   UpdatePassword(password: string): Promise<ActionRes> {
     const user = firebase.auth().currentUser;
     if (!user) return Promise.resolve({ errorMsg: 'no-auth' });
@@ -206,7 +250,7 @@ export default class MyClass extends VuexModule {
       })
       .catch((error) => {
         // An error happened.
-        logError(error);
+        logError(error, 'UpdatePassword');
         return { errorCode: error.code, errorMsg: error.message };
       });
   }
@@ -214,7 +258,7 @@ export default class MyClass extends VuexModule {
   /**
    * パスワードリセットメール送信
    */
-  @Action({})
+  @Action({ rawError: true })
   SendPasswordResetEmail(email: string): Promise<ActionRes> {
     if (!email) return Promise.resolve({ errorMsg: 'no-email' });
     const auth = firebase.auth();
@@ -226,7 +270,7 @@ export default class MyClass extends VuexModule {
       })
       .catch((error) => {
         // An error happened.
-        logError(error);
+        logError(error, 'SendPasswordResetEmail');
         return { errorCode: error.code, errorMsg: error.message };
       });
   }
@@ -234,7 +278,7 @@ export default class MyClass extends VuexModule {
   /**
    * ログインユーザのメールの更新
    */
-  @Action({})
+  @Action({ rawError: true })
   UpdateLoginUserEmail(email: string): Promise<ActionRes> {
     const user = firebase.auth().currentUser;
     if (!user) return Promise.resolve({ errorMsg: 'no-auth' });
@@ -246,7 +290,7 @@ export default class MyClass extends VuexModule {
       })
       .catch((error) => {
         // An error happened.
-        logError(error);
+        logError(error, 'UpdateLoginUserEmail');
         return { errorCode: error.code, errorMsg: error.message };
       });
   }
@@ -254,7 +298,7 @@ export default class MyClass extends VuexModule {
   /**
    * 確認メール送信
    */
-  @Action({})
+  @Action({ rawError: true })
   SendEmailVerification(): Promise<ActionRes> {
     const user = firebase.auth().currentUser;
     if (!user) return Promise.resolve({ errorMsg: 'no-auth' });
@@ -266,7 +310,53 @@ export default class MyClass extends VuexModule {
       })
       .catch((error) => {
         // An error happened.
-        logError(error);
+        logError(error, 'SendEmailVerification');
+        return { errorCode: error.code, errorMsg: error.message };
+      });
+  }
+
+  /**
+   * ダミーユーザ作成
+   */
+  @Action({ rawError: true })
+  MakeDummyUser(p: {
+    email: string;
+    password: string;
+    name?: string;
+  }): Promise<ActionRes> {
+    if (!p.email) return Promise.reject(new Error('no email provided'));
+    return this.CreateUserWithEmailAndPassword({
+      email: p.email,
+      password: p.password,
+      name: p.name || '',
+    });
+  }
+
+  @Action({ rawError: true })
+  FetchUsers(ids: string[]): Promise<ActionRes> {
+    return userRef
+      .where('id', 'in', ids)
+      .orderBy('createdAt', 'desc')
+      .get()
+      .then((querySnapshot: firebase.firestore.QuerySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          console.log('FetchUsers', doc.id, ' => ', doc.data());
+          // const d: any = doc.data();
+          // const item: TypeAlbum = {
+          //   id: d.id,
+          //   date: d.date,
+          //   dateDisp: d.dateDisp,
+          //   title: d.title,
+          //   text: d.text,
+          //   members: d.members,
+          //   createdAt: d.createdAt,
+          // };
+          // this.ADD_ALBUM(item);
+        });
+        return {};
+      })
+      .catch((error) => {
+        logError(error, 'FetchUsers');
         return { errorCode: error.code, errorMsg: error.message };
       });
   }
@@ -274,7 +364,21 @@ export default class MyClass extends VuexModule {
   // ----------------------
   // get
   // ----------------------
-  get loginedUser(): TypeLoginUser {
+  get loginedUserWithDetail(): TypeLoginUser {
     return this._logined;
+  }
+
+  get loginedUser(): TypeUser {
+    return {
+      id: this._logined.uid,
+      username: this._logined.displayName,
+      iconurl: this._logined.photoURL,
+      subtext: '',
+      friendList: [],
+    };
+  }
+
+  get users(): TypeUser[] {
+    return this._users;
   }
 }

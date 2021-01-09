@@ -8,7 +8,7 @@ import {
   TypePostSubmitItem,
   TypeUser,
   TypeChatRoom,
-} from '@/components/types/app';
+} from '@/components/types/apptypes';
 
 const members: TypeUser[] = [];
 members.push({
@@ -187,7 +187,7 @@ export default class MyClass extends VuexModule {
         chatitems.forEach((item: TypeChatComment) => {
           this.ADD_CHAT(item);
         });
-        resolve();
+        resolve({});
       }, 1000);
     });
   }
@@ -216,7 +216,7 @@ export default class MyClass extends VuexModule {
         };
         this.ADD_CHAT(item);
 
-        resolve();
+        resolve({});
       }, 1200);
     });
   }

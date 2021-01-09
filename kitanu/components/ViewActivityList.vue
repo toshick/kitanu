@@ -34,7 +34,7 @@
 <!------------------------------->
 <script lang="ts">
 import Vue from 'vue';
-import { TypeUser } from '@/components/types/app';
+import { TypeUser } from '@/components/types/apptypes';
 import UserIcon from '@/components/parts/UserIcon.vue';
 
 type Item = {

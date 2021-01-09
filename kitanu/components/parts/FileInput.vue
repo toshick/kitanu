@@ -12,7 +12,7 @@
 <!------------------------------->
 <script lang="ts">
 import Vue from 'vue';
-import { TypeFileItem } from '@/components/types/app';
+import { TypeFileItem } from '@/components/types/apptypes';
 
 type State = {
   files: TypeFileItem[];

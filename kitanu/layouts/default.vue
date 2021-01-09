@@ -27,10 +27,9 @@ type State = {
 
 export default Vue.extend({
   name: 'Default',
+  middleware: 'auth',
   components: {},
-
   props: {},
-
   data(): State {
     return {
       visibleMenu: false,

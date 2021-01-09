@@ -7,6 +7,7 @@
     @select-album="selectItem"
     @more="more"
     @kitanu="goSignup"
+    @debug="debug"
   />
 </template>
 <!------------------------------->
@@ -17,8 +18,8 @@ import Vue from 'vue';
 // import { toast,  } from '@/common/util';
 import ViewTop from '@/components/ViewTop.vue';
 import AboutThisApp from '@/components/description/AboutThisApp.vue';
-import { albumStore } from '@/store';
-import { TypeAlbumItem } from '@/components/types/app';
+import { albumStore, firebaseStore, userStore } from '@/store';
+import { TypeAlbum } from '@/components/types/apptypestypes';
 
 type State = {
   page: number;
@@ -32,7 +33,7 @@ export default Vue.extend({
     };
   },
   computed: {
-    albumItems(): TypeAlbumItem[] {
+    albumItems(): TypeAlbum[] {
       return albumStore.albumItems;
     },
   },
@@ -42,7 +43,7 @@ export default Vue.extend({
   },
   methods: {
     fetch() {
-      return albumStore.FetchAlbum(this.page);
+      return albumStore.FetchAlbum({ userID: userStore.loginedUser.id });
     },
     about() {
       this.openView({
@@ -58,12 +59,16 @@ export default Vue.extend({
     createAlbum() {
       this.$router.push('/albumlist/?new');
     },
-    selectItem(i: TypeAlbumItem) {
+    selectItem(i: TypeAlbum) {
       this.$router.push(`albumlist/${i.id}`);
     },
     more() {
       this.page += 1;
       this.fetch();
+    },
+    debug() {
+      firebaseStore.AddPostImg({ a: 1, b: 2, c: 3 });
+      // firebaseStore.AddTry({ a: 1, b: 2, c: 3 });
     },
   },
 });

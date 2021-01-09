@@ -2,7 +2,7 @@
 import { v4 as uuidv4 } from 'uuid';
 import { Module, VuexModule, Mutation, Action } from 'vuex-module-decorators';
 import { asort, setClipBoard } from '@/common/util';
-import { ActionRes, TypeUser } from '@/components/types/app';
+import { ActionRes, TypeUser } from '@/components/types/apptypes';
 
 const FRIEND_LINK_BASE = 'https://kitakitanu.netlify.app';
 const friends: TypeUser[] = [];

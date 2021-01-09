@@ -51,7 +51,7 @@ import {
   TypeChatComment,
   TypeChatInfoItem,
   TypeUser,
-} from '@/components/types/app';
+} from '@/components/types/apptypes';
 
 import ChatComment from './parts/ChatComment.vue';
 import ChatCommentNPC from './parts/ChatCommentNPC.vue';

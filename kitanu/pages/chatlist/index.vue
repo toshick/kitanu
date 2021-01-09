@@ -7,7 +7,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import ChatList from '@/container/ChatList.vue';
-// import { TypeUser } from '@/components/types/app';
+// import { TypeUser } from '@/components/types/apptypes';
 
 type State = {};
 

@@ -1,10 +1,26 @@
+import firebase from 'firebase/app';
+
+export type TypeFile = {
+  file?: File;
+  base64str: string;
+};
+
+/**
+ * ユーザ
+ */
+export type TypeUserID = string;
+
 export type TypeLoginUser = {
+  uid: TypeUserID;
   email: string;
   emailVerified: boolean;
   displayName: string;
   photoURL: string;
   isAdmin: boolean;
   isAnonymous: boolean;
+  searchOK: boolean;
+  kycOK: boolean;
+  agreeTermsOK: boolean;
 };
 
 export type ActionRes = {
@@ -13,40 +29,52 @@ export type ActionRes = {
 };
 
 export type TypeUser = {
-  id: string;
+  id: TypeUserID;
   username: string;
   iconurl: string;
   subtext?: string;
+  friendList?: TypeUserID[];
+  created?: firebase.firestore.FieldValue;
 };
 
-export type TypeAlbumItem = {
+/**
+ * アルバム
+ */
+export type TypeAlbum = {
   id: string;
   date: string;
   dateDisp: string;
+  title: string;
   text: string;
-  members: TypeUser[];
+  members: TypeUserID[];
   imgurl?: string;
   createdAt: string;
 };
 
-export type TypePostSubmitItem = {
-  fileItem?: TypeFileItem | null;
+export type TypeAlbumPost = {
+  fileItem?: TypeFile | null;
   text?: string;
   good?: number | null;
   fukitype?: string;
   npc: boolean;
 };
 
-export type TypeFileItem = {
-  file?: File;
-  base64str: string;
+/**
+ * チャット
+ */
+export type TypeChatRoom = {
+  id: string;
+  members: TypeUserID[];
+  createdBy: TypeUser;
+  title?: string;
+  createdAt: string;
 };
 
-export type TypePostItem = {
+export type TypeChatPost = {
   id: string;
   date: string;
   text: string;
-  fileItem?: TypeFileItem | null;
+  fileItem?: TypeFile | null;
   sortindex?: string;
 };
 
@@ -67,12 +95,4 @@ export type TypeChatInfoItem = {
   text: string;
   username: string;
   postdate: number;
-};
-
-export type TypeChatRoom = {
-  id: string;
-  members: TypeUser[];
-  createdBy: TypeUser;
-  title?: string;
-  createdAt: string;
 };

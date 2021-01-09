@@ -4,7 +4,7 @@ import CaModalPG, { OpenParams } from 'camaleao-design/components/CaModalPG';
 import CaToastPG, {
   OpenParamsToast,
 } from 'camaleao-design/components/CaToastPG';
-import ModalSideMenu from '@/components/parts/ModalSideMenu.vue';
+// import ModalSideMenu from '@/components/parts/ModalSideMenu.vue';
 import Loading from '@/components/parts/Loading.vue';
 import Particle from '@/components/parts/Particle.vue';
 
@@ -12,7 +12,7 @@ import Particle from '@/components/parts/Particle.vue';
  * isLocal
  */
 export const isLocal: boolean = (() => {
-  if (document.URL.includes('localhost')) return true;
+  if (location.hostname === 'localhost') return true;
   return false;
 })();
 

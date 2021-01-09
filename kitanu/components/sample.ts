@@ -1,4 +1,4 @@
-import { TypeUser, TypeAlbumItem } from './types/app';
+import { TypeUser, TypeAlbumItem } from './types/apptypes';
 
 export const user: TypeUser = {
   id: '0000001',

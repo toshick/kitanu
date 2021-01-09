@@ -34,7 +34,7 @@ import {
   TypePostSubmitItem,
   TypeFileItem,
   TypeUser,
-} from '@/components/types/app';
+} from '@/components/types/apptypes';
 import { chatStore, chatinfoStore } from '@/store';
 
 type State = {

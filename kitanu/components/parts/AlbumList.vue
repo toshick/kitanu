@@ -38,6 +38,7 @@
               :key="`${index}-${u.iconurl}`"
               :url="u.iconurl"
               size="S"
+              :username="u.name"
             />
           </p>
         </div>

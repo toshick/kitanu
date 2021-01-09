@@ -20,7 +20,7 @@
 <!------------------------------->
 <script lang="ts">
 import Vue from 'vue';
-import { TypeUser, TypeChatRoom } from '@/components/types/app';
+import { TypeUser, TypeChatRoom } from '@/components/types/apptypes';
 import ViewChatList from '@/components/ViewChatList.vue';
 import SelectMember from '@/container/SelectMember.vue';
 import { appStore, chatStore } from '@/store';

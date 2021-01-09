@@ -158,8 +158,8 @@ export default Vue.extend({
   mounted() {
     if (this.isLocal) {
       this.form = {
-        email: this.$config.DEV_USER_EMAIL,
-        password: this.$config.DEV_USER_PASS,
+        email: process.env.DEV_USER_EMAIL || '',
+        password: process.env.DEV_USER_PASS || '',
       };
     }
   },

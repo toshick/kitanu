@@ -70,7 +70,7 @@ import ViewPrivacyPolicy from '@/components/ViewPrivacyPolicy.vue';
 import ViewKiyaku from '@/components/ViewKiyaku.vue';
 import { userStore } from '@/store';
 import { Input } from 'camaleao-design/components/type';
-import { TypeLoginUser } from '@/components/types/app';
+import { TypeLoginUser } from '@/components/types/apptypes';
 
 type State = {};
 

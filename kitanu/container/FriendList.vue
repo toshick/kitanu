@@ -8,7 +8,7 @@
 <!------------------------------->
 <script lang="ts">
 import Vue from 'vue';
-import { TypeUser } from '@/components/types/app';
+import { TypeUser } from '@/components/types/apptypes';
 import ViewFriendList from '@/components/ViewFriendList.vue';
 import { appStore, friendStore } from '@/store';
 

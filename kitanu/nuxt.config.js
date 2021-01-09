@@ -110,7 +110,20 @@ export default {
   /**
    * publicRuntimeConfig
    */
-  publicRuntimeConfig: {
+  publicRuntimeConfig: {},
+  env: {
+    // dummy user
+    DEV_USER_EMAIL: process.env.DEV_USER_EMAIL || '',
+    DEV_USER_PASS: process.env.DEV_USER_PASS || '',
+    DEV_USER_NAME: process.env.DEV_USER_NAME || '',
+    // dummy user2
+    DEV_USER2_EMAIL: process.env.DEV_USER2_EMAIL || '',
+    DEV_USER2_PASS: process.env.DEV_USER2_PASS || '',
+    DEV_USER2_NAME: process.env.DEV_USER2_NAME || '',
+    // dummy user3
+    DEV_USER3_EMAIL: process.env.DEV_USER3_EMAIL || '',
+    DEV_USER3_PASS: process.env.DEV_USER3_PASS || '',
+    DEV_USER3_NAME: process.env.DEV_USER3_NAME || '',
     // firebase
     FIREBASE_API_KEY: process.env.FIREBASE_API_KEY || '',
     FIREBASE_AUTH_DOMAIN: process.env.FIREBASE_AUTH_DOMAIN || '',
@@ -119,8 +132,8 @@ export default {
     FIREBASE_STORAGE_BUCKET: process.env.FIREBASE_STORAGE_BUCKET || '',
     FIREBASE_MGS_SENDER_ID: process.env.FIREBASE_MGS_SENDER_ID || '',
     FIREBASE_APP_ID: process.env.FIREBASE_APP_ID || '',
-    // firebase login
-    DEV_USER_EMAIL: process.env.DEV_USER_EMAIL || '',
-    DEV_USER_PASS: process.env.DEV_USER_PASS || '',
+    // emulator
+    FIREBASE_AUTH_EMULATOR_HOST: process.env.FIREBASE_AUTH_EMULATOR_HOST || '',
+    FIRESTORE_EMULATOR_HOST: process.env.FIRESTORE_EMULATOR_HOST || '',
   },
 };

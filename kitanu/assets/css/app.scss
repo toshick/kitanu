@@ -127,6 +127,11 @@ a[disabled] {
 /* -------------------- 
  parts
  ---------------------*/
+.firebase-emulator-warning {
+  opacity: 0.2;
+  pointer-events: none;
+}
+
 .chat-usericon {
   width: var(--app-icon-size);
   height: var(--app-icon-size);

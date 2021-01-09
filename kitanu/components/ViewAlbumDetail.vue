@@ -71,7 +71,7 @@
 import Vue, { PropType } from 'vue';
 import { toast, openView } from '@/common/util';
 import mixinScrollview from '@/mixin/mxinScrollview';
-import { TypeUser, TypePostItem } from '@/components/types/app';
+import { TypeUser, TypePostItem } from '@/components/types/apptypes';
 import TextInputModal from './parts/TextInputModal.vue';
 import PostItem from './parts/PostItem.vue';
 import LoadingInline from './parts/LoadingInline.vue';

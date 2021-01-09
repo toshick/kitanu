@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 import { v4 as uuidv4 } from 'uuid';
 import { Module, VuexModule, Mutation, Action } from 'vuex-module-decorators';
 import { asort, zeropad } from '@/common/util';
-import { ActionRes, TypePostItem } from '@/components/types/app';
+import { ActionRes, TypePostItem } from '@/components/types/apptypes';
 // import { setUpPostImg, firebase, postImgRef, tagRef, Tag, PostImg, PostImgUpdate, TagUpdate, PostImgRequest } from '@/plugins/firebase.ts';
 
 @Module({ name: 'post', stateFactory: true, namespaced: true })
@@ -40,7 +40,9 @@ export default class MyClass extends VuexModule {
   @Mutation
   CHANGE_ORDER_POST(p: { postitem: TypePostItem; direction: string }) {
     const { postitem, direction } = p;
-    let index = this.postitems.findIndex((p: TypePostItem) => p.id === postitem.id);
+    let index = this.postitems.findIndex(
+      (p: TypePostItem) => p.id === postitem.id,
+    );
 
     if (index !== undefined) {
       if (direction === 'down') {
@@ -49,7 +51,12 @@ export default class MyClass extends VuexModule {
       if (index === 0 || index === this.postitems.length) {
         return;
       }
-      this.postitems.splice(index - 1, 2, this.postitems[index], this.postitems[index - 1]);
+      this.postitems.splice(
+        index - 1,
+        2,
+        this.postitems[index],
+        this.postitems[index - 1],
+      );
     }
   }
 
@@ -93,7 +100,8 @@ export default class MyClass extends VuexModule {
     });
     ary.push({
       id: uuidv4(),
-      text: 'みんなで東北へいってきたよ。\n変な公園があったんだ。（グレイフォックスのすけ）',
+      text:
+        'みんなで東北へいってきたよ。\n変な公園があったんだ。（グレイフォックスのすけ）',
       fileItem: {
         base64str: '',
       },
@@ -114,7 +122,8 @@ export default class MyClass extends VuexModule {
       date,
       text: 'キャットはじっと何かをみつめているよ。（グレイフォックスのすけ）',
       fileItem: {
-        base64str: 'https://storage.googleapis.com/toshickcom-a7f98.appspot.com/upload_images/Camera_2020-07-24_18.23.42-1595582635687.jpeg',
+        base64str:
+          'https://storage.googleapis.com/toshickcom-a7f98.appspot.com/upload_images/Camera_2020-07-24_18.23.42-1595582635687.jpeg',
       },
       sortindex: '0000004',
     });
@@ -123,7 +132,8 @@ export default class MyClass extends VuexModule {
       date,
       text: 'なんか綿菓子うっている。',
       fileItem: {
-        base64str: 'https://storage.googleapis.com/toshickcom-a7f98.appspot.com/upload_images/Camera_2020-08-01_13.04.25-1596254669373.jpeg',
+        base64str:
+          'https://storage.googleapis.com/toshickcom-a7f98.appspot.com/upload_images/Camera_2020-08-01_13.04.25-1596254669373.jpeg',
       },
       sortindex: '0000005',
     });
@@ -132,7 +142,8 @@ export default class MyClass extends VuexModule {
       date,
       text: 'せかいのとしっくです。こちらは謎の池を発見せり',
       fileItem: {
-        base64str: 'https://storage.googleapis.com/toshickcom-a7f98.appspot.com/upload_images/Camera_2020-07-24_18.38.38-1595583527442.jpeg',
+        base64str:
+          'https://storage.googleapis.com/toshickcom-a7f98.appspot.com/upload_images/Camera_2020-07-24_18.38.38-1595583527442.jpeg',
       },
       sortindex: '0000006',
     });
@@ -145,7 +156,10 @@ export default class MyClass extends VuexModule {
   }
 
   @Action
-  ChangeOrder(p: { postitem: TypePostItem; direction: string }): Promise<ActionRes> {
+  ChangeOrder(p: {
+    postitem: TypePostItem;
+    direction: string;
+  }): Promise<ActionRes> {
     this.CHANGE_ORDER_POST(p);
 
     return Promise.resolve({});
@@ -167,7 +181,10 @@ export default class MyClass extends VuexModule {
         //   imgurl: 'https://storage.googleapis.com/toshickcom-a7f98.appspot.com/upload_images/Camera_2020-07-24_18.38.38-1595583527442.jpeg',
         //   sortindex: '0000006',
         // };
-        this.ADD_POST({ ...p, sortindex: zeropad(this.postitems.length + 1, 7) });
+        this.ADD_POST({
+          ...p,
+          sortindex: zeropad(this.postitems.length + 1, 7),
+        });
 
         resolve();
       }, 1200);

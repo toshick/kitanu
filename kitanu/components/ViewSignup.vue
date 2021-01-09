@@ -130,7 +130,7 @@
 import Vue from 'vue';
 import ViewKiyaku from '@/components/ViewKiyaku.vue';
 import { ValidationObserver } from 'vee-validate';
-import { TypeLoginUser } from '@/components/types/app';
+import { TypeLoginUser } from '@/components/types/apptypes';
 import { userStore } from '@/store';
 
 type State = {

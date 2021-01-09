@@ -6,7 +6,8 @@
     "common/util.ts",
     "package.json",
     "types/vue-shim.d.ts",
-    "components/types/app.ts",
-    "store"
+    "store",
+    "nuxt.config.js",
+    "components/types/apptypes.ts"
   ]
 }

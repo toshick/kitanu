@@ -4,7 +4,7 @@ import {
   TypeChatComment,
   TypeAlbumItem,
   TypeChatRoom,
-} from '@/components/types/app';
+} from '@/components/types/apptypes';
 
 /**
  * postItems

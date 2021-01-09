@@ -31,7 +31,7 @@
 /* eslint vue/no-v-html: 0 */
 import dayjs from 'dayjs';
 import Vue, { PropType } from 'vue';
-import { TypeChatComment } from '@/components/types/app';
+import { TypeChatComment } from '@/components/types/apptypes';
 
 type State = {
   urls: string[];

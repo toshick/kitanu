@@ -96,7 +96,7 @@
 import Vue, { PropType } from 'vue';
 import { ValidationProvider } from 'vee-validate';
 import FileInput from '@/components/parts/FileInput.vue';
-import { TypeFileItem } from '@/components/types/app';
+import { TypeFileItem } from '@/components/types/apptypes';
 import { hiraToKana, particleEffect } from '@/common/util';
 
 type State = {

@@ -35,7 +35,7 @@
 <script lang="ts">
 /* eslint vue/no-v-html: 0 */
 import Vue, { PropType } from 'vue';
-import { TypePostItem } from '@/components/types/app';
+import { TypePostItem } from '@/components/types/apptypes';
 
 type State = {
   deleting: boolean;

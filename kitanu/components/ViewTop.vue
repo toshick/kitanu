@@ -45,6 +45,9 @@
             alt="kitanu-title"
           />
           <p>
+            <CaButton size="S" @click="$emit('debug')">でばっぐ</CaButton>
+          </p>
+          <p>
             よーこそキタキータヌヘ<br />
             キータヌは世話焼きたぬき
             <a class="kitanu" @click="$emit('about')"
@@ -97,7 +100,7 @@ import {
   TypeAlbumItem,
   TypeChatInfoItem,
   TypeLoginUser,
-} from '@/components/types/app';
+} from '@/components/types/apptypes';
 import { userStore } from '@/store';
 
 type State = {};
