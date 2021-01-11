@@ -18,32 +18,15 @@ import Vue from 'vue';
 import dayjs from 'dayjs';
 import { v4 as uuidv4 } from 'uuid';
 import { toast } from '@/common/util';
-import {
-  TypeFileItem,
-  TypePostItem,
-  TypeUser,
-} from '@/components/types/apptypes';
+import { TypeFile, TypeAlbumPost, TypeUser } from '@/components/types/apptypes';
 import ViewAlbumDetail from '@/components/ViewAlbumDetail.vue';
 import { postStore } from '@/store';
+import { members } from '@/mock/mockdata';
 
 type State = {
   sending: boolean;
   members: TypeUser[];
 };
-
-const members: TypeUser[] = [];
-members.push({
-  id: '898808392',
-  username: 'にゃんごろう',
-  iconurl: 'https://avatars3.githubusercontent.com/u/6635142?s=460&v=4',
-  subtext: 'いつだってオレンジ',
-});
-members.push({
-  id: '898808393',
-  username: 'カマキチ',
-  iconurl: 'https://avatars3.githubusercontent.com/u/6635142?s=460&v=4',
-  subtext: 'そろそろキャンプしたいぞ',
-});
 
 export default Vue.extend({
   components: { ViewAlbumDetail },
@@ -54,8 +37,9 @@ export default Vue.extend({
     };
   },
   computed: {
-    postItems(): TypePostItem[] {
-      return postStore.postitems;
+    postItems(): TypeAlbumPost[] {
+      // return postStore.postitems;
+      return [];
     },
   },
   mounted() {
@@ -66,12 +50,12 @@ export default Vue.extend({
       return postStore.FetchPost();
     },
     async onAddPost(p: {
-      fileItem: TypeFileItem;
+      fileItem: TypeFile;
       text: string;
       reset: () => void;
     }) {
       this.showInlineLoading(true);
-      const item: TypePostItem = {
+      const item: TypeAlbumPost = {
         id: uuidv4(),
         date: dayjs().format('YYYY.MM.DD HH:mm:ss'),
         text: p.text,
@@ -89,7 +73,7 @@ export default Vue.extend({
     onStartOrderChange() {
       postStore.BACKUP_POST();
     },
-    onOrderChange(p: { postitem: TypePostItem; direction: string }) {
+    onOrderChange(p: { postitem: TypeAlbumPost; direction: string }) {
       postStore.ChangeOrder(p);
     },
     onCancelChange() {

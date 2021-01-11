@@ -99,7 +99,7 @@
           <ion-icon name="checkmark" size="large" />
         </h1>
         <p class="text">
-          よーこそ {{ loginedUser.displayName }}！
+          よーこそ {{ loginedUser.username }}！
           <br />
           メールを送ったので
           <br />

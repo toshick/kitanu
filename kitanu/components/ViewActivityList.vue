@@ -1,28 +1,27 @@
 <template>
   <div class="activity ca-modal-scroll-wrapper">
     <CaModalScroll>
-      <CaModalViewHeader title="最近の活動ヌ" @close="close">
-      </CaModalViewHeader>
+      <CaModalViewHeader title="最近の活動ヌ" @close="close" />
       <CaModalViewBody>
         <ul class="item-list">
           <li
-            v-for="(i, index) in items"
+            v-for="(i, index) in activities"
             :key="`item-${index}-${i.user.username}`"
           >
-            <UserIcon :url="i.user.iconurl" />
+            <UserIcon :url="i.user.iconurl" :username="i.user.username" />
             <div class="item-label">
               <!-- <h3>{{ i.user.username }}</h3> -->
-              <p>
+              <div>
+                <span class="item-date">{{ i.createdAt | dateDisp }}</span>
                 {{ i.text }}<br />
-                <CaTag v-for="t in i.tag" :key="t" class="item-tag" size="S">{{
+                <CaTag v-for="t in i.tags" :key="t" class="item-tag" size="S">{{
                   t
                 }}</CaTag>
-              </p>
-              <!-- <p class="item-date">{{ i.date }}</p> -->
+              </div>
             </div>
           </li>
         </ul>
-        <a class="btn-more" href=""
+        <a class="btn-more" @click="$emit('more')"
           ><ion-icon name="chevron-down-outline" size="large"
         /></a>
       </CaModalViewBody>
@@ -33,89 +32,33 @@
 
 <!------------------------------->
 <script lang="ts">
-import Vue from 'vue';
-import { TypeUser } from '@/components/types/apptypes';
+import Vue, { PropType } from 'vue';
+import { TypeUser, TypeActivityDisp } from '@/components/types/apptypes';
 import UserIcon from '@/components/parts/UserIcon.vue';
 
-type Item = {
-  user: TypeUser;
-  text: string;
-  date: string;
-  tag?: string[];
-};
-
-type State = {
-  items: Item[];
-};
-
-let items: Item[] = [];
-items.push({
-  user: {
-    id: '00000001',
-    username: 'にゃんごろう',
-    iconurl: 'https://avatars3.githubusercontent.com/u/6635142?s=460&v=4',
-    subtext: 'いつだってオレンジ',
-  },
-  text: 'にゃんごろうが新しい投稿をしたーヌにゃんごろうが新しい投稿をしたーヌ',
-  date: '2020.03.11',
-  tag: ['2020.03.11', '投稿'],
-});
-items.push({
-  user: {
-    id: '00000002',
-    username: 'カマキチ',
-    iconurl: 'https://avatars3.githubusercontent.com/u/6635142?s=460&v=4',
-    subtext: 'そろそろキャンプしたいぞ',
-  },
-  text: 'にゃんごろうが新しい投稿をしたーヌ',
-  date: '2020.03.11',
-  tag: ['2020.03.11'],
-});
-items.push({
-  user: {
-    id: '00000003',
-    username: 'エドブラウン',
-    iconurl: 'https://avatars3.githubusercontent.com/u/6635142?s=460&v=4',
-    subtext: '',
-  },
-  text: 'にゃんごろうが新しい投稿をしたーヌにゃんごろうが新しい投稿をしたーヌ',
-  date: '2020.03.11',
-  tag: ['2020.03.11', '投稿', 'お知らせ'],
-});
-items.push({
-  user: {
-    id: '00000004',
-    username: 'サルバトーレトスカニーニ',
-    iconurl: 'https://avatars3.githubusercontent.com/u/6635142?s=460&v=4',
-    subtext: 'スパゲティつくってみた',
-  },
-  text:
-    'にゃんごろうが新しい投稿をしたーヌにゃんごろうが新しい投稿をしたーヌにゃんごろうが新しい投稿をしたーヌ',
-  date: '2020.03.11',
-  tag: ['2020.03.11'],
-});
-
-for (let index = 0; index < 3; index++) {
-  items = items.concat(items);
-}
+type State = {};
 
 export default Vue.extend({
-  name: 'ActivityList',
+  name: 'ViewActivityList',
   components: { UserIcon },
-  props: {},
+  props: {
+    activities: {
+      default: () => [],
+      type: Array as PropType<TypeActivityDisp[]>,
+    },
+    debug: {
+      default: '',
+      type: String,
+    },
+  },
   data(): State {
-    return {
-      items,
-    };
+    return {};
   },
   computed: {},
   mounted() {},
   methods: {
     close() {
       this.$emit('close');
-    },
-    save() {
-      console.log('ほぞん');
     },
   },
 });
@@ -139,7 +82,7 @@ export default Vue.extend({
   h3 {
     font-size: var(--fontsize-medium);
   }
-  p {
+  & > div {
     font-size: var(--fontsize-small);
     .ca-tag {
       background-color: #f0d755;
@@ -151,7 +94,8 @@ export default Vue.extend({
   }
 }
 .item-date {
-  text-align: right;
+  color: #fff;
+  margin-right: 0.5em;
 }
 </style>
 <style lang="scss">

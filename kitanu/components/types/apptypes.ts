@@ -16,11 +16,6 @@ export type TypeLoginUser = {
   emailVerified: boolean;
   displayName: string;
   photoURL: string;
-  isAdmin: boolean;
-  isAnonymous: boolean;
-  searchOK: boolean;
-  kycOK: boolean;
-  agreeTermsOK: boolean;
 };
 
 export type ActionRes = {
@@ -34,7 +29,20 @@ export type TypeUser = {
   iconurl: string;
   subtext?: string;
   friendList?: TypeUserID[];
-  created?: firebase.firestore.FieldValue;
+  isAdmin: boolean;
+  isAnonymous: boolean;
+  searchOK: boolean;
+  kycOK: boolean;
+  agreeTermsOK: boolean;
+  // createdAt?: firebase.firestore.FieldValue;
+  createdAt?: number;
+  removed: boolean;
+};
+
+export type TypeUserDisp = {
+  id: TypeUserID;
+  username: string;
+  iconurl: string;
 };
 
 /**
@@ -48,7 +56,7 @@ export type TypeAlbum = {
   text: string;
   members: TypeUserID[];
   imgurl?: string;
-  createdAt: string;
+  createdAt?: number;
 };
 
 export type TypeAlbumPost = {
@@ -65,9 +73,9 @@ export type TypeAlbumPost = {
 export type TypeChatRoom = {
   id: string;
   members: TypeUserID[];
-  createdBy: TypeUser;
+  createdBy: TypeUserID;
   title?: string;
-  createdAt: string;
+  createdAt?: number;
 };
 
 export type TypeChatPost = {
@@ -84,7 +92,7 @@ export type TypeChatComment = {
   iconurl: string;
   text: string;
   username: string;
-  postdate: string;
+  createdAt: number;
   fukitype?: string;
   imgurl?: string;
   good?: number;
@@ -94,5 +102,17 @@ export type TypeChatInfoItem = {
   id: string;
   text: string;
   username: string;
-  postdate: number;
+  createdAt: number;
+};
+
+/**
+ * アクティビティ
+ */
+export type TypeActivity = {
+  id: string;
+  userID: string;
+  text: string;
+  createdAt: number;
+  tags: string[];
+  user: TypeUserDisp;
 };

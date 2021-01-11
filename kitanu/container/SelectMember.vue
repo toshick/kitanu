@@ -1,5 +1,6 @@
 <template>
   <ViewSelectMember
+    :title="title"
     :members="members"
     @close="$emit('close')"
     @save="(list) => $emit('save', list)"
@@ -18,7 +19,12 @@ type State = {};
 
 export default Vue.extend({
   components: { ViewSelectMember },
-  props: {},
+  props: {
+    title: {
+      default: '',
+      type: String,
+    },
+  },
   data(): State {
     return {};
   },

@@ -1,6 +1,7 @@
 <template>
   <ViewTop
     :album-items="albumItems"
+    :activities="activities"
     @about="about"
     @create-album="createAlbum"
     @open-activitylist="openActivityList"
@@ -17,9 +18,10 @@
 import Vue from 'vue';
 // import { toast,  } from '@/common/util';
 import ViewTop from '@/components/ViewTop.vue';
+import ActivityList from '@/container/ActivityList.vue';
 import AboutThisApp from '@/components/description/AboutThisApp.vue';
-import { albumStore, firebaseStore, userStore } from '@/store';
-import { TypeAlbum } from '@/components/types/apptypestypes';
+import { albumStore, activityStore, userStore } from '@/store';
+import { TypeAlbum, TypeUser, TypeActivity } from '@/components/types/apptypes';
 
 type State = {
   page: number;
@@ -36,14 +38,27 @@ export default Vue.extend({
     albumItems(): TypeAlbum[] {
       return albumStore.albumItems;
     },
+    loginedUser(): TypeUser {
+      return userStore.loginedUser;
+    },
+    activities(): TypeActivity[] {
+      return activityStore.activities;
+    },
+  },
+  watch: {
+    loginedUser(newVal: TypeUser, oldVal: TypeUser) {
+      if (!oldVal.id && newVal.id) {
+        // this.fetch();
+      }
+    },
   },
   mounted() {
-    albumStore.RESET_ALBUM();
-    this.fetch();
+    // albumStore.RESET_ALBUM();
   },
   methods: {
-    fetch() {
-      return albumStore.FetchAlbum({ userID: userStore.loginedUser.id });
+    async fetch() {
+      // await userStore.FetchUsers([this.loginedUser.id]);
+      // return albumStore.FetchAlbum({ userID: this.loginedUser.id });
     },
     about() {
       this.openView({
@@ -67,8 +82,15 @@ export default Vue.extend({
       this.fetch();
     },
     debug() {
-      firebaseStore.AddPostImg({ a: 1, b: 2, c: 3 });
+      userStore.FetchUsers([this.loginedUser.id]);
       // firebaseStore.AddTry({ a: 1, b: 2, c: 3 });
+    },
+    openActivityList() {
+      this.openModal({
+        component: ActivityList,
+        klass: ['view-activitylist'],
+        transition: 'modal',
+      });
     },
   },
 });

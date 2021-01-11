@@ -4,7 +4,7 @@
       <a class="btn-back" @click.stop.prevent="$emit('close')"
         ><ion-icon name="chevron-down" size="medium"
       /></a>
-      <h1>メンバせんたくヌ</h1>
+      <h1>{{ title }}</h1>
       <!-- right -->
       <template v-slot:right>
         <a class="btn-header" :disabled="selectedCount === 0" @click="save"
@@ -36,6 +36,20 @@
           </label>
         </li>
       </ul>
+
+      <div class="search-block">
+        <div class="ca-inputline">
+          <CaInput
+            v-model="findUserID"
+            class="-yellow"
+            name="title"
+            title="ユーザIDから検索"
+            rules="max:50"
+            placeholder="ユーザID"
+            width="L"
+          ></CaInput>
+        </div>
+      </div>
     </ViewBody>
   </section>
 </template>
@@ -49,6 +63,7 @@ import { TypeUser } from '@/components/types/apptypes';
 
 type State = {
   selectedMap: { [key: string]: string };
+  findUserID: string;
 };
 
 export default Vue.extend({
@@ -59,10 +74,15 @@ export default Vue.extend({
       default: [],
       type: Array as PropType<TypeUser[]>,
     },
+    title: {
+      default: 'メンバせんたくヌ',
+      type: String,
+    },
   },
   data(): State {
     return {
       selectedMap: {},
+      findUserID: '',
     };
   },
   computed: {
@@ -156,5 +176,8 @@ export default Vue.extend({
       }
     }
   }
+}
+.search-block {
+  padding: 20px 20px 0;
 }
 </style>

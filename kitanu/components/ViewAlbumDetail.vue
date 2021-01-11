@@ -71,7 +71,7 @@
 import Vue, { PropType } from 'vue';
 import { toast, openView } from '@/common/util';
 import mixinScrollview from '@/mixin/mxinScrollview';
-import { TypeUser, TypePostItem } from '@/components/types/apptypes';
+import { TypeUser, TypeAlbumPost } from '@/components/types/apptypes';
 import TextInputModal from './parts/TextInputModal.vue';
 import PostItem from './parts/PostItem.vue';
 import LoadingInline from './parts/LoadingInline.vue';
@@ -98,7 +98,7 @@ export default Vue.extend({
     },
     postItems: {
       default: [],
-      type: Array as PropType<TypePostItem[]>,
+      type: Array as PropType<TypeAlbumPost[]>,
     },
   },
   data(): State {
@@ -161,7 +161,7 @@ export default Vue.extend({
       this.$emit('cancelChange');
       this.changingOrder = false;
     },
-    onRemovePost(postitem: TypePostItem) {
+    onRemovePost(postitem: TypeAlbumPost) {
       this.$emit('removePost', postitem.id);
     },
     goAlbumSetting() {

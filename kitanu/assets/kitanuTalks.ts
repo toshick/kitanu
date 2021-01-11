@@ -1,0 +1,42 @@
+const kitanuTalks: string[] = [];
+kitanuTalks.push('ソイツハイイヌ！');
+kitanuTalks.push('グッドヌ');
+kitanuTalks.push('ヤルジャナイ');
+kitanuTalks.push('アンタッテヤツハ！');
+kitanuTalks.push('オレハユメデモミテイルヌ？');
+kitanuTalks.push('イイセンスヌ');
+kitanuTalks.push('マジナハナシ？');
+kitanuTalks.push('ソーキタカ');
+kitanuTalks.push('アンタニマカセルヌ');
+kitanuTalks.push('ジゴクノサタモカネシダイヌ');
+kitanuTalks.push('コヨイハヨイツキゾ');
+kitanuTalks.push('ソーコナクッチャーヌ');
+kitanuTalks.push('キョウヤラネエヤツハ...アシタモヤラーヌ');
+kitanuTalks.push('ナンダカユウキガワイテキータヌ');
+kitanuTalks.push('キサマラハ、クサッタミカンデハナイヌ');
+kitanuTalks.push('イイカゲンマナベヨ');
+kitanuTalks.push('ソレデコソキサマダーヌ');
+kitanuTalks.push('ナラバヨシ');
+kitanuTalks.push('マエムキニケントーシヨウ');
+kitanuTalks.push('チョットキュウケイシヨウ');
+kitanuTalks.push('オレハシバラクチカニモグルヌ');
+kitanuTalks.push('マッタククレイジーナジャポネーゼダゼ');
+kitanuTalks.push('ソロソロシゴトノハナシヲシナイカネ');
+kitanuTalks.push('イマサライノチゴイカ');
+kitanuTalks.push('ソレハチャーハンヨリカチガアルノカヌ？');
+kitanuTalks.push('マイニチガエブリデイ');
+kitanuTalks.push(
+  'コノチキュウジョウニ、ジブンタチヨリツヨイチカラガソンザイスルコトヲオシエテヤロウヌ',
+);
+kitanuTalks.push('グレートダゼ');
+kitanuTalks.push('キサマラシクナイゾ');
+kitanuTalks.push('ヤルカラニハマジダゼ');
+kitanuTalks.push('ソノタメニオレガココニイル');
+kitanuTalks.push('カエッタラニホンシュダゾ');
+kitanuTalks.push('ソーイウカンガエカタモアルノネ');
+kitanuTalks.push('ソンナトキハ、ジンガデコキュウヲトトノエロ');
+kitanuTalks.push('イマノハワルクナカッタヌ');
+kitanuTalks.push('ジュッチュウハックワナダヌ');
+kitanuTalks.push('');
+
+export default kitanuTalks;

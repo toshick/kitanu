@@ -15,13 +15,13 @@
       <div class="setting-user">
         <a @click="editIcon">
           <UserIcon
-            :url="loginedUser.photoURL"
-            :username="loginedUser.displayName"
+            :url="loginedUser.iconurl"
+            :username="loginedUser.username"
           />
         </a>
         <p>
           <a @click="editUserName">
-            {{ loginedUser.displayName }}
+            {{ loginedUser.username }}
           </a>
         </p>
       </div>
@@ -70,7 +70,7 @@ import ViewPrivacyPolicy from '@/components/ViewPrivacyPolicy.vue';
 import ViewKiyaku from '@/components/ViewKiyaku.vue';
 import { userStore } from '@/store';
 import { Input } from 'camaleao-design/components/type';
-import { TypeLoginUser } from '@/components/types/apptypes';
+import { TypeUser } from '@/components/types/apptypes';
 
 type State = {};
 
@@ -82,7 +82,7 @@ export default Vue.extend({
     return {};
   },
   computed: {
-    loginedUser(): TypeLoginUser {
+    loginedUser(): TypeUser {
       return userStore.loginedUser;
     },
   },
@@ -136,7 +136,7 @@ export default Vue.extend({
       const inputs: Input[] = [];
       inputs.push({
         name: 'iconUrl',
-        value: this.loginedUser.photoURL || '',
+        value: this.loginedUser.iconurl || '',
         placeholder: 'アイコンurl',
         width: 'L',
         // rules: 'required',
@@ -160,7 +160,7 @@ export default Vue.extend({
       const inputs: Input[] = [];
       inputs.push({
         name: 'displayName',
-        value: this.loginedUser.displayName || '',
+        value: this.loginedUser.username || '',
         placeholder: 'オナマエ',
         width: 'L',
       });

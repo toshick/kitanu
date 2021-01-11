@@ -76,7 +76,7 @@ export default Vue.extend({
     },
     async resetPassword() {
       this.showLoading(true);
-      const { email } = userStore.loginedUser;
+      const { email } = userStore.loginedUserWithDetail;
       const res = await userStore.SendPasswordResetEmail(email);
       this.showLoading(false);
       if (res.errorCode) {

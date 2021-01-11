@@ -1,6 +1,19 @@
 <template>
   <div>
-    <ViewFriendList :members="members" @add-friend="addFriend" />
+    <ViewFriendList
+      :members="members"
+      @copy-friend-link="copyFriendLink"
+      @select-friend="visibleSelectMember = true"
+    />
+    <!-- SelectMember -->
+    <transition name="modal">
+      <SelectMember
+        v-if="visibleSelectMember"
+        title="トモダチを追加ヌ"
+        @close="visibleSelectMember = false"
+        @save="onSaveSelectMember"
+      />
+    </transition>
   </div>
 </template>
 <!------------------------------->
@@ -10,14 +23,19 @@
 import Vue from 'vue';
 import { TypeUser } from '@/components/types/apptypes';
 import ViewFriendList from '@/components/ViewFriendList.vue';
+import SelectMember from '@/container/SelectMember.vue';
 import { appStore, friendStore } from '@/store';
 
-type State = {};
+type State = {
+  visibleSelectMember: boolean;
+};
 
 export default Vue.extend({
-  components: { ViewFriendList },
+  components: { ViewFriendList, SelectMember },
   data(): State {
-    return {};
+    return {
+      visibleSelectMember: false,
+    };
   },
   computed: {
     members(): TypeUser[] {
@@ -30,9 +48,9 @@ export default Vue.extend({
   },
   methods: {
     fetch() {
-      friendStore.FetchFriends(appStore.logined.id);
+      friendStore.FetchFriends();
     },
-    async addFriend() {
+    async copyFriendLink() {
       this.showLoading(true);
       await friendStore.CreateFriendLink();
       this.showLoading(false);
@@ -46,6 +64,16 @@ export default Vue.extend({
           console.log('うむ');
         },
       );
+    },
+    onSaveSelectMember(members: TypeUser[]) {
+      console.log('onSaveSelectMember', members.length);
+
+      // await chatStore.CreateChatRoom({
+      //   loginuser: appStore.logined,
+      //   users: members,
+      // });
+
+      this.visibleSelectMember = false;
     },
   },
 });

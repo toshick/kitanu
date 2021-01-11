@@ -35,7 +35,7 @@
 <script lang="ts">
 /* eslint vue/no-v-html: 0 */
 import Vue, { PropType } from 'vue';
-import { TypePostItem } from '@/components/types/apptypes';
+import { TypeChatPost } from '@/components/types/apptypes';
 
 type State = {
   deleting: boolean;
@@ -46,7 +46,7 @@ export default Vue.extend({
   components: {},
   props: {
     postitem: {
-      type: Object as PropType<TypePostItem>,
+      type: Object as PropType<TypeChatPost>,
       default: null,
     },
     first: {

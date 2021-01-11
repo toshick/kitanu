@@ -10,8 +10,11 @@
       <h1>トモダチ</h1>
       <!-- right -->
       <template v-slot:right>
-        <a class="btn-header" @click.stop.prevent="$emit('add-friend')"
+        <a class="btn-header" @click.stop.prevent="$emit('select-friend')"
           ><ion-icon name="add-outline" size="medium"
+        /></a>
+        <a class="btn-header" @click.stop.prevent="$emit('copy-friend-link')"
+          ><ion-icon name="attach-outline" size="medium"
         /></a>
       </template>
     </ViewHeader>
@@ -42,7 +45,7 @@
 <!------------------------------->
 <script lang="ts">
 import Vue, { PropType } from 'vue';
-import { TypeUser } from './types/app';
+import { TypeUser } from '@/components/types/apptypes';
 
 type State = {};
 

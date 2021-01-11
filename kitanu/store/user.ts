@@ -1,14 +1,16 @@
 import { v4 as uuidv4 } from 'uuid';
 import firebase from 'firebase/app';
-import { isLocal } from '@/common/util';
-import { makeUserFromAuthUser } from '@/common/helper';
+import { asort, log } from '@/common/util';
+import { makeUserFromAuthUser, makeUser } from '@/common/helper';
 import { Module, VuexModule, Mutation, Action } from 'vuex-module-decorators';
 import { userRef } from '@/plugins/firebase';
 import { logError } from '@/common/error';
+import { activityStore } from '@/store';
 import {
   ActionRes,
   TypeLoginUser,
   TypeUser,
+  TypeUserID,
 } from '@/components/types/apptypes';
 
 const initialUser: TypeLoginUser = {
@@ -17,11 +19,6 @@ const initialUser: TypeLoginUser = {
   emailVerified: false,
   displayName: '',
   photoURL: '',
-  isAdmin: false,
-  isAnonymous: false,
-  searchOK: false,
-  kycOK: false,
-  agreeTermsOK: false,
 };
 // 'https://avatars3.githubusercontent.com/u/6635142?s=460&v=4'
 
@@ -29,39 +26,89 @@ const initialUser: TypeLoginUser = {
 export default class MyClass extends VuexModule {
   _logined: TypeLoginUser = initialUser;
   _users: TypeUser[] = [];
+  _unsubscribe: Function | null = null;
 
   // ----------------------
   // Mutation
   // ----------------------
   @Mutation
+  SET_UNSUBSCRIBE_ACTIVITY(unsubscribe: Function | null) {
+    this._unsubscribe = unsubscribe;
+  }
+
+  @Mutation
   SET_LOGIN_USER(user: TypeLoginUser | null) {
-    console.log('SET_LOGIN_USER', user);
     this._logined = user || initialUser;
+  }
+
+  @Mutation
+  UPDATE_USER(user: TypeUser) {
+    const ary = this._users.map((u: TypeUser) => {
+      if (u.id === user.id) {
+        return { ...u, ...user };
+      }
+      return u;
+    });
+    this._users = asort(ary, 'createdAt').reverse();
+  }
+
+  @Mutation
+  ADD_USER(user: TypeUser) {
+    const find = this._users.find((d: TypeUser) => d.id === user.id);
+    if (find) return;
+    const ary = [...this._users, user];
+    this._users = asort(ary, 'createdAt').reverse();
+  }
+
+  @Mutation
+  REMOVE_USER(user: TypeUser) {
+    this._users = this._users.filter((d: TypeUser) => d.id !== user.id);
   }
 
   // ----------------------
   // Action
   // ----------------------
   @Action({ rawError: true })
-  LoginWithPassword({
+  async LoginWithPassword({
     email,
     password,
   }: {
     email: string;
     password: string;
   }): Promise<ActionRes> {
-    return firebase
+    const res = await firebase
       .auth()
       .signInWithEmailAndPassword(email, password)
-      .then((user: any) => {
-        console.log('パスワードログイン成功', user);
-        return {};
+      .then((res: any) => {
+        return res;
       })
       .catch((error) => {
-        console.log('パスワードログイン失敗');
+        log('パスワードログイン失敗');
         logError(error, 'LoginWithPassword');
         return { errorCode: error.code, errorMsg: error.message };
       });
+
+    if (res.errorCode) {
+      return Promise.reject(res);
+    }
+    const { user } = res;
+
+    this.SET_LOGIN_USER({
+      uid: user.uid,
+      displayName: user.displayName || '',
+      email: user.email || '',
+      emailVerified: user.emailVerified,
+      photoURL: user.photoURL || '',
+    });
+
+    await this.FetchUsers([user.uid]);
+
+    // Activity;
+    activityStore.AddActivity({
+      text: `「${user.displayName}」がログインしたーヌ`,
+      tags: ['ログイン'],
+    });
+    return {};
   }
 
   @Action({ rawError: true })
@@ -79,7 +126,7 @@ export default class MyClass extends VuexModule {
         // var token = result.credential.accessToken;
         // The signed-in user info.
         const user = result.user;
-        console.log('LoginByFacebook', user);
+        log('LoginByFacebook', user);
         return {};
       })
       .catch((error) => {
@@ -128,40 +175,57 @@ export default class MyClass extends VuexModule {
       return Promise.reject(res);
     }
 
-    // ログインユーザ名を更新
-    const res2: any = await this.UpdateLoginUser({
-      displayName: p.name,
-    });
-    if (res2.errorCode) {
-      return Promise.reject(res);
-    }
-
     // firestoreのusersにも追加する
     const createdUser: TypeUser = makeUserFromAuthUser({
       ...res.user,
       displayName: p.name,
     });
 
-    return userRef
+    // ユーザ作成
+    const res2 = await userRef
       .doc(createdUser.id)
       .set(createdUser)
       .then(() => {
-        console.log('ユーザ作成せり', createdUser);
-        return {};
+        log('ユーザ作成せり', createdUser);
+        // Activity;
+        activityStore.AddActivity({
+          text: `「${createdUser.username}」を作成したーヌ`,
+          tags: ['ユーザ作成'],
+        });
+        return { errorCode: null };
       })
       .catch((error) => {
         logError(error, 'makeUserFromAuthUser');
         return { errorCode: error.code, errorMsg: error.message };
       });
+    if (res2.errorCode) {
+      return Promise.reject(res);
+    }
+
+    // ログインユーザ名を更新
+    const res3: any = await this.UpdateLoginUser({
+      displayName: p.name,
+    });
+    if (res3.errorCode) {
+      return Promise.reject(res);
+    }
+    return {};
   }
 
   @Action({ rawError: true })
   Logout(): Promise<ActionRes> {
+    // Activity;
+    activityStore.AddActivity({
+      text: `「${this.loginedUser.username}」がログアウトしたーヌ`,
+      tags: ['ログアウト'],
+    });
     return firebase
       .auth()
       .signOut()
       .then(() => {
         // Sign-out successful.
+        activityStore.ListenActivity(false);
+        this.ListenUsers(false);
         return {};
       })
       .catch((error) => {
@@ -187,9 +251,15 @@ export default class MyClass extends VuexModule {
   }
 
   @Action({ rawError: true })
-  UnRegister(): Promise<ActionRes> {
+  async UnRegister(): Promise<ActionRes> {
     const user = firebase.auth().currentUser;
-    if (!user) return Promise.resolve({ errorMsg: 'no-auth' });
+    if (!user) return Promise.reject(new Error('no-auth'));
+
+    // firestoreでのユーザをまず削除
+    const res = await this.UpdateUser({ id: user.uid, removed: true });
+    if (res.errorCode) {
+      return Promise.reject(res);
+    }
 
     return user
       .delete()
@@ -209,23 +279,45 @@ export default class MyClass extends VuexModule {
    * ログインユーザの更新
    */
   @Action({ rawError: true })
-  UpdateLoginUser(data: {
+  async UpdateLoginUser(data: {
     displayName?: string;
     photoURL?: string;
   }): Promise<ActionRes> {
+    const { displayName, photoURL } = data;
     const user = firebase.auth().currentUser;
-    if (!user) return Promise.resolve({ errorMsg: 'no-auth' });
+    if (!user) return Promise.reject(new Error('no-auth'));
+
+    // firestoreでのユーザを取得
+    const res = await this.FetchUsers([user.uid]);
+    if (res.errorCode) {
+      return Promise.reject(res);
+    }
+
+    // firestoreでのユーザを更新
+    const res2 = await this.UpdateUser({
+      id: user.uid,
+      username: displayName,
+    });
+    if (res2.errorCode) {
+      return Promise.reject(res);
+    }
+
     return user
       .updateProfile(data)
       .then(() => {
         const newdata = { ...this._logined };
-        if (data.displayName) {
-          newdata.displayName = data.displayName;
+        if (displayName) {
+          newdata.displayName = displayName;
         }
-        if (typeof data.photoURL === 'string') {
-          newdata.photoURL = data.photoURL;
+        if (typeof photoURL === 'string') {
+          newdata.photoURL = photoURL;
         }
         this.SET_LOGIN_USER(newdata);
+        // Activity;
+        activityStore.AddActivity({
+          text: `ユーザ名を「${displayName}」に変更ヌ`,
+          tags: ['ユーザ名変更'],
+        });
         return {};
       })
       .catch((error) => {
@@ -241,7 +333,7 @@ export default class MyClass extends VuexModule {
   @Action({ rawError: true })
   UpdatePassword(password: string): Promise<ActionRes> {
     const user = firebase.auth().currentUser;
-    if (!user) return Promise.resolve({ errorMsg: 'no-auth' });
+    if (!user) return Promise.reject(new Error('no-auth'));
     return user
       .updatePassword(password)
       .then(() => {
@@ -251,6 +343,28 @@ export default class MyClass extends VuexModule {
       .catch((error) => {
         // An error happened.
         logError(error, 'UpdatePassword');
+        return { errorCode: error.code, errorMsg: error.message };
+      });
+  }
+
+  /**
+   * UpdateUser
+   */
+  @Action({ rawError: true })
+  UpdateUser(user: Partial<TypeUser>): Promise<ActionRes> {
+    const { id } = user;
+    const find = this._users.find((d: TypeUser) => d.id === user.id);
+    if (!find) return Promise.reject(new Error('no user finded'));
+
+    return userRef
+      .doc(id)
+      .update(user)
+      .then(() => {
+        this.UPDATE_USER({ ...find, ...user });
+        return {};
+      })
+      .catch((error) => {
+        logError(error, 'UpdateUser');
         return { errorCode: error.code, errorMsg: error.message };
       });
   }
@@ -281,7 +395,7 @@ export default class MyClass extends VuexModule {
   @Action({ rawError: true })
   UpdateLoginUserEmail(email: string): Promise<ActionRes> {
     const user = firebase.auth().currentUser;
-    if (!user) return Promise.resolve({ errorMsg: 'no-auth' });
+    if (!user) return Promise.reject(new Error('no-auth'));
     return user
       .updateEmail(email)
       .then(() => {
@@ -301,7 +415,7 @@ export default class MyClass extends VuexModule {
   @Action({ rawError: true })
   SendEmailVerification(): Promise<ActionRes> {
     const user = firebase.auth().currentUser;
-    if (!user) return Promise.resolve({ errorMsg: 'no-auth' });
+    if (!user) return Promise.reject(new Error('no-auth'));
     return user
       .sendEmailVerification()
       .then(() => {
@@ -334,31 +448,56 @@ export default class MyClass extends VuexModule {
 
   @Action({ rawError: true })
   FetchUsers(ids: string[]): Promise<ActionRes> {
+    log('FetchUsers', ids);
     return userRef
       .where('id', 'in', ids)
       .orderBy('createdAt', 'desc')
       .get()
       .then((querySnapshot: firebase.firestore.QuerySnapshot) => {
         querySnapshot.forEach((doc) => {
-          console.log('FetchUsers', doc.id, ' => ', doc.data());
-          // const d: any = doc.data();
-          // const item: TypeAlbum = {
-          //   id: d.id,
-          //   date: d.date,
-          //   dateDisp: d.dateDisp,
-          //   title: d.title,
-          //   text: d.text,
-          //   members: d.members,
-          //   createdAt: d.createdAt,
-          // };
-          // this.ADD_ALBUM(item);
+          this.ADD_USER(makeUser(doc.data()));
         });
+        this.ListenUsers(true);
         return {};
       })
       .catch((error) => {
         logError(error, 'FetchUsers');
         return { errorCode: error.code, errorMsg: error.message };
       });
+  }
+
+  @Action({ rawError: true })
+  ListenUsers(flg: boolean): void {
+    if (!flg) {
+      if (this._unsubscribe) {
+        this._unsubscribe();
+        this.SET_UNSUBSCRIBE_ACTIVITY(null);
+      }
+      return;
+    }
+    if (this._unsubscribe) {
+      this._unsubscribe();
+    }
+    const ids = this._users.map((u: TypeUser) => u.id);
+    const unsubscribe = userRef
+      .where('id', 'in', ids)
+      .orderBy('createdAt', 'desc')
+      .onSnapshot((querySnapshot: firebase.firestore.QuerySnapshot) => {
+        querySnapshot
+          .docChanges()
+          .forEach((change: firebase.firestore.DocumentChange) => {
+            const { doc, type } = change;
+            const item: TypeUser = makeUser(doc.data());
+            if (type === 'added') {
+              this.ADD_USER(item);
+            } else if (type === 'modified') {
+              this.UPDATE_USER(item);
+            } else if (type === 'removed') {
+              this.REMOVE_USER(item);
+            }
+          });
+      });
+    this.SET_UNSUBSCRIBE_ACTIVITY(unsubscribe);
   }
 
   // ----------------------
@@ -369,13 +508,31 @@ export default class MyClass extends VuexModule {
   }
 
   get loginedUser(): TypeUser {
-    return {
+    let ret: TypeUser = {
       id: this._logined.uid,
       username: this._logined.displayName,
       iconurl: this._logined.photoURL,
       subtext: '',
       friendList: [],
+      isAdmin: false,
+      isAnonymous: false,
+      searchOK: false,
+      kycOK: false,
+      agreeTermsOK: false,
+      removed: false,
     };
+    const find = this._users.find((d: TypeUser) => d.id === this._logined.uid);
+    if (find) {
+      ret = {
+        ...ret,
+        ...find,
+      };
+    }
+    return ret;
+  }
+
+  get logined(): boolean {
+    return !!this._logined.uid;
   }
 
   get users(): TypeUser[] {

@@ -14,7 +14,6 @@ import {
   isLocal,
 } from '@/common/util';
 import Setting from '@/container/Setting.vue';
-import ActivityList from '@/container/ActivityList.vue';
 import Particle from '@/components/parts/Particle.vue';
 import UserIcon from '@/components/parts/UserIcon.vue';
 import ParticleButton from '@/components/parts/ParticleButton.vue';
@@ -175,13 +174,6 @@ Vue.mixin({
             name: 'hand-right-outline',
           },
         },
-      });
-    },
-    openActivityList() {
-      this.openModal({
-        component: ActivityList,
-        klass: ['view-activitylist'],
-        transition: 'modal',
       });
     },
     showLoading(flg: boolean) {

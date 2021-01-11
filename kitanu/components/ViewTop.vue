@@ -8,13 +8,13 @@
         alt="kitanu-header"
         @click="openMenu"
       />
-      <h1>キタキータヌ</h1>
+      <h1>{{ headerTitle }}</h1>
 
       <!-- right -->
       <template v-slot:right>
         <ParticleButton class="btn-header" @click="$emit('open-activitylist')"
           ><ion-icon name="bicycle-outline" size="medium" />
-          <CaBadge :num="5" />
+          <CaBadge :num="activities.length" />
         </ParticleButton>
         <ParticleButton class="btn-header" @click="showSetting"
           ><ion-icon name="restaurant-outline" size="medium"
@@ -56,6 +56,7 @@
             <br />
             キータヌに自分のアクティビティをみてもらおーぬ
           </p>
+          <p>{{ users }}</p>
           <p>{{ loginedUser }}</p>
         </div>
       </section>
@@ -100,6 +101,8 @@ import {
   TypeAlbumItem,
   TypeChatInfoItem,
   TypeLoginUser,
+  TypeUser,
+  TypeActivity,
 } from '@/components/types/apptypes';
 import { userStore } from '@/store';
 
@@ -120,13 +123,23 @@ export default Vue.extend({
       default: () => [],
       type: Array as PropType<TypeAlbumItem[]>,
     },
+    activities: {
+      default: () => [],
+      type: Array as PropType<TypeActivity[]>,
+    },
   },
   data(): State {
     return {};
   },
   computed: {
-    loginedUser(): TypeLoginUser {
+    loginedUser(): TypeUser {
       return userStore.loginedUser;
+    },
+    headerTitle(): string {
+      return userStore.logined ? this.loginedUser.username : 'キタキータヌ';
+    },
+    users(): TypeUser[] {
+      return userStore.users;
     },
   },
   mounted() {},

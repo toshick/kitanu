@@ -10,6 +10,7 @@ import AlbumClass from '~/store/album';
 import FriendClass from '~/store/friend';
 import FirebaseClass from '~/store/firebase';
 import UserClass from '~/store/user';
+import ActivityClass from '~/store/activity';
 
 let appStore: AppClass;
 let postStore: PostClass;
@@ -19,6 +20,7 @@ let albumStore: AlbumClass;
 let friendStore: FriendClass;
 let firebaseStore: FirebaseClass;
 let userStore: UserClass;
+let activityStore: ActivityClass;
 
 /**
  * initialiseStores
@@ -32,6 +34,7 @@ function initialiseStores(store: Store<any>): void {
   friendStore = getModule(FriendClass, store);
   firebaseStore = getModule(FirebaseClass, store);
   userStore = getModule(UserClass, store);
+  activityStore = getModule(ActivityClass, store);
 }
 
 export {
@@ -44,4 +47,5 @@ export {
   friendStore,
   firebaseStore,
   userStore,
+  activityStore,
 };

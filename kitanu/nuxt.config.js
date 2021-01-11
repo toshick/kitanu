@@ -79,7 +79,12 @@ export default {
    ** Plugins to load before mounting the App
    ** https://nuxtjs.org/guide/plugins
    */
-  plugins: ['plugins/global.ts', 'plugins/v-longpress', 'plugins/firebase'],
+  plugins: [
+    'plugins/global',
+    'plugins/v-longpress',
+    'plugins/firebase',
+    'plugins/filter',
+  ],
   /*
    ** Auto import components
    ** See https://nuxtjs.org/api/configuration-components
@@ -112,6 +117,7 @@ export default {
    */
   publicRuntimeConfig: {},
   env: {
+    APP_URL_BASE: process.env.APP_URL_BASE || '',
     // dummy user
     DEV_USER_EMAIL: process.env.DEV_USER_EMAIL || '',
     DEV_USER_PASS: process.env.DEV_USER_PASS || '',

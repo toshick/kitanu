@@ -55,7 +55,7 @@
 <!------------------------------->
 <script lang="ts">
 import Vue, { PropType } from 'vue';
-import { TypeAlbumItem } from '../types/app';
+import { TypeAlbumItem } from '@/components/types/apptypes';
 
 type State = {};
 

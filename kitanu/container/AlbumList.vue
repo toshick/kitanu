@@ -17,7 +17,7 @@ import { openDialog, openView, toast } from '@/common/util';
 import { Input } from 'camaleao-design/components/type';
 import ViewAlbumList from '@/components/ViewAlbumList.vue';
 import { albumStore, userStore } from '@/store';
-import { TypeAlbum } from '@/components/types/apptypestypes';
+import { TypeAlbum } from '@/components/types/apptypes';
 import AboutAlbum from '@/components/description/AboutAlbum.vue';
 
 type State = {

@@ -2,13 +2,13 @@ import dayjs from 'dayjs';
 import { v4 as uuidv4 } from 'uuid';
 import { Module, VuexModule, Mutation, Action } from 'vuex-module-decorators';
 import { asort, zeropad } from '@/common/util';
-import { ActionRes, TypePostItem } from '@/components/types/apptypes';
+import { ActionRes, TypeChatPost } from '@/components/types/apptypes';
 // import { setUpPostImg, firebase, postImgRef, tagRef, Tag, PostImg, PostImgUpdate, TagUpdate, PostImgRequest } from '@/plugins/firebase.ts';
 
 @Module({ name: 'post', stateFactory: true, namespaced: true })
 export default class MyClass extends VuexModule {
-  postitems: TypePostItem[] = [];
-  postitemsBK: TypePostItem[] = [];
+  _postitems: TypeChatPost[] = [];
+  _postitemsBK: TypeChatPost[] = [];
 
   // ----------------------
   // Mutation
@@ -16,60 +16,60 @@ export default class MyClass extends VuexModule {
 
   @Mutation
   RESET_POST() {
-    this.postitems = [];
+    this._postitems = [];
   }
 
   @Mutation
   BACKUP_POST() {
-    this.postitemsBK = [...this.postitems];
+    this._postitemsBK = [...this._postitems];
   }
 
   @Mutation
   REVERT_POST() {
-    this.postitems = this.postitemsBK;
-    this.postitemsBK = [];
+    this._postitems = this._postitemsBK;
+    this._postitemsBK = [];
   }
 
   @Mutation
-  ADD_POST(postitem: TypePostItem) {
-    const ary = [...this.postitems];
+  ADD_POST(postitem: TypeChatPost) {
+    const ary = [...this._postitems];
     ary.unshift(postitem);
-    this.postitems = asort(ary, 'sortindex');
+    this._postitems = asort(ary, 'sortindex');
   }
 
   @Mutation
-  CHANGE_ORDER_POST(p: { postitem: TypePostItem; direction: string }) {
+  CHANGE_ORDER_POST(p: { postitem: TypeChatPost; direction: string }) {
     const { postitem, direction } = p;
-    let index = this.postitems.findIndex(
-      (p: TypePostItem) => p.id === postitem.id,
+    let index = this._postitems.findIndex(
+      (p: TypeChatPost) => p.id === postitem.id,
     );
 
     if (index !== undefined) {
       if (direction === 'down') {
         index += 1;
       }
-      if (index === 0 || index === this.postitems.length) {
+      if (index === 0 || index === this._postitems.length) {
         return;
       }
-      this.postitems.splice(
+      this._postitems.splice(
         index - 1,
         2,
-        this.postitems[index],
-        this.postitems[index - 1],
+        this._postitems[index],
+        this._postitems[index - 1],
       );
     }
   }
 
   @Mutation
   REMOVE_POST(id: string) {
-    this.postitems = this.postitems.filter((i: TypePostItem) => i.id !== id);
+    this._postitems = this._postitems.filter((i: TypeChatPost) => i.id !== id);
   }
 
   @Mutation
-  UPDATE_POST(postitem: TypePostItem) {
+  UPDATE_POST(postitem: TypeChatPost) {
     console.log('UPDATE_POST', postitem);
 
-    // this.postitems = this.postitems.map((i: TypePostItem) => {
+    // this._postitems = this._postitems.map((i: TypeChatPost) => {
     //   if (i.id === postitem.id) {
     //     i = postitem;
     //   }
@@ -86,7 +86,7 @@ export default class MyClass extends VuexModule {
     this.RESET_POST();
     const date = dayjs().format('YYYY.MM.DD HH:mm:ss');
 
-    const ary: TypePostItem[] = [];
+    const ary: TypeChatPost[] = [];
 
     // ddddd
     ary.push({
@@ -148,7 +148,7 @@ export default class MyClass extends VuexModule {
       sortindex: '0000006',
     });
 
-    ary.forEach((item: TypePostItem) => {
+    ary.forEach((item: TypeChatPost) => {
       this.ADD_POST(item);
     });
 
@@ -157,7 +157,7 @@ export default class MyClass extends VuexModule {
 
   @Action
   ChangeOrder(p: {
-    postitem: TypePostItem;
+    postitem: TypeChatPost;
     direction: string;
   }): Promise<ActionRes> {
     this.CHANGE_ORDER_POST(p);
@@ -171,10 +171,10 @@ export default class MyClass extends VuexModule {
   }
 
   @Action
-  PostItem(p: TypePostItem): Promise<ActionRes> {
+  PostItem(p: TypeChatPost): Promise<ActionRes> {
     return new Promise((resolve) => {
       setTimeout(() => {
-        // const item: TypePostItem = {
+        // const item: TypeChatPost = {
         //   id: uuidv4(),
         //   date: dayjs().format('YYYY.MM.DD HH:mm:ss'),
         //   text: 'せかいのとしっくです。こちらは謎の池を発見せり',
@@ -183,11 +183,18 @@ export default class MyClass extends VuexModule {
         // };
         this.ADD_POST({
           ...p,
-          sortindex: zeropad(this.postitems.length + 1, 7),
+          sortindex: zeropad(this._postitems.length + 1, 7),
         });
 
         resolve();
       }, 1200);
     });
+  }
+
+  // ----------------------
+  // get
+  // ----------------------
+  get postitems(): TypeChatPost[] {
+    return this._postitems;
   }
 }

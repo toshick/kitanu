@@ -66,7 +66,7 @@
 import Vue from 'vue';
 // import CaModalPG from 'camaleao-design/components/CaModalPG';
 import { toast } from '@/common/util';
-import { TypeUser } from './types/app';
+import { TypeUser } from '@/components/types/apptypes';
 
 type State = {
   members: TypeUser[];

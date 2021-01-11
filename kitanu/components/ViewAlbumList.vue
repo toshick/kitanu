@@ -46,7 +46,7 @@
 <script lang="ts">
 import Vue, { PropType } from 'vue';
 import AlbumList from '@/components/parts/AlbumList.vue';
-import { TypeAlbum } from '@/components/types/apptypestypes';
+import { TypeAlbum } from '@/components/types/apptypes';
 
 type State = {
   editing: boolean;

@@ -25,7 +25,10 @@
                 <h3>{{ u.title }}</h3>
                 <p v-if="u.members[0].subtext">{{ u.members[0].subtext }}</p>
                 <ul>
-                  <li v-for="m in u.members" :key="`icon-${m.id}`">
+                  <li
+                    v-for="(m, index2) in u.members"
+                    :key="`icon-${index2}-${m.id}`"
+                  >
                     <UserIcon :url="m.iconurl" size="S" />
                   </li>
                 </ul>
@@ -53,8 +56,7 @@
 <!------------------------------->
 <script lang="ts">
 import Vue, { PropType } from 'vue';
-import { TypeChatRoom } from './types/app';
-
+import { TypeChatRoom } from '@/components/types/apptypes';
 type State = {};
 
 export default Vue.extend({

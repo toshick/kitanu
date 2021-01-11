@@ -7,6 +7,7 @@ import CaToastPG, {
 // import ModalSideMenu from '@/components/parts/ModalSideMenu.vue';
 import Loading from '@/components/parts/Loading.vue';
 import Particle from '@/components/parts/Particle.vue';
+import dayjs from 'dayjs';
 
 /**
  * isLocal
@@ -23,6 +24,13 @@ export const isMobile: boolean = (() => {
   if (navigator.userAgent.match(/iPhone|Android.+Mobile/)) return true;
   return false;
 })();
+
+/**
+ * log
+ */
+export function log(...args: any[]) {
+  if (isLocal) console.log('【LOG】' + args.join(', '));
+}
 
 /**
  * 1*1 transparent png img
@@ -224,4 +232,11 @@ export function setClipBoard(str: string) {
   $input.select();
   document.execCommand('copy');
   $input.parentNode?.removeChild($input);
+}
+
+/**
+ * dateDisp
+ */
+export function dateDisp(unixtime: number) {
+  return dayjs(unixtime).format('YYYY.MM.DD HH:mm');
 }

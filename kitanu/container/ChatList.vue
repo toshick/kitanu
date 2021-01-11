@@ -24,6 +24,7 @@ import { TypeUser, TypeChatRoom } from '@/components/types/apptypes';
 import ViewChatList from '@/components/ViewChatList.vue';
 import SelectMember from '@/container/SelectMember.vue';
 import { appStore, chatStore } from '@/store';
+import { chatrooms } from '@/mock/mockdata';
 
 type State = {
   visibleSelectMember: boolean;
@@ -38,7 +39,8 @@ export default Vue.extend({
   },
   computed: {
     chatrooms(): TypeChatRoom[] {
-      return chatStore.chatrooms;
+      return chatrooms;
+      // return chatStore.chatrooms;
     },
   },
   mounted() {},

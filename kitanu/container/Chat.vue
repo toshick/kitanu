@@ -32,7 +32,7 @@ import {
   TypeChatComment,
   TypeChatInfoItem,
   TypePostSubmitItem,
-  TypeFileItem,
+  TypeFile,
   TypeUser,
 } from '@/components/types/apptypes';
 import { chatStore, chatinfoStore } from '@/store';
@@ -78,7 +78,7 @@ export default Vue.extend({
   },
   methods: {
     async onSubmit(p: {
-      fileItem?: TypeFileItem;
+      fileItem?: TypeFile;
       text: string;
       // reset?: () => void;
       good?: number;

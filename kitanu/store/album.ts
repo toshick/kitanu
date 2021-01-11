@@ -5,58 +5,13 @@ import { Module, VuexModule, Mutation, Action } from 'vuex-module-decorators';
 import { asort } from '@/common/util';
 import { albumRef } from '@/plugins/firebase';
 import { logError } from '@/common/error';
-// import { userStore } from '@/store/user';
+import { makeUser, makeAlbum } from '@/common/helper';
 import {
   ActionRes,
   TypeAlbum,
   TypeUser,
   TypeUserID,
 } from '@/components/types/apptypes';
-
-const user: TypeUser = {
-  id: '0000001',
-  username: 'ニャオスカマキチ',
-  iconurl: 'https://avatars3.githubusercontent.com/u/6635142?s=460&v=4',
-};
-
-export const albumItems: TypeAlbum[] = [
-  {
-    id: uuidv4(),
-    date: dayjs().subtract(1, 'day').format('YYYY-MM-DD'),
-    dateDisp: dayjs().subtract(1, 'day').format('YYYY.MM.DD'),
-    title: 'たいとる',
-    text:
-      'みんなで東北へいってきたよ。みんなで東北へいってきたよ。みんなで東北へいってきたよ。',
-    members: [user, user, user],
-    imgurl:
-      'https://storage.googleapis.com/toshickcom-a7f98.appspot.com/upload_images/Camera_2020-07-24_18.23.00-1595582593445.jpeg',
-    createdAt: `${dayjs().valueOf()}`,
-  },
-  {
-    id: uuidv4(),
-    date: dayjs().subtract(2, 'day').format('YYYY-MM-DD'),
-    dateDisp: dayjs().subtract(2, 'day').format('YYYY.MM.DD'),
-    title: 'ふたつめたいとる',
-    text: 'ふたつめ',
-    members: [user, user, user, user, user],
-    createdAt: `${dayjs().valueOf() + 1}`,
-  },
-  // {
-  //   id: '0000003',
-  //   date: '2018-08-08',
-  //   dateDisp: '2018.08.08',
-  //   text: 'みんなで東北へいってきたよ。',
-  //   members: [user, user],
-  // },
-  // {
-  //   id: '0000004',
-  //   date: '2018-08-08',
-  //   dateDisp: '2018.08.08',
-  //   text:
-  //     'みんなで東北へいってきたよ。みんなで東北へいってきたよ。みんなで東北へいってきたよ。',
-  //   members: [user],
-  // },
-];
 
 @Module({ name: 'album', stateFactory: true, namespaced: true })
 export default class MyClass extends VuexModule {
@@ -105,7 +60,7 @@ export default class MyClass extends VuexModule {
     // if (page > 0) {
     //   const d = dayjs().subtract(10, 'day');
     //   const item: TypeAlbum = {
-    //     id: uuidv4(),
+    //
     //     date: d.format('YYYY-MM-DD'),
     //     dateDisp: d.format('YYYY.MM.DD'),
     //     createdAt: `${d.valueOf()}`,
@@ -157,15 +112,13 @@ export default class MyClass extends VuexModule {
   CreateAlbum(p: { title: string; members: TypeUserID[] }): Promise<ActionRes> {
     const d = dayjs();
 
-    const item: TypeAlbum = {
-      id: uuidv4(),
+    const item: TypeAlbum = makeAlbum({
       date: d.format('YYYY-MM-DD'),
       dateDisp: d.format('YYYY.MM.DD'),
-      createdAt: `${d.valueOf()}`,
       title: p.title,
       text: '',
       members: p.members,
-    };
+    });
 
     return albumRef
       .add(item)
