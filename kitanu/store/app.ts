@@ -23,7 +23,7 @@ export default class MyClass extends VuexModule {
       emailVerified: user.emailVerified,
       photoURL: user.photoURL || '',
     });
-    userStore.FetchUsers([user.uid]);
+    userStore.FetchUsers({ ids: [user.uid] });
     activityStore.ListenActivity(true);
 
     Cookies.set(COOKIE_AUTH, 'yes');

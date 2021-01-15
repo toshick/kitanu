@@ -3,15 +3,15 @@
     <ViewFriendList
       :members="members"
       @copy-friend-link="copyFriendLink"
-      @select-friend="visibleSelectMember = true"
+      @select-friend="visibleAddFriend = true"
     />
-    <!-- SelectMember -->
+    <!-- AddFriend -->
     <transition name="modal">
-      <SelectMember
-        v-if="visibleSelectMember"
+      <AddFriend
+        v-if="visibleAddFriend"
         title="トモダチを追加ヌ"
-        @close="visibleSelectMember = false"
-        @save="onSaveSelectMember"
+        @close="visibleAddFriend = false"
+        @save="onSaveAddFriend"
       />
     </transition>
   </div>
@@ -21,34 +21,39 @@
 <!------------------------------->
 <script lang="ts">
 import Vue from 'vue';
-import { TypeUser } from '@/components/types/apptypes';
+import { TypeUser, TypeUserDisp } from '@/components/types/apptypes';
 import ViewFriendList from '@/components/ViewFriendList.vue';
-import SelectMember from '@/container/SelectMember.vue';
-import { appStore, friendStore } from '@/store';
+import AddFriend from '@/container/AddFriend.vue';
+import { appStore, userStore, friendStore } from '@/store';
 
 type State = {
-  visibleSelectMember: boolean;
+  visibleAddFriend: boolean;
 };
 
 export default Vue.extend({
-  components: { ViewFriendList, SelectMember },
+  components: { ViewFriendList, AddFriend },
   data(): State {
     return {
-      visibleSelectMember: false,
+      visibleAddFriend: false,
     };
   },
   computed: {
-    members(): TypeUser[] {
-      return friendStore.friends;
+    members(): TypeUserDisp[] {
+      return userStore.loginedUserFriends;
     },
   },
-  mounted() {
-    friendStore.RESET_FRIEND();
-    this.fetch();
+  watch: {
+    members(newval: TypeUserDisp[], oldval: TypeUserDisp[]) {
+      if (newval.length > oldval.length) {
+        this.fetch();
+      }
+    },
   },
+  mounted() {},
   methods: {
     fetch() {
-      friendStore.FetchFriends();
+      const ids = this.members.map((u: TypeUserDisp) => u.id);
+      userStore.FetchUsers({ ids, omitIfExist: true });
     },
     async copyFriendLink() {
       this.showLoading(true);
@@ -65,15 +70,15 @@ export default Vue.extend({
         },
       );
     },
-    onSaveSelectMember(members: TypeUser[]) {
-      console.log('onSaveSelectMember', members.length);
+    onSaveAddFriend(members: TypeUser[]) {
+      console.log('onSaveAddFriend', members.length);
 
       // await chatStore.CreateChatRoom({
       //   loginuser: appStore.logined,
       //   users: members,
       // });
 
-      this.visibleSelectMember = false;
+      this.visibleAddFriend = false;
     },
   },
 });

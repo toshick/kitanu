@@ -26,7 +26,7 @@ export function makeUserFromAuthUser(user: TypeLoginUser): TypeUser {
     searchOK: true,
     kycOK: false,
     agreeTermsOK: false,
-    friendList: [],
+    friendIdList: [],
     createdAt: dayjs().valueOf(),
     removed: false,
   };
@@ -41,16 +41,16 @@ export function makeUser(params: Partial<TypeUser>): TypeUser {
     username: params.username || '',
     iconurl: params.iconurl || '',
     subtext: params.subtext || '',
-    isAdmin: false,
-    isAnonymous: false,
-    searchOK: true,
-    kycOK: false,
-    agreeTermsOK: false,
-    friendList: [],
+    isAdmin: params.isAdmin || false,
+    isAnonymous: params.isAnonymous || false,
+    searchOK: params.searchOK || true,
+    kycOK: params.kycOK || false,
+    agreeTermsOK: params.agreeTermsOK || false,
+    friendIdList: params.friendIdList || [],
     createdAt: params.createdAt
       ? dayjs(params.createdAt).valueOf()
       : dayjs().valueOf(),
-    removed: false,
+    removed: params.removed || false,
   };
 }
 
@@ -75,6 +75,7 @@ export function makeUserDisp(params: Partial<TypeUserDisp>): TypeUserDisp {
     id: params.id || uuidv4(),
     username: params.username || '',
     iconurl: params.iconurl || '',
+    subtext: params.subtext || '',
   };
 }
 

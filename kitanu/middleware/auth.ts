@@ -1,7 +1,7 @@
 import Cookies from 'js-cookie';
 import { userStore, COOKIE_AUTH } from '@/store';
 
-export default function ({ redirect, route }) {
+export default function ({ redirect, route }: any) {
   const { path } = route;
   const hasAuth = Cookies.get(COOKIE_AUTH);
   if (hasAuth && path === '/login') {

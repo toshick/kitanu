@@ -52,14 +52,9 @@ export default Vue.extend({
       }
     },
   },
-  mounted() {
-    // albumStore.RESET_ALBUM();
-  },
+  mounted() {},
   methods: {
-    async fetch() {
-      // await userStore.FetchUsers([this.loginedUser.id]);
-      // return albumStore.FetchAlbum({ userID: this.loginedUser.id });
-    },
+    async fetch() {},
     about() {
       this.openView({
         component: AboutThisApp,
@@ -82,7 +77,7 @@ export default Vue.extend({
       this.fetch();
     },
     debug() {
-      userStore.FetchUsers([this.loginedUser.id]);
+      userStore.FetchUsers({ ids: [this.loginedUser.id] });
       // firebaseStore.AddTry({ a: 1, b: 2, c: 3 });
     },
     openActivityList() {

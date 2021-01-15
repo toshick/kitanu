@@ -3,26 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { Module, VuexModule, Mutation, Action } from 'vuex-module-decorators';
 import { asort } from '@/common/util';
 import { ActionRes, TypeChatInfoItem } from '@/components/types/apptypes';
-
-const infoitems: TypeChatInfoItem[] = [];
-infoitems.push({
-  id: uuidv4(),
-  text: '来れる人は1230に第二リフト乗り場下のレストランに集合だぞ',
-  username: 'カマタロー',
-  postdate: 1601114526252,
-});
-infoitems.push({
-  id: uuidv4(),
-  text: '旅行の代金はカマタローが集めます。',
-  username: 'カマタロー',
-  postdate: 1601114526253,
-});
-infoitems.push({
-  id: uuidv4(),
-  text: '宿の夕飯は18時かららしいヨ宿の夕飯は18時かららしいヨ',
-  username: 'カマタロー',
-  postdate: 1601114526254,
-});
+import { infoitems } from '@/mock/mockdata';
 
 @Module({ name: 'chatinfo', stateFactory: true, namespaced: true })
 export default class MyClass extends VuexModule {

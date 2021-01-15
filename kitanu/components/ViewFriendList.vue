@@ -24,7 +24,7 @@
           v-for="(u, index) in members"
           :key="`member-${index}-${u.username}`"
         >
-          <UserIcon :url="u.iconurl" />
+          <UserIcon :url="u.iconurl" :username="u.username" />
           <div class="member-label">
             <h3>{{ u.username }}</h3>
             <p v-if="u.subtext">{{ u.subtext }}</p>
@@ -45,7 +45,7 @@
 <!------------------------------->
 <script lang="ts">
 import Vue, { PropType } from 'vue';
-import { TypeUser } from '@/components/types/apptypes';
+import { TypeUserDisp } from '@/components/types/apptypes';
 
 type State = {};
 
@@ -55,7 +55,7 @@ export default Vue.extend({
   props: {
     members: {
       default: [],
-      type: Array as PropType<TypeUser[]>,
+      type: Array as PropType<TypeUserDisp[]>,
     },
   },
   data(): State {

@@ -1,15 +1,17 @@
 import { v4 as uuidv4 } from 'uuid';
 import firebase from 'firebase/app';
 import { asort, log } from '@/common/util';
-import { makeUserFromAuthUser, makeUser } from '@/common/helper';
+import { makeUserFromAuthUser, makeUser, makeUserDisp } from '@/common/helper';
 import { Module, VuexModule, Mutation, Action } from 'vuex-module-decorators';
 import { userRef } from '@/plugins/firebase';
 import { logError } from '@/common/error';
 import { activityStore } from '@/store';
+
 import {
   ActionRes,
   TypeLoginUser,
   TypeUser,
+  TypeUserDisp,
   TypeUserID,
 } from '@/components/types/apptypes';
 
@@ -101,7 +103,7 @@ export default class MyClass extends VuexModule {
       photoURL: user.photoURL || '',
     });
 
-    await this.FetchUsers([user.uid]);
+    await this.FetchUsers({ ids: [user.uid] });
 
     // Activity;
     activityStore.AddActivity({
@@ -157,6 +159,7 @@ export default class MyClass extends VuexModule {
     email: string;
     password: string;
     name: string;
+    subtext?: string;
   }): Promise<ActionRes> {
     // ユーザ名を作成しログイン状態になる
     const res: any = await firebase
@@ -180,6 +183,7 @@ export default class MyClass extends VuexModule {
       ...res.user,
       displayName: p.name,
     });
+    createdUser.subtext = p.subtext || '';
 
     // ユーザ作成
     const res2 = await userRef
@@ -288,7 +292,7 @@ export default class MyClass extends VuexModule {
     if (!user) return Promise.reject(new Error('no-auth'));
 
     // firestoreでのユーザを取得
-    const res = await this.FetchUsers([user.uid]);
+    const res = await this.FetchUsers({ ids: [user.uid] });
     if (res.errorCode) {
       return Promise.reject(res);
     }
@@ -436,21 +440,35 @@ export default class MyClass extends VuexModule {
   MakeDummyUser(p: {
     email: string;
     password: string;
-    name?: string;
+    name: string;
+    subtext: string;
   }): Promise<ActionRes> {
     if (!p.email) return Promise.reject(new Error('no email provided'));
     return this.CreateUserWithEmailAndPassword({
       email: p.email,
       password: p.password,
       name: p.name || '',
+      subtext: p.subtext || '',
     });
   }
 
   @Action({ rawError: true })
-  FetchUsers(ids: string[]): Promise<ActionRes> {
-    log('FetchUsers', ids);
+  FetchUsers(p: { ids: string[]; omitIfExist?: boolean }): Promise<ActionRes> {
+    const { ids, omitIfExist } = p;
+    let myids = ids;
+    if (omitIfExist) {
+      const existIds = this._users.map((u: TypeUser) => u.id);
+      myids = ids.filter((id: string) => {
+        return !existIds.includes(id);
+      });
+    }
+    if (myids.length === 0) {
+      return Promise.resolve({});
+    }
+    log('FetchUsers', myids);
+
     return userRef
-      .where('id', 'in', ids)
+      .where('id', 'in', myids)
       .orderBy('createdAt', 'desc')
       .get()
       .then((querySnapshot: firebase.firestore.QuerySnapshot) => {
@@ -488,6 +506,7 @@ export default class MyClass extends VuexModule {
           .forEach((change: firebase.firestore.DocumentChange) => {
             const { doc, type } = change;
             const item: TypeUser = makeUser(doc.data());
+            console.log('type', type, item);
             if (type === 'added') {
               this.ADD_USER(item);
             } else if (type === 'modified') {
@@ -500,6 +519,63 @@ export default class MyClass extends VuexModule {
     this.SET_UNSUBSCRIBE_ACTIVITY(unsubscribe);
   }
 
+  @Action({ rawError: true })
+  SearchUser(str: string): Promise<ActionRes | { list: any[] }> {
+    let query = userRef as firebase.firestore.Query;
+    if (str.length === 28) {
+      query = query.where('id', '==', str);
+    } else {
+      query = query.where('username', '==', str);
+    }
+
+    return query
+      .get()
+      .then((querySnapshot: firebase.firestore.QuerySnapshot) => {
+        const list: any[] = [];
+        querySnapshot.forEach((doc) => {
+          list.push(doc.data());
+        });
+        return { list };
+      })
+      .catch((error) => {
+        logError(error, 'FetchUsers');
+        return { errorCode: error.code, errorMsg: error.message };
+      });
+  }
+
+  @Action({ rawError: true })
+  AddFriend(list: TypeUser[]): Promise<ActionRes> {
+    const find = this._users.find((d: TypeUser) => d.id === this._logined.uid);
+    if (!find) return Promise.reject(new Error('can not find login user'));
+    const friendList: {
+      id: string;
+      username: string;
+    }[] = list.map((u: TypeUser) => ({ id: u.id, username: u.username }));
+    return userRef
+      .doc(find.id)
+      .update({
+        friendIdList: friendList
+          .map((f: { id: string; username: string }) => f.id)
+          .concat(find.friendIdList),
+      })
+      .then(() => {
+        log('AddFriend', friendList);
+        const friendNames = friendList
+          .map((f: { id: string; username: string }) => f.username)
+          .join(', ');
+        // Activity;
+        activityStore.AddActivity({
+          text: `「${friendNames}」とトモダチになったーヌ`,
+          tags: ['トモダチ'],
+        });
+        return {};
+      })
+      .catch((error) => {
+        logError(error, 'AddFriend');
+        return { errorCode: error.code, errorMsg: error.message };
+      });
+  }
+
   // ----------------------
   // get
   // ----------------------
@@ -509,17 +585,18 @@ export default class MyClass extends VuexModule {
 
   get loginedUser(): TypeUser {
     let ret: TypeUser = {
-      id: this._logined.uid,
+      id: this._logined.uid as TypeUserID,
       username: this._logined.displayName,
       iconurl: this._logined.photoURL,
       subtext: '',
-      friendList: [],
+      friendIdList: [],
       isAdmin: false,
       isAnonymous: false,
       searchOK: false,
       kycOK: false,
       agreeTermsOK: false,
       removed: false,
+      createdAt: 0,
     };
     const find = this._users.find((d: TypeUser) => d.id === this._logined.uid);
     if (find) {
@@ -528,7 +605,16 @@ export default class MyClass extends VuexModule {
         ...find,
       };
     }
+
     return ret;
+  }
+
+  get loginedUserFriends(): TypeUserDisp[] {
+    return this.loginedUser.friendIdList.map((userID: TypeUserID) => {
+      const find = this._users.find((d: TypeUser) => d.id === userID);
+      if (find) return makeUserDisp(find);
+      return makeUserDisp({ id: userID });
+    });
   }
 
   get logined(): boolean {

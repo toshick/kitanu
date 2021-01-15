@@ -27,15 +27,14 @@ export type TypeUser = {
   id: TypeUserID;
   username: string;
   iconurl: string;
-  subtext?: string;
-  friendList?: TypeUserID[];
+  subtext: string;
+  friendIdList: TypeUserID[];
   isAdmin: boolean;
   isAnonymous: boolean;
   searchOK: boolean;
   kycOK: boolean;
   agreeTermsOK: boolean;
-  // createdAt?: firebase.firestore.FieldValue;
-  createdAt?: number;
+  createdAt: number;
   removed: boolean;
 };
 
@@ -43,6 +42,7 @@ export type TypeUserDisp = {
   id: TypeUserID;
   username: string;
   iconurl: string;
+  subtext: string;
 };
 
 /**

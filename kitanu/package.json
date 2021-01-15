@@ -31,6 +31,7 @@
     "js-cookie": "^2.2.1",
     "nuxt": "^2.14.0",
     "sanitize-html": "^1.27.4",
+    "throttle-debounce": "^3.0.1",
     "uuid": "^8.3.0",
     "vuex-module-decorators": "^1.0.1",
     "yall-js": "^3.2.0"
@@ -53,6 +54,7 @@
     "@types/mocha": "^8.0.3",
     "@types/node": "^14.14.6",
     "@types/sanitize-html": "^1.23.3",
+    "@types/throttle-debounce": "^2.1.0",
     "@types/uuid": "^8.3.0",
     "@vue/test-utils": "^1.0.3",
     "babel-core": "7.0.0-bridge.0",

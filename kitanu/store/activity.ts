@@ -116,7 +116,7 @@ export default class MyClass extends VuexModule {
   // ----------------------
   get activities(): TypeActivity[] {
     return this._activities.map((a: TypeActivity) => {
-      const activity = { ...a };
+      const activity: TypeActivity = { ...a };
       const find = userStore.users.find((d: TypeUser) => d.id === a.userID);
       if (find) {
         activity.user = makeUserDisp(find);

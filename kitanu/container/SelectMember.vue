@@ -39,7 +39,7 @@ export default Vue.extend({
   methods: {
     fetchFriends() {
       friendStore.RESET_FRIEND();
-      friendStore.FetchFriends(appStore.logined?.id);
+      friendStore.FetchFriends();
     },
   },
 });
