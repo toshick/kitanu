@@ -70,7 +70,7 @@ export default ({
 };
 
 /**
- * ref
+ * postImgRef
  */
 export const postImgRef: firebase.firestore.CollectionReference = firestore.collection(
   'postimg',
@@ -95,4 +95,11 @@ export const albumRef: firebase.firestore.CollectionReference = firestore.collec
  */
 export const userRef: firebase.firestore.CollectionReference = firestore.collection(
   'user',
+);
+
+/**
+ * chatroomRef
+ */
+export const chatroomRef: firebase.firestore.CollectionReference = firestore.collection(
+  'chatroom',
 );

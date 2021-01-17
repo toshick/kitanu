@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 import firebase from 'firebase/app';
 import Vue from 'vue';
 import { Module, VuexModule, Mutation, Action } from 'vuex-module-decorators';
-import { activityStore, userStore, COOKIE_AUTH } from '@/store';
+import { activityStore, userStore, chatStore, COOKIE_AUTH } from '@/store';
 import { TypeLoginUser } from '@/components/types/apptypes';
 @Module({ name: 'app', stateFactory: true, namespaced: true })
 export default class MyClass extends VuexModule {
@@ -24,7 +24,8 @@ export default class MyClass extends VuexModule {
       photoURL: user.photoURL || '',
     });
     userStore.FetchUsers({ ids: [user.uid] });
-    activityStore.ListenActivity(true);
+    activityStore.Listen(true);
+    chatStore.Listen(true);
 
     Cookies.set(COOKIE_AUTH, 'yes');
   }
@@ -34,7 +35,8 @@ export default class MyClass extends VuexModule {
     console.log('afterLogout');
     Cookies.remove(COOKIE_AUTH);
     userStore.SET_LOGIN_USER(null);
-    activityStore.ListenActivity(false);
+    activityStore.Listen(false);
+    chatStore.Listen(false);
   }
   // ----------------------
   // get

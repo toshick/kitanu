@@ -34,7 +34,7 @@ export default class MyClass extends VuexModule {
   // Mutation
   // ----------------------
   @Mutation
-  SET_UNSUBSCRIBE_ACTIVITY(unsubscribe: Function | null) {
+  SET_UNSUBSCRIBE(unsubscribe: Function | null) {
     this._unsubscribe = unsubscribe;
   }
 
@@ -228,8 +228,8 @@ export default class MyClass extends VuexModule {
       .signOut()
       .then(() => {
         // Sign-out successful.
-        activityStore.ListenActivity(false);
-        this.ListenUsers(false);
+        activityStore.Listen(false);
+        this.Listen(false);
         return {};
       })
       .catch((error) => {
@@ -455,7 +455,7 @@ export default class MyClass extends VuexModule {
   @Action({ rawError: true })
   FetchUsers(p: { ids: string[]; omitIfExist?: boolean }): Promise<ActionRes> {
     const { ids, omitIfExist } = p;
-    let myids = ids;
+    let myids = ids || [];
     if (omitIfExist) {
       const existIds = this._users.map((u: TypeUser) => u.id);
       myids = ids.filter((id: string) => {
@@ -475,7 +475,7 @@ export default class MyClass extends VuexModule {
         querySnapshot.forEach((doc) => {
           this.ADD_USER(makeUser(doc.data()));
         });
-        this.ListenUsers(true);
+        this.Listen(true);
         return {};
       })
       .catch((error) => {
@@ -485,11 +485,11 @@ export default class MyClass extends VuexModule {
   }
 
   @Action({ rawError: true })
-  ListenUsers(flg: boolean): void {
+  Listen(flg: boolean): void {
     if (!flg) {
       if (this._unsubscribe) {
         this._unsubscribe();
-        this.SET_UNSUBSCRIBE_ACTIVITY(null);
+        this.SET_UNSUBSCRIBE(null);
       }
       return;
     }
@@ -516,7 +516,7 @@ export default class MyClass extends VuexModule {
             }
           });
       });
-    this.SET_UNSUBSCRIBE_ACTIVITY(unsubscribe);
+    this.SET_UNSUBSCRIBE(unsubscribe);
   }
 
   @Action({ rawError: true })
@@ -623,5 +623,13 @@ export default class MyClass extends VuexModule {
 
   get users(): TypeUser[] {
     return this._users;
+  }
+
+  get getUserbyID() {
+    return (userID: TypeUserID): TypeUserDisp | null => {
+      const find = this._users.find((d: TypeUser) => d.id === userID);
+      if (!find) return null;
+      return makeUserDisp(find);
+    };
   }
 }

@@ -3,11 +3,11 @@ import { v4 as uuidv4 } from 'uuid';
 import { Module, VuexModule, Mutation, Action } from 'vuex-module-decorators';
 import { asort } from '@/common/util';
 import { ActionRes, TypeChatInfoItem } from '@/components/types/apptypes';
-import { infoitems } from '@/mock/mockdata';
+import { infoItems } from '@/mock/mockdata';
 
 @Module({ name: 'chatinfo', stateFactory: true, namespaced: true })
 export default class MyClass extends VuexModule {
-  infoitems: TypeChatInfoItem[] = [];
+  infoItems: TypeChatInfoItem[] = [];
 
   // ----------------------
   // Mutation
@@ -15,19 +15,19 @@ export default class MyClass extends VuexModule {
 
   @Mutation
   RESET_POST() {
-    this.infoitems = [];
+    this.infoItems = [];
   }
 
   @Mutation
   ADD_CHAT(postitem: TypeChatInfoItem) {
-    const ary = [...this.infoitems];
+    const ary = [...this.infoItems];
     ary.unshift(postitem);
-    this.infoitems = asort(ary, 'postdate').reverse();
+    this.infoItems = asort(ary, 'postdate').reverse();
   }
 
   @Mutation
   REMOVE_POST(id: string) {
-    this.infoitems = this.infoitems.filter(
+    this.infoItems = this.infoItems.filter(
       (i: TypeChatInfoItem) => i.id !== id,
     );
   }
@@ -36,7 +36,7 @@ export default class MyClass extends VuexModule {
   UPDATE_POST(postitem: TypeChatInfoItem) {
     console.log('UPDATE_POST', postitem);
 
-    // this.chatitems = this.chatitems.map((i: TypeChatInfoItem) => {
+    // this.chatItems = this.chatItems.map((i: TypeChatInfoItem) => {
     //   if (i.id === postitem.id) {
     //     i = postitem;
     //   }
@@ -53,7 +53,7 @@ export default class MyClass extends VuexModule {
     this.RESET_POST();
     // const date = dayjs().format('YYYY.MM.DD HH:mm:ss');
 
-    infoitems.forEach((item: TypeChatInfoItem) => {
+    infoItems.forEach((item: TypeChatInfoItem) => {
       this.ADD_CHAT(item);
     });
 

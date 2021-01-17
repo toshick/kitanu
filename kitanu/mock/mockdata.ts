@@ -1,9 +1,13 @@
+import dayjs from 'dayjs';
+import { v4 as uuidv4 } from 'uuid';
+
 import {
   makeUser,
   makeAlbum,
   makeChatComment,
   makeChatRoom,
   makeChatInfo,
+  makeChatPost,
 } from '@/common/helper';
 
 import {
@@ -18,7 +22,17 @@ import {
 /**
  * postItems
  */
-export const postItems: TypeChatPost[] = [];
+export const postItems: TypeChatPost[] = [
+  makeChatPost({
+    text: 'テキストです1',
+  }),
+  makeChatPost({
+    text: 'テキストです2',
+  }),
+  makeChatPost({
+    text: 'テキストです3',
+  }),
+];
 
 /**
  * members
@@ -47,9 +61,9 @@ export const members: TypeUser[] = [
 ];
 
 /**
- * infoitems
+ * infoItems
  */
-export const infoitems: TypeChatInfoItem[] = [
+export const infoItems: TypeChatInfoItem[] = [
   makeChatInfo({
     text: '旅行の代金はカマタローが集めます。',
     username: 'カマタロー',
@@ -65,10 +79,10 @@ export const infoitems: TypeChatInfoItem[] = [
 ];
 
 /**
- * chatitems
+ * chatItems
  */
-export const chatitems: TypeChatComment[] = [];
-chatitems.push(
+export const chatItems: TypeChatComment[] = [];
+chatItems.push(
   makeChatComment({
     iconurl: 'https://avatars3.githubusercontent.com/u/6635142?s=460&v=4',
     text: 'そんなときはジンガで呼吸を整えるんだッ',
@@ -78,7 +92,7 @@ chatitems.push(
       'https://storage.googleapis.com/toshickcom-a7f98.appspot.com/upload_images/%E3%82%A4%E3%83%A1%E3%83%BC%E3%82%B8-1595803900938.jpeg',
   }),
 );
-chatitems.push(
+chatItems.push(
   makeChatComment({
     iconurl: 'https://avatars3.githubusercontent.com/u/6635142?s=460&v=4',
     text: 'そんなときはジンガで呼吸を整えるんだッ',
@@ -87,7 +101,7 @@ chatitems.push(
     fukitype: 'fuki3',
   }),
 );
-chatitems.push(
+chatItems.push(
   makeChatComment({
     iconurl:
       'https://storage.googleapis.com/toshickcom-a7f98.appspot.com/upload_images/%E3%82%A4%E3%83%A1%E3%83%BC%E3%82%B8-1595803900938.jpeg',
@@ -97,7 +111,7 @@ chatitems.push(
     createdAt: 1601114726252,
   }),
 );
-chatitems.push(
+chatItems.push(
   makeChatComment({
     iconurl: 'https://avatars3.githubusercontent.com/u/6635142?s=460&v=4',
     text:
@@ -107,7 +121,7 @@ chatitems.push(
     fukitype: 'fuki4',
   }),
 );
-chatitems.push(
+chatItems.push(
   makeChatComment({
     iconurl: 'https://avatars3.githubusercontent.com/u/6635142?s=460&v=4',
     text:
@@ -116,7 +130,7 @@ chatitems.push(
     createdAt: 1601114926252,
   }),
 );
-chatitems.push(
+chatItems.push(
   makeChatComment({
     iconurl: 'https://avatars3.githubusercontent.com/u/6635142?s=460&v=4',
     text:
@@ -141,27 +155,27 @@ export const albumItems: TypeAlbum[] = [
     dateDisp: '2018.08.08',
     text:
       'みんなで東北へいってきたよ。みんなで東北へいってきたよ。みんなで東北へいってきたよ。',
-    members: [user.id],
+    memberIDs: [user.id],
   }),
   makeAlbum({
     date: '2018-08-08',
     dateDisp: '2018.08.08',
     text:
       'みんなで東北へいってきたよ。みんなで東北へいってきたよ。みんなで東北へいってきたよ。',
-    members: [user.id, user.id, user.id, user.id, user.id],
+    memberIDs: [user.id, user.id, user.id, user.id, user.id],
   }),
   makeAlbum({
     date: '2018-08-08',
     dateDisp: '2018.08.08',
     text: 'みんなで東北へいってきたよ。',
-    members: [user.id, user.id],
+    memberIDs: [user.id, user.id],
   }),
   makeAlbum({
     date: '2018-08-08',
     dateDisp: '2018.08.08',
     text:
       'みんなで東北へいってきたよ。みんなで東北へいってきたよ。みんなで東北へいってきたよ。',
-    members: [user.id],
+    memberIDs: [user.id],
   }),
 ];
 
@@ -170,18 +184,18 @@ export const albumItems: TypeAlbum[] = [
  */
 export const chatrooms: TypeChatRoom[] = [
   makeChatRoom({
-    members: [user.id],
-    createdBy: user.id,
+    memberIDs: [user.id],
+    createdByID: user.id,
     title: 'チャットルームタイトル1',
   }),
   makeChatRoom({
-    members: [user.id, user.id, user.id],
-    createdBy: user.id,
+    memberIDs: [user.id, user.id, user.id],
+    createdByID: user.id,
     title: 'チャットルームタイトル2',
   }),
   makeChatRoom({
-    members: [user.id, user.id],
-    createdBy: user.id,
+    memberIDs: [user.id, user.id],
+    createdByID: user.id,
     title: 'チャットルームタイトル3',
   }),
 ];

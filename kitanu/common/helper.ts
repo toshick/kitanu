@@ -6,6 +6,7 @@ import {
   TypeUser,
   TypeUserDisp,
   TypeChatRoom,
+  TypeChatPost,
   TypeChatComment,
   TypeAlbum,
   TypeChatInfoItem,
@@ -80,6 +81,21 @@ export function makeUserDisp(params: Partial<TypeUserDisp>): TypeUserDisp {
 }
 
 /**
+ * makeChatPost
+ */
+export function makeChatPost(params: Partial<TypeChatPost>): TypeChatPost {
+  return {
+    id: params.id || uuidv4(),
+    text: params.text || '',
+    fileItem: params.fileItem || null,
+    sortindex: params.sortindex || '',
+    createdAt: params.createdAt
+      ? dayjs(params.createdAt).valueOf()
+      : dayjs().valueOf(),
+  };
+}
+
+/**
  * makeChatComment
  */
 export function makeChatComment(
@@ -108,7 +124,7 @@ export function makeAlbum(params: Partial<TypeAlbum>): TypeAlbum {
     dateDisp: params.dateDisp || '',
     title: params.title || '',
     text: params.text || '',
-    members: params.members || [],
+    memberIDs: params.memberIDs || [],
     imgurl: params.imgurl || '',
     createdAt: params.createdAt
       ? dayjs(params.createdAt).valueOf()
@@ -122,8 +138,8 @@ export function makeAlbum(params: Partial<TypeAlbum>): TypeAlbum {
 export function makeChatRoom(params: Partial<TypeChatRoom>): TypeChatRoom {
   return {
     id: params.id || uuidv4(),
-    members: params.members || [],
-    createdBy: params.createdBy || '',
+    memberIDs: params.memberIDs || [],
+    createdByID: params.createdByID || '',
     title: params.title || '',
     createdAt: params.createdAt
       ? dayjs(params.createdAt).valueOf()

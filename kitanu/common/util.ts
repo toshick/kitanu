@@ -163,6 +163,13 @@ export function asort(ary: Array<any>, key: string = 'id') {
 }
 
 /**
+ * unique
+ */
+export function unique(ary: Array<any>) {
+  return Array.from(new Set(ary));
+}
+
+/**
  * particleEffect
  */
 export const particleEffect = (color?: string, target?: Element | null) => {

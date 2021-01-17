@@ -49,7 +49,9 @@ export default Vue.extend({
       }
     },
   },
-  mounted() {},
+  mounted() {
+    this.fetch();
+  },
   methods: {
     fetch() {
       const ids = this.members.map((u: TypeUserDisp) => u.id);

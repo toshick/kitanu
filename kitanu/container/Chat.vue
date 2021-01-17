@@ -1,8 +1,8 @@
 <template>
   <div>
     <ViewChat
-      :chatitems="chatitems"
-      :infoitems="infoitems"
+      :chat-items="chatItems"
+      :info-items="infoItems"
       :isconnecting="connecting"
       :sending="sending"
       @submit="onSubmit"
@@ -36,6 +36,7 @@ import {
   TypeUser,
 } from '@/components/types/apptypes';
 import { chatStore, chatinfoStore } from '@/store';
+import { postItems } from '@/mock/mockdata';
 
 type State = {
   sending: boolean;
@@ -52,22 +53,23 @@ export default Vue.extend({
     };
   },
   computed: {
-    chatitems(): TypeChatComment[] {
-      return chatStore.chatitems;
+    chatItems(): TypeChatComment[] {
+      return chatStore.chatItems;
     },
-    infoitems(): TypeChatInfoItem[] {
-      return chatinfoStore.infoitems;
+    infoItems(): TypeChatInfoItem[] {
+      return chatinfoStore.infoItems;
     },
     members(): TypeUser[] {
       return chatStore.members;
     },
   },
   watch: {
-    chatitems(newdata: TypeChatComment[], olddata: TypeChatComment[]) {
+    chatItems(newdata: TypeChatComment[], olddata: TypeChatComment[]) {
       if (newdata.length !== olddata.length) {
         setTimeout(() => {
           this.scrollBottomSmooth();
         }, 500);
+        // this.fetch();
       }
     },
   },

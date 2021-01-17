@@ -22,7 +22,7 @@
       </template>
     </ViewHeader>
     <ViewBody class="top-body">
-      <ChatInfo :infoitems="infoitems" />
+      <ChatInfo :info-items="infoItems" />
       <section class="sec1">
         <div class="yozora">
           <img class="cloud1" src="/img/top/cloud1.png" alt="" />
@@ -56,8 +56,6 @@
             <br />
             キータヌに自分のアクティビティをみてもらおーぬ
           </p>
-          <p>{{ users }}</p>
-          <p>{{ loginedUser }}</p>
         </div>
       </section>
       <section class="sec2 activity">
@@ -115,7 +113,7 @@ export default Vue.extend({
     ChatInfo,
   },
   props: {
-    infoitems: {
+    infoItems: {
       default: () => [],
       type: Array as PropType<TypeChatInfoItem[]>,
     },

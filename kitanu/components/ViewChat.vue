@@ -18,17 +18,17 @@
     </ViewHeader>
     <ViewBody ref="appbody">
       <ul>
-        <li v-for="(i, index) in chatitems" :key="`${index}-${i.text}`">
+        <li v-for="(i, index) in chatItems" :key="`${index}-${i.text}`">
           <ChatComment
             v-if="!i.npc"
             :myitem="i"
             :opposite="index % 2 === 1"
-            :last="index === chatitems.length - 1"
+            :last="index === chatItems.length - 1"
           />
           <ChatCommentNPC
             v-if="i.npc"
             :myitem="i"
-            :last="index === chatitems.length - 1"
+            :last="index === chatItems.length - 1"
           />
         </li>
       </ul>
@@ -71,18 +71,18 @@ export default Vue.extend({
       default: 'むだい',
       type: String,
     },
-    chatitems: {
+    chatItems: {
       default: () => [],
       type: Array as PropType<TypeChatComment[]>,
     },
-    infoitems: {
-      default: () => [],
-      type: Array as PropType<TypeChatInfoItem[]>,
-    },
-    members: {
-      default: () => [],
-      type: Array as PropType<TypeUser[]>,
-    },
+    // infoItems: {
+    //   default: () => [],
+    //   type: Array as PropType<TypeChatInfoItem[]>,
+    // },
+    // members: {
+    //   default: () => [],
+    //   type: Array as PropType<TypeUser[]>,
+    // },
     isconnecting: {
       default: false,
       type: Boolean,

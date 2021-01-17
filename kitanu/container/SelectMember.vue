@@ -12,8 +12,8 @@
 <script lang="ts">
 import Vue from 'vue';
 import ViewSelectMember from '@/components/ViewSelectMember.vue';
-import { TypeUser } from '@/components/types/apptypes';
-import { appStore, friendStore } from '@/store';
+import { TypeUser, TypeUserDisp } from '@/components/types/apptypes';
+import { appStore, userStore } from '@/store';
 
 type State = {};
 
@@ -29,19 +29,15 @@ export default Vue.extend({
     return {};
   },
   computed: {
-    members(): TypeUser[] {
-      return friendStore.friends;
+    members(): TypeUserDisp[] {
+      return userStore.loginedUserFriends;
     },
   },
   mounted() {
-    this.fetchFriends();
+    const ids = this.members.map((u: TypeUserDisp) => u.id);
+    userStore.FetchUsers({ ids, omitIfExist: true });
   },
-  methods: {
-    fetchFriends() {
-      friendStore.RESET_FRIEND();
-      friendStore.FetchFriends();
-    },
-  },
+  methods: {},
 });
 </script>
 <!------------------------------->

@@ -30,26 +30,11 @@
               <b>
                 <ion-icon name="bicycle-outline"></ion-icon>
               </b>
-              <UserIcon :url="u.iconurl" size="M" />
-              <p>{{ u.username }}</p>
+              <UserForList :user="u" />
             </div>
           </label>
         </li>
       </ul>
-
-      <div class="search-block">
-        <div class="ca-inputline">
-          <CaInput
-            v-model="findUserID"
-            class="-yellow"
-            name="title"
-            title="ユーザIDから検索"
-            rules="max:50"
-            placeholder="ユーザID"
-            width="L"
-          ></CaInput>
-        </div>
-      </div>
     </ViewBody>
   </section>
 </template>
@@ -59,7 +44,7 @@
 <script lang="ts">
 import Vue, { PropType } from 'vue';
 // import { openDialog } from '@/common/util';
-import { TypeUser } from '@/components/types/apptypes';
+import { TypeUserDisp } from '@/components/types/apptypes';
 
 type State = {
   selectedMap: { [key: string]: string };
@@ -72,7 +57,7 @@ export default Vue.extend({
   props: {
     members: {
       default: [],
-      type: Array as PropType<TypeUser[]>,
+      type: Array as PropType<TypeUserDisp[]>,
     },
     title: {
       default: 'メンバせんたくヌ',
@@ -87,7 +72,7 @@ export default Vue.extend({
   },
   computed: {
     membersList(): any {
-      return this.members.map((m: TypeUser) => {
+      return this.members.map((m: TypeUserDisp) => {
         const selected = this.selectedMap[m.id] || false;
         return { user: m, selected };
       });
@@ -105,12 +90,14 @@ export default Vue.extend({
   mounted() {},
   methods: {
     save() {
-      const list: TypeUser[] = [];
-      this.membersList.forEach((m: { user: TypeUser; selected: boolean }) => {
-        if (m.selected) {
-          list.push(m.user);
-        }
-      });
+      const list: TypeUserDisp[] = [];
+      this.membersList.forEach(
+        (m: { user: TypeUserDisp; selected: boolean }) => {
+          if (m.selected) {
+            list.push(m.user);
+          }
+        },
+      );
       this.$emit('save', list);
     },
   },
@@ -153,8 +140,8 @@ export default Vue.extend({
       height: 30px;
       border-radius: 50%;
       background-color: #fff;
-      margin-right: 0.5em;
-      box-shadow: 0 0 1px 1px rgba(#000, 0.1);
+      margin-right: 1em;
+      box-shadow: 0 0 4px 4px rgba(#000, 0.1);
       ion-icon {
         display: none;
         font-size: 20px;

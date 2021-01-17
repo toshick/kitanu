@@ -44,15 +44,16 @@ export default Vue.extend({
     myClass(): any {
       const klass: any = { usericon: true };
 
-      let size = '';
+      let size = '-size-m';
       if (this.size && this.size === 'S') {
         size = '-size-s';
-      } else if (this.size && this.size === 'M') {
-        size = '-size-m';
       } else if (this.size && this.size === 'L') {
         size = '-size-l';
       }
       klass[size] = true;
+      if (!this.iconUrl) {
+        klass['-shadow'] = true;
+      }
       return klass;
     },
     iconUrl(): string {
@@ -72,29 +73,53 @@ export default Vue.extend({
 <style scoped lang="scss">
 @import '@/assets/css/_mixins.scss';
 .usericon {
-  --size: 50px;
   img {
-    display: block;
-    width: var(--size);
-    height: var(--size);
-    border-radius: calc(var(--size) * 0.5);
+    object-fit: contain;
   }
-  &.-size-m {
-    --size: 30px;
+  &.-size-l {
+    --size-l: 50px;
     img {
       display: block;
-      width: var(--size);
-      height: var(--size);
-      border-radius: calc(var(--size) * 0.5);
+      width: var(--size-l);
+      height: var(--size-l);
+      border-radius: 50%;
+    }
+    .initialStamp {
+      width: var(--size-l);
+      height: var(--size-l);
+      font-size: var(--fontsize-normal);
+    }
+  }
+  &.-size-m {
+    --size-m: 40px;
+    img {
+      display: block;
+      width: var(--size-m);
+      height: var(--size-m);
+      border-radius: 50%;
+    }
+    .initialStamp {
+      width: var(--size-m);
+      height: var(--size-m);
     }
   }
   &.-size-s {
-    --size: 20px;
+    --size-s: 20px;
     img {
       display: block;
-      width: var(--size);
-      height: var(--size);
-      border-radius: calc(var(--size) * 0.5);
+      width: var(--size-s);
+      height: var(--size-s);
+      border-radius: 50%;
+    }
+    .initialStamp {
+      width: var(--size-s);
+      height: var(--size-s);
+      font-size: 10px;
+    }
+  }
+  &.-shadow {
+    .initialStamp {
+      box-shadow: 0 0 1px 1px rgba(#000, 0.1);
     }
   }
 }
@@ -105,10 +130,9 @@ export default Vue.extend({
   height: var(--size);
   background-color: #fff;
   border-radius: 50%;
-
+  font-size: var(--fontsize-small);
   span {
     @include center();
-    font-size: var(--fontsize-medium);
     white-space: nowrap;
   }
 }

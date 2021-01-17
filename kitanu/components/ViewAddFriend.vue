@@ -14,14 +14,15 @@
     </ViewHeader>
     <ViewBody>
       <div class="search-block">
-        <div class="ca-inputline">
+        <div>
           <CaInput
             class="-yellow"
             name="title"
             title="ユーザIDまたはユーザ名から検索"
             rules="max:50"
             placeholder="完全一致で検索ヌ"
-            width="L"
+            width="100"
+            has-remove-btn
             @input="searchFunc"
           ></CaInput>
         </div>
@@ -48,19 +49,10 @@
                 :name="u.user.username"
               />
               <div>
-                <b>
-                  <ion-icon name="bicycle-outline"></ion-icon>
-                </b>
-                <UserIcon
-                  :url="u.user.iconurl"
-                  :username="u.user.username"
-                  size="L"
-                />
-                <div class="member-item-name">
-                  <p>{{ u.user.username }}</p>
-                  <p class="member-item-subtext">{{ u.user.subtext }}</p>
-                </div>
-                <div v-if="u.friend" class="member-item-added">friend済</div>
+                <b v-if="u.friend"> <span>済</span> </b>
+                <b v-else><ion-icon name="bicycle-outline"></ion-icon></b>
+
+                <UserForList :user="u.user" :disabled="u.friend" />
               </div>
             </label>
           </li>
@@ -197,6 +189,14 @@ export default Vue.extend({
         left: 50%;
         transform: translate(-50%, -50%);
       }
+      span {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-weight: normal;
+        font-size: var(--fontsize-small);
+      }
     }
     input[type='checkbox']:checked + div {
       font-weight: bold;
@@ -217,34 +217,11 @@ export default Vue.extend({
     b {
       background-color: #d7c758;
     }
-    .member-item-name {
-      opacity: 0.4;
-    }
-    .member-item-added {
-      box-shadow: 0 0 2px 1px rgba(#fff, 0.9);
-    }
   }
 }
-.member-item-name {
-  margin-left: 1em;
-  font-size: var(--fontsize-medium);
-  font-weight: bold;
-}
-.member-item-subtext {
-  font-size: var(--fontsize-small);
-  font-weight: normal;
-}
-.member-item-added {
-  margin-left: auto;
-  background-color: #d7c758;
-  padding: 4px 10px;
-  margin-right: 20px;
-  border-radius: 4px;
-  font-weight: normal;
-  font-size: var(--fontsize-small);
-}
+
 .search-block {
-  padding: 20px 20px 0;
+  padding: 20px 20px 10px;
 }
 .zero-result {
   position: relative;

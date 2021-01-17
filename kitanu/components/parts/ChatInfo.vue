@@ -2,7 +2,7 @@
   <div :class="myclass">
     <ul>
       <li
-        v-for="(i, index) in infoitems"
+        v-for="(i, index) in infoItems"
         :key="`info-${index}`"
         class="chatinfo-item"
       >
@@ -29,7 +29,7 @@ type State = {
 export default Vue.extend({
   name: 'ChatInfo',
   props: {
-    infoitems: {
+    infoItems: {
       default: [],
       type: Array as PropType<TypeChatInfoItem[]>,
     },

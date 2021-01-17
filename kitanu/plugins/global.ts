@@ -16,6 +16,7 @@ import {
 import Setting from '@/container/Setting.vue';
 import Particle from '@/components/parts/Particle.vue';
 import UserIcon from '@/components/parts/UserIcon.vue';
+import UserForList from '@/components/parts/UserForList.vue';
 import ParticleButton from '@/components/parts/ParticleButton.vue';
 import ViewHeader from '@/components/ViewHeader.vue';
 import ViewBody from '@/components/ViewBody.vue';
@@ -28,6 +29,7 @@ Vue.component('ViewHeader', ViewHeader);
 Vue.component('ViewFooter', ViewFooter);
 Vue.component('Particle', Particle);
 Vue.component('UserIcon', UserIcon);
+Vue.component('UserForList', UserForList);
 Vue.component('ParticleButton', ParticleButton);
 
 Vue.prototype.$sanitize = sanitizeHTML;

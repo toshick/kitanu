@@ -80,7 +80,7 @@ export default class MyClass extends VuexModule {
   }
 
   @Action({ rawError: true })
-  ListenActivity(flg: boolean): void {
+  Listen(flg: boolean): void {
     if (!flg) {
       if (this._unsubscribe) {
         this._unsubscribe();

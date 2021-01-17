@@ -15,7 +15,13 @@ import ViewChat from '@/components/ViewChat.vue';
 import ViewSignup from '@/components/ViewSignup.vue';
 import ViewLogin from '@/components/ViewLogin.vue';
 
-import { infoitems, chatitems, postItems, members, albumItems } from './dummydata.js';
+import {
+  infoItems,
+  chatItems,
+  postItems,
+  members,
+  albumItems,
+} from './dummydata.js';
 
 Vue.config.ignoredElements = ['ion-icon'];
 Vue.prototype.$sanitize = sanitizeHTML;
@@ -34,8 +40,8 @@ storiesOf('キータヌ', module).add('チャット', () => ({
   },
   data: () => {
     return {
-      chatitems,
-      infoitems,
+      chatItems,
+      infoItems,
       postItems,
       members,
       albumItems,
@@ -47,9 +53,9 @@ storiesOf('キータヌ', module).add('チャット', () => ({
     ・スワイプいれる？
   </div>
   <section class="appviews">
-  <div class="mobileview"><ViewTop :infoitems="infoitems" :chatitems="chatitems" /></div>
+  <div class="mobileview"><ViewTop :infoItems="infoItems" :chatItems="chatItems" /></div>
   <div class="mobileview"><ViewChatList :members="members" /></div>
-  <div class="mobileview"><ViewChat :chatitems="chatitems" :infoitems="infoitems" :members="members" /></div>
+  <div class="mobileview"><ViewChat :chatItems="chatItems" :infoItems="infoItems" :members="members" /></div>
   <div class="mobileview"><ViewSetting /></div>
   <div class="mobileview"><ViewAlbumList :albumItems="albumItems" /></div>
   <div class="mobileview"><ViewAlbumDetail :members="members" :post-items="postItems" /></div>

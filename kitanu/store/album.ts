@@ -43,7 +43,7 @@ export default class MyClass extends VuexModule {
   UPDATE_ALBUM(postitem: TypeAlbum) {
     console.log('UPDATE_ALBUM', postitem);
 
-    // this.chatitems = this.chatitems.map((i: TypeAlbum) => {
+    // this.chatItems = this.chatItems.map((i: TypeAlbum) => {
     //   if (i.id === postitem.id) {
     //     i = postitem;
     //   }
@@ -76,7 +76,7 @@ export default class MyClass extends VuexModule {
 
     return albumRef
       .limit(20)
-      .where('members', 'array-contains', p.userID)
+      .where('memberIDs', 'array-contains', p.userID)
       .orderBy('createdAt', 'desc')
       .get()
       .then((querySnapshot: firebase.firestore.QuerySnapshot) => {

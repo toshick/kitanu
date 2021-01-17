@@ -1,5 +1,3 @@
-import firebase from 'firebase/app';
-
 export type TypeFile = {
   file?: File;
   base64str: string;
@@ -34,8 +32,8 @@ export type TypeUser = {
   searchOK: boolean;
   kycOK: boolean;
   agreeTermsOK: boolean;
-  createdAt: number;
   removed: boolean;
+  createdAt?: number;
 };
 
 export type TypeUserDisp = {
@@ -54,7 +52,8 @@ export type TypeAlbum = {
   dateDisp: string;
   title: string;
   text: string;
-  members: TypeUserID[];
+  memberIDs: TypeUserID[];
+  members?: TypeUserDisp[]; // used at runtime
   imgurl?: string;
   createdAt?: number;
 };
@@ -72,18 +71,20 @@ export type TypeAlbumPost = {
  */
 export type TypeChatRoom = {
   id: string;
-  members: TypeUserID[];
-  createdBy: TypeUserID;
+  memberIDs: TypeUserID[];
+  members?: TypeUserDisp[]; // used at runtime
+  createdByID: TypeUserID;
+  createdBy?: TypeUserDisp; // used at runtime
   title?: string;
   createdAt?: number;
 };
 
 export type TypeChatPost = {
   id: string;
-  date: string;
   text: string;
   fileItem?: TypeFile | null;
   sortindex?: string;
+  createdAt?: number;
 };
 
 export type TypeChatComment = {
@@ -92,10 +93,10 @@ export type TypeChatComment = {
   iconurl: string;
   text: string;
   username: string;
-  createdAt: number;
   fukitype?: string;
   imgurl?: string;
   good?: number;
+  createdAt?: number;
 };
 
 export type TypeChatInfoItem = {
@@ -111,8 +112,8 @@ export type TypeChatInfoItem = {
 export type TypeActivity = {
   id: string;
   userID: string;
+  user?: TypeUserDisp; // used at runtime
   text: string;
   createdAt: number;
   tags: string[];
-  user: TypeUserDisp;
 };

@@ -18,18 +18,27 @@
     <ViewBody>
       <section>
         <ul v-if="chatrooms.length > 0" class="chat-list">
-          <li v-for="(u, index) in chatrooms" :key="`member-${index}-${u.id}`">
-            <a class="chat-item" @click="() => goChatDetail(u.id)">
-              <UserIcon :url="u.members[0].iconurl" />
+          <li
+            v-for="(room, index) in chatrooms"
+            :key="`member-${index}-${room.id}`"
+          >
+            <a class="chat-item" @click="() => goChatDetail(room.id)">
+              <UserIcon
+                :url="room.createdBy.iconurl"
+                :username="room.createdBy.username"
+              />
               <div class="chat-item-body">
-                <h3>{{ u.title }}</h3>
-                <p v-if="u.members[0].subtext">{{ u.members[0].subtext }}</p>
+                <h3>{{ room.title }}</h3>
                 <ul>
                   <li
-                    v-for="(m, index2) in u.members"
+                    v-for="(m, index2) in room.members"
                     :key="`icon-${index2}-${m.id}`"
                   >
-                    <UserIcon :url="m.iconurl" size="S" />
+                    <UserIcon
+                      :url="m.iconurl"
+                      :username="m.username"
+                      size="S"
+                    />
                   </li>
                 </ul>
               </div>
@@ -99,7 +108,7 @@ h2 {
 .chat-item {
   display: flex;
   align-items: center;
-  padding: 10px 10px;
+  padding: 10px 20px;
   border-bottom: dotted 1px #aaa;
   ul {
     display: flex;
@@ -107,14 +116,16 @@ h2 {
     margin-top: 4px;
   }
   li {
-    margin-right: 4px;
+    margin-right: 8px;
   }
 }
 .chat-item-body {
   margin-left: 1em;
   color: var(--app-color-dark);
   h3 {
-    font-size: var(--fontsize-normal);
+    font-size: var(--fontsize-small);
+    font-weight: normal;
+    margin-bottom: 0.5em;
   }
   p {
     font-size: var(--fontsize-small);

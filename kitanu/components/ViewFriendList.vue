@@ -24,11 +24,7 @@
           v-for="(u, index) in members"
           :key="`member-${index}-${u.username}`"
         >
-          <UserIcon :url="u.iconurl" :username="u.username" />
-          <div class="member-label">
-            <h3>{{ u.username }}</h3>
-            <p v-if="u.subtext">{{ u.subtext }}</p>
-          </div>
+          <UserForList :user="u" />
         </li>
       </ul>
     </ViewBody>
@@ -54,7 +50,7 @@ export default Vue.extend({
   components: {},
   props: {
     members: {
-      default: [],
+      default: () => [],
       type: Array as PropType<TypeUserDisp[]>,
     },
   },
@@ -85,27 +81,10 @@ h2 {
 .member-list {
   padding: 20px;
   li {
-    display: flex;
-    align-items: center;
-    padding: 10px 0;
+    padding: 5px 0;
   }
 }
-.member-label {
-  margin-left: 1em;
-  color: var(--app-color-dark);
-  h3 {
-    font-size: var(--fontsize-medium);
-  }
-  p {
-    font-size: var(--fontsize-small);
-  }
-}
-
 .member-add {
   text-align: center;
-}
-.btn-add-member {
-  // display: inline-flex;
-  // align-items: center;
 }
 </style>

@@ -33,7 +33,7 @@
 <!------------------------------->
 <script lang="ts">
 import Vue, { PropType } from 'vue';
-import { TypeUser, TypeActivityDisp } from '@/components/types/apptypes';
+import { TypeUser, TypeActivity } from '@/components/types/apptypes';
 import UserIcon from '@/components/parts/UserIcon.vue';
 
 type State = {};
@@ -44,7 +44,7 @@ export default Vue.extend({
   props: {
     activities: {
       default: () => [],
-      type: Array as PropType<TypeActivityDisp[]>,
+      type: Array as PropType<TypeActivity[]>,
     },
     debug: {
       default: '',
