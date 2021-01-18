@@ -4,7 +4,6 @@ import { v4 as uuidv4 } from 'uuid';
 import {
   makeUser,
   makeAlbum,
-  makeChatComment,
   makeChatRoom,
   makeChatInfo,
   makeChatPost,
@@ -13,7 +12,6 @@ import {
 import {
   TypeUser,
   TypeChatPost,
-  TypeChatComment,
   TypeAlbum,
   TypeChatRoom,
   TypeChatInfoItem,
@@ -81,65 +79,42 @@ export const infoItems: TypeChatInfoItem[] = [
 /**
  * chatItems
  */
-export const chatItems: TypeChatComment[] = [];
-chatItems.push(
-  makeChatComment({
-    iconurl: 'https://avatars3.githubusercontent.com/u/6635142?s=460&v=4',
+export const chatItems: TypeChatPost[] = [
+  makeChatPost({
+    createdByID: '5GRnX8QzjcygEG6eRGt5CfRwKhE6',
     text: 'そんなときはジンガで呼吸を整えるんだッ',
-    username: 'スネークのすけ',
     createdAt: 1601114526252,
+  }),
+  makeChatPost({
+    createdByID: 'YjEQX5l3wNC255UftK9StZ0XKPFe',
+    text:
+      '初弾を手動で排莢していたな。考え方はおかしくない。だが聞きかじっただけの行為を実戦で試すもんじゃない',
+    createdAt: 1601114526252,
+    // fukitype: `fuki${Math.ceil(Math.random() * 4)}`,
+  }),
+  makeChatPost({
+    createdByID: 'YjEQX5l3wNC255UftK9StZ0XKPFe',
+    text:
+      '追いこまれた狐はジャッカルより凶暴だ！！ https://storage.googleapis.com/toshickcom-a7f98.appspot.com/upload_images/Camera_2020-07-24_18.23.00-1595582593445.jpeg',
+    createdAt: 1601114526252,
+    // fukitype: `fuki${Math.ceil(Math.random() * 4)}`,
     imgurl:
       'https://storage.googleapis.com/toshickcom-a7f98.appspot.com/upload_images/%E3%82%A4%E3%83%A1%E3%83%BC%E3%82%B8-1595803900938.jpeg',
   }),
-);
-chatItems.push(
-  makeChatComment({
-    iconurl: 'https://avatars3.githubusercontent.com/u/6635142?s=460&v=4',
-    text: 'そんなときはジンガで呼吸を整えるんだッ',
-    username: 'スネークのすけ',
-    createdAt: 1601114626252,
-    fukitype: 'fuki3',
-  }),
-);
-chatItems.push(
-  makeChatComment({
-    iconurl:
-      'https://storage.googleapis.com/toshickcom-a7f98.appspot.com/upload_images/%E3%82%A4%E3%83%A1%E3%83%BC%E3%82%B8-1595803900938.jpeg',
-    text:
-      '初弾を手動で排莢していたな。考え方はおかしくない。だが聞きかじっただけの行為を実戦で試すもんじゃない',
-    username: 'カマキチのすけ',
-    createdAt: 1601114726252,
-  }),
-);
-chatItems.push(
-  makeChatComment({
-    iconurl: 'https://avatars3.githubusercontent.com/u/6635142?s=460&v=4',
-    text:
-      'そんなときはジンガで呼吸を整えるんだッ\nそんなときはジンガで呼吸を整えるんだッ',
-    username: 'スネークのすけ',
-    createdAt: 1601114826252,
-    fukitype: 'fuki4',
-  }),
-);
-chatItems.push(
-  makeChatComment({
-    iconurl: 'https://avatars3.githubusercontent.com/u/6635142?s=460&v=4',
-    text:
-      '追いこまれた狐はジャッカルより凶暴だ！！ https://storage.googleapis.com/toshickcom-a7f98.appspot.com/upload_images/Camera_2020-07-24_18.23.00-1595582593445.jpeg',
-    username: 'スネークのすけ',
-    createdAt: 1601114926252,
-  }),
-);
-chatItems.push(
-  makeChatComment({
-    iconurl: 'https://avatars3.githubusercontent.com/u/6635142?s=460&v=4',
+  makeChatPost({
+    createdByID: '5GRnX8QzjcygEG6eRGt5CfRwKhE6',
     text:
       'スネーク、俺達は政府や誰かの道具じゃない\n戦うことでしか自分を表現できなかったが、いつも自分の意志で戦ってきた。',
-    username: 'グレイフォックスのすけ',
-    createdAt: 1601114926652,
-    fukitype: 'fuki2',
+    createdAt: 1601114526252,
+    fukitype: `fuki${Math.ceil(Math.random() * 4)}`,
   }),
-);
+  makeChatPost({
+    createdByID: '5GRnX8QzjcygEG6eRGt5CfRwKhE6',
+    text: 'そんなときはジンガで呼吸を整えるんだッ',
+    createdAt: 1601114526252,
+    fukitype: `fuki${Math.ceil(Math.random() * 4)}`,
+  }),
+];
 
 const user: TypeUser = makeUser({
   username: 'ニャオスカマキチ',

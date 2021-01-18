@@ -1,5 +1,10 @@
 <template>
-  <ViewSignup ref="view" :registered="registered" @submit="onRegister" />
+  <ViewSignup
+    ref="view"
+    :registered="registered"
+    :logined-user="loginedUser"
+    @submit="onRegister"
+  />
 </template>
 <!------------------------------->
 
@@ -10,6 +15,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { toast } from '@/common/util';
 import ViewSignup from '@/components/ViewSignup.vue';
 import { userStore } from '@/store';
+import { TypeUser } from '@/components/types/apptypes';
 
 type State = {
   registered: boolean;
@@ -26,7 +32,11 @@ export default Vue.extend({
       registered: false,
     };
   },
-  computed: {},
+  computed: {
+    loginedUser(): TypeUser {
+      return userStore.loginedUser;
+    },
+  },
   mounted() {},
   methods: {
     onRegister(data: { name: string; email: string }) {

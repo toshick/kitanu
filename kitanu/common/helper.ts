@@ -6,8 +6,8 @@ import {
   TypeUser,
   TypeUserDisp,
   TypeChatRoom,
+  TypeChatPost2,
   TypeChatPost,
-  TypeChatComment,
   TypeAlbum,
   TypeChatInfoItem,
   TypeActivity,
@@ -83,7 +83,7 @@ export function makeUserDisp(params: Partial<TypeUserDisp>): TypeUserDisp {
 /**
  * makeChatPost
  */
-export function makeChatPost(params: Partial<TypeChatPost>): TypeChatPost {
+export function makeChatPost2(params: Partial<TypeChatPost2>): TypeChatPost2 {
   return {
     id: params.id || uuidv4(),
     text: params.text || '',
@@ -96,21 +96,20 @@ export function makeChatPost(params: Partial<TypeChatPost>): TypeChatPost {
 }
 
 /**
- * makeChatComment
+ * makeChatPost
  */
-export function makeChatComment(
-  params: Partial<TypeChatComment>,
-): TypeChatComment {
+export function makeChatPost(params: Partial<TypeChatPost>): TypeChatPost {
   return {
     id: params.id || uuidv4(),
-    npc: false,
-    iconurl: params.iconurl || '',
+    npc: params.npc || false,
     text: params.text || '',
-    username: params.username || '',
+    fukitype: params.fukitype || '',
+    imgurl: params.imgurl || '',
+    goodMemberIDs: params.goodMemberIDs || [],
+    createdByID: params.createdByID || '',
     createdAt: params.createdAt
       ? dayjs(params.createdAt).valueOf()
       : dayjs().valueOf(),
-    imgurl: params.imgurl || '',
   };
 }
 

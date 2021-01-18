@@ -1,22 +1,31 @@
 <template>
   <div v-if="myitem" :class="myclass">
-    <div class="chatitem-icon">
+    <!-- ユーザアイコン -->
+    <UserIcon
+      class="chatitem-icon"
+      :url="createdBy.iconurl"
+      :username="createdBy.username"
+      size="M"
+      shadow
+    />
+    <!-- <div class="chatitem-icon">
       <img
         class="chat-usericon lazy"
         :src="placeholderImg"
-        :data-src="myitem.iconurl"
+        :data-src="createdBy.iconurl"
         alt=""
       />
-    </div>
+    </div> -->
     <div class="chatitem-body">
       <p class="chatitem-body-name">
-        {{ myitem.username }}
+        {{ createdBy.username }}
         <span>（{{ postdate }}）</span>
       </p>
       <!-- text -->
       <p
         v-if="!isGood"
-        class="chatitem-body-text wf-nicomoji"
+        class="chatitem-body-text"
+        :class="{ 'wf-nicomoji': hasFukidashi }"
         v-html="$sanitize(text)"
       ></p>
       <!-- good -->
@@ -40,7 +49,7 @@
       <div class="chatitem-bottom">
         <!-- <p><a class="chatitem-good" @click="doGood">いいね（45）</a></p> -->
         <div class="chatitem-postinfo">
-          （{{ myitem.username }}
+          （{{ createdBy.username }}
           <span>{{ postdate }}</span>
           ）
         </div>
@@ -55,7 +64,7 @@
 /* eslint vue/no-v-html: 0 */
 import dayjs from 'dayjs';
 import Vue, { PropType } from 'vue';
-import { TypeChatComment } from '@/components/types/apptypes';
+import { TypeChatPost, TypeUserDisp } from '@/components/types/apptypes';
 
 type State = {
   urls: string[];
@@ -70,7 +79,7 @@ export default Vue.extend({
       type: Boolean,
     },
     myitem: {
-      type: Object as PropType<TypeChatComment>,
+      type: Object as PropType<TypeChatPost>,
       required: true,
     },
     last: {
@@ -106,11 +115,17 @@ export default Vue.extend({
         .replace(/[\n]/g, '<br>');
     },
     postdate(): string {
-      return dayjs(this.myitem.postdate).format('YYYY.MM.DD HH:mm:ss');
+      return dayjs(this.myitem.createdAt).format('YYYY.MM.DD HH:mm:ss');
     },
     isGood(): boolean {
       if (!this.myitem.good) return false;
       return this.myitem.good > 0;
+    },
+    hasFukidashi(): boolean {
+      return !!this.myitem.fukitype;
+    },
+    createdBy(): TypeUserDisp {
+      return this.myitem.createdBy!;
     },
   },
   mounted() {
@@ -148,7 +163,7 @@ export default Vue.extend({
 .chatitem {
   position: relative;
   display: flex;
-  padding: 10px 20px 10px 20px;
+  padding: 5px 20px 0;
   // color: var(--app-comment-color);
   color: #c1620e;
   overflow: hidden;
@@ -175,9 +190,9 @@ export default Vue.extend({
     display: inline-flex;
     position: relative;
     min-height: auto;
-    padding: 20px;
-    margin: 60px 20px 40px;
-    border-radius: 22px;
+    padding: 10px;
+    margin: 60px 20px 0px;
+    border-radius: 16px;
     background-color: #ecde90;
 
     &::before {
@@ -204,7 +219,7 @@ export default Vue.extend({
   &.--fuki2 .chatitem-body-text {
     // background-image: url('/img/e0308_1.png');
     background-image: url('/img/e0099_0.svg');
-    padding: 40px 60px 40px;
+    padding: 40px 60px 0px;
     min-height: 260px;
     color: #333;
     text-shadow: none;
@@ -232,7 +247,7 @@ export default Vue.extend({
 }
 .chatitem-icon {
   position: absolute;
-  top: 5px;
+  top: 0px;
   left: 10px;
 }
 .chatitem-body {
@@ -241,19 +256,19 @@ export default Vue.extend({
   line-height: 1.5;
 }
 .chatitem-body-name {
-  padding: 0 0 10px 30px;
-  font-size: 10px;
+  padding: 0 0 4px 40px;
+  font-size: 12px;
   color: #333;
 }
 .chatitem-body-text {
-  font-size: 12px;
+  font-size: 14px;
   padding: 0px 10px 10px 10px;
-  text-indent: 0.7em;
-  line-height: 1;
+  text-indent: 2em;
+  line-height: 1.4;
   text-shadow: 0 0 2px #ffbd41;
   color: #c1620e;
   &.wf-nicomoji {
-    font-size: 28px;
+    font-size: 16px;
   }
 }
 .chatitem-body-good {
@@ -286,7 +301,7 @@ export default Vue.extend({
 .chatitem-bottom {
   display: flex;
   align-items: center;
-  border-top: dashed 1px #bbb;
+  // border-top: dashed 1px #bbb;
   border-radius: 3px;
   padding: 6px 10px;
   margin: 6px 0 0;

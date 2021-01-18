@@ -2,14 +2,13 @@ import dayjs from 'dayjs';
 import firebase from 'firebase/app';
 import { Module, VuexModule, Mutation, Action } from 'vuex-module-decorators';
 import { asort, log, unique } from '@/common/util';
-import { makeChatRoom, makeUserDisp } from '@/common/helper';
+import { makeChatRoom, makeUserDisp, makeChatPost } from '@/common/helper';
 import { chatroomRef } from '@/plugins/firebase';
 import { activityStore, userStore } from '@/store';
 import { logError } from '@/common/error';
 
 import {
   ActionRes,
-  TypeChatComment,
   TypeChatPost,
   TypeUser,
   TypeUserID,
@@ -21,7 +20,7 @@ import { members, chatItems } from '@/mock/mockdata';
 
 @Module({ name: 'chat', stateFactory: true, namespaced: true })
 export default class MyClass extends VuexModule {
-  _chatItems: TypeChatComment[] = [];
+  _chatPosts: TypeChatPost[] = [];
   _members: TypeUser[] = members;
   _chatrooms: TypeChatRoom[] = [];
   _unsubscribe: Function | null = null;
@@ -35,26 +34,22 @@ export default class MyClass extends VuexModule {
   }
 
   @Mutation
-  RESET_POST() {
-    this._chatItems = [];
+  RESET_CHATPOST() {
+    this._chatPosts = [];
   }
 
   @Mutation
-  ADD_CHAT(postitem: TypeChatComment) {
-    const ary = [...this._chatItems];
-    ary.unshift(postitem);
-    this._chatItems = asort(ary, 'postdate');
+  ADD_CHATPOST(postitem: TypeChatPost) {
+    this._chatPosts = asort([...this._chatPosts, postitem], 'createdAt');
   }
 
   @Mutation
-  REMOVE_POST(id: string) {
-    this._chatItems = this._chatItems.filter(
-      (i: TypeChatComment) => i.id !== id,
-    );
+  REMOVE_CHATPOST(id: string) {
+    this._chatPosts = this._chatPosts.filter((i: TypeChatPost) => i.id !== id);
   }
 
   @Mutation
-  UPDATE_POST(postitem: TypeChatComment) {}
+  UPDATE_CHATPOST(postitem: TypeChatPost) {}
 
   @Mutation
   ADD_CHATROOM(chatroom: TypeChatRoom) {
@@ -91,13 +86,13 @@ export default class MyClass extends VuexModule {
   // ----------------------
 
   @Action
-  FetchPost(): Promise<ActionRes> {
-    this.RESET_POST();
+  FetchPostForChat(chatID: string): Promise<ActionRes> {
+    this.RESET_CHATPOST();
     // const date = dayjs().format('YYYY.MM.DD HH:mm:ss');
     return new Promise((resolve) => {
       setTimeout(() => {
-        chatItems.forEach((item: TypeChatComment) => {
-          this.ADD_CHAT(item);
+        chatItems.forEach((item: TypeChatPost) => {
+          this.ADD_CHATPOST(item);
         });
         resolve({});
       }, 1000);
@@ -221,18 +216,48 @@ export default class MyClass extends VuexModule {
     });
   }
 
-  get getUserIDsByChatroom() {
+  get chatPosts(): TypeChatPost[] {
+    return this._chatPosts.map((post: TypeChatPost) => {
+      const r = makeChatPost(post);
+      r.goodMembers = r.goodMemberIDs.map((userID: TypeUserID) => {
+        return (
+          userStore.getUserbyID(userID) || makeUserDisp({ id: r.createdByID })
+        );
+      });
+
+      const createdBy = userStore.getUserbyID(r.createdByID);
+      r.createdBy = createdBy || makeUserDisp({ id: r.createdByID });
+
+      return r;
+    });
+  }
+
+  get getUserIDsByChatRoom() {
     return (rooms: TypeChatRoom[]): TypeUserID[] => {
-      let ids: TypeUserID[] = [];
+      const ids: TypeUserID[] = [];
       rooms.forEach((room: TypeChatRoom) => {
         room.memberIDs.forEach((u: TypeUserID) => {
           ids.push(u);
-          console.log('getUserIDsByChatroom id', u);
         });
       });
-      ids = unique(ids);
-      console.log('ユーザしゅとく', ids);
-      return ids;
+      return unique(ids);
     };
+  }
+
+  get getUserIDsByChatPosts() {
+    return (posts: TypeChatPost[]): TypeUserID[] => {
+      const ids: TypeUserID[] = [];
+      posts.forEach((post: TypeChatPost) => {
+        ids.push(post.createdByID);
+        post.goodMemberIDs.forEach((u: TypeUserID) => {
+          ids.push(u);
+        });
+      });
+      return unique(ids);
+    };
+  }
+
+  get chatItems(): TypeChatPost[] {
+    return chatItems;
   }
 }

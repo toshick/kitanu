@@ -127,11 +127,10 @@
 
 <!------------------------------->
 <script lang="ts">
-import Vue from 'vue';
+import Vue, { PropType } from 'vue';
 import ViewKiyaku from '@/components/ViewKiyaku.vue';
 import { ValidationObserver } from 'vee-validate';
-import { TypeLoginUser } from '@/components/types/apptypes';
-import { userStore } from '@/store';
+import { TypeUser } from '@/components/types/apptypes';
 
 type State = {
   form: {
@@ -151,6 +150,10 @@ export default Vue.extend({
       required: true,
       type: Boolean,
     },
+    loginedUser: {
+      default: () => {},
+      type: Object as PropType<TypeUser>,
+    },
   },
   data(): State {
     return {
@@ -161,11 +164,7 @@ export default Vue.extend({
       kiyaku: false,
     };
   },
-  computed: {
-    loginedUser(): TypeLoginUser {
-      return userStore.loginedUser;
-    },
-  },
+  computed: {},
   watch: {
     kiyaku(newdata: boolean) {
       if (newdata) {

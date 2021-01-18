@@ -1,7 +1,7 @@
 <template>
   <div>
     <ViewChat
-      :chat-items="chatItems"
+      :chat-posts="chatPosts"
       :info-items="infoItems"
       :isconnecting="connecting"
       :sending="sending"
@@ -29,13 +29,13 @@ import { toast } from '@/common/util';
 import ViewChat from '@/components/ViewChat.vue';
 import SelectMember from '@/container/SelectMember.vue';
 import {
-  TypeChatComment,
+  TypeChatPost,
   TypeChatInfoItem,
-  TypePostSubmitItem,
+  TypeUserID,
   TypeFile,
   TypeUser,
 } from '@/components/types/apptypes';
-import { chatStore, chatinfoStore } from '@/store';
+import { chatStore, chatinfoStore, userStore } from '@/store';
 import { postItems } from '@/mock/mockdata';
 
 type State = {
@@ -46,6 +46,12 @@ type State = {
 export default Vue.extend({
   components: { ViewChat, SelectMember },
   mixins: [mixinScrollview],
+  props: {
+    id: {
+      default: '',
+      type: String,
+    },
+  },
   data(): State {
     return {
       sending: false,
@@ -53,8 +59,8 @@ export default Vue.extend({
     };
   },
   computed: {
-    chatItems(): TypeChatComment[] {
-      return chatStore.chatItems;
+    chatPosts(): TypeChatPost[] {
+      return chatStore.chatPosts;
     },
     infoItems(): TypeChatInfoItem[] {
       return chatinfoStore.infoItems;
@@ -64,21 +70,25 @@ export default Vue.extend({
     },
   },
   watch: {
-    chatItems(newdata: TypeChatComment[], olddata: TypeChatComment[]) {
+    chatPosts(newdata: TypeChatPost[], olddata: TypeChatPost[]) {
       if (newdata.length !== olddata.length) {
         setTimeout(() => {
           this.scrollBottomSmooth();
         }, 500);
-        // this.fetch();
+        this.fetchUsers();
       }
     },
   },
   async mounted() {
     this.showLoading(true);
-    await chatStore.FetchPost();
+    await chatStore.FetchPostForChat(this.id);
     this.showLoading(false);
   },
   methods: {
+    fetchUsers() {
+      const ids: TypeUserID[] = chatStore.getUserIDsByChatPosts(this.chatPosts);
+      userStore.FetchUsers({ ids, omitIfExist: true });
+    },
     async onSubmit(p: {
       fileItem?: TypeFile;
       text: string;
@@ -88,7 +98,7 @@ export default Vue.extend({
     }) {
       this.showInlineLoading(true);
 
-      const param: TypePostSubmitItem = {
+      const param: TypeChatPost = {
         fileItem: p.fileItem || null,
         text: p.text,
         good: p.good || null,

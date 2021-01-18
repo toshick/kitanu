@@ -56,7 +56,7 @@ export default Vue.extend({
   mounted() {},
   methods: {
     fetchUsers() {
-      const ids: TypeUserID[] = chatStore.getUserIDsByChatroom(this.chatrooms);
+      const ids: TypeUserID[] = chatStore.getUserIDsByChatRoom(this.chatrooms);
       userStore.FetchUsers({ ids, omitIfExist: true });
     },
     onSelected(id: string) {

@@ -2,13 +2,13 @@ import dayjs from 'dayjs';
 import { v4 as uuidv4 } from 'uuid';
 import { Module, VuexModule, Mutation, Action } from 'vuex-module-decorators';
 import { asort, zeropad } from '@/common/util';
-import { ActionRes, TypeChatPost } from '@/components/types/apptypes';
+import { ActionRes, TypeChatPost2 } from '@/components/types/apptypes';
 // import { setUpPostImg, firebase, postImgRef, tagRef, Tag, PostImg, PostImgUpdate, TagUpdate, PostImgRequest } from '@/plugins/firebase.ts';
 
 @Module({ name: 'post', stateFactory: true, namespaced: true })
 export default class MyClass extends VuexModule {
-  _postitems: TypeChatPost[] = [];
-  _postitemsBK: TypeChatPost[] = [];
+  _postitems: TypeChatPost2[] = [];
+  _postitemsBK: TypeChatPost2[] = [];
 
   // ----------------------
   // Mutation
@@ -31,17 +31,17 @@ export default class MyClass extends VuexModule {
   }
 
   @Mutation
-  ADD_POST(postitem: TypeChatPost) {
+  ADD_POST(postitem: TypeChatPost2) {
     const ary = [...this._postitems];
     ary.unshift(postitem);
     this._postitems = asort(ary, 'sortindex');
   }
 
   @Mutation
-  CHANGE_ORDER_POST(p: { postitem: TypeChatPost; direction: string }) {
+  CHANGE_ORDER_POST(p: { postitem: TypeChatPost2; direction: string }) {
     const { postitem, direction } = p;
     let index = this._postitems.findIndex(
-      (p: TypeChatPost) => p.id === postitem.id,
+      (p: TypeChatPost2) => p.id === postitem.id,
     );
 
     if (index !== undefined) {
@@ -62,14 +62,14 @@ export default class MyClass extends VuexModule {
 
   @Mutation
   REMOVE_POST(id: string) {
-    this._postitems = this._postitems.filter((i: TypeChatPost) => i.id !== id);
+    this._postitems = this._postitems.filter((i: TypeChatPost2) => i.id !== id);
   }
 
   @Mutation
-  UPDATE_POST(postitem: TypeChatPost) {
+  UPDATE_POST(postitem: TypeChatPost2) {
     console.log('UPDATE_POST', postitem);
 
-    // this._postitems = this._postitems.map((i: TypeChatPost) => {
+    // this._postitems = this._postitems.map((i: TypeChatPost2) => {
     //   if (i.id === postitem.id) {
     //     i = postitem;
     //   }
@@ -86,69 +86,69 @@ export default class MyClass extends VuexModule {
     this.RESET_POST();
     const date = dayjs().format('YYYY.MM.DD HH:mm:ss');
 
-    const ary: TypeChatPost[] = [];
+    const ary: TypeChatPost2[] = [];
 
-    // ddddd
-    ary.push({
-      id: uuidv4(),
-      date,
-      text: 'テキストです1',
-      sortindex: '0000001',
-      fileItem: {
-        base64str: '',
-      },
-    });
-    ary.push({
-      id: uuidv4(),
-      text:
-        'みんなで東北へいってきたよ。\n変な公園があったんだ。（グレイフォックスのすけ）',
-      fileItem: {
-        base64str: '',
-      },
-      date,
-      sortindex: '0000002',
-    });
-    ary.push({
-      id: uuidv4(),
-      date,
-      text: 'テキストです2',
-      sortindex: '0000003',
-      fileItem: {
-        base64str: '',
-      },
-    });
-    ary.push({
-      id: uuidv4(),
-      date,
-      text: 'キャットはじっと何かをみつめているよ。（グレイフォックスのすけ）',
-      fileItem: {
-        base64str:
-          'https://storage.googleapis.com/toshickcom-a7f98.appspot.com/upload_images/Camera_2020-07-24_18.23.42-1595582635687.jpeg',
-      },
-      sortindex: '0000004',
-    });
-    ary.push({
-      id: uuidv4(),
-      date,
-      text: 'なんか綿菓子うっている。',
-      fileItem: {
-        base64str:
-          'https://storage.googleapis.com/toshickcom-a7f98.appspot.com/upload_images/Camera_2020-08-01_13.04.25-1596254669373.jpeg',
-      },
-      sortindex: '0000005',
-    });
-    ary.push({
-      id: uuidv4(),
-      date,
-      text: 'せかいのとしっくです。こちらは謎の池を発見せり',
-      fileItem: {
-        base64str:
-          'https://storage.googleapis.com/toshickcom-a7f98.appspot.com/upload_images/Camera_2020-07-24_18.38.38-1595583527442.jpeg',
-      },
-      sortindex: '0000006',
-    });
+    // // ddddd
+    // ary.push({
+    //   id: uuidv4(),
+    //   date,
+    //   text: 'テキストです1',
+    //   sortindex: '0000001',
+    //   fileItem: {
+    //     base64str: '',
+    //   },
+    // });
+    // ary.push({
+    //   id: uuidv4(),
+    //   text:
+    //     'みんなで東北へいってきたよ。\n変な公園があったんだ。（グレイフォックスのすけ）',
+    //   fileItem: {
+    //     base64str: '',
+    //   },
+    //   date,
+    //   sortindex: '0000002',
+    // });
+    // ary.push({
+    //   id: uuidv4(),
+    //   date,
+    //   text: 'テキストです2',
+    //   sortindex: '0000003',
+    //   fileItem: {
+    //     base64str: '',
+    //   },
+    // });
+    // ary.push({
+    //   id: uuidv4(),
+    //   date,
+    //   text: 'キャットはじっと何かをみつめているよ。（グレイフォックスのすけ）',
+    //   fileItem: {
+    //     base64str:
+    //       'https://storage.googleapis.com/toshickcom-a7f98.appspot.com/upload_images/Camera_2020-07-24_18.23.42-1595582635687.jpeg',
+    //   },
+    //   sortindex: '0000004',
+    // });
+    // ary.push({
+    //   id: uuidv4(),
+    //   date,
+    //   text: 'なんか綿菓子うっている。',
+    //   fileItem: {
+    //     base64str:
+    //       'https://storage.googleapis.com/toshickcom-a7f98.appspot.com/upload_images/Camera_2020-08-01_13.04.25-1596254669373.jpeg',
+    //   },
+    //   sortindex: '0000005',
+    // });
+    // ary.push({
+    //   id: uuidv4(),
+    //   date,
+    //   text: 'せかいのとしっくです。こちらは謎の池を発見せり',
+    //   fileItem: {
+    //     base64str:
+    //       'https://storage.googleapis.com/toshickcom-a7f98.appspot.com/upload_images/Camera_2020-07-24_18.38.38-1595583527442.jpeg',
+    //   },
+    //   sortindex: '0000006',
+    // });
 
-    ary.forEach((item: TypeChatPost) => {
+    ary.forEach((item: TypeChatPost2) => {
       this.ADD_POST(item);
     });
 
@@ -157,7 +157,7 @@ export default class MyClass extends VuexModule {
 
   @Action
   ChangeOrder(p: {
-    postitem: TypeChatPost;
+    postitem: TypeChatPost2;
     direction: string;
   }): Promise<ActionRes> {
     this.CHANGE_ORDER_POST(p);
@@ -171,10 +171,10 @@ export default class MyClass extends VuexModule {
   }
 
   @Action
-  PostItem(p: TypeChatPost): Promise<ActionRes> {
+  PostItem(p: TypeChatPost2): Promise<ActionRes> {
     return new Promise((resolve) => {
       setTimeout(() => {
-        // const item: TypeChatPost = {
+        // const item: TypeChatPost2 = {
         //   id: uuidv4(),
         //   date: dayjs().format('YYYY.MM.DD HH:mm:ss'),
         //   text: 'せかいのとしっくです。こちらは謎の池を発見せり',
@@ -194,7 +194,7 @@ export default class MyClass extends VuexModule {
   // ----------------------
   // get
   // ----------------------
-  get postitems(): TypeChatPost[] {
+  get postitems(): TypeChatPost2[] {
     return this._postitems;
   }
 }

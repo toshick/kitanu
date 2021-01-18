@@ -79,7 +79,7 @@ export type TypeChatRoom = {
   createdAt?: number;
 };
 
-export type TypeChatPost = {
+export type TypeChatPost2 = {
   id: string;
   text: string;
   fileItem?: TypeFile | null;
@@ -87,15 +87,16 @@ export type TypeChatPost = {
   createdAt?: number;
 };
 
-export type TypeChatComment = {
+export type TypeChatPost = {
   id: string;
   npc: boolean;
-  iconurl: string;
   text: string;
-  username: string;
-  fukitype?: string;
+  fukitype?: string; // fuki1...fuki4
   imgurl?: string;
-  good?: number;
+  goodMemberIDs: TypeUserID[];
+  goodMembers?: TypeUserDisp[]; // used at runtime
+  createdByID: TypeUserID;
+  createdBy?: TypeUserDisp; // used at runtime
   createdAt?: number;
 };
 

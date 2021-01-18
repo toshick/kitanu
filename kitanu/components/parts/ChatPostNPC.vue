@@ -31,7 +31,7 @@
 /* eslint vue/no-v-html: 0 */
 import dayjs from 'dayjs';
 import Vue, { PropType } from 'vue';
-import { TypeChatComment } from '@/components/types/apptypes';
+import { TypeChatPost } from '@/components/types/apptypes';
 
 type State = {
   urls: string[];
@@ -39,10 +39,10 @@ type State = {
 };
 
 export default Vue.extend({
-  name: 'ChatComment',
+  name: 'ChatPostNPC',
   props: {
     myitem: {
-      type: Object as PropType<TypeChatComment>,
+      type: Object as PropType<TypeChatPost>,
       required: true,
     },
     last: {

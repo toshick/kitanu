@@ -36,6 +36,10 @@ export default Vue.extend({
       default: '',
       type: String,
     },
+    shadow: {
+      default: false,
+      type: Boolean,
+    },
   },
   data(): State {
     return {};
@@ -51,7 +55,7 @@ export default Vue.extend({
         size = '-size-l';
       }
       klass[size] = true;
-      if (!this.iconUrl) {
+      if (!this.iconUrl || this.shadow) {
         klass['-shadow'] = true;
       }
       return klass;
@@ -118,8 +122,9 @@ export default Vue.extend({
     }
   }
   &.-shadow {
-    .initialStamp {
-      box-shadow: 0 0 1px 1px rgba(#000, 0.1);
+    .initialStamp,
+    img {
+      box-shadow: 0 0 1px 1px rgba(#000, 0.15);
     }
   }
 }

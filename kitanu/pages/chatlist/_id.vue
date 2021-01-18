@@ -1,5 +1,5 @@
 <template>
-  <Chat />
+  <Chat :id="id" />
 </template>
 <!------------------------------->
 
@@ -15,6 +15,11 @@ export default Vue.extend({
   components: { Chat },
   data(): State {
     return {};
+  },
+  computed: {
+    id(): string {
+      return this.$route.params.id;
+    },
   },
 });
 </script>

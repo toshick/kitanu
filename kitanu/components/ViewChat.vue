@@ -18,17 +18,17 @@
     </ViewHeader>
     <ViewBody ref="appbody">
       <ul>
-        <li v-for="(i, index) in chatItems" :key="`${index}-${i.text}`">
-          <ChatComment
+        <li v-for="(i, index) in chatPosts" :key="`${index}-${i.text}`">
+          <ChatPost
             v-if="!i.npc"
             :myitem="i"
             :opposite="index % 2 === 1"
-            :last="index === chatItems.length - 1"
+            :last="index === chatPosts.length - 1"
           />
-          <ChatCommentNPC
-            v-if="i.npc"
+          <ChatPostNPC
+            v-else
             :myitem="i"
-            :last="index === chatItems.length - 1"
+            :last="index === chatPosts.length - 1"
           />
         </li>
       </ul>
@@ -48,13 +48,13 @@
 import Vue, { PropType } from 'vue';
 
 import {
-  TypeChatComment,
+  TypeChatPost,
   TypeChatInfoItem,
   TypeUser,
 } from '@/components/types/apptypes';
 
-import ChatComment from './parts/ChatComment.vue';
-import ChatCommentNPC from './parts/ChatCommentNPC.vue';
+import ChatPost from './parts/ChatPost.vue';
+import ChatPostNPC from './parts/ChatPostNPC.vue';
 import LoadingInline from './parts/LoadingInline.vue';
 
 type State = {};
@@ -62,8 +62,8 @@ type State = {};
 export default Vue.extend({
   name: 'AppChat',
   components: {
-    ChatComment,
-    ChatCommentNPC,
+    ChatPost,
+    ChatPostNPC,
     LoadingInline,
   },
   props: {
@@ -71,9 +71,9 @@ export default Vue.extend({
       default: 'むだい',
       type: String,
     },
-    chatItems: {
+    chatPosts: {
       default: () => [],
-      type: Array as PropType<TypeChatComment[]>,
+      type: Array as PropType<TypeChatPost[]>,
     },
     // infoItems: {
     //   default: () => [],
