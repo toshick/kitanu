@@ -107,6 +107,7 @@ export function makeChatPost(params: Partial<TypeChatPost>): TypeChatPost {
     imgurl: params.imgurl || '',
     goodMemberIDs: params.goodMemberIDs || [],
     createdByID: params.createdByID || '',
+    comments: params.comments || [],
     createdAt: params.createdAt
       ? dayjs(params.createdAt).valueOf()
       : dayjs().valueOf(),

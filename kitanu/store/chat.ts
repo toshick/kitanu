@@ -224,6 +224,12 @@ export default class MyClass extends VuexModule {
           userStore.getUserbyID(userID) || makeUserDisp({ id: r.createdByID })
         );
       });
+      r.comments = r.comments.map((commentPost: TypeChatPost) => {
+        const c = makeChatPost(commentPost);
+        const createdBy = userStore.getUserbyID(c.createdByID);
+        c.createdBy = createdBy || makeUserDisp({ id: c.createdByID });
+        return c;
+      });
 
       const createdBy = userStore.getUserbyID(r.createdByID);
       r.createdBy = createdBy || makeUserDisp({ id: r.createdByID });
@@ -251,6 +257,9 @@ export default class MyClass extends VuexModule {
         ids.push(post.createdByID);
         post.goodMemberIDs.forEach((u: TypeUserID) => {
           ids.push(u);
+        });
+        post.comments.forEach((commentPost: TypeChatPost) => {
+          ids.push(commentPost.id);
         });
       });
       return unique(ids);

@@ -21,6 +21,11 @@ import ParticleButton from '@/components/parts/ParticleButton.vue';
 import ViewHeader from '@/components/ViewHeader.vue';
 import ViewBody from '@/components/ViewBody.vue';
 import ViewFooter from '@/components/ViewFooter.vue';
+
+import ChatPost from '@/components/parts/ChatPost.vue';
+import ChatPostNPC from '@/components/parts/ChatPostNPC.vue';
+import LoadingInline from '@/components/parts/LoadingInline.vue';
+
 import 'camaleao-design/components/install';
 import 'camaleao-design/form/validation';
 
@@ -31,6 +36,10 @@ Vue.component('Particle', Particle);
 Vue.component('UserIcon', UserIcon);
 Vue.component('UserForList', UserForList);
 Vue.component('ParticleButton', ParticleButton);
+
+Vue.component('ChatPost', ChatPost);
+Vue.component('ChatPostNPC', ChatPostNPC);
+Vue.component('LoadingInline', LoadingInline);
 
 Vue.prototype.$sanitize = sanitizeHTML;
 

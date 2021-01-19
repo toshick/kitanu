@@ -106,13 +106,58 @@ export const chatItems: TypeChatPost[] = [
     text:
       'スネーク、俺達は政府や誰かの道具じゃない\n戦うことでしか自分を表現できなかったが、いつも自分の意志で戦ってきた。',
     createdAt: 1601114526252,
-    fukitype: `fuki${Math.ceil(Math.random() * 4)}`,
+    fukitype: `fuki3`,
   }),
   makeChatPost({
     createdByID: '5GRnX8QzjcygEG6eRGt5CfRwKhE6',
     text: 'そんなときはジンガで呼吸を整えるんだッ',
     createdAt: 1601114526252,
-    fukitype: `fuki${Math.ceil(Math.random() * 4)}`,
+    npc: true,
+  }),
+  makeChatPost({
+    createdByID: '5GRnX8QzjcygEG6eRGt5CfRwKhE6',
+    text: 'カズヒラミラーのハンバーガーくってみたいカマレオ',
+    createdAt: 1601114526252,
+    comments: [
+      makeChatPost({
+        createdByID: 'YjEQX5l3wNC255UftK9StZ0XKPFe',
+        text: 'そんなときはジンガで呼吸を整えるんだッ',
+        createdAt: 1601114526252,
+      }),
+      makeChatPost({
+        createdByID: 'YjEQX5l3wNC255UftK9StZ0XKPFe',
+        text: 'コンソメパンチ丼の大盛りください',
+        createdAt: 1601114526252,
+      }),
+    ],
+  }),
+  makeChatPost({
+    createdByID: '5GRnX8QzjcygEG6eRGt5CfRwKhE6',
+    text:
+      'スネーク、俺達は政府や誰かの道具じゃない\n戦うことでしか自分を表現できなかったが、いつも自分の意志で戦ってきた。',
+    createdAt: 1601114526252,
+    fukitype: `fuki1`,
+  }),
+  makeChatPost({
+    createdByID: '5GRnX8QzjcygEG6eRGt5CfRwKhE6',
+    text:
+      'スネーク、俺達は政府や誰かの道具じゃない\n戦うことでしか自分を表現できなかったが、いつも自分の意志で戦ってきた。',
+    createdAt: 1601114526252,
+    fukitype: `fuki2`,
+  }),
+  makeChatPost({
+    createdByID: '5GRnX8QzjcygEG6eRGt5CfRwKhE6',
+    text:
+      'スネーク、俺達は政府や誰かの道具じゃない\n戦うことでしか自分を表現できなかったが、いつも自分の意志で戦ってきた。',
+    createdAt: 1601114526252,
+    fukitype: `fuki3`,
+  }),
+  makeChatPost({
+    createdByID: 'YjEQX5l3wNC255UftK9StZ0XKPFe',
+    text:
+      'スネーク、俺達は政府や誰かの道具じゃない\n戦うことでしか自分を表現できなかったが、いつも自分の意志で戦ってきた。',
+    createdAt: 1601114526252,
+    fukitype: `fuki4`,
   }),
 ];
 

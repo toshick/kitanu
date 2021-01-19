@@ -108,7 +108,7 @@ export default Vue.extend({
     }
   }
   &.-size-s {
-    --size-s: 20px;
+    --size-s: 26px;
     img {
       display: block;
       width: var(--size-s);

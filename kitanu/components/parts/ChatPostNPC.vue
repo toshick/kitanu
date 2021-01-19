@@ -1,8 +1,5 @@
 <template>
   <div v-if="myitem" :class="myclass">
-    <!-- <div class="chatitem-icon">
-      <img class="chat-usericon lazy" :src="placeholderImg" :data-src="myitem.iconurl" alt="" />
-    </div> -->
     <div class="chatitem-body">
       <!-- text -->
       <!-- good -->
@@ -108,8 +105,6 @@ export default Vue.extend({
   position: relative;
   display: flex;
   padding: 10px 20px 10px 20px;
-  // color: var(--app-comment-color);
-  // color: #ceb60b;
 }
 .chatitem-icon {
   position: absolute;
@@ -126,15 +121,14 @@ export default Vue.extend({
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  // min-height: 100px;
   padding: 0 0 20px 60px;
 
   p {
     position: relative;
     padding: 10px 10px;
     margin: 0 0 0px 20px;
-    font-size: 22px;
-    line-height: 1;
+    font-size: 14px;
+    line-height: 1.4;
     border-radius: 6px;
     background-color: #fff;
     box-shadow: 0 0 2px 1px #ddcd69;
@@ -163,16 +157,16 @@ export default Vue.extend({
   height: auto;
 }
 
-.chatitem-bottom {
-  display: flex;
-  align-items: center;
-  border-top: dashed 1px #bbb;
-  border-radius: 3px;
-  padding: 6px 10px;
-  margin: 6px 0 0;
-  font-size: 10px;
-  color: #aaa;
-}
+// .chatitem-bottom {
+//   display: flex;
+//   align-items: center;
+//   border-top: dashed 1px #bbb;
+//   border-radius: 3px;
+//   padding: 6px 10px;
+//   margin: 6px 0 0;
+//   font-size: 10px;
+//   color: #aaa;
+// }
 
 .chatitem-postinfo {
   font-size: 10px;

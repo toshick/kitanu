@@ -22,7 +22,6 @@
           <ChatPost
             v-if="!i.npc"
             :myitem="i"
-            :opposite="index % 2 === 1"
             :last="index === chatPosts.length - 1"
           />
           <ChatPostNPC
@@ -53,19 +52,15 @@ import {
   TypeUser,
 } from '@/components/types/apptypes';
 
-import ChatPost from './parts/ChatPost.vue';
-import ChatPostNPC from './parts/ChatPostNPC.vue';
-import LoadingInline from './parts/LoadingInline.vue';
+// import ChatPost from './parts/ChatPost.vue';
+// import ChatPostNPC from './parts/ChatPostNPC.vue';
+// import LoadingInline from './parts/LoadingInline.vue';
 
 type State = {};
 
 export default Vue.extend({
-  name: 'AppChat',
-  components: {
-    ChatPost,
-    ChatPostNPC,
-    LoadingInline,
-  },
+  name: 'ViewChat',
+
   props: {
     title: {
       default: 'むだい',

@@ -97,6 +97,7 @@ export type TypeChatPost = {
   goodMembers?: TypeUserDisp[]; // used at runtime
   createdByID: TypeUserID;
   createdBy?: TypeUserDisp; // used at runtime
+  comments: TypeChatPost[];
   createdAt?: number;
 };
 

@@ -44,6 +44,7 @@ type State = {
 };
 
 export default Vue.extend({
+  name: 'Chat',
   components: { ViewChat, SelectMember },
   mixins: [mixinScrollview],
   props: {
