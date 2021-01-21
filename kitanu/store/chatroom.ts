@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 import firebase from 'firebase/app';
 import { Module, VuexModule, Mutation, Action } from 'vuex-module-decorators';
 import { asort, log, unique } from '@/common/util';
-import { makeChatRoom, makeUserDisp, makeChatPost } from '@/common/helper';
+import { makeUserDisp, makeChatPost } from '@/common/helper';
 import { chatroomRef } from '@/plugins/firebase';
 import { activityStore, userStore } from '@/store';
 import { logError } from '@/common/error';
@@ -13,16 +13,14 @@ import {
   TypeUser,
   TypeUserID,
   TypeUserDisp,
-  TypeChatRoom,
 } from '@/components/types/apptypes';
 import kitanuTalks from '@/assets/kitanuTalks';
 import { members, chatItems } from '@/mock/mockdata';
 
-@Module({ name: 'chat', stateFactory: true, namespaced: true })
+@Module({ name: 'chatroom', stateFactory: true, namespaced: true })
 export default class MyClass extends VuexModule {
   _chatPosts: TypeChatPost[] = [];
   _members: TypeUser[] = members;
-  _chatrooms: TypeChatRoom[] = [];
   _unsubscribe: Function | null = null;
 
   // ----------------------
@@ -51,80 +49,12 @@ export default class MyClass extends VuexModule {
   @Mutation
   UPDATE_CHATPOST(postitem: TypeChatPost) {}
 
-  @Mutation
-  ADD_CHATROOM(chatroom: TypeChatRoom) {
-    const find = this._chatrooms.find(
-      (d: TypeChatRoom) => d.id === chatroom.id,
-    );
-    if (find) return;
-    this._chatrooms = asort(
-      [...this._chatrooms, chatroom],
-      'createdAt',
-    ).reverse();
-  }
-
-  @Mutation
-  REMOVE_CHATROOM(room: TypeChatRoom) {
-    this._chatrooms = this._chatrooms.filter(
-      (d: TypeChatRoom) => d.id !== room.id,
-    );
-  }
-
-  @Mutation
-  UPDATE_CHATROOM(room: TypeChatRoom) {
-    const ary = this._chatrooms.map((r: TypeChatRoom) => {
-      if (r.id === room.id) {
-        return { ...r, ...room };
-      }
-      return r;
-    });
-    this._chatrooms = asort(ary, 'createdAt').reverse();
-  }
-
   // ----------------------
   // Action
   // ----------------------
 
   @Action
-  FetchPostForChat(chatID: string): Promise<ActionRes> {
-    this.RESET_CHATPOST();
-    // const date = dayjs().format('YYYY.MM.DD HH:mm:ss');
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        chatItems.forEach((item: TypeChatPost) => {
-          this.ADD_CHATPOST(item);
-        });
-        resolve({});
-      }, 1000);
-    });
-  }
-
-  @Action
-  PostChat(p: TypeChatPost): Promise<ActionRes> {
-    // let text = p.text || '';
-    // let iconurl =
-    //   'https://storage.googleapis.com/toshickcom-a7f98.appspot.com/upload_images/%E3%82%A4%E3%83%A1%E3%83%BC%E3%82%B8-1595803900938.jpeg';
-    // if (p.npc) {
-    //   iconurl = '/img/tanu/tanu-120.png';
-    //   text = kitanuTalks[Math.floor(Math.random() * kitanuTalks.length)];
-    // }
-    // return new Promise((resolve) => {
-    //   setTimeout(() => {
-    //     const item: TypeChatPost = {
-    //       iconurl,
-    //       text,
-    //       username: 'にゃおすけ',
-    //       postdate: `${dayjs().valueOf()}`,
-    //       imgurl: p.fileItem ? p.fileItem.base64str : '',
-    //       good: p.good || 0,
-    //       fukitype: p.fukitype || '',
-    //       npc: p.npc,
-    //     };
-    //     this.ADD_CHAT(item);
-
-    //     resolve({});
-    //   }, 1200);
-    // });
+  ToggleGood(chatID: string): Promise<ActionRes> {
     return Promise.resolve({});
   }
 
@@ -134,27 +64,18 @@ export default class MyClass extends VuexModule {
   }
 
   @Action
-  CreateChatRoom(p: {
-    userID: TypeUserID;
-    users: TypeUserDisp[];
-  }): Promise<ActionRes> {
-    const room: TypeChatRoom = makeChatRoom({
-      memberIDs: p.users.map((u: TypeUserDisp) => u.id).concat([p.userID]),
-      createdByID: p.userID,
-      title: '新規チャット',
+  CreateChatPost(p: { chatID: string; text: string }): Promise<ActionRes> {
+    const post: TypeChatPost = makeChatPost({
+      text: p.text,
+      createdByID: userStore.loginedUser.id,
     });
 
     // 作成
     return chatroomRef
-      .add(room)
+      .add(post)
       .then(() => {
-        log('チャットルーム作成せり', room);
-        // Activity;
-        activityStore.AddActivity({
-          text: `チャットルームを作成したーヌ`,
-          tags: ['チャット'],
-        });
-        this.ADD_CHATROOM(room);
+        log('chatroom作成せり', post);
+        this.ADD_CHATPOST(post);
         return {};
       })
       .catch((error) => {
@@ -164,8 +85,8 @@ export default class MyClass extends VuexModule {
   }
 
   @Action({ rawError: true })
-  Listen(flg: boolean): void {
-    if (!flg) {
+  Listen(chatroomID?: string): void {
+    if (!chatroomID) {
       if (this._unsubscribe) {
         this._unsubscribe();
         this.SET_UNSUBSCRIBE(null);
@@ -176,21 +97,21 @@ export default class MyClass extends VuexModule {
       this._unsubscribe();
     }
     const unsubscribe = chatroomRef
-      .where('memberIDs', 'array-contains', userStore.loginedUser.id)
+      .where('chatroomID', '==', chatroomID)
       .orderBy('createdAt', 'desc')
       .onSnapshot((querySnapshot: firebase.firestore.QuerySnapshot) => {
         querySnapshot
           .docChanges()
           .forEach((change: firebase.firestore.DocumentChange) => {
             const { doc, type } = change;
-            const item: TypeChatRoom = makeChatRoom(doc.data());
+            const item: TypeChatPost = makeChatPost(doc.data());
             console.log('Listen', type, item);
             if (type === 'added') {
-              this.ADD_CHATROOM(item);
+              this.ADD_CHATPOST(item);
             } else if (type === 'modified') {
-              this.UPDATE_CHATROOM(item);
+              this.UPDATE_CHATPOST(item);
             } else if (type === 'removed') {
-              this.REMOVE_CHATROOM(item);
+              this.REMOVE_CHATPOST(item);
             }
           });
       });
@@ -200,21 +121,6 @@ export default class MyClass extends VuexModule {
   // ----------------------
   // get
   // ----------------------
-  get chatrooms(): TypeChatRoom[] {
-    return this._chatrooms.map((room: TypeChatRoom) => {
-      const r = makeChatRoom(room);
-      r.members = r.memberIDs.map((userID: TypeUserID) => {
-        return (
-          userStore.getUserbyID(userID) || makeUserDisp({ id: r.createdByID })
-        );
-      });
-
-      const createdBy = userStore.getUserbyID(r.createdByID);
-      r.createdBy = createdBy || makeUserDisp({ id: r.createdByID });
-
-      return r;
-    });
-  }
 
   get chatPosts(): TypeChatPost[] {
     return this._chatPosts.map((post: TypeChatPost) => {
@@ -236,18 +142,6 @@ export default class MyClass extends VuexModule {
 
       return r;
     });
-  }
-
-  get getUserIDsByChatRoom() {
-    return (rooms: TypeChatRoom[]): TypeUserID[] => {
-      const ids: TypeUserID[] = [];
-      rooms.forEach((room: TypeChatRoom) => {
-        room.memberIDs.forEach((u: TypeUserID) => {
-          ids.push(u);
-        });
-      });
-      return unique(ids);
-    };
   }
 
   get getUserIDsByChatPosts() {

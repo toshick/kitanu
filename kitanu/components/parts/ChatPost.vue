@@ -23,47 +23,45 @@
       </p>
       <!-- text -->
       <p
-        v-if="!isGood"
         class="chatitem-body-text"
         :class="{ 'wf-nicomoji': hasFukidashi }"
         v-html="$sanitize(text)"
       ></p>
-      <!-- good -->
-      <div v-if="isGood" class="chatitem-body-good">
-        <transition name="fade">
-          <p v-if="visibleGood" class="wf-nicomoji">
-            <ion-icon
-              v-for="g in +myitem.good"
-              :key="`good${g}`"
-              name="heart"
-            />
-            <!-- <img class="lazy" :src="placeholderImg" :data-src="`/img/good${myitem.good}.png`" alt="" /> -->
-          </p>
-        </transition>
-      </div>
       <!-- imgs -->
       <p v-for="u in urls" :key="u" class="chatitem-body-img">
         <img class="lazy" :src="placeholderImg" :data-src="u" alt="" />
       </p>
-      <!-- コメント -->
-      <ul v-if="comments.length > 0" class="chatitem-body-comments">
-        <li v-for="(i, index) in comments" :key="`${index}-${i.text}`">
-          <ChatPost
-            :myitem="i"
-            :last="index === comments.length - 1"
-            :is-comment="true"
-          />
-        </li>
-      </ul>
       <!-- bottom -->
       <div class="chatitem-bottom">
-        <!-- <p><a class="chatitem-good" @click="doGood">いいね（45）</a></p> -->
+        <p>
+          <a class="chatitem-good" @click="toggleGood">
+            <ion-icon name="paw" size="small"></ion-icon>
+            （{{ goodCount }}）</a
+          >
+        </p>
+
         <!-- <div class="chatitem-postinfo">
           （{{ createdBy.username }}
           <span>{{ postdate }}</span>
           ）
         </div> -->
       </div>
+      <!-- コメント -->
+      <ul v-if="comments.length > 0" class="chatitem-body-comments">
+        <li v-for="(i, index) in comments" :key="`${index}-${i.text}`">
+          <ChatPost
+            v-if="!i.npc"
+            :myitem="i"
+            :last="index === comments.length - 1"
+            :is-comment="true"
+          />
+          <ChatPostNPC
+            v-else
+            :myitem="i"
+            :last="index === comments.length - 1"
+          />
+        </li>
+      </ul>
     </div>
   </div>
 </template>
@@ -75,10 +73,11 @@
 import dayjs from 'dayjs';
 import Vue, { PropType } from 'vue';
 import { TypeChatPost, TypeUserDisp } from '@/components/types/apptypes';
+import { toast } from '@/common/util';
+import { chatRoomStore } from '~/store';
 
 type State = {
   urls: string[];
-  visibleGood: boolean;
 };
 
 export default Vue.extend({
@@ -100,7 +99,6 @@ export default Vue.extend({
   data(): State {
     return {
       urls: [],
-      visibleGood: false,
     };
   },
   computed: {
@@ -109,9 +107,6 @@ export default Vue.extend({
       if (this.myitem && this.myitem.fukitype) {
         ret['--fuki'] = true;
         ret[`--${this.myitem.fukitype}`] = true;
-      }
-      if (this.isGood) {
-        ret['--good'] = true;
       }
       if (this.isComment) {
         ret['--comment'] = true;
@@ -127,10 +122,6 @@ export default Vue.extend({
     postdate(): string {
       return dayjs(this.myitem.createdAt).format('YYYY.MM.DD HH:mm:ss');
     },
-    isGood(): boolean {
-      if (!this.myitem.good) return false;
-      return this.myitem.good > 0;
-    },
     hasFukidashi(): boolean {
       return !!this.myitem.fukitype;
     },
@@ -139,6 +130,9 @@ export default Vue.extend({
     },
     comments(): TypeChatPost[] {
       return this.myitem.comments;
+    },
+    goodCount(): number {
+      return this.myitem.goodMemberIDs.length;
     },
   },
   mounted() {
@@ -149,20 +143,13 @@ export default Vue.extend({
     if (this.myitem.imgurl) {
       this.urls.push(this.myitem.imgurl);
     }
-    this.showGood();
   },
   methods: {
-    showGood() {
-      if (this.last) {
-        setTimeout(() => {
-          this.visibleGood = true;
-        }, 200);
-      } else {
-        this.visibleGood = true;
-      }
-    },
-    doGood() {
-      console.log('doGood');
+    async toggleGood() {
+      // const { id } = this.myitem;
+      // const res = await chatRoomStore.toggleGood(id);
+
+      toast('グッドヌ');
     },
   },
 });
@@ -176,7 +163,7 @@ export default Vue.extend({
 .chatitem {
   position: relative;
   display: flex;
-  padding: 5px 20px 0;
+  padding: 5px 20px 10px;
   // color: var(--app-comment-color);
   color: #c1620e;
   overflow: hidden;
@@ -277,10 +264,15 @@ export default Vue.extend({
   padding: 0 0 4px 40px;
   font-size: 12px;
   color: #333;
+
+  span {
+    font-size: 10px;
+    vertical-align: middle;
+  }
 }
 .chatitem-body-text {
   font-size: 14px;
-  padding: 0px 10px 10px 10px;
+  padding: 0px 10px 5px 10px;
   text-indent: 2em;
   line-height: 1.4;
   text-shadow: 0 0 2px #ffbd41;
@@ -322,10 +314,10 @@ export default Vue.extend({
 
 .chatitem-bottom {
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   // border-top: dashed 1px #bbb;
   border-radius: 3px;
-  padding: 6px 10px;
+  padding: 0 10px 0 0;
   // margin: 6px 0 0;
   font-size: 10px;
   color: #aaa;
@@ -338,8 +330,13 @@ export default Vue.extend({
   margin-left: auto;
 }
 .chatitem-good {
+  color: var(--app-base-color2);
+  display: flex;
+  align-items: center;
   cursor: pointer;
-  text-decoration: underline;
+  ion-icon {
+    color: inherit;
+  }
 }
 .chatitem-good:hover {
   text-decoration: none;
@@ -347,21 +344,12 @@ export default Vue.extend({
 
 // コメント
 .chatitem-body-comments {
-  margin: 0px 0 0 22px;
+  margin: 10px 0 0 22px;
 
   .chatitem {
     padding: 0 0 0 10px;
-    margin: 0 0 5px;
+    margin: 0 0 10px;
     overflow: auto;
-    &::after {
-      content: '';
-      display: block;
-      position: absolute;
-      top: 0;
-      left: 0px;
-      border-left: dashed 1px #d5a071;
-      height: 100%;
-    }
   }
 
   .chatitem-icon {
@@ -369,10 +357,15 @@ export default Vue.extend({
     top: 0px;
   }
   .chatitem-body-name {
-    padding: 5px 0 0 35px;
+    padding: 0px 0 5px 35px;
   }
   .chatitem-body-text {
-    padding: 10px 0 0;
+    display: inline-block;
+    // background-color: #f7ecab;
+    border-radius: 4px;
+    box-shadow: 0 0 2px #c1620e;
+    padding: 10px;
+    margin: 0 0 5px;
     text-indent: 0;
     font-size: 12px;
   }

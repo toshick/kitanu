@@ -103,3 +103,10 @@ export const userRef: firebase.firestore.CollectionReference = firestore.collect
 export const chatroomRef: firebase.firestore.CollectionReference = firestore.collection(
   'chatroom',
 );
+
+/**
+ * chatpostRef
+ */
+export const chatlistRef: firebase.firestore.CollectionReference = firestore.collection(
+  'chatlist',
+);

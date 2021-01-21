@@ -101,6 +101,7 @@ export function makeChatPost2(params: Partial<TypeChatPost2>): TypeChatPost2 {
 export function makeChatPost(params: Partial<TypeChatPost>): TypeChatPost {
   return {
     id: params.id || uuidv4(),
+    chatroomID: params.chatroomID || '',
     npc: params.npc || false,
     text: params.text || '',
     fukitype: params.fukitype || '',

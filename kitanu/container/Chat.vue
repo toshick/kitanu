@@ -35,7 +35,7 @@ import {
   TypeFile,
   TypeUser,
 } from '@/components/types/apptypes';
-import { chatStore, chatinfoStore, userStore } from '@/store';
+import { chatRoomStore, chatinfoStore, userStore } from '@/store';
 import { postItems } from '@/mock/mockdata';
 
 type State = {
@@ -61,13 +61,13 @@ export default Vue.extend({
   },
   computed: {
     chatPosts(): TypeChatPost[] {
-      return chatStore.chatPosts;
+      return chatRoomStore.chatPosts;
     },
     infoItems(): TypeChatInfoItem[] {
       return chatinfoStore.infoItems;
     },
     members(): TypeUser[] {
-      return chatStore.members;
+      return chatRoomStore.members;
     },
   },
   watch: {
@@ -80,14 +80,22 @@ export default Vue.extend({
       }
     },
   },
-  async mounted() {
-    this.showLoading(true);
-    await chatStore.FetchPostForChat(this.id);
-    this.showLoading(false);
+  mounted() {
+    const { id } = this.$route.params;
+    if (!id) {
+      this.$router.push('/chatlist');
+      return;
+    }
+    chatRoomStore.Listen(id);
+  },
+  beforeDestroy() {
+    chatRoomStore.Listen();
   },
   methods: {
     fetchUsers() {
-      const ids: TypeUserID[] = chatStore.getUserIDsByChatPosts(this.chatPosts);
+      const ids: TypeUserID[] = chatRoomStore.getUserIDsByChatPosts(
+        this.chatPosts,
+      );
       userStore.FetchUsers({ ids, omitIfExist: true });
     },
     async onSubmit(p: {
@@ -106,7 +114,7 @@ export default Vue.extend({
         fukitype: p.fukitype,
         npc: false,
       };
-      await chatStore.PostChat(param);
+      await chatRoomStore.PostChat(param);
       toast('とーこうしタヌ');
       this.showInlineLoading(false);
       // if (p.reset) p.reset();

@@ -1,14 +1,14 @@
 // import Vue, { PropType } from 'vue';
 import { mount } from '@vue/test-utils';
 import ViewChatList from '@/components/ViewChatList.vue';
-import { chatrooms } from '@/mock/mockdata';
+import { chatlist } from '@/mock/mockdata';
 
 describe('ViewChatList', () => {
   let wrapper: any = null;
   beforeEach(() => {
     wrapper = mount(ViewChatList, {
       propsData: {
-        chatrooms,
+        chatlist,
       },
       stubs: ['ion-icon'],
     });
@@ -45,7 +45,7 @@ describe('ViewChatList', () => {
     it('should render nodata', () => {
       const mywrapper = mount(ViewChatList, {
         propsData: {
-          chatrooms: [],
+          chatlist: [],
         },
         stubs: ['ion-icon'],
       });

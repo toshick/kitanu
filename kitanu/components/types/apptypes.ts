@@ -89,9 +89,10 @@ export type TypeChatPost2 = {
 
 export type TypeChatPost = {
   id: string;
+  chatroomID: string;
   npc: boolean;
   text: string;
-  fukitype?: string; // fuki1...fuki4
+  fukitype?: string; // fuki1...fuki3
   imgurl?: string;
   goodMemberIDs: TypeUserID[];
   goodMembers?: TypeUserDisp[]; // used at runtime

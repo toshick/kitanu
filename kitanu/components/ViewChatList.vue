@@ -17,9 +17,9 @@
     </ViewHeader>
     <ViewBody>
       <section>
-        <ul v-if="chatrooms.length > 0" class="chat-list">
+        <ul v-if="chatlist.length > 0" class="chat-list">
           <li
-            v-for="(room, index) in chatrooms"
+            v-for="(room, index) in chatlist"
             :key="`member-${index}-${room.id}`"
           >
             <a class="chat-item" @click="() => goChatDetail(room.id)">
@@ -72,7 +72,7 @@ export default Vue.extend({
   name: 'ViewChatList',
   components: {},
   props: {
-    chatrooms: {
+    chatlist: {
       default: () => [],
       type: Array as PropType<TypeChatRoom[]>,
     },

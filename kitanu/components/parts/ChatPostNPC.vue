@@ -2,22 +2,13 @@
   <div v-if="myitem" :class="myclass">
     <div class="chatitem-body">
       <!-- text -->
-      <!-- good -->
-      <div class="chatitem-body-good">
+      <div class="chatitem-body-npc">
         <transition name="fade">
-          <p v-if="visible" class="wf-nicomoji">
+          <p class="wf-nicomoji">
             {{ myitem.text }}
           </p>
         </transition>
       </div>
-      <!-- bottom -->
-      <!-- <div class="chatitem-bottom">
-        <div class="chatitem-postinfo">
-          （キータヌ
-          <span>{{ postdate }}</span>
-          ）
-        </div>
-      </div> -->
     </div>
   </div>
 </template>
@@ -30,10 +21,7 @@ import dayjs from 'dayjs';
 import Vue, { PropType } from 'vue';
 import { TypeChatPost } from '@/components/types/apptypes';
 
-type State = {
-  urls: string[];
-  visible: boolean;
-};
+type State = {};
 
 export default Vue.extend({
   name: 'ChatPostNPC',
@@ -48,10 +36,7 @@ export default Vue.extend({
     },
   },
   data(): State {
-    return {
-      urls: [],
-      visible: false,
-    };
+    return {};
   },
   computed: {
     myclass(): any {
@@ -65,34 +50,9 @@ export default Vue.extend({
         .replace(/http.*[a-zA-Z]?/, '')
         .replace(/[\n]/g, '<br>');
     },
-    postdate(): string {
-      return dayjs(this.myitem.postdate).format('YYYY.MM.DD HH:mm:ss');
-    },
   },
-  mounted() {
-    const links = this.myitem.text.match(/http.*[a-zA-Z]?/g);
-    if (links && links.length > 0) {
-      this.urls = links;
-    }
-    if (this.myitem.imgurl) {
-      this.urls.push(this.myitem.imgurl);
-    }
-    this.showGood();
-  },
-  methods: {
-    showGood() {
-      if (this.last) {
-        setTimeout(() => {
-          this.visible = true;
-        }, 200);
-      } else {
-        this.visible = true;
-      }
-    },
-    doGood() {
-      console.log('doGood');
-    },
-  },
+  mounted() {},
+  methods: {},
 });
 </script>
 <!------------------------------->
@@ -106,18 +66,14 @@ export default Vue.extend({
   display: flex;
   padding: 10px 20px 10px 20px;
 }
-.chatitem-icon {
-  position: absolute;
-  top: 5px;
-  left: 50px;
-}
+
 .chatitem-body {
   flex: 1;
   font-size: 12px;
   line-height: 1.5;
 }
 
-.chatitem-body-good {
+.chatitem-body-npc {
   display: flex;
   justify-content: flex-end;
   align-items: center;
@@ -130,9 +86,9 @@ export default Vue.extend({
     font-size: 14px;
     line-height: 1.4;
     border-radius: 6px;
-    background-color: #fff;
-    box-shadow: 0 0 2px 1px #ddcd69;
-    color: #ddcd69;
+    // background-color: #fff;
+    // box-shadow: 0 0 2px 1px #ddcd69;
+    color: #cab218;
     text-shadow: 0 1px 1px #fff;
     &::after {
       display: block;
@@ -147,37 +103,5 @@ export default Vue.extend({
       left: -36px;
     }
   }
-}
-
-.chatitem .chat-usericon {
-  flex: 1 0 0;
-  margin-right: 0.5em;
-  border-radius: 0;
-  width: 40px;
-  height: auto;
-}
-
-// .chatitem-bottom {
-//   display: flex;
-//   align-items: center;
-//   border-top: dashed 1px #bbb;
-//   border-radius: 3px;
-//   padding: 6px 10px;
-//   margin: 6px 0 0;
-//   font-size: 10px;
-//   color: #aaa;
-// }
-
-.chatitem-postinfo {
-  font-size: 10px;
-  text-align: right;
-  margin-left: auto;
-}
-.chatitem-good {
-  cursor: pointer;
-  text-decoration: underline;
-}
-.chatitem-good:hover {
-  text-decoration: none;
 }
 </style>

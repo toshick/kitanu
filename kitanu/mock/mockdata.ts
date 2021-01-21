@@ -91,6 +91,19 @@ export const chatItems: TypeChatPost[] = [
       '初弾を手動で排莢していたな。考え方はおかしくない。だが聞きかじっただけの行為を実戦で試すもんじゃない',
     createdAt: 1601114526252,
     // fukitype: `fuki${Math.ceil(Math.random() * 4)}`,
+    comments: [
+      makeChatPost({
+        createdByID: 'YjEQX5l3wNC255UftK9StZ0XKPFe',
+        text: 'そんなときはジンガで呼吸を整えるんだッ',
+        createdAt: 1601114526252,
+      }),
+    ],
+  }),
+  makeChatPost({
+    createdByID: 'YjEQX5l3wNC255UftK9StZ0XKPFe',
+    text: 'まったく続きが気になるヌ',
+    createdAt: 1601114526252,
+    npc: true,
   }),
   makeChatPost({
     createdByID: 'YjEQX5l3wNC255UftK9StZ0XKPFe',
@@ -110,7 +123,7 @@ export const chatItems: TypeChatPost[] = [
   }),
   makeChatPost({
     createdByID: '5GRnX8QzjcygEG6eRGt5CfRwKhE6',
-    text: 'そんなときはジンガで呼吸を整えるんだッ',
+    text: 'そいつわ大変だったヌ',
     createdAt: 1601114526252,
     npc: true,
   }),
@@ -136,7 +149,6 @@ export const chatItems: TypeChatPost[] = [
     text:
       'スネーク、俺達は政府や誰かの道具じゃない\n戦うことでしか自分を表現できなかったが、いつも自分の意志で戦ってきた。',
     createdAt: 1601114526252,
-    fukitype: `fuki1`,
   }),
   makeChatPost({
     createdByID: '5GRnX8QzjcygEG6eRGt5CfRwKhE6',
@@ -151,13 +163,6 @@ export const chatItems: TypeChatPost[] = [
       'スネーク、俺達は政府や誰かの道具じゃない\n戦うことでしか自分を表現できなかったが、いつも自分の意志で戦ってきた。',
     createdAt: 1601114526252,
     fukitype: `fuki3`,
-  }),
-  makeChatPost({
-    createdByID: 'YjEQX5l3wNC255UftK9StZ0XKPFe',
-    text:
-      'スネーク、俺達は政府や誰かの道具じゃない\n戦うことでしか自分を表現できなかったが、いつも自分の意志で戦ってきた。',
-    createdAt: 1601114526252,
-    fukitype: `fuki4`,
   }),
 ];
 
@@ -200,9 +205,9 @@ export const albumItems: TypeAlbum[] = [
 ];
 
 /**
- * chatrooms
+ * chatlist
  */
-export const chatrooms: TypeChatRoom[] = [
+export const chatlist: TypeChatRoom[] = [
   makeChatRoom({
     memberIDs: [user.id],
     createdByID: user.id,

@@ -1,7 +1,7 @@
 <template>
   <div>
     <ViewChatList
-      :chatrooms="chatrooms"
+      :chatlist="chatlist"
       @selected="onSelected"
       @addchat="visibleSelectMember = true"
     />
@@ -28,7 +28,7 @@ import {
 } from '@/components/types/apptypes';
 import ViewChatList from '@/components/ViewChatList.vue';
 import SelectMember from '@/container/SelectMember.vue';
-import { userStore, chatStore } from '@/store';
+import { userStore, chatListStore } from '@/store';
 
 type State = {
   visibleSelectMember: boolean;
@@ -42,12 +42,12 @@ export default Vue.extend({
     };
   },
   computed: {
-    chatrooms(): TypeChatRoom[] {
-      return chatStore.chatrooms;
+    chatlist(): TypeChatRoom[] {
+      return chatListStore.chatlist;
     },
   },
   watch: {
-    chatrooms(newval: TypeChatRoom[], oldval: TypeChatRoom[]) {
+    chatlist(newval: TypeChatRoom[], oldval: TypeChatRoom[]) {
       if (newval.length > oldval.length) {
         this.fetchUsers();
       }
@@ -56,7 +56,9 @@ export default Vue.extend({
   mounted() {},
   methods: {
     fetchUsers() {
-      const ids: TypeUserID[] = chatStore.getUserIDsByChatRoom(this.chatrooms);
+      const ids: TypeUserID[] = chatListStore.getUserIDsByChatRoom(
+        this.chatlist,
+      );
       userStore.FetchUsers({ ids, omitIfExist: true });
     },
     onSelected(id: string) {
@@ -67,7 +69,7 @@ export default Vue.extend({
      */
     async onSaveSelectMember(members: TypeUserDisp[]) {
       this.showLoading(true);
-      await chatStore.CreateChatRoom({
+      await chatListStore.CreateChatRoom({
         userID: userStore.loginedUser.id,
         users: members,
       });
