@@ -1,18 +1,18 @@
 <template>
-  <Chat :id="id" />
+  <ChatRoom :chatroomid="id" />
 </template>
 <!------------------------------->
 
 <!------------------------------->
 <script lang="ts">
 import Vue from 'vue';
-import Chat from '@/container/Chat.vue';
+import ChatRoom from '@/container/ChatRoom.vue';
 
 type State = {};
 
 export default Vue.extend({
   name: 'ChatDetail',
-  components: { Chat },
+  components: { ChatRoom },
   data(): State {
     return {};
   },

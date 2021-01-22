@@ -17,12 +17,15 @@
       </template>
     </ViewHeader>
     <ViewBody ref="appbody">
+      <LoadingInline v-show="visbleInlineLoading" class="loading-inline" />
       <ul>
         <li v-for="(i, index) in chatPosts" :key="`${index}-${i.text}`">
           <ChatPost
             v-if="!i.npc"
             :myitem="i"
             :last="index === chatPosts.length - 1"
+            :is-self-post="i.createdByID == loginUserId"
+            @good="(chatpostid) => $emit('good', chatpostid)"
           />
           <ChatPostNPC
             v-else
@@ -31,7 +34,7 @@
           />
         </li>
       </ul>
-      <LoadingInline v-show="visbleInlineLoading" class="loading-inline" />
+      <!-- <LoadingInline v-show="visbleInlineLoading" class="loading-inline" /> -->
     </ViewBody>
     <ViewFooter
       mode="chat"
@@ -59,7 +62,7 @@ import {
 type State = {};
 
 export default Vue.extend({
-  name: 'ViewChat',
+  name: 'ViewChatRoom',
 
   props: {
     title: {
@@ -86,6 +89,10 @@ export default Vue.extend({
       default: false,
       type: Boolean,
     },
+    loginUserId: {
+      default: '',
+      type: String,
+    },
   },
   data(): State {
     return {};
@@ -96,33 +103,7 @@ export default Vue.extend({
     },
   },
   mounted() {},
-  methods: {
-    // close() {
-    //   this.$emit('close');
-    // },
-    // startTalk() {
-    //   const $t = this.$el.closest('.mobileview') || null;
-    //   this.openView({
-    //     modalTitle: '確認しますヨ',
-    //     target: $t,
-    //     component: TextInputModal,
-    //     klass: ['view-textinput'],
-    //     compoParams: {
-    //       confirmText:
-    //         'なんだかしらんけどよろしいですか？なんだかしらんけどよろしいですか？',
-    //       onConfirm: () => {
-    //         console.log('いえす');
-    //       },
-    //     },
-    //   });
-    // },
-    // onSubmit(p: any) {
-    //   this.$emit('submit', p);
-    // },
-    // selectMember() {
-    //   this.$emit('selectMember');
-    // },
-  },
+  methods: {},
 });
 </script>
 <!------------------------------->
@@ -136,6 +117,6 @@ ul {
   background-color: #fff;
 }
 .loading-inline {
-  padding: 0 0 40px;
+  padding: 30px 0 10px;
 }
 </style>

@@ -1,12 +1,14 @@
 <template>
   <div>
-    <ViewChat
+    <ViewChatRoom
       :chat-posts="chatPosts"
       :info-items="infoItems"
       :isconnecting="connecting"
       :sending="sending"
+      :login-user-id="loginUserID"
       @submit="onSubmit"
       @select-member="visibleSelectMember = true"
+      @good="onGood"
     />
     <!-- SelectMember -->
     <transition name="modal">
@@ -26,7 +28,7 @@
 import Vue from 'vue';
 import mixinScrollview from '@/mixin/mxinScrollview';
 import { toast } from '@/common/util';
-import ViewChat from '@/components/ViewChat.vue';
+import ViewChatRoom from '@/components/ViewChatRoom.vue';
 import SelectMember from '@/container/SelectMember.vue';
 import {
   TypeChatPost,
@@ -44,11 +46,11 @@ type State = {
 };
 
 export default Vue.extend({
-  name: 'Chat',
-  components: { ViewChat, SelectMember },
+  name: 'ChatRoom',
+  components: { ViewChatRoom, SelectMember },
   mixins: [mixinScrollview],
   props: {
-    id: {
+    chatroomid: {
       default: '',
       type: String,
     },
@@ -69,24 +71,23 @@ export default Vue.extend({
     members(): TypeUser[] {
       return chatRoomStore.members;
     },
+    loginUserID(): TypeUserID {
+      return userStore.loginedUser.id;
+    },
   },
   watch: {
     chatPosts(newdata: TypeChatPost[], olddata: TypeChatPost[]) {
       if (newdata.length !== olddata.length) {
         setTimeout(() => {
-          this.scrollBottomSmooth();
+          this.scrollTopSmooth();
         }, 500);
         this.fetchUsers();
       }
     },
   },
   mounted() {
-    const { id } = this.$route.params;
-    if (!id) {
-      this.$router.push('/chatlist');
-      return;
-    }
-    chatRoomStore.Listen(id);
+    chatRoomStore.Reset();
+    chatRoomStore.Listen(this.chatroomid);
   },
   beforeDestroy() {
     chatRoomStore.Listen();
@@ -101,37 +102,37 @@ export default Vue.extend({
     async onSubmit(p: {
       fileItem?: TypeFile;
       text: string;
-      // reset?: () => void;
       good?: number;
       fukitype: string;
     }) {
-      this.showInlineLoading(true);
-
-      const param: TypeChatPost = {
-        fileItem: p.fileItem || null,
+      await this.showInlineLoading(true);
+      const res = await chatRoomStore.CreateChatPost({
+        chatroomID: this.chatroomid,
         text: p.text,
-        good: p.good || null,
-        fukitype: p.fukitype,
-        npc: false,
-      };
-      await chatRoomStore.PostChat(param);
-      toast('とーこうしタヌ');
+      });
       this.showInlineLoading(false);
-      // if (p.reset) p.reset();
-
-      if (!p.good) {
-        setTimeout(() => {
-          // this.kitanuTalk();
-        }, 1000);
+      if (res.errorMsg) {
+        toast('とーこうしっぱいヌ');
+        return;
       }
+
+      toast('とーこうしタヌ');
     },
-    showInlineLoading(flg: boolean) {
+    showInlineLoading(flg: boolean): Promise<void> {
       this.sending = flg;
-      this.scrollBottom();
+      if (!flg) return Promise.resolve();
+      return this.scrollTopSmooth();
     },
     onSaveSelectMember(selectedMap: any) {
       this.visibleSelectMember = false;
-      console.log('selectedMap', selectedMap);
+    },
+    async onGood(chatpostid: string) {
+      const res = await chatRoomStore.ToggleGood({
+        chatpostID: chatpostid,
+      });
+      if (res.errorMsg) {
+        toast('グッドしっぱいヌ');
+      }
     },
   },
 });

@@ -33,12 +33,20 @@
       </p>
       <!-- bottom -->
       <div class="chatitem-bottom">
-        <p>
-          <a class="chatitem-good" @click="toggleGood">
-            <ion-icon name="paw" size="small"></ion-icon>
-            （{{ goodCount }}）</a
-          >
-        </p>
+        <a class="chatitem-good" @click="$emit('good', myitem.id)">
+          <ion-icon name="paw" size="small"></ion-icon>
+          <span>{{ goodCount }}</span>
+        </a>
+        <a class="chatitem-reply" @click="$emit('good', myitem.id)">
+          <ion-icon name="chatbubble-ellipses-outline" size="small"></ion-icon
+        ></a>
+        <a
+          v-if="isSelfPost"
+          class="chatitem-edit"
+          @click="$emit('good', myitem.id)"
+        >
+          編集</a
+        >
 
         <!-- <div class="chatitem-postinfo">
           （{{ createdBy.username }}
@@ -73,8 +81,6 @@
 import dayjs from 'dayjs';
 import Vue, { PropType } from 'vue';
 import { TypeChatPost, TypeUserDisp } from '@/components/types/apptypes';
-import { toast } from '@/common/util';
-import { chatRoomStore } from '~/store';
 
 type State = {
   urls: string[];
@@ -92,6 +98,10 @@ export default Vue.extend({
       default: false,
     },
     isComment: {
+      type: Boolean,
+      default: false,
+    },
+    isSelfPost: {
       type: Boolean,
       default: false,
     },
@@ -144,14 +154,7 @@ export default Vue.extend({
       this.urls.push(this.myitem.imgurl);
     }
   },
-  methods: {
-    async toggleGood() {
-      // const { id } = this.myitem;
-      // const res = await chatRoomStore.toggleGood(id);
-
-      toast('グッドヌ');
-    },
-  },
+  methods: {},
 });
 </script>
 <!------------------------------->
@@ -330,16 +333,28 @@ export default Vue.extend({
   margin-left: auto;
 }
 .chatitem-good {
-  color: var(--app-base-color2);
+  // color: var(--app-base-color2);
   display: flex;
   align-items: center;
   cursor: pointer;
   ion-icon {
     color: inherit;
   }
+  span {
+    margin: 0 10px 0 5px;
+  }
 }
-.chatitem-good:hover {
-  text-decoration: none;
+// 編集
+.chatitem-edit {
+  margin-left: 1em;
+}
+// 返信
+.chatitem-reply {
+  display: flex;
+  align-items: center;
+  ion-icon {
+    color: inherit;
+  }
 }
 
 // コメント

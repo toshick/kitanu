@@ -23,5 +23,7 @@ declare module 'vue/types/vue' {
     // mixin
     scrollBottom: any;
     scrollBottomSmooth: any;
+    scrollTop: any;
+    scrollTopSmooth: any;
   }
 }

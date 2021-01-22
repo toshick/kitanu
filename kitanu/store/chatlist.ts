@@ -75,7 +75,8 @@ export default class MyClass extends VuexModule {
 
     // 作成
     return chatlistRef
-      .add(room)
+      .doc(room.id)
+      .set(room)
       .then(() => {
         log('チャットルーム作成せり', room);
         // Activity;

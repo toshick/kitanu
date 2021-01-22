@@ -27,11 +27,36 @@ export default Vue.extend({
     scrollBottomSmooth() {
       const $el = this.$el.querySelector('.app-body') as Element;
       const bottom = $el.scrollHeight;
+      const duration = 400;
       anime({
         targets: $el,
         scrollTop: bottom,
-        duration: 400,
+        duration,
         easing: 'easeInOutSine',
+      });
+      return new Promise((resolve: any) => {
+        setTimeout(() => {
+          resolve();
+        }, duration);
+      });
+    },
+    scrollTop() {
+      const $el = this.$el.querySelector('.app-body') as Element;
+      $el.scrollTo(0, 0);
+    },
+    scrollTopSmooth() {
+      const $el = this.$el.querySelector('.app-body') as Element;
+      const duration = 400;
+      anime({
+        targets: $el,
+        scrollTop: 0,
+        duration,
+        easing: 'easeInOutSine',
+      });
+      return new Promise((resolve: any) => {
+        setTimeout(() => {
+          resolve();
+        }, duration);
       });
     },
   },

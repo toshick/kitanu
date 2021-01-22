@@ -37,25 +37,66 @@ export default class MyClass extends VuexModule {
   }
 
   @Mutation
-  ADD_CHATPOST(postitem: TypeChatPost) {
-    this._chatPosts = asort([...this._chatPosts, postitem], 'createdAt');
+  ADD_CHATPOST(chatpost: TypeChatPost) {
+    this._chatPosts = asort(
+      [...this._chatPosts, chatpost],
+      'createdAt',
+    ).reverse();
   }
 
   @Mutation
   REMOVE_CHATPOST(id: string) {
-    this._chatPosts = this._chatPosts.filter((i: TypeChatPost) => i.id !== id);
+    this._chatPosts = this._chatPosts.filter(
+      (chatpost: TypeChatPost) => chatpost.id !== id,
+    );
   }
 
   @Mutation
-  UPDATE_CHATPOST(postitem: TypeChatPost) {}
+  UPDATE_CHATPOST(chatpost: TypeChatPost) {
+    const ary = this._chatPosts.map((c: TypeChatPost) => {
+      if (c.id === chatpost.id) {
+        return { ...c, ...chatpost };
+      }
+      return c;
+    });
+    this._chatPosts = asort(ary, 'createdAt').reverse();
+  }
 
   // ----------------------
   // Action
   // ----------------------
 
   @Action
-  ToggleGood(chatID: string): Promise<ActionRes> {
-    return Promise.resolve({});
+  ToggleGood(p: { chatpostID: string }): Promise<ActionRes> {
+    const { chatpostID } = p;
+    const loginUserID = userStore.loginedUser.id;
+
+    const chatpost = this._chatPosts.find(
+      (c: TypeChatPost) => c.id === chatpostID,
+    );
+    if (!chatpost) {
+      return Promise.reject(new Error('no chatpost'));
+    }
+    let ids = [...chatpost.goodMemberIDs];
+    if (ids.includes(loginUserID)) {
+      ids = ids.filter((id: string) => id !== loginUserID);
+    } else {
+      ids.push(loginUserID);
+    }
+    console.log('ToggleGood', chatpostID, 'ids', ids);
+
+    return chatroomRef
+      .doc(chatpostID)
+      .update({
+        goodMemberIDs: ids,
+      })
+      .then(() => {
+        return {};
+      })
+      .catch((error) => {
+        logError(error, 'ToggleGood');
+        return { errorCode: error.code, errorMsg: error.message };
+      });
   }
 
   @Action
@@ -64,18 +105,26 @@ export default class MyClass extends VuexModule {
   }
 
   @Action
-  CreateChatPost(p: { chatID: string; text: string }): Promise<ActionRes> {
+  Reset(): void {
+    this.RESET_CHATPOST();
+  }
+
+  @Action
+  CreateChatPost(p: { chatroomID: string; text: string }): Promise<ActionRes> {
+    if (!p.chatroomID) return Promise.reject(new Error('no chatroomID'));
+    const loginUserID = userStore.loginedUser.id;
     const post: TypeChatPost = makeChatPost({
       text: p.text,
-      createdByID: userStore.loginedUser.id,
+      createdByID: loginUserID,
+      chatroomID: p.chatroomID,
     });
 
     // 作成
     return chatroomRef
-      .add(post)
+      .doc(post.id)
+      .set(post)
       .then(() => {
         log('chatroom作成せり', post);
-        this.ADD_CHATPOST(post);
         return {};
       })
       .catch((error) => {
@@ -99,6 +148,7 @@ export default class MyClass extends VuexModule {
     const unsubscribe = chatroomRef
       .where('chatroomID', '==', chatroomID)
       .orderBy('createdAt', 'desc')
+      .limit(30)
       .onSnapshot((querySnapshot: firebase.firestore.QuerySnapshot) => {
         querySnapshot
           .docChanges()
@@ -111,7 +161,7 @@ export default class MyClass extends VuexModule {
             } else if (type === 'modified') {
               this.UPDATE_CHATPOST(item);
             } else if (type === 'removed') {
-              this.REMOVE_CHATPOST(item);
+              this.REMOVE_CHATPOST(item.id);
             }
           });
       });
@@ -162,5 +212,9 @@ export default class MyClass extends VuexModule {
 
   get chatItems(): TypeChatPost[] {
     return chatItems;
+  }
+
+  get members(): TypeUser[] {
+    return [];
   }
 }
