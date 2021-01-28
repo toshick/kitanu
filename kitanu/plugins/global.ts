@@ -25,6 +25,7 @@ import ViewFooter from '@/components/ViewFooter.vue';
 import ChatPost from '@/components/parts/ChatPost.vue';
 import ChatPostNPC from '@/components/parts/ChatPostNPC.vue';
 import LoadingInline from '@/components/parts/LoadingInline.vue';
+import TextArea from '@/components/parts/TextArea.vue';
 
 import 'camaleao-design/components/install';
 import 'camaleao-design/form/validation';
@@ -40,6 +41,7 @@ Vue.component('ParticleButton', ParticleButton);
 Vue.component('ChatPost', ChatPost);
 Vue.component('ChatPostNPC', ChatPostNPC);
 Vue.component('LoadingInline', LoadingInline);
+Vue.component('TextArea', TextArea);
 
 Vue.prototype.$sanitize = sanitizeHTML;
 

@@ -19,6 +19,7 @@ export type TypeLoginUser = {
 export type ActionRes = {
   errorMsg?: string;
   errorCode?: string;
+  result?: any;
 };
 
 export type TypeUser = {
@@ -79,17 +80,10 @@ export type TypeChatRoom = {
   createdAt?: number;
 };
 
-export type TypeChatPost2 = {
-  id: string;
-  text: string;
-  fileItem?: TypeFile | null;
-  sortindex?: string;
-  createdAt?: number;
-};
-
 export type TypeChatPost = {
   id: string;
   chatroomID: string;
+  isComment: boolean;
   npc: boolean;
   text: string;
   fukitype?: string; // fuki1...fuki3
@@ -98,7 +92,8 @@ export type TypeChatPost = {
   goodMembers?: TypeUserDisp[]; // used at runtime
   createdByID: TypeUserID;
   createdBy?: TypeUserDisp; // used at runtime
-  comments: TypeChatPost[];
+  commentPostIDs: string[];
+  comments: TypeChatPost[]; // used at runtime
   createdAt?: number;
 };
 
@@ -119,4 +114,24 @@ export type TypeActivity = {
   text: string;
   createdAt: number;
   tags: string[];
+};
+
+// ----------------------
+// api
+// ----------------------
+
+export type ChatPostCreateRequest = {
+  fileItem?: TypeFile;
+  chatroomID: string;
+  text: string;
+  fukitype: string;
+  isComment?: boolean;
+};
+export type ChatPostUpdateRequest = {
+  postid: string;
+  fileItem?: TypeFile;
+  text?: string;
+  fukitype?: string;
+  createdAt?: string;
+  commentPostIDs?: string[];
 };

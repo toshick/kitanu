@@ -9,6 +9,8 @@
       @submit="onSubmit"
       @select-member="visibleSelectMember = true"
       @good="onGood"
+      @edit="onEdit"
+      @submit-comment="onSubmitComment"
     />
     <!-- SelectMember -->
     <transition name="modal">
@@ -36,8 +38,11 @@ import {
   TypeUserID,
   TypeFile,
   TypeUser,
+  ChatPostCreateRequest,
+  ChatPostUpdateRequest,
 } from '@/components/types/apptypes';
-import { chatRoomStore, chatinfoStore, userStore } from '@/store';
+import { chatPostStore, chatinfoStore, userStore } from '@/store';
+import { makeChatPost } from '@/common/helper';
 import { postItems } from '@/mock/mockdata';
 
 type State = {
@@ -63,13 +68,13 @@ export default Vue.extend({
   },
   computed: {
     chatPosts(): TypeChatPost[] {
-      return chatRoomStore.chatPosts;
+      return chatPostStore.chatPosts;
     },
     infoItems(): TypeChatInfoItem[] {
       return chatinfoStore.infoItems;
     },
     members(): TypeUser[] {
-      return chatRoomStore.members;
+      return chatPostStore.members;
     },
     loginUserID(): TypeUserID {
       return userStore.loginedUser.id;
@@ -78,60 +83,98 @@ export default Vue.extend({
   watch: {
     chatPosts(newdata: TypeChatPost[], olddata: TypeChatPost[]) {
       if (newdata.length !== olddata.length) {
-        setTimeout(() => {
-          this.scrollTopSmooth();
-        }, 500);
+        // setTimeout(() => {
+        //   this.scrollTopSmooth();
+        // }, 500);
         this.fetchUsers();
       }
     },
   },
   mounted() {
-    chatRoomStore.Reset();
-    chatRoomStore.Listen(this.chatroomid);
+    chatPostStore.Reset();
+    chatPostStore.Listen(this.chatroomid);
   },
   beforeDestroy() {
-    chatRoomStore.Listen();
+    chatPostStore.Listen();
   },
   methods: {
     fetchUsers() {
-      const ids: TypeUserID[] = chatRoomStore.getUserIDsByChatPosts(
+      const ids: TypeUserID[] = chatPostStore.getUserIDsByChatPosts(
         this.chatPosts,
       );
       userStore.FetchUsers({ ids, omitIfExist: true });
     },
-    async onSubmit(p: {
-      fileItem?: TypeFile;
-      text: string;
-      good?: number;
-      fukitype: string;
-    }) {
-      await this.showInlineLoading(true);
-      const res = await chatRoomStore.CreateChatPost({
+    async onSubmit(p: ChatPostCreateRequest | ChatPostUpdateRequest) {
+      await this.scrollTopSmooth();
+      this.showInlineLoading(true);
+      const { createdAt } = p;
+      if (createdAt) {
+        const res = await this.updatePost(p);
+        if (res.errorMsg) {
+          toast('こーしんしっぱいヌ');
+        }
+      } else {
+        const res = await this.createPost(p);
+        if (res.errorMsg) {
+          toast('とーこうしっぱいヌ');
+        }
+      }
+      this.showInlineLoading(false);
+      toast('とーこうしタヌ');
+      setTimeout(() => {
+        this.scrollTopSmooth();
+      }, 500);
+    },
+    createPost(p: ChatPostCreateRequest) {
+      return chatPostStore.CreateChatPost({
         chatroomID: this.chatroomid,
         text: p.text,
+        fukitype: p.fukitype,
       });
-      this.showInlineLoading(false);
-      if (res.errorMsg) {
-        toast('とーこうしっぱいヌ');
-        return;
-      }
-
-      toast('とーこうしタヌ');
     },
-    showInlineLoading(flg: boolean): Promise<void> {
+    updatePost(p: ChatPostUpdateRequest) {
+      return chatPostStore.UpdateChatPost({
+        postid: p.postid,
+        text: p.text,
+        fukitype: p.fukitype,
+        createdAt: p.createdAt,
+      });
+    },
+    showInlineLoading(flg: boolean): void {
       this.sending = flg;
-      if (!flg) return Promise.resolve();
-      return this.scrollTopSmooth();
     },
     onSaveSelectMember(selectedMap: any) {
       this.visibleSelectMember = false;
     },
     async onGood(chatpostid: string) {
-      const res = await chatRoomStore.ToggleGood({
+      const res = await chatPostStore.ToggleGood({
         chatpostID: chatpostid,
       });
       if (res.errorMsg) {
         toast('グッドしっぱいヌ');
+      }
+    },
+    async onEdit(chatpostid: string) {
+      // const res = await chatPostStore.ToggleGood({
+      //   chatpostID: chatpostid,
+      // });
+      // if (res.errorMsg) {
+      //   toast('グッドしっぱいヌ');
+      // }
+    },
+    async onSubmitComment(chatpostid: string, str: string) {
+      this.showInlineLoading(true);
+      const commentPost = makeChatPost({
+        text: str,
+        createdByID: this.loginUserID,
+      });
+      const res = await chatPostStore.AddChatPostComment({
+        postid: chatpostid,
+        commentPost,
+      });
+      this.showInlineLoading(false);
+      if (res.errorMsg) {
+        toast('こーしんしっぱいヌ');
       }
     },
   },

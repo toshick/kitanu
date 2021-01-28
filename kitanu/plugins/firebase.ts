@@ -98,10 +98,10 @@ export const userRef: firebase.firestore.CollectionReference = firestore.collect
 );
 
 /**
- * chatroomRef
+ * chatpostRef
  */
-export const chatroomRef: firebase.firestore.CollectionReference = firestore.collection(
-  'chatroom',
+export const chatpostRef: firebase.firestore.CollectionReference = firestore.collection(
+  'chatpost',
 );
 
 /**

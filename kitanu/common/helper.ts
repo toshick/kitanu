@@ -6,7 +6,7 @@ import {
   TypeUser,
   TypeUserDisp,
   TypeChatRoom,
-  TypeChatPost2,
+  // TypeChatPost2,
   TypeChatPost,
   TypeAlbum,
   TypeChatInfoItem,
@@ -48,9 +48,7 @@ export function makeUser(params: Partial<TypeUser>): TypeUser {
     kycOK: params.kycOK || false,
     agreeTermsOK: params.agreeTermsOK || false,
     friendIdList: params.friendIdList || [],
-    createdAt: params.createdAt
-      ? dayjs(params.createdAt).valueOf()
-      : dayjs().valueOf(),
+    createdAt: params.createdAt ? params.createdAt : dayjs().valueOf(),
     removed: params.removed || false,
   };
 }
@@ -83,35 +81,20 @@ export function makeUserDisp(params: Partial<TypeUserDisp>): TypeUserDisp {
 /**
  * makeChatPost
  */
-export function makeChatPost2(params: Partial<TypeChatPost2>): TypeChatPost2 {
-  return {
-    id: params.id || uuidv4(),
-    text: params.text || '',
-    fileItem: params.fileItem || null,
-    sortindex: params.sortindex || '',
-    createdAt: params.createdAt
-      ? dayjs(params.createdAt).valueOf()
-      : dayjs().valueOf(),
-  };
-}
-
-/**
- * makeChatPost
- */
 export function makeChatPost(params: Partial<TypeChatPost>): TypeChatPost {
   return {
     id: params.id || uuidv4(),
     chatroomID: params.chatroomID || '',
+    isComment: params.isComment || false,
     npc: params.npc || false,
     text: params.text || '',
     fukitype: params.fukitype || '',
     imgurl: params.imgurl || '',
     goodMemberIDs: params.goodMemberIDs || [],
     createdByID: params.createdByID || '',
+    commentPostIDs: params.commentPostIDs || [],
     comments: params.comments || [],
-    createdAt: params.createdAt
-      ? dayjs(params.createdAt).valueOf()
-      : dayjs().valueOf(),
+    createdAt: params.createdAt ? params.createdAt : dayjs().valueOf(),
   };
 }
 
@@ -127,9 +110,7 @@ export function makeAlbum(params: Partial<TypeAlbum>): TypeAlbum {
     text: params.text || '',
     memberIDs: params.memberIDs || [],
     imgurl: params.imgurl || '',
-    createdAt: params.createdAt
-      ? dayjs(params.createdAt).valueOf()
-      : dayjs().valueOf(),
+    createdAt: params.createdAt ? params.createdAt : dayjs().valueOf(),
   };
 }
 
@@ -142,9 +123,7 @@ export function makeChatRoom(params: Partial<TypeChatRoom>): TypeChatRoom {
     memberIDs: params.memberIDs || [],
     createdByID: params.createdByID || '',
     title: params.title || '',
-    createdAt: params.createdAt
-      ? dayjs(params.createdAt).valueOf()
-      : dayjs().valueOf(),
+    createdAt: params.createdAt ? params.createdAt : dayjs().valueOf(),
   };
 }
 
@@ -158,9 +137,7 @@ export function makeChatInfo(
     id: params.id || uuidv4(),
     text: params.text || '',
     username: params.username || '',
-    createdAt: params.createdAt
-      ? dayjs(params.createdAt).valueOf()
-      : dayjs().valueOf(),
+    createdAt: params.createdAt ? params.createdAt : dayjs().valueOf(),
   };
 }
 
@@ -172,9 +149,7 @@ export function makeActivity(params: Partial<TypeActivity>): TypeActivity {
     id: params.id || uuidv4(),
     userID: params.userID || '',
     text: params.text || '',
-    createdAt: params.createdAt
-      ? dayjs(params.createdAt).valueOf()
-      : dayjs().valueOf(),
+    createdAt: params.createdAt ? params.createdAt : dayjs().valueOf(),
     tags: params.tags || [],
     user: makeUserDisp({
       id: params.userID,

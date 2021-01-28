@@ -75,11 +75,6 @@ export default Vue.extend({
     onSaveAddFriend(members: TypeUser[]) {
       console.log('onSaveAddFriend', members.length);
 
-      // await chatRoomStore.CreateChatRoom({
-      //   loginuser: appStore.logined,
-      //   users: members,
-      // });
-
       this.visibleAddFriend = false;
     },
   },

@@ -1,0 +1,136 @@
+<template>
+  <ValidationProvider
+    v-slot="{ invalid }"
+    tag="form"
+    class="mytextarea"
+    :class="myclass"
+    rules="required"
+  >
+    <div class="textareainput">
+      <div class="textarea">
+        <textarea
+          ref="textarea"
+          :value="txt"
+          :rows="commentTextRows"
+          placeholder="コメントヌ"
+          @input="onInputComment"
+        />
+      </div>
+      <div class="textarea-bottom">
+        <a class="btn-submit" :disabled="invalid" @click="submit">
+          <ion-icon name="paper-plane-outline"></ion-icon>
+        </a>
+        <a class="btn-close" @click="$emit('close')">
+          <ion-icon name="close-outline"></ion-icon>
+        </a>
+      </div>
+    </div>
+  </ValidationProvider>
+</template>
+<!------------------------------->
+
+<!------------------------------->
+<script lang="ts">
+import Vue from 'vue';
+import { ValidationProvider } from 'vee-validate';
+
+type State = {
+  txt: string;
+};
+
+export default Vue.extend({
+  name: 'TextArea',
+  components: { ValidationProvider },
+  props: {
+    placeholder: {
+      default: '',
+      type: String,
+    },
+    withColor: {
+      default: false,
+      type: Boolean,
+    },
+  },
+  data(): State {
+    return {
+      txt: '',
+    };
+  },
+  computed: {
+    commentTextRows(): number {
+      if (!this.txt) return 1;
+      const tmp = this.txt.split('\n');
+      const count = tmp.reduce((eachValue, currentValue) => {
+        const mycount = Math.floor(currentValue.length / 13);
+        return eachValue + mycount;
+      }, 0);
+      return tmp.length + count;
+    },
+    myclass(): any {
+      const ret: any = {};
+      if (this.withColor) {
+        ret['--with-color'] = true;
+      }
+      return ret;
+    },
+  },
+  mounted() {},
+  methods: {
+    focus() {
+      const $textarea = this.$refs.textarea as HTMLTextAreaElement;
+      $textarea.focus();
+    },
+    submit() {
+      this.$emit('submit', this.txt);
+      this.txt = '';
+    },
+    onInputComment(e: InputEvent) {
+      const $el = e.target as HTMLTextAreaElement;
+      this.txt = $el.value;
+    },
+  },
+});
+</script>
+<!------------------------------->
+
+<!------------------------------->
+<style scoped lang="scss">
+$keyColor: #d2bd28;
+.mytextarea {
+  &.--with-color {
+    textarea {
+      background-color: $keyColor;
+      border: none;
+      color: #fff;
+    }
+  }
+}
+textarea {
+  display: block;
+  width: 100%;
+  border: solid 1px #ccc;
+  border-radius: var(--form-radius);
+  font-size: var(--form-input-fontsize-normal);
+  box-shadow: var(--form-shadow);
+  padding: 6px 2em 6px 12px;
+  color: var(--dark);
+  &:focus {
+    border: solid 1px #ccc;
+    outline: none;
+  }
+}
+.textarea-bottom {
+  display: flex;
+  justify-content: flex-end;
+  margin: 4px 0 0;
+  font-size: 20px;
+  color: $keyColor;
+  ion-icon {
+    color: inherit;
+    font-size: inherit;
+  }
+}
+.btn-close {
+  margin-left: 10px;
+}
+</style>

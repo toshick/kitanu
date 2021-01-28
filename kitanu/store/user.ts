@@ -465,11 +465,29 @@ export default class MyClass extends VuexModule {
     if (myids.length === 0) {
       return Promise.resolve({});
     }
-    log('FetchUsers', myids);
+    const spritNum = 10;
+    const myidsSprit = [];
+    while (myids.length > spritNum) {
+      myidsSprit.push(myids.splice(0, spritNum));
+    }
+    if (myids.length > 0) {
+      myidsSprit.push(myids);
+    }
 
+    const ps: Promise<ActionRes>[] = [];
+    myidsSprit.forEach((ids: string[]) => {
+      ps.push(this.FetchUsersExe(ids));
+    });
+    return Promise.all(ps).then(() => {
+      return {};
+    });
+  }
+
+  @Action({ rawError: true })
+  FetchUsersExe(ids: string[]): Promise<ActionRes> {
+    log('FetchUsersExe', ids);
     return userRef
-      .where('id', 'in', myids)
-      .orderBy('createdAt', 'desc')
+      .where('id', 'in', ids)
       .get()
       .then((querySnapshot: firebase.firestore.QuerySnapshot) => {
         querySnapshot.forEach((doc) => {

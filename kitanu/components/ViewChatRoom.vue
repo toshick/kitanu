@@ -24,8 +24,13 @@
             v-if="!i.npc"
             :myitem="i"
             :last="index === chatPosts.length - 1"
-            :is-self-post="i.createdByID == loginUserId"
+            :login-user-id="loginUserId"
             @good="(chatpostid) => $emit('good', chatpostid)"
+            @edit="(chatpost) => editPost(chatpost)"
+            @submit-comment="
+              (chatpostid, str) => $emit('submit-comment', chatpostid, str)
+            "
+            @focus="focusElement"
           />
           <ChatPostNPC
             v-else
@@ -37,6 +42,7 @@
       <!-- <LoadingInline v-show="visbleInlineLoading" class="loading-inline" /> -->
     </ViewBody>
     <ViewFooter
+      ref="footer"
       mode="chat"
       :isconnecting="isconnecting || sending"
       @submit="(p) => $emit('submit', p)"
@@ -54,6 +60,7 @@ import {
   TypeChatInfoItem,
   TypeUser,
 } from '@/components/types/apptypes';
+import { ValueIterateeCustom } from 'cypress/types/lodash';
 
 // import ChatPost from './parts/ChatPost.vue';
 // import ChatPostNPC from './parts/ChatPostNPC.vue';
@@ -103,7 +110,22 @@ export default Vue.extend({
     },
   },
   mounted() {},
-  methods: {},
+  methods: {
+    editPost(chatpost: TypeChatPost) {
+      const footer: any = this.$refs.footer;
+      footer.focusInput(chatpost);
+    },
+    focusElement(top: number) {
+      const appbody: any = this.$refs.appbody;
+      const $el = appbody.$el;
+      const val = top + $el.scrollTop - 60;
+      $el.scrollTo({
+        top: val,
+        left: 0,
+        behavior: 'smooth',
+      });
+    },
+  },
 });
 </script>
 <!------------------------------->

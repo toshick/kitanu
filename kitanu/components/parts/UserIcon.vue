@@ -77,17 +77,20 @@ export default Vue.extend({
 <style scoped lang="scss">
 @import '@/assets/css/_mixins.scss';
 .usericon {
+  // background-color: #fff;
+  overflow: hidden;
+  border-radius: 50%;
   img {
+    display: block;
     object-fit: contain;
+    width: 100%;
+    height: 100%;
   }
   &.-size-l {
     --size-l: 50px;
-    img {
-      display: block;
-      width: var(--size-l);
-      height: var(--size-l);
-      border-radius: 50%;
-    }
+    width: var(--size-l);
+    height: var(--size-l);
+
     .initialStamp {
       width: var(--size-l);
       height: var(--size-l);
@@ -96,12 +99,9 @@ export default Vue.extend({
   }
   &.-size-m {
     --size-m: 40px;
-    img {
-      display: block;
-      width: var(--size-m);
-      height: var(--size-m);
-      border-radius: 50%;
-    }
+    width: var(--size-m);
+    height: var(--size-m);
+
     .initialStamp {
       width: var(--size-m);
       height: var(--size-m);
@@ -109,12 +109,9 @@ export default Vue.extend({
   }
   &.-size-s {
     --size-s: 26px;
-    img {
-      display: block;
-      width: var(--size-s);
-      height: var(--size-s);
-      border-radius: 50%;
-    }
+    width: var(--size-s);
+    height: var(--size-s);
+
     .initialStamp {
       width: var(--size-s);
       height: var(--size-s);

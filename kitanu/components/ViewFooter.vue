@@ -49,6 +49,7 @@
         <!-- <CaTextarea v-model="talkText" name="talkText" width="M" placeholder="コメント"></CaTextarea> -->
         <div class="textarea">
           <textarea
+            ref="textarea"
             :value="talkText"
             :rows="talkTextRows"
             :placeholder="placeholder"
@@ -93,13 +94,19 @@
 
 <!------------------------------->
 <script lang="ts">
-import Vue, { PropType } from 'vue';
+import Vue from 'vue';
 import { ValidationProvider } from 'vee-validate';
 import FileInput from '@/components/parts/FileInput.vue';
-import { TypeFile } from '@/components/types/apptypes';
-import { hiraToKana, particleEffect } from '@/common/util';
+import {
+  TypeFile,
+  TypeChatPost,
+  ChatPostCreateRequest,
+  ChatPostUpdateRequest,
+} from '@/components/types/apptypes';
+import { particleEffect } from '@/common/util';
 
 type State = {
+  editpost: TypeChatPost | null;
   talkText: string;
   fileItems: TypeFile[];
   timerIDGood: NodeJS.Timer | null;
@@ -121,6 +128,7 @@ export default Vue.extend({
   },
   data(): State {
     return {
+      editpost: null,
       talkText: 'コンチクワ',
       fileItems: [],
       timerIDGood: null,
@@ -185,21 +193,36 @@ export default Vue.extend({
     submit(e: Event, withFuki: boolean = false) {
       const t = e.currentTarget as Element;
       particleEffect('#fff', t.parentElement);
-      const fukitype = withFuki ? `fuki${Math.ceil(Math.random() * 4)}` : '';
+      const fukitype = withFuki ? `fuki${Math.ceil(Math.random() * 3)}` : '';
       // const fukitype = withFuki ? `fuki1` : '';
       // txt = txt.replace(/[^(\u30A1-\u30F6)(^[a-zA-Z0-9!-/:-@¥[-`{-~\]*$\n)]/g, '');
-      const text = hiraToKana(this.talkText).trim();
-      this.$emit('submit', {
-        fileItem: this.fileItems[0],
-        text,
-        // reset: this.reset,
-        fukitype,
-      });
+      // const text = hiraToKana(this.talkText).trim();
+      const text = this.talkText.trim();
+      let params: ChatPostCreateRequest | ChatPostUpdateRequest | null = null;
+      if (this.editpost) {
+        params = {
+          postid: this.editpost.id,
+          fileItem: this.fileItems[0],
+          text,
+          fukitype,
+          createdAt: this.editpost.createdAt,
+        } as ChatPostUpdateRequest;
+      } else {
+        params = {
+          chatroomID: '',
+          fileItem: this.fileItems[0],
+          text,
+          fukitype,
+        } as ChatPostCreateRequest;
+      }
+
+      this.$emit('submit', params);
       this.reset();
     },
     reset() {
       this.fileItems = [];
       this.talkText = '';
+      this.editpost = null;
     },
     canSubmit(valid: boolean) {
       if (valid || this.imgurls.length > 0) return true;
@@ -222,6 +245,12 @@ export default Vue.extend({
         text: '',
       });
       this.goodCount = 0;
+    },
+    focusInput(chatpost: TypeChatPost) {
+      this.talkText = chatpost.text;
+      this.editpost = chatpost;
+      const textarea = this.$refs.textarea as HTMLTextAreaElement;
+      textarea.focus();
     },
   },
 });
@@ -252,6 +281,118 @@ export default Vue.extend({
         font-size: 20px;
       }
     }
+  }
+
+  .textarea {
+    position: relative;
+    display: flex;
+    align-items: center;
+    flex: 2;
+  }
+  textarea {
+    display: block;
+    width: 100%;
+    border: solid 1px #ccc;
+    border-radius: var(--form-radius);
+    font-size: var(--form-input-fontsize-normal);
+    box-shadow: var(--form-shadow);
+    padding: 6px 2em 6px 12px;
+    color: var(--dark);
+    &:focus {
+      border: solid 1px #ccc;
+      outline: none;
+    }
+  }
+  .talk-input {
+    position: relative;
+    display: flex;
+    align-items: center;
+    flex: auto;
+    .app-footer-icon {
+      position: absolute;
+      top: 6px;
+      right: 5px;
+
+      ion-icon {
+        font-size: 16px !important;
+      }
+    }
+  }
+
+  .btn-icon {
+    display: flex;
+    align-items: center;
+
+    flex-shrink: 0;
+  }
+
+  .btn-good {
+    margin-right: 0.5em;
+    &[disabled] {
+      opacity: 0.4;
+    }
+  }
+  .btn-comment {
+    &[disabled] {
+      opacity: 0.4;
+    }
+  }
+  .btn-comment2 {
+    margin-left: 0.5em;
+    &[disabled] {
+      opacity: 0.4;
+    }
+  }
+  ul.preview {
+    position: relative;
+    padding: 3px 6px 3px 10px;
+
+    flex: 2 0 auto;
+    img {
+      display: block;
+      border-radius: 3px;
+      box-shadow: 0 0 0px 1px rgba(#fff, 0.7);
+      max-width: 80px;
+    }
+    a {
+      display: block;
+      position: absolute;
+      top: 0px;
+      right: -10px;
+      z-index: 1;
+      &::before {
+        content: '';
+        display: block;
+        position: absolute;
+        top: 3px;
+        left: 3px;
+        width: 17px;
+        height: 17px;
+        border-radius: 8px;
+        background-color: #666;
+        z-index: -1;
+      }
+    }
+    ion-icon {
+      color: #fff;
+    }
+  }
+  .preview-item {
+    position: relative;
+    margin-bottom: 6px;
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  .fileInput {
+    display: flex;
+    align-items: center;
+  }
+  .buttonsRight {
+    display: flex;
+    align-items: center;
+    margin-left: 0.5em;
   }
 }
 
@@ -297,119 +438,5 @@ export default Vue.extend({
   .ca-input-errors {
     display: none !important;
   }
-}
-.actionbtn {
-  position: relative;
-}
-
-.talk-input {
-  position: relative;
-  display: flex;
-  align-items: center;
-  flex: auto;
-  .app-footer-icon {
-    position: absolute;
-    top: 6px;
-    right: 5px;
-
-    ion-icon {
-      font-size: 16px !important;
-    }
-  }
-}
-
-.btn-icon {
-  display: flex;
-  align-items: center;
-
-  flex-shrink: 0;
-}
-
-.btn-good {
-  margin-right: 0.5em;
-  &[disabled] {
-    opacity: 0.4;
-  }
-}
-.btn-comment {
-  &[disabled] {
-    opacity: 0.4;
-  }
-}
-.btn-comment2 {
-  margin-left: 0.5em;
-  &[disabled] {
-    opacity: 0.4;
-  }
-}
-ul.preview {
-  position: relative;
-  padding: 3px 6px 3px 10px;
-
-  flex: 2 0 auto;
-  img {
-    display: block;
-    border-radius: 3px;
-    box-shadow: 0 0 0px 1px rgba(#fff, 0.7);
-    max-width: 80px;
-  }
-  a {
-    display: block;
-    position: absolute;
-    top: 0px;
-    right: -10px;
-    z-index: 1;
-    &::before {
-      content: '';
-      display: block;
-      position: absolute;
-      top: 3px;
-      left: 3px;
-      width: 17px;
-      height: 17px;
-      border-radius: 8px;
-      background-color: #666;
-      z-index: -1;
-    }
-  }
-  ion-icon {
-    color: #fff;
-  }
-}
-.preview-item {
-  position: relative;
-  margin-bottom: 6px;
-  &:last-child {
-    margin-bottom: 0;
-  }
-}
-.textarea {
-  position: relative;
-  display: flex;
-  align-items: center;
-  flex: 2;
-}
-textarea {
-  display: block;
-  width: 100%;
-  border: solid 1px #ccc;
-  border-radius: var(--form-radius);
-  font-size: var(--form-input-fontsize-normal);
-  box-shadow: var(--form-shadow);
-  padding: 6px 2em 6px 12px;
-  color: var(--dark);
-  &:focus {
-    border: solid 1px #ccc;
-    outline: none;
-  }
-}
-.fileInput {
-  display: flex;
-  align-items: center;
-}
-.buttonsRight {
-  display: flex;
-  align-items: center;
-  margin-left: 0.5em;
 }
 </style>

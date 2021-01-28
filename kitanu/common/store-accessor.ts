@@ -5,7 +5,7 @@ import { getModule } from 'vuex-module-decorators';
 import AppClass from '~/store/app';
 import PostClass from '~/store/post';
 import ChatListClass from '~/store/chatlist';
-import ChatRoomClass from '~/store/chatroom';
+import ChatPostClass from '~/store/chatpost';
 import ChatInfoClass from '~/store/chatinfo';
 import AlbumClass from '~/store/album';
 import FriendClass from '~/store/friend';
@@ -16,7 +16,7 @@ import ActivityClass from '~/store/activity';
 let appStore: AppClass;
 let postStore: PostClass;
 let chatListStore: ChatListClass;
-let chatRoomStore: ChatRoomClass;
+let chatPostStore: ChatPostClass;
 let chatinfoStore: ChatInfoClass;
 let albumStore: AlbumClass;
 let friendStore: FriendClass;
@@ -31,7 +31,7 @@ function initialiseStores(store: Store<any>): void {
   appStore = getModule(AppClass, store);
   postStore = getModule(PostClass, store);
   chatListStore = getModule(ChatListClass, store);
-  chatRoomStore = getModule(ChatRoomClass, store);
+  chatPostStore = getModule(ChatPostClass, store);
   chatinfoStore = getModule(ChatInfoClass, store);
   albumStore = getModule(AlbumClass, store);
   friendStore = getModule(FriendClass, store);
@@ -45,7 +45,7 @@ export {
   appStore,
   postStore,
   chatListStore,
-  chatRoomStore,
+  chatPostStore,
   chatinfoStore,
   albumStore,
   friendStore,
