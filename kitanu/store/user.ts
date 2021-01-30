@@ -160,6 +160,7 @@ export default class MyClass extends VuexModule {
     password: string;
     name: string;
     subtext?: string;
+    photoURL?: string;
   }): Promise<ActionRes> {
     // ユーザ名を作成しログイン状態になる
     const res: any = await firebase
@@ -184,6 +185,7 @@ export default class MyClass extends VuexModule {
       displayName: p.name,
     });
     createdUser.subtext = p.subtext || '';
+    createdUser.iconurl = p.photoURL || '';
 
     // ユーザ作成
     const res2 = await userRef
@@ -209,6 +211,7 @@ export default class MyClass extends VuexModule {
     // ログインユーザ名を更新
     const res3: any = await this.UpdateLoginUser({
       displayName: p.name,
+      photoURL: p.photoURL || '',
     });
     if (res3.errorCode) {
       return Promise.reject(res);
@@ -437,19 +440,24 @@ export default class MyClass extends VuexModule {
    * ダミーユーザ作成
    */
   @Action({ rawError: true })
-  MakeDummyUser(p: {
+  async MakeDummyUser(p: {
     email: string;
     password: string;
     name: string;
     subtext: string;
+    photoURL: string;
   }): Promise<ActionRes> {
     if (!p.email) return Promise.reject(new Error('no email provided'));
-    return this.CreateUserWithEmailAndPassword({
+    const res = await this.CreateUserWithEmailAndPassword({
       email: p.email,
       password: p.password,
       name: p.name || '',
       subtext: p.subtext || '',
+      photoURL: p.photoURL || '',
     });
+    if (res.errorMsg) {
+      return Promise.reject(new Error('CreateUserWithEmailAndPassword failed'));
+    }
   }
 
   @Action({ rawError: true })
@@ -511,10 +519,13 @@ export default class MyClass extends VuexModule {
       }
       return;
     }
+    const ids = this._users.map((u: TypeUser) => u.id);
+    if (ids.length === 0) {
+      return;
+    }
     if (this._unsubscribe) {
       this._unsubscribe();
     }
-    const ids = this._users.map((u: TypeUser) => u.id);
     const unsubscribe = userRef
       .where('id', 'in', ids)
       .orderBy('createdAt', 'desc')

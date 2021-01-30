@@ -82,7 +82,7 @@ export default Vue.extend({
   border-radius: 50%;
   img {
     display: block;
-    object-fit: contain;
+    object-fit: cover;
     width: 100%;
     height: 100%;
   }

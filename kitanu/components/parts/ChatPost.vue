@@ -32,7 +32,7 @@
         <img class="lazy" :src="placeholderImg" :data-src="u" alt="" />
       </p>
       <!-- bottom -->
-      <div v-show="!visibleCommentInput" class="chatitem-bottom">
+      <div class="chatitem-bottom">
         <!-- 編集 -->
         <a
           v-if="isSelfPost"
@@ -43,44 +43,49 @@
         >
         <!-- グッドヌ -->
         <a class="chatitem-good" @click="$emit('good', myitem.id)">
-          <ion-icon name="paw" size="small"></ion-icon>
           <span>{{ goodCount }}</span>
+          <ion-icon name="paw" size="small"></ion-icon>
         </a>
-        <!-- 返信 -->
-        <div v-if="!isComment" class="chatitem-reply" @click="startComment">
-          <ion-icon name="chatbubble-ellipses-outline" size="small"></ion-icon>
-        </div>
       </div>
       <!-- コメント -->
-      <ul v-if="comments.length > 0" class="chatitem-body-comments">
-        <li v-for="(i, index) in comments" :key="`${index}-${i.text}`">
-          <ChatPost
-            v-if="!i.npc"
-            :myitem="i"
-            :last="index === comments.length - 1"
-            :is-comment="true"
-            @good="(chatpostid) => $emit('good', chatpostid)"
+      <div v-if="comments.length > 0" class="chatitem-body-comments">
+        <ul>
+          <li v-for="(i, index) in comments" :key="`${index}-${i.text}`">
+            <ChatPost
+              v-if="!i.npc"
+              :myitem="i"
+              :last="index === comments.length - 1"
+              :is-comment="true"
+              :login-user-id="loginUserId"
+              @good="(chatpostid) => $emit('good', chatpostid)"
+            />
+            <ChatPostNPC
+              v-else
+              :myitem="i"
+              :last="index === comments.length - 1"
+            />
+          </li>
+        </ul>
+      </div>
+      <!-- 返信 -->
+      <div v-if="visibleCommentBtn" class="chatitem-reply">
+        <div class="chatitem-reply-btn" @click="toggleStartComment">
+          <ion-icon name="chatbubble-ellipses-outline" size="small"></ion-icon>
+        </div>
+        <!-- コメント入力 -->
+        <div
+          v-show="visibleCommentInput"
+          ref="textareaInput"
+          class="chatitem-comment"
+        >
+          <TextArea
+            class="chatitem-comment-textarea"
+            placeholder="コメントヌ"
+            with-color
+            @close="visibleCommentInput = false"
+            @submit="onSubmitComment"
           />
-          <ChatPostNPC
-            v-else
-            :myitem="i"
-            :last="index === comments.length - 1"
-          />
-        </li>
-      </ul>
-      <!-- コメント入力 -->
-      <div
-        v-show="visibleCommentInput"
-        ref="textareaInput"
-        class="chatitem-comment"
-      >
-        <TextArea
-          class="chatitem-comment-textarea"
-          placeholder="コメントヌ"
-          with-color
-          @close="visibleCommentInput = false"
-          @submit="onSubmitComment"
-        />
+        </div>
       </div>
     </div>
   </div>
@@ -144,6 +149,9 @@ export default Vue.extend({
       if (this.isGood) {
         ret['--good'] = true;
       }
+      if (this.isSelfPost) {
+        ret['--self'] = true;
+      }
       return ret;
     },
     text(): string {
@@ -179,6 +187,10 @@ export default Vue.extend({
     isGood(): boolean {
       return this.myitem.goodMemberIDs.includes(this.loginUserId);
     },
+    visibleCommentBtn(): boolean {
+      // if (this.comments.length === 0) return true;
+      return !this.isComment;
+    },
   },
   mounted() {
     const links = this.myitem.text.match(/http.*[a-zA-Z]?/g);
@@ -190,6 +202,9 @@ export default Vue.extend({
     }
   },
   methods: {
+    toggleStartComment() {
+      this.visibleCommentInput = !this.visibleCommentInput;
+    },
     startComment() {
       this.visibleCommentInput = true;
       this.$nextTick(() => {
@@ -301,6 +316,11 @@ export default Vue.extend({
   &.--good > .chatitem-body > .chatitem-bottom > .chatitem-good {
     color: var(--app-base-color2);
   }
+  &.--self > .chatitem-body > .chatitem-body-comments {
+    li {
+      margin-bottom: 0;
+    }
+  }
 }
 .chatitem-icon {
   position: absolute;
@@ -366,42 +386,55 @@ export default Vue.extend({
   display: flex;
   align-items: center;
   cursor: pointer;
+  position: absolute;
+  top: 10px;
+  right: 30px;
   ion-icon {
     color: inherit;
   }
   span {
-    margin: 0 10px 0 5px;
+    display: block;
+    margin: 0 5px 0 5px;
   }
 }
 // 編集
 .chatitem-edit {
   margin-right: 1em;
 }
+$leftSpace: 30px;
 // 返信
 .chatitem-reply {
-  display: flex;
+  margin: 0 0 0 $leftSpace;
+}
+.chatitem-reply-btn {
+  display: inline-flex;
   align-items: center;
+  color: #d2bd28;
   ion-icon {
     color: inherit;
   }
 }
 
 .chatitem-comment-textarea {
-  margin: 10px 0 0;
+  padding: 0 4px;
 }
 
 // コメント一覧
 .chatitem-body-comments {
-  margin: 10px 0 0 22px;
+  margin: 10px 0 0 $leftSpace;
+
+  li {
+    margin-bottom: 0.5em;
+  }
 
   .chatitem {
-    padding: 0 0 0 10px;
-    margin: 0 0 10px;
+    padding: 0;
+    margin: 0;
     overflow: auto;
   }
 
   .chatitem-icon {
-    left: 10px;
+    left: 0px;
     top: 0px;
   }
   .chatitem-body-name {
@@ -409,14 +442,20 @@ export default Vue.extend({
   }
   .chatitem-body-text {
     border-radius: 4px;
-    background-color: #ececec;
-    box-shadow: 0 0 2px 2px #fff;
+    // background-color: #ececec;
+    background-color: #f9f3c1;
+    // box-shadow: 0 0 2px 2px rgba(#fff, 0.8), inset 0 0 2px 1px rgba(#333, 0.1);
+    border: solid 2px #fff;
     padding: 10px;
     margin: 0 2px 5px;
     text-indent: 0;
     font-size: 12px;
     color: #666;
     text-shadow: none;
+  }
+  .chatitem-good {
+    top: 15px;
+    right: 10px;
   }
 }
 </style>

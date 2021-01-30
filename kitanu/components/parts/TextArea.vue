@@ -17,11 +17,11 @@
         />
       </div>
       <div class="textarea-bottom">
+        <!-- <a class="btn-close" @click="$emit('close')">
+          <ion-icon name="close-outline"></ion-icon>
+        </a> -->
         <a class="btn-submit" :disabled="invalid" @click="submit">
           <ion-icon name="paper-plane-outline"></ion-icon>
-        </a>
-        <a class="btn-close" @click="$emit('close')">
-          <ion-icon name="close-outline"></ion-icon>
         </a>
       </div>
     </div>
@@ -95,7 +95,7 @@ export default Vue.extend({
 
 <!------------------------------->
 <style scoped lang="scss">
-$keyColor: #d2bd28;
+$keyColor: #d9c84e;
 .mytextarea {
   &.--with-color {
     textarea {
@@ -111,7 +111,8 @@ textarea {
   border: solid 1px #ccc;
   border-radius: var(--form-radius);
   font-size: var(--form-input-fontsize-normal);
-  box-shadow: var(--form-shadow);
+  // box-shadow: var(--form-shadow);
+  box-shadow: 0 0 2px 1px #fff;
   padding: 6px 2em 6px 12px;
   color: var(--dark);
   &:focus {
@@ -121,7 +122,7 @@ textarea {
 }
 .textarea-bottom {
   display: flex;
-  justify-content: flex-end;
+  justify-content: flex-start;
   margin: 4px 0 0;
   font-size: 20px;
   color: $keyColor;
@@ -130,7 +131,7 @@ textarea {
     font-size: inherit;
   }
 }
-.btn-close {
-  margin-left: 10px;
+.btn-submit {
+  // margin-left: 10px;
 }
 </style>

@@ -176,6 +176,7 @@ export default Vue.extend({
       if (res.errorMsg) {
         toast('こーしんしっぱいヌ');
       }
+      toast('コメントしタヌ');
     },
   },
 });

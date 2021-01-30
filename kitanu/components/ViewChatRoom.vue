@@ -1,5 +1,5 @@
 <template>
-  <section class="app view chat">
+  <section class="app view charoom">
     <ViewHeader>
       <a class="btn-back" @click.stop.prevent="goChatList"
         ><ion-icon name="chevron-back" size="medium"
@@ -17,8 +17,10 @@
       </template>
     </ViewHeader>
     <ViewBody ref="appbody">
-      <LoadingInline v-show="visbleInlineLoading" class="loading-inline" />
-      <ul>
+      <!-- <transition name="fade">
+        <LoadingInline v-show="visbleInlineLoading" class="loading-inline" />
+      </transition> -->
+      <ul class="charoom-list">
         <li v-for="(i, index) in chatPosts" :key="`${index}-${i.text}`">
           <ChatPost
             v-if="!i.npc"
@@ -135,8 +137,13 @@ export default Vue.extend({
 ul {
   padding: 10px 0 30px;
 }
-.chat {
+.charoom {
   background-color: #fff;
+}
+.charoom-list {
+  li {
+    margin-bottom: 0.5em;
+  }
 }
 .loading-inline {
   padding: 30px 0 10px;
