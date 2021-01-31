@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import firebase from 'firebase/app';
 import { Module, VuexModule, Mutation, Action } from 'vuex-module-decorators';
-import { asort, log, unique } from '@/common/util';
+import { arrayAsort, log, arrayUnique, arraySliceTo } from '@/common/util';
 import { makeUserDisp, makeChatPost } from '@/common/helper';
 import { chatpostRef } from '@/plugins/firebase';
 import { activityStore, userStore } from '@/store';
@@ -12,7 +12,6 @@ import {
   TypeChatPost,
   TypeUser,
   TypeUserID,
-  TypeUserDisp,
   TypeFile,
   ChatPostCreateRequest,
   ChatPostUpdateRequest,
@@ -25,6 +24,7 @@ export default class MyClass extends VuexModule {
   _chatPosts: TypeChatPost[] = [];
   _members: TypeUser[] = members;
   _unsubscribe: Function | null = null;
+  _unsubscribeComment: Function[] = [];
 
   // ----------------------
   // Mutation
@@ -35,13 +35,23 @@ export default class MyClass extends VuexModule {
   }
 
   @Mutation
+  SET_UNSUBSCRIBE_COMMENT(unsubscribe: Function) {
+    this._unsubscribeComment.push(unsubscribe);
+  }
+
+  @Mutation
+  RESET_UNSUBSCRIBE_COMMENT() {
+    this._unsubscribeComment = [];
+  }
+
+  @Mutation
   RESET_CHATPOST() {
     this._chatPosts = [];
   }
 
   @Mutation
   ADD_CHATPOST(chatpost: TypeChatPost) {
-    this._chatPosts = asort(
+    this._chatPosts = arrayAsort(
       [...this._chatPosts, chatpost],
       'createdAt',
     ).reverse();
@@ -62,7 +72,7 @@ export default class MyClass extends VuexModule {
       }
       return c;
     });
-    this._chatPosts = asort(ary, 'createdAt').reverse();
+    this._chatPosts = arrayAsort(ary, 'createdAt').reverse();
   }
 
   // ----------------------
@@ -138,6 +148,45 @@ export default class MyClass extends VuexModule {
   }
 
   @Action({ rawError: true })
+  async RemoveChatPost(chatpostid: string): Promise<ActionRes> {
+    // 投稿のコメント削除用にidを確保;
+    const find = this._chatPosts.find((p: TypeChatPost) => p.id === chatpostid);
+    if (!find) {
+      return Promise.reject(
+        new Error('could not find chatpost on RemoveChatPost'),
+      );
+    }
+    const removeIDs: string[] = [...find.commentPostIDs];
+    // まず投稿削除
+    const res: ActionRes = await chatpostRef
+      .doc(chatpostid)
+      .delete()
+      .then(() => {
+        log('chatpost削除せり', chatpostid);
+        return {};
+      })
+      .catch((error) => {
+        logError(error, 'RemoveChatPost');
+        return { errorCode: error.code, errorMsg: error.message };
+      });
+    if (res.errorMsg) {
+      return Promise.reject(new Error('could remove chatpost'));
+    }
+
+    // 投稿のコメント削除
+    removeIDs.forEach((chatpostID: string) => {
+      chatpostRef
+        .doc(chatpostID)
+        .delete()
+        .catch((error) => {
+          logError(error, 'RemoveChatComment');
+          return { errorCode: error.code, errorMsg: error.message };
+        });
+    });
+    return Promise.resolve({});
+  }
+
+  @Action({ rawError: true })
   CreateChatPost(p: ChatPostCreateRequest): Promise<ActionRes> {
     if (!p.chatroomID) return Promise.reject(new Error('no chatroomID'));
     const loginUserID = userStore.loginedUser.id;
@@ -202,38 +251,34 @@ export default class MyClass extends VuexModule {
       postid: chatpostID,
       commentPostIDs,
     });
+  }
 
-    // return chatpostRef
-    //   .doc(chatpostID)
-    //   .update({
-    //     comments,
-    //   })
-    //   .then(() => {
-    //     return {};
-    //   })
-    //   .catch((error) => {
-    //     logError(error, 'AddChatPostComment');
-    //     return { errorCode: error.code, errorMsg: error.message };
-    //   });
+  @Action({ rawError: true })
+  UnListen(): void {
+    if (this._unsubscribe) {
+      this._unsubscribe();
+      this.SET_UNSUBSCRIBE(null);
+    }
+    this._unsubscribeComment.forEach((f: Function) => {
+      f();
+    });
+    this.RESET_UNSUBSCRIBE_COMMENT();
   }
 
   @Action({ rawError: true })
   Listen(chatroomID?: string): void {
     if (!chatroomID) {
-      if (this._unsubscribe) {
-        this._unsubscribe();
-        this.SET_UNSUBSCRIBE(null);
-      }
+      this.UnListen();
       return;
     }
-    if (this._unsubscribe) {
-      this._unsubscribe();
-    }
+    this.UnListen();
     const unsubscribe = chatpostRef
       .where('chatroomID', '==', chatroomID)
+      .where('isComment', '==', false)
       .orderBy('createdAt', 'desc')
       .limit(30)
       .onSnapshot((querySnapshot: firebase.firestore.QuerySnapshot) => {
+        let commentPostIDs: string[] = [];
         querySnapshot
           .docChanges()
           .forEach((change: firebase.firestore.DocumentChange) => {
@@ -247,9 +292,48 @@ export default class MyClass extends VuexModule {
             } else if (type === 'removed') {
               this.REMOVE_CHATPOST(item.id);
             }
+            commentPostIDs = commentPostIDs.concat(item.commentPostIDs);
           });
+        this.ListenComment(commentPostIDs);
       });
     this.SET_UNSUBSCRIBE(unsubscribe);
+  }
+
+  /**
+   * in が受け付ける配列は最大10個である
+   */
+  @Action({ rawError: true })
+  ListenComment(postIds: string[]): void {
+    const idsSprit = arraySliceTo(postIds, 10);
+    idsSprit.forEach((ids: string[]) => {
+      this.ListenCommentExe(ids);
+    });
+  }
+
+  @Action({ rawError: true })
+  ListenCommentExe(postIds: string[]): void {
+    if (postIds.length === 0) {
+      return;
+    }
+    const unsubscribe = chatpostRef
+      .where('id', 'in', postIds)
+      .onSnapshot((querySnapshot: firebase.firestore.QuerySnapshot) => {
+        querySnapshot
+          .docChanges()
+          .forEach((change: firebase.firestore.DocumentChange) => {
+            const { doc, type } = change;
+            const item: TypeChatPost = makeChatPost(doc.data());
+            // console.log('ListenComment', type, doc.id, doc.data().text);
+            if (type === 'added') {
+              this.ADD_CHATPOST(item);
+            } else if (type === 'modified') {
+              this.UPDATE_CHATPOST(item);
+            } else if (type === 'removed') {
+              this.REMOVE_CHATPOST(item.id);
+            }
+          });
+      });
+    this.SET_UNSUBSCRIBE_COMMENT(unsubscribe);
   }
 
   // ----------------------
@@ -270,15 +354,11 @@ export default class MyClass extends VuexModule {
         });
         r.comments = r.commentPostIDs
           .map((postid: string) => {
-            // const c = makeChatPost(commentPost);
-            // const createdBy = userStore.getUserbyID(c.createdByID);
-            // c.createdBy = createdBy || makeUserDisp({ id: c.createdByID });
-            // return c;
             const commentPost = this._chatPosts.find(
               (p: TypeChatPost) => p.id === postid,
             );
             if (!commentPost) {
-              return makeChatPost({ id: postid });
+              return null;
             }
             const post = { ...commentPost };
             const createdBy = userStore.getUserbyID(post.createdByID);
@@ -309,7 +389,7 @@ export default class MyClass extends VuexModule {
         //   ids.push(commentPost.id);
         // });
       });
-      return unique(ids);
+      return arrayUnique(ids);
     };
   }
 

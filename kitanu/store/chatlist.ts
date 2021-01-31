@@ -1,6 +1,6 @@
 import firebase from 'firebase/app';
 import { Module, VuexModule, Mutation, Action } from 'vuex-module-decorators';
-import { asort, log, unique } from '@/common/util';
+import { arrayAsort, log, arrayUnique } from '@/common/util';
 import { makeChatRoom, makeUserDisp } from '@/common/helper';
 import { chatlistRef } from '@/plugins/firebase';
 import { activityStore, userStore } from '@/store';
@@ -34,7 +34,7 @@ export default class MyClass extends VuexModule {
   ADD_CHATROOM(chatroom: TypeChatRoom) {
     const find = this._chatlist.find((d: TypeChatRoom) => d.id === chatroom.id);
     if (find) return;
-    this._chatlist = asort(
+    this._chatlist = arrayAsort(
       [...this._chatlist, chatroom],
       'createdAt',
     ).reverse();
@@ -55,7 +55,7 @@ export default class MyClass extends VuexModule {
       }
       return r;
     });
-    this._chatlist = asort(ary, 'createdAt').reverse();
+    this._chatlist = arrayAsort(ary, 'createdAt').reverse();
   }
 
   // ----------------------
@@ -155,7 +155,7 @@ export default class MyClass extends VuexModule {
           ids.push(u);
         });
       });
-      return unique(ids);
+      return arrayUnique(ids);
     };
   }
 }

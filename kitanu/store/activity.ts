@@ -5,7 +5,7 @@ import { Module, VuexModule, Mutation, Action } from 'vuex-module-decorators';
 import { ActionRes, TypeActivity, TypeUser } from '@/components/types/apptypes';
 import { makeActivity, makeUserDisp } from '@/common/helper';
 import { logError } from '@/common/error';
-import { log, asort } from '@/common/util';
+import { log, arrayAsort } from '@/common/util';
 import { userStore } from '@/store';
 import { activityRef } from '@/plugins/firebase.ts';
 
@@ -22,7 +22,7 @@ export default class MyClass extends VuexModule {
       (d: TypeActivity) => d.id === activity.id,
     );
     if (find) return;
-    this._activities = asort(
+    this._activities = arrayAsort(
       [activity, ...this._activities],
       'createdAt',
     ).reverse();

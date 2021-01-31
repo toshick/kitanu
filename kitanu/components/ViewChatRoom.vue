@@ -20,6 +20,7 @@
       <!-- <transition name="fade">
         <LoadingInline v-show="visbleInlineLoading" class="loading-inline" />
       </transition> -->
+
       <ul class="charoom-list">
         <li v-for="(i, index) in chatPosts" :key="`${index}-${i.text}`">
           <ChatPost
@@ -29,8 +30,12 @@
             :login-user-id="loginUserId"
             @good="(chatpostid) => $emit('good', chatpostid)"
             @edit="(chatpost) => editPost(chatpost)"
+            @remove-post="(chatpostid, str) => onRemovePost(chatpostid, str)"
             @submit-comment="
               (chatpostid, str) => $emit('submit-comment', chatpostid, str)
+            "
+            @submit-comment-edit="
+              (chatpostid, str) => $emit('submit-comment-edit', chatpostid, str)
             "
             @focus="focusElement"
           />
@@ -57,12 +62,7 @@
 <script lang="ts">
 import Vue, { PropType } from 'vue';
 
-import {
-  TypeChatPost,
-  TypeChatInfoItem,
-  TypeUser,
-} from '@/components/types/apptypes';
-import { ValueIterateeCustom } from 'cypress/types/lodash';
+import { TypeChatPost } from '@/components/types/apptypes';
 
 // import ChatPost from './parts/ChatPost.vue';
 // import ChatPostNPC from './parts/ChatPostNPC.vue';
@@ -126,6 +126,19 @@ export default Vue.extend({
         left: 0,
         behavior: 'smooth',
       });
+    },
+    onRemovePost(chatpostid: string, str: string) {
+      const mystr = str.length > 10 ? `${str.slice(0, 10)}...` : str;
+      this.showConfirm(
+        {
+          title: 'この投稿削除するヌ',
+          text: `「${mystr}」<br>よいヌね？`,
+          isDanger: true,
+        },
+        () => {
+          this.$emit('remove-post', chatpostid);
+        },
+      );
     },
   },
 });

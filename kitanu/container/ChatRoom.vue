@@ -1,16 +1,19 @@
 <template>
   <div>
+    <!-- <p>total: {{ debugData.totalPosts }} {{ debugData.commentPosts }}</p> -->
     <ViewChatRoom
       :chat-posts="chatPosts"
       :info-items="infoItems"
       :isconnecting="connecting"
       :sending="sending"
       :login-user-id="loginUserID"
-      @submit="onSubmit"
       @select-member="visibleSelectMember = true"
       @good="onGood"
       @edit="onEdit"
+      @submit="onSubmit"
       @submit-comment="onSubmitComment"
+      @submit-comment-edit="onSubmitCommentEdit"
+      @remove-post="onRemovePost"
     />
     <!-- SelectMember -->
     <transition name="modal">
@@ -78,6 +81,14 @@ export default Vue.extend({
     },
     loginUserID(): TypeUserID {
       return userStore.loginedUser.id;
+    },
+    debugData(): { totalPosts: number; commentPosts: number } {
+      const ret = { totalPosts: 0, commentPosts: 0 };
+      ret.totalPosts = this.chatPosts.length;
+      this.chatPosts.forEach((p: TypeChatPost) => {
+        ret.commentPosts += p.comments.length;
+      });
+      return ret;
     },
   },
   watch: {
@@ -162,6 +173,14 @@ export default Vue.extend({
       //   toast('グッドしっぱいヌ');
       // }
     },
+    async onRemovePost(chatpostid: string) {
+      const res = await chatPostStore.RemoveChatPost(chatpostid);
+      if (res.errorMsg) {
+        toast(`投稿削除しっぱいヌ ${res.errorMsg}`);
+        return;
+      }
+      toast('投稿削除したヌ');
+    },
     async onSubmitComment(chatpostid: string, str: string) {
       this.showInlineLoading(true);
       const commentPost = makeChatPost({
@@ -174,9 +193,22 @@ export default Vue.extend({
       });
       this.showInlineLoading(false);
       if (res.errorMsg) {
-        toast('こーしんしっぱいヌ');
+        toast('コメントしっぱいヌ');
       }
       toast('コメントしタヌ');
+    },
+    async onSubmitCommentEdit(chatpostid: string, str: string) {
+      console.log('onSubmitCommentEdit', chatpostid, str);
+      this.showInlineLoading(true);
+      const res = await chatPostStore.UpdateChatPost({
+        postid: chatpostid,
+        text: str,
+      });
+      this.showInlineLoading(false);
+      if (res.errorMsg) {
+        toast('コメント編集しっぱいヌ');
+      }
+      toast('コメント編集しタヌ');
     },
   },
 });

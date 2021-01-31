@@ -17,11 +17,17 @@
         />
       </div>
       <div class="textarea-bottom">
-        <!-- <a class="btn-close" @click="$emit('close')">
-          <ion-icon name="close-outline"></ion-icon>
-        </a> -->
+        <!-- 送信 -->
         <a class="btn-submit" :disabled="invalid" @click="submit">
           <ion-icon name="paper-plane-outline"></ion-icon>
+        </a>
+        <!-- 送信 -->
+        <a class="btn-trash" @click="remove">
+          <ion-icon name="trash-outline"></ion-icon>
+        </a>
+        <!-- 閉じる -->
+        <a class="btn-close" @click="$emit('close')">
+          <ion-icon name="close-outline"></ion-icon>
         </a>
       </div>
     </div>
@@ -50,6 +56,10 @@ export default Vue.extend({
       default: false,
       type: Boolean,
     },
+    value: {
+      default: '',
+      type: String,
+    },
   },
   data(): State {
     return {
@@ -74,7 +84,12 @@ export default Vue.extend({
       return ret;
     },
   },
-  mounted() {},
+  mounted() {
+    if (this.value) {
+      this.txt = this.value.replace(/<br>/g, '\n');
+    }
+    this.focus();
+  },
   methods: {
     focus() {
       const $textarea = this.$refs.textarea as HTMLTextAreaElement;
@@ -87,6 +102,9 @@ export default Vue.extend({
     onInputComment(e: InputEvent) {
       const $el = e.target as HTMLTextAreaElement;
       this.txt = $el.value;
+    },
+    remove() {
+      this.$emit('remove', this.txt);
     },
   },
 });
@@ -131,7 +149,10 @@ textarea {
     font-size: inherit;
   }
 }
-.btn-submit {
-  // margin-left: 10px;
+.btn-close {
+  margin-left: auto;
+}
+.btn-trash {
+  margin-left: 1em;
 }
 </style>

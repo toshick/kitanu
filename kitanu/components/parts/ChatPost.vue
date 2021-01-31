@@ -23,10 +23,21 @@
       </p>
       <!-- text -->
       <p
+        v-if="!editting"
         class="chatitem-body-text"
         :class="{ 'wf-nicomoji': hasFukidashi }"
         v-html="$sanitize(text)"
       ></p>
+      <TextArea
+        v-else
+        class="chatitem-edit-textarea"
+        placeholder="コメントヌ"
+        with-color
+        :value="text"
+        @close="editting = false"
+        @submit="onSubmitCommentEdit"
+        @remove="onRemovePost"
+      />
       <!-- imgs -->
       <p v-for="u in urls" :key="u" class="chatitem-body-img">
         <img class="lazy" :src="placeholderImg" :data-src="u" alt="" />
@@ -35,9 +46,9 @@
       <div class="chatitem-bottom">
         <!-- 編集 -->
         <a
-          v-if="isSelfPost"
+          v-if="isSelfPost && !editting"
           class="chatitem-edit"
-          @click="$emit('edit', { ...myitem })"
+          @click="editting = true"
         >
           編集</a
         >
@@ -58,6 +69,13 @@
               :is-comment="true"
               :login-user-id="loginUserId"
               @good="(chatpostid) => $emit('good', chatpostid)"
+              @submit-comment-edit="
+                (chatpostid, str) =>
+                  $emit('submit-comment-edit', chatpostid, str)
+              "
+              @remove-post="
+                (chatpostid, str) => onRemovePostComment(chatpostid, str)
+              "
             />
             <ChatPostNPC
               v-else
@@ -73,17 +91,15 @@
           <ion-icon name="chatbubble-ellipses-outline" size="small"></ion-icon>
         </div>
         <!-- コメント入力 -->
-        <div
-          v-show="visibleCommentInput"
-          ref="textareaInput"
-          class="chatitem-comment"
-        >
+        <div v-show="visibleCommentInput" class="chatitem-comment">
           <TextArea
+            ref="commentInput"
             class="chatitem-comment-textarea"
             placeholder="コメントヌ"
             with-color
             @close="visibleCommentInput = false"
             @submit="onSubmitComment"
+            @remove="onRemovePost"
           />
         </div>
       </div>
@@ -104,6 +120,7 @@ import { makeUserDisp } from '@/common/helper';
 type State = {
   urls: string[];
   visibleCommentInput: boolean;
+  editting: boolean;
 };
 
 export default Vue.extend({
@@ -134,6 +151,7 @@ export default Vue.extend({
     return {
       urls: [],
       visibleCommentInput: false,
+      editting: false,
     };
   },
   computed: {
@@ -188,7 +206,6 @@ export default Vue.extend({
       return this.myitem.goodMemberIDs.includes(this.loginUserId);
     },
     visibleCommentBtn(): boolean {
-      // if (this.comments.length === 0) return true;
       return !this.isComment;
     },
   },
@@ -204,18 +221,36 @@ export default Vue.extend({
   methods: {
     toggleStartComment() {
       this.visibleCommentInput = !this.visibleCommentInput;
+      if (this.visibleCommentInput) {
+        this.$nextTick(() => {
+          const $commentInput: any = this.$refs.commentInput;
+          $commentInput.focus();
+        });
+      }
     },
-    startComment() {
-      this.visibleCommentInput = true;
-      this.$nextTick(() => {
-        const $textareaInput: any = this.$refs.textareaInput;
-        $textareaInput.focus();
-        this.$emit('focus', $textareaInput.getBoundingClientRect().top);
-      });
+    // startComment() {
+    //   this.visibleCommentInput = true;
+    //   this.$nextTick(() => {
+    //     const $textareaInput: any = this.$refs.textareaInput;
+    //     $textareaInput.focus();
+    //     this.$emit('focus', $textareaInput.getBoundingClientRect().top);
+    //   });
+    // },
+    onRemovePost(str: string) {
+      this.$emit('remove-post', this.myitem.id, str);
+      this.editting = false;
+    },
+    onRemovePostComment(chatpostid: string, str: string) {
+      this.$emit('remove-post', chatpostid, str);
+      this.editting = false;
     },
     onSubmitComment(str: string) {
       this.$emit('submit-comment', this.myitem.id, str);
       this.visibleCommentInput = false;
+    },
+    onSubmitCommentEdit(str: string) {
+      this.$emit('submit-comment-edit', this.myitem.id, str);
+      this.editting = false;
     },
   },
 });
@@ -391,30 +426,54 @@ export default Vue.extend({
   right: 30px;
   ion-icon {
     color: inherit;
+    background-color: #fff;
+    border-radius: 50%;
+    padding: 1px;
   }
   span {
     display: block;
     margin: 0 5px 0 5px;
+    text-shadow: 1px 1px 0 #fff;
+    font-weight: bold;
   }
 }
 // 編集
 .chatitem-edit {
   margin-right: 1em;
 }
-$leftSpace: 30px;
+$leftSpace: 36px;
 // 返信
 .chatitem-reply {
-  margin: 0 0 0 $leftSpace;
+  position: relative;
+  margin: 0 0px 0 $leftSpace;
+  text-align: center;
+  // &::before {
+  //   content: '';
+  //   display: block;
+  //   border-top: dashed 1px #eee496;
+  //   position: absolute;
+  //   top: 10px;
+  //   left: 0;
+  //   width: 100%;
+  // }
 }
 .chatitem-reply-btn {
+  position: relative;
   display: inline-flex;
   align-items: center;
   color: #d2bd28;
+  background-color: #fff;
+  border-radius: 50%;
+  padding: 2px;
   ion-icon {
     color: inherit;
   }
 }
 
+.chatitem-edit-textarea {
+  padding: 0 4px;
+  margin: 10px 0 0 $leftSpace;
+}
 .chatitem-comment-textarea {
   padding: 0 4px;
 }
@@ -445,6 +504,7 @@ $leftSpace: 30px;
     // background-color: #ececec;
     background-color: #f9f3c1;
     // box-shadow: 0 0 2px 2px rgba(#fff, 0.8), inset 0 0 2px 1px rgba(#333, 0.1);
+    // background: linear-gradient(to bottom, #f7e0ab, #f9f3c1);
     border: solid 2px #fff;
     padding: 10px;
     margin: 0 2px 5px;
@@ -456,6 +516,9 @@ $leftSpace: 30px;
   .chatitem-good {
     top: 15px;
     right: 10px;
+  }
+  .chatitem-edit-textarea {
+    margin: 0;
   }
 }
 </style>
