@@ -52,7 +52,7 @@ export const makeDummyUsers = () => {
       console.log('ダミーユーザ作成完了');
       userStore.Logout();
     })
-    .catch((error) => {
+    .catch((error: Error) => {
       console.log('ダミーユーザ作成失敗', error);
     });
 };

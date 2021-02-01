@@ -91,7 +91,7 @@ export default class MyClass extends VuexModule {
       });
 
     if (res.errorCode) {
-      return Promise.reject(res);
+      return Promise.resolve(res);
     }
     const { user } = res;
 
@@ -176,7 +176,7 @@ export default class MyClass extends VuexModule {
       });
 
     if (res.errorCode) {
-      return Promise.reject(res);
+      return Promise.resolve(res);
     }
 
     // firestoreのusersにも追加する
@@ -205,7 +205,7 @@ export default class MyClass extends VuexModule {
         return { errorCode: error.code, errorMsg: error.message };
       });
     if (res2.errorCode) {
-      return Promise.reject(res);
+      return Promise.resolve(res);
     }
 
     // ログインユーザ名を更新
@@ -214,7 +214,7 @@ export default class MyClass extends VuexModule {
       photoURL: p.photoURL || '',
     });
     if (res3.errorCode) {
-      return Promise.reject(res);
+      return Promise.resolve(res);
     }
     return {};
   }
@@ -260,12 +260,12 @@ export default class MyClass extends VuexModule {
   @Action({ rawError: true })
   async UnRegister(): Promise<ActionRes> {
     const user = firebase.auth().currentUser;
-    if (!user) return Promise.reject(new Error('no-auth'));
+    if (!user) return Promise.resolve({ errorMsg: 'no-auth' });
 
     // firestoreでのユーザをまず削除
     const res = await this.UpdateUser({ id: user.uid, removed: true });
     if (res.errorCode) {
-      return Promise.reject(res);
+      return Promise.resolve(res);
     }
 
     return user
@@ -292,12 +292,12 @@ export default class MyClass extends VuexModule {
   }): Promise<ActionRes> {
     const { displayName, photoURL } = data;
     const user = firebase.auth().currentUser;
-    if (!user) return Promise.reject(new Error('no-auth'));
+    if (!user) return Promise.resolve({ errorMsg: 'no-auth' });
 
     // firestoreでのユーザを取得
     const res = await this.FetchUsers({ ids: [user.uid] });
     if (res.errorCode) {
-      return Promise.reject(res);
+      return Promise.resolve(res);
     }
 
     // firestoreでのユーザを更新
@@ -306,7 +306,7 @@ export default class MyClass extends VuexModule {
       username: displayName,
     });
     if (res2.errorCode) {
-      return Promise.reject(res);
+      return Promise.resolve(res);
     }
 
     return user
@@ -340,7 +340,11 @@ export default class MyClass extends VuexModule {
   @Action({ rawError: true })
   UpdatePassword(password: string): Promise<ActionRes> {
     const user = firebase.auth().currentUser;
-    if (!user) return Promise.reject(new Error('no-auth'));
+    if (!user) {
+      return Promise.resolve({
+        errorMsg: 'no-auth',
+      });
+    }
     return user
       .updatePassword(password)
       .then(() => {
@@ -361,7 +365,9 @@ export default class MyClass extends VuexModule {
   UpdateUser(user: Partial<TypeUser>): Promise<ActionRes> {
     const { id } = user;
     const find = this._users.find((d: TypeUser) => d.id === user.id);
-    if (!find) return Promise.reject(new Error('no user finded'));
+    if (!find) {
+      return Promise.resolve({ errorMsg: 'no user finded' });
+    }
 
     return userRef
       .doc(id)
@@ -402,7 +408,8 @@ export default class MyClass extends VuexModule {
   @Action({ rawError: true })
   UpdateLoginUserEmail(email: string): Promise<ActionRes> {
     const user = firebase.auth().currentUser;
-    if (!user) return Promise.reject(new Error('no-auth'));
+    if (!user) return Promise.resolve({ errorMsg: 'no-auth' });
+
     return user
       .updateEmail(email)
       .then(() => {
@@ -422,7 +429,7 @@ export default class MyClass extends VuexModule {
   @Action({ rawError: true })
   SendEmailVerification(): Promise<ActionRes> {
     const user = firebase.auth().currentUser;
-    if (!user) return Promise.reject(new Error('no-auth'));
+    if (!user) return Promise.resolve({ errorMsg: 'no-auth' });
     return user
       .sendEmailVerification()
       .then(() => {
@@ -447,7 +454,11 @@ export default class MyClass extends VuexModule {
     subtext: string;
     photoURL: string;
   }): Promise<ActionRes> {
-    if (!p.email) return Promise.reject(new Error('no email provided'));
+    if (!p.email) {
+      return Promise.resolve({
+        errorMsg: 'no email provided',
+      });
+    }
     const res = await this.CreateUserWithEmailAndPassword({
       email: p.email,
       password: p.password,
@@ -456,8 +467,11 @@ export default class MyClass extends VuexModule {
       photoURL: p.photoURL || '',
     });
     if (res.errorMsg) {
-      return Promise.reject(new Error('CreateUserWithEmailAndPassword failed'));
+      return Promise.resolve({
+        errorMsg: 'CreateUserWithEmailAndPassword failed',
+      });
     }
+    return {};
   }
 
   @Action({ rawError: true })
@@ -568,7 +582,11 @@ export default class MyClass extends VuexModule {
   @Action({ rawError: true })
   AddFriend(list: TypeUser[]): Promise<ActionRes> {
     const find = this._users.find((d: TypeUser) => d.id === this._logined.uid);
-    if (!find) return Promise.reject(new Error('can not find login user'));
+    if (!find) {
+      return Promise.resolve({
+        errorMsg: 'can not find login user',
+      });
+    }
     const friendList: {
       id: string;
       username: string;

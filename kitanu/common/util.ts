@@ -8,6 +8,13 @@ import CaToastPG, {
 import Loading from '@/components/parts/Loading.vue';
 import Particle from '@/components/parts/Particle.vue';
 import dayjs from 'dayjs';
+export { zeropad } from './util-other';
+export {
+  arraySliceTo,
+  arrayShuffle,
+  arrayAsort,
+  arrayUnique,
+} from './util-array';
 
 /**
  * isLocal
@@ -126,14 +133,14 @@ export const loading = (flg: boolean) => {
 /**
  * zeropad
  */
-export const zeropad = (num: number, keta: number = 5) => {
-  let str = `${num}`;
-  if (str.length >= keta) return str;
-  while (str.length < keta) {
-    str = `0${str}`;
-  }
-  return str;
-};
+// export const zeropad = (num: number, keta: number = 5) => {
+//   let str = `${num}`;
+//   if (str.length >= keta) return str;
+//   while (str.length < keta) {
+//     str = `0${str}`;
+//   }
+//   return str;
+// };
 
 /**
  * particleEffect
@@ -212,56 +219,4 @@ export function setClipBoard(str: string) {
  */
 export function dateDisp(unixtime: number) {
   return dayjs(unixtime).format('YYYY.MM.DD HH:mm');
-}
-
-// ----------------------
-// Array
-// ----------------------
-
-/**
- * arraySliceTo
- */
-export function arraySliceTo<T>(myids: T[], num: number): T[][] {
-  const myidsSprit = [];
-  while (myids.length > num) {
-    myidsSprit.push(myids.splice(0, num));
-  }
-  if (myids.length > 0) {
-    myidsSprit.push(myids);
-  }
-  return myidsSprit;
-}
-
-/**
- * arrayShuffle
- */
-export function arrayShuffle(array: Array<any>): Array<any> {
-  const ret: Array<any> = array.concat();
-  for (let i = ret.length - 1; i > 0; i -= 1) {
-    const r = Math.floor(Math.random() * (i + 1));
-    const tmp = ret[i];
-    ret[i] = ret[r];
-    ret[r] = tmp;
-  }
-  return ret;
-}
-
-/**
- * arrayAsort
- */
-export function arrayAsort(ary: Array<any>, key: string = 'id') {
-  return ary.sort((a, b) => {
-    const A = zeropad(a[key]);
-    const B = zeropad(b[key]);
-    if (A < B) return -1;
-    if (A > B) return 1;
-    return 0;
-  });
-}
-
-/**
- * arrayUnique
- */
-export function arrayUnique(ary: Array<any>) {
-  return Array.from(new Set(ary));
 }

@@ -88,6 +88,7 @@ export type TypeChatPost = {
   text: string;
   fukitype?: string; // fuki1...fuki3
   imgurl?: string;
+  removed: boolean;
   goodMemberIDs: TypeUserID[];
   goodMembers?: TypeUserDisp[]; // used at runtime
   createdByID: TypeUserID;

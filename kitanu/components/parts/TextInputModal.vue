@@ -91,7 +91,7 @@ export default Vue.extend({
 
   .ca-modalview {
     background-color: #ddcd61;
-    background-image: url('/img/subtle-dark-vertical.png');
+    background-image: url('/img/pat/subtle-dark-vertical.png');
   }
 }
 </style>

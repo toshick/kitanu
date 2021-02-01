@@ -176,7 +176,7 @@ export default Vue.extend({
 <style scoped lang="scss">
 .album-body {
   background-color: #fff;
-  background-image: url('/img/subtle-dark-vertical.png');
+  background-image: url('/img/pat/subtle-dark-vertical.png');
 }
 .album-des {
   // margin: 20px;

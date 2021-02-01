@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 import { v4 as uuidv4 } from 'uuid';
 import firebase from 'firebase/app';
 import { Module, VuexModule, Mutation, Action } from 'vuex-module-decorators';
-import { asort } from '@/common/util';
+import { arrayAsort } from '@/common/util';
 import { albumRef } from '@/plugins/firebase';
 import { logError } from '@/common/error';
 import { makeUser, makeAlbum } from '@/common/helper';
@@ -31,7 +31,7 @@ export default class MyClass extends VuexModule {
     const find = this._albumItems.find((d: TypeAlbum) => d.id === item.id);
     if (find) return;
     const ary = [...this._albumItems, item];
-    this._albumItems = asort(ary, 'createdAt').reverse();
+    this._albumItems = arrayAsort(ary, 'createdAt').reverse();
   }
 
   @Mutation

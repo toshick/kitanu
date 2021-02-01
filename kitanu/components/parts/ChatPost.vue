@@ -53,7 +53,11 @@
           編集</a
         >
         <!-- グッドヌ -->
-        <a class="chatitem-good" @click="$emit('good', myitem.id)">
+        <a
+          v-show="!editting"
+          class="chatitem-good"
+          @click="$emit('good', myitem.id)"
+        >
           <span>{{ goodCount }}</span>
           <ion-icon name="paw" size="small"></ion-icon>
         </a>
@@ -170,6 +174,9 @@ export default Vue.extend({
       if (this.isSelfPost) {
         ret['--self'] = true;
       }
+      if (this.editting) {
+        ret['--editting'] = true;
+      }
       return ret;
     },
     text(): string {
@@ -238,11 +245,11 @@ export default Vue.extend({
     // },
     onRemovePost(str: string) {
       this.$emit('remove-post', this.myitem.id, str);
-      this.editting = false;
+      // this.editting = false;
     },
     onRemovePostComment(chatpostid: string, str: string) {
       this.$emit('remove-post', chatpostid, str);
-      this.editting = false;
+      // this.editting = false;
     },
     onSubmitComment(str: string) {
       this.$emit('submit-comment', this.myitem.id, str);
@@ -356,11 +363,16 @@ export default Vue.extend({
       margin-bottom: 0;
     }
   }
+  &.--editting > .chatitem-icon {
+    transform: scale(0.9, 0.9);
+    opacity: 0.5;
+  }
 }
 .chatitem-icon {
   position: absolute;
   top: 0px;
   left: 10px;
+  transition: all 200ms ease;
 }
 .chatitem-body {
   flex: 1;
@@ -384,6 +396,7 @@ export default Vue.extend({
   line-height: 1.4;
   text-shadow: 0 0 2px #ffbd41;
   color: #c1620e;
+  word-break: break-all;
   &.wf-nicomoji {
     font-size: 14px;
   }
@@ -429,6 +442,7 @@ export default Vue.extend({
     background-color: #fff;
     border-radius: 50%;
     padding: 1px;
+    box-shadow: 0 1px 0 rgba(#000, 0.2);
   }
   span {
     display: block;
@@ -500,21 +514,36 @@ $leftSpace: 36px;
     padding: 0px 0 5px 35px;
   }
   .chatitem-body-text {
+    position: relative;
     border-radius: 4px;
-    // background-color: #ececec;
-    background-color: #f9f3c1;
-    // box-shadow: 0 0 2px 2px rgba(#fff, 0.8), inset 0 0 2px 1px rgba(#333, 0.1);
-    // background: linear-gradient(to bottom, #f7e0ab, #f9f3c1);
-    border: solid 2px #fff;
-    padding: 10px;
+    background-image: url('/img/pat/light-mesh.png');
+    background-color: #eeedcc;
+    background-color: #fffefb;
+    background-size: 70%;
+    box-shadow: inset 0 1px 1px 0px rgba(#000, 0.4);
+    padding: 10px 40px 10px 10px;
     margin: 0 2px 5px;
     text-indent: 0;
     font-size: 12px;
     color: #666;
+    overflow: hidden;
     text-shadow: none;
+    &::after {
+      content: '';
+      display: block;
+      background-image: url('/img/tanu/tanu.png');
+      background-repeat: no-repeat;
+      background-size: 100% auto;
+      width: 40px;
+      height: 50px;
+      position: absolute;
+      top: 120px;
+      right: -7px;
+      z-index: 1;
+    }
   }
   .chatitem-good {
-    top: 15px;
+    top: 31px;
     right: 10px;
   }
   .chatitem-edit-textarea {

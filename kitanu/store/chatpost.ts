@@ -16,8 +16,8 @@ import {
   ChatPostCreateRequest,
   ChatPostUpdateRequest,
 } from '@/components/types/apptypes';
-import kitanuTalks from '@/assets/kitanuTalks';
-import { members, chatItems } from '@/mock/mockdata';
+// import kitanuTalks from '@/assets/kitanuTalks';
+import { members } from '@/mock/mockdata';
 
 @Module({ name: 'chatpost', stateFactory: true, namespaced: true })
 export default class MyClass extends VuexModule {

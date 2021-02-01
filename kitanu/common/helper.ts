@@ -90,6 +90,7 @@ export function makeChatPost(params: Partial<TypeChatPost>): TypeChatPost {
     text: params.text || '',
     fukitype: params.fukitype || '',
     imgurl: params.imgurl || '',
+    removed: params.removed || false,
     goodMemberIDs: params.goodMemberIDs || [],
     createdByID: params.createdByID || '',
     commentPostIDs: params.commentPostIDs || [],

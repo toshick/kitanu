@@ -152,7 +152,7 @@ export default Vue.extend({
   & > section {
     padding: 10px 20px;
     background-color: #ddcd61;
-    background-image: url('/img/subtle-dark-vertical.png');
+    background-image: url('/img/pat/subtle-dark-vertical.png');
   }
 }
 .sec1 {

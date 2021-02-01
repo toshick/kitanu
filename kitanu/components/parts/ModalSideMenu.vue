@@ -32,7 +32,7 @@
 <!------------------------------->
 <script lang="ts">
 import Vue from 'vue';
-import { shuffle } from '@/common/util';
+import { arrayShuffle } from '@/common/util';
 
 type State = {
   comment: string;
@@ -66,7 +66,7 @@ export default Vue.extend({
     };
   },
   mounted() {
-    this.comment = shuffle(comments)[0];
+    this.comment = arrayShuffle(comments)[0];
     // this.comment = comments[comments.length - 1];
   },
   methods: {
@@ -99,7 +99,7 @@ section {
   overflow: hidden;
 
   padding: 20px;
-  // background-image: url('/img/subtle-dark-vertical.png');
+  // background-image: url('/img/pat/subtle-dark-vertical.png');
 }
 .tanu {
   position: absolute;

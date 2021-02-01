@@ -21,8 +21,8 @@
         <a class="btn-submit" :disabled="invalid" @click="submit">
           <ion-icon name="paper-plane-outline"></ion-icon>
         </a>
-        <!-- 送信 -->
-        <a class="btn-trash" @click="remove">
+        <!-- 削除 -->
+        <a v-if="value" class="btn-trash" @click="remove">
           <ion-icon name="trash-outline"></ion-icon>
         </a>
         <!-- 閉じる -->
@@ -115,6 +115,7 @@ export default Vue.extend({
 <style scoped lang="scss">
 $keyColor: #d9c84e;
 .mytextarea {
+  position: relative;
   &.--with-color {
     textarea {
       background-color: $keyColor;
@@ -129,10 +130,13 @@ textarea {
   border: solid 1px #ccc;
   border-radius: var(--form-radius);
   font-size: var(--form-input-fontsize-normal);
-  // box-shadow: var(--form-shadow);
   box-shadow: 0 0 2px 1px #fff;
   padding: 6px 2em 6px 12px;
   color: var(--dark);
+  background-image: url('/img/pat/light-mesh.png');
+  background-color: #eeedcc;
+  background-size: 70%;
+  box-shadow: inset 0 1px 1px 0px rgba(#000, 0.2);
   &:focus {
     border: solid 1px #ccc;
     outline: none;
@@ -154,5 +158,9 @@ textarea {
 }
 .btn-trash {
   margin-left: 1em;
+  color: #fff;
+  position: absolute;
+  top: 6px;
+  right: 15px;
 }
 </style>
