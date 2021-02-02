@@ -45,16 +45,12 @@
       <!-- bottom -->
       <div class="chatitem-bottom">
         <!-- 編集 -->
-        <a
-          v-if="isSelfPost && !editting"
-          class="chatitem-edit"
-          @click="editting = true"
-        >
+        <a v-if="editable" class="chatitem-edit" @click="editting = true">
           編集</a
         >
         <!-- グッドヌ -->
         <a
-          v-show="!editting"
+          v-show="!editting && !isRemoved"
           class="chatitem-good"
           @click="$emit('good', myitem.id)"
         >
@@ -177,6 +173,9 @@ export default Vue.extend({
       if (this.editting) {
         ret['--editting'] = true;
       }
+      if (this.isRemoved) {
+        ret['--removed'] = true;
+      }
       return ret;
     },
     text(): string {
@@ -214,6 +213,12 @@ export default Vue.extend({
     },
     visibleCommentBtn(): boolean {
       return !this.isComment;
+    },
+    isRemoved(): boolean {
+      return this.myitem.removed;
+    },
+    editable(): boolean {
+      return this.isSelfPost && !this.editting && !this.isRemoved;
     },
   },
   mounted() {
@@ -366,6 +371,14 @@ export default Vue.extend({
   &.--editting > .chatitem-icon {
     transform: scale(0.9, 0.9);
     opacity: 0.5;
+  }
+  &.--removed > .chatitem-body > .chatitem-body-text {
+    color: #666;
+    text-shadow: none;
+  }
+  &.--removed.--comment > .chatitem-body > .chatitem-body-text {
+    background-color: #666;
+    color: #ccc;
   }
 }
 .chatitem-icon {

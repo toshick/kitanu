@@ -134,6 +134,7 @@ export default class MyClass extends VuexModule {
     if (p.fukitype) param.fukitype = p.fukitype;
     if (p.createdAt) param.createdAt = p.createdAt;
     if (p.commentPostIDs) param.commentPostIDs = p.commentPostIDs;
+    if (p.removed) param.removed = p.removed;
 
     return chatpostRef
       .doc(chatpostID)
@@ -148,7 +149,16 @@ export default class MyClass extends VuexModule {
   }
 
   @Action({ rawError: true })
-  async RemoveChatPost(chatpostid: string): Promise<ActionRes> {
+  RemoveChatPost(chatpostid: string): Promise<ActionRes> {
+    return this.UpdateChatPost({
+      postid: chatpostid,
+      text: '--- removed ---',
+      removed: true,
+    });
+  }
+
+  @Action({ rawError: true })
+  async RemoveChatPostReal(chatpostid: string): Promise<ActionRes> {
     // 投稿のコメント削除用にidを確保;
     const find = this._chatPosts.find((p: TypeChatPost) => p.id === chatpostid);
     if (!find) {

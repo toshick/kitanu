@@ -9,7 +9,6 @@
       :login-user-id="loginUserID"
       @select-member="visibleSelectMember = true"
       @good="onGood"
-      @edit="onEdit"
       @submit="onSubmit"
       @submit-comment="onSubmitComment"
       @submit-comment-edit="onSubmitCommentEdit"
@@ -164,14 +163,6 @@ export default Vue.extend({
       if (res.errorMsg) {
         toast('グッドしっぱいヌ');
       }
-    },
-    async onEdit(chatpostid: string) {
-      // const res = await chatPostStore.ToggleGood({
-      //   chatpostID: chatpostid,
-      // });
-      // if (res.errorMsg) {
-      //   toast('グッドしっぱいヌ');
-      // }
     },
     async onRemovePost(chatpostid: string) {
       const res = await chatPostStore.RemoveChatPost(chatpostid);

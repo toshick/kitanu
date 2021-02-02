@@ -134,5 +134,6 @@ export type ChatPostUpdateRequest = {
   text?: string;
   fukitype?: string;
   createdAt?: string;
+  removed?: boolean;
   commentPostIDs?: string[];
 };
