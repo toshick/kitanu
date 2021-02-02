@@ -1,12 +1,10 @@
-// import querystring from 'querystring';
-import Cookies from 'js-cookie';
 import firebase from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
 import { isLocal } from '@/common/util';
 import { makeDummyUsers } from '@/common/development';
 import { makeLoginUser } from '@/common/helper';
-import { appStore, activityStore, userStore, COOKIE_AUTH } from '@/store';
+import { appStore } from '@/store';
 
 const firebaseConfig = {
   apiKey: process.env.FIREBASE_API_KEY,

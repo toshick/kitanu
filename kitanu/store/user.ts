@@ -221,6 +221,9 @@ export default class MyClass extends VuexModule {
 
   @Action({ rawError: true })
   Logout(): Promise<ActionRes> {
+    if (!this._logined.uid) {
+      return Promise.resolve({ errorMsg: 'already logouted' });
+    }
     // Activity;
     activityStore.AddActivity({
       text: `「${this.loginedUser.username}」がログアウトしたーヌ`,
@@ -480,9 +483,11 @@ export default class MyClass extends VuexModule {
     let myids = ids || [];
     if (omitIfExist) {
       const existIds = this._users.map((u: TypeUser) => u.id);
-      myids = ids.filter((id: string) => {
-        return !existIds.includes(id);
-      });
+      if (existIds) {
+        myids = ids.filter((id: string) => {
+          return !existIds.includes(id);
+        });
+      }
     }
     if (myids.length === 0) {
       return Promise.resolve({});

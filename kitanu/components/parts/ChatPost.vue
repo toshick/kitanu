@@ -25,7 +25,6 @@
       <p
         v-if="!editting"
         class="chatitem-body-text"
-        :class="{ 'wf-nicomoji': hasFukidashi }"
         v-html="$sanitize(text)"
       ></p>
       <TextArea
@@ -69,9 +68,8 @@
               :is-comment="true"
               :login-user-id="loginUserId"
               @good="(chatpostid) => $emit('good', chatpostid)"
-              @submit-comment-edit="
-                (chatpostid, str) =>
-                  $emit('submit-comment-edit', chatpostid, str)
+              @update-comment="
+                (chatpostid, str) => $emit('update-comment', chatpostid, str)
               "
               @remove-post="
                 (chatpostid, str) => onRemovePostComment(chatpostid, str)
@@ -261,7 +259,7 @@ export default Vue.extend({
       this.visibleCommentInput = false;
     },
     onSubmitCommentEdit(str: string) {
-      this.$emit('submit-comment-edit', this.myitem.id, str);
+      this.$emit('update-comment', this.myitem.id, str);
       this.editting = false;
     },
   },
@@ -299,6 +297,7 @@ export default Vue.extend({
       }
     }
   }
+  $fuki1BG: #d9c84e;
   &.--fuki1 > .chatitem-body > .chatitem-body-text {
     display: inline-flex;
     position: relative;
@@ -306,14 +305,19 @@ export default Vue.extend({
     padding: 10px 15px;
     margin: 20px 20px 10px;
     border-radius: 16px;
-    background-color: #ecde90;
+    background-color: $fuki1BG;
+    color: #fff;
+    font-weight: normal;
+    text-shadow: none;
+    // box-shadow: inset 0 1px 1px 0 rgba(#fff, 0.8);
 
     &::before {
       content: '';
       width: 15px;
       height: 15px;
       border-radius: 50%;
-      background-color: #ecde90;
+      background-color: $fuki1BG;
+      // box-shadow: 0 1px 1px 0 rgba(#000, 0.3);
       position: absolute;
       top: 5px;
       left: -10px;
@@ -323,7 +327,8 @@ export default Vue.extend({
       width: 10px;
       height: 10px;
       border-radius: 50%;
-      background-color: #ecde90;
+      background-color: $fuki1BG;
+      // box-shadow: 0 1px 1px 0 rgba(#000, 0.3);
       position: absolute;
       top: -4px;
       left: -15px;
@@ -373,12 +378,14 @@ export default Vue.extend({
     opacity: 0.5;
   }
   &.--removed > .chatitem-body > .chatitem-body-text {
-    color: #666;
-    text-shadow: none;
-  }
-  &.--removed.--comment > .chatitem-body > .chatitem-body-text {
-    background-color: #666;
+    display: flex;
     color: #ccc;
+    text-shadow: none;
+    background-image: none;
+    min-height: auto;
+    justify-content: center;
+    padding: 20px 0px;
+    text-indent: 0;
   }
 }
 .chatitem-icon {
@@ -517,6 +524,16 @@ $leftSpace: 36px;
     padding: 0;
     margin: 0;
     overflow: auto;
+    &.--removed {
+      margin-bottom: 10px;
+      .chatitem-body-text {
+        background-color: transparent;
+        box-shadow: none;
+        background-image: none;
+        color: #ccc;
+        padding: 10px 0px;
+      }
+    }
   }
 
   .chatitem-icon {

@@ -34,8 +34,8 @@
             @submit-comment="
               (chatpostid, str) => $emit('submit-comment', chatpostid, str)
             "
-            @submit-comment-edit="
-              (chatpostid, str) => $emit('submit-comment-edit', chatpostid, str)
+            @update-comment="
+              (chatpostid, str) => $emit('update-comment', chatpostid, str)
             "
             @focus="focusElement"
           />

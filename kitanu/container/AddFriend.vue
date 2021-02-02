@@ -21,7 +21,7 @@ import {
   TypeUserID,
   TypeUserDisp,
 } from '@/components/types/apptypes';
-import { userStore, friendStore } from '@/store';
+import { userStore } from '@/store';
 import { makeUser } from '~/common/helper';
 
 type State = {
@@ -44,8 +44,8 @@ export default Vue.extend({
     };
   },
   computed: {
-    members(): TypeUser[] {
-      return friendStore.friends;
+    members(): TypeUserDisp[] {
+      return userStore.loginedUserFriends;
     },
     friends(): TypeUserID[] {
       return userStore.loginedUserFriends
@@ -54,12 +54,12 @@ export default Vue.extend({
     },
   },
   mounted() {
-    this.fetchFriends();
+    this.fetch();
   },
   methods: {
-    fetchFriends() {
-      friendStore.RESET_FRIEND();
-      friendStore.FetchFriends();
+    fetch() {
+      const ids = userStore.loginedUser.friendIdList;
+      userStore.FetchUsers({ ids, omitIfExist: true });
     },
     async onSearch(str: string) {
       this.searched = false;

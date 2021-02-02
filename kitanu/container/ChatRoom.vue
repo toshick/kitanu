@@ -11,7 +11,7 @@
       @good="onGood"
       @submit="onSubmit"
       @submit-comment="onSubmitComment"
-      @submit-comment-edit="onSubmitCommentEdit"
+      @update-comment="onSubmitCommentEdit"
       @remove-post="onRemovePost"
     />
     <!-- SelectMember -->
@@ -114,20 +114,12 @@ export default Vue.extend({
       );
       userStore.FetchUsers({ ids, omitIfExist: true });
     },
-    async onSubmit(p: ChatPostCreateRequest | ChatPostUpdateRequest) {
+    async onSubmit(p: ChatPostCreateRequest) {
       await this.scrollTopSmooth();
       this.showInlineLoading(true);
-      const { createdAt } = p;
-      if (createdAt) {
-        const res = await this.updatePost(p);
-        if (res.errorMsg) {
-          toast('こーしんしっぱいヌ');
-        }
-      } else {
-        const res = await this.createPost(p);
-        if (res.errorMsg) {
-          toast('とーこうしっぱいヌ');
-        }
+      const res = await this.createPost(p);
+      if (res.errorMsg) {
+        toast('とーこうしっぱいヌ');
       }
       this.showInlineLoading(false);
       toast('とーこうしタヌ');
@@ -135,6 +127,16 @@ export default Vue.extend({
         this.scrollTopSmooth();
       }, 500);
     },
+    // async onSubmitUpdate(p: ChatPostUpdateRequest) {
+    //   await this.scrollTopSmooth();
+    //   this.showInlineLoading(true);
+    //   const res = await this.updatePost(p);
+    //   if (res.errorMsg) {
+    //     toast('こーしんしっぱいヌ');
+    //   }
+    //   this.showInlineLoading(false);
+    //   toast('こーしんしタヌ');
+    // },
     createPost(p: ChatPostCreateRequest) {
       return chatPostStore.CreateChatPost({
         chatroomID: this.chatroomid,

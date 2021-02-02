@@ -25,7 +25,7 @@ export default class MyClass extends VuexModule {
     });
     userStore.FetchUsers({ ids: [user.uid] });
     activityStore.Listen(true);
-    chatListStore.Listen(true);
+    // chatListStore.Listen(true);
 
     Cookies.set(COOKIE_AUTH, 'yes');
   }
@@ -36,7 +36,7 @@ export default class MyClass extends VuexModule {
     Cookies.remove(COOKIE_AUTH);
     userStore.SET_LOGIN_USER(null);
     activityStore.Listen(false);
-    chatListStore.Listen(false);
+    // chatListStore.Listen(false);
   }
   // ----------------------
   // get

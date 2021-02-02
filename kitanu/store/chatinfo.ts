@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import { v4 as uuidv4 } from 'uuid';
 import { Module, VuexModule, Mutation, Action } from 'vuex-module-decorators';
-import { asort } from '@/common/util';
+import { arrayAsort } from '@/common/util';
 import { ActionRes, TypeChatInfoItem } from '@/components/types/apptypes';
 import { infoItems } from '@/mock/mockdata';
 
@@ -22,7 +22,7 @@ export default class MyClass extends VuexModule {
   ADD_CHAT(postitem: TypeChatInfoItem) {
     const ary = [...this.infoItems];
     ary.unshift(postitem);
-    this.infoItems = asort(ary, 'postdate').reverse();
+    this.infoItems = arrayAsort(ary, 'postdate').reverse();
   }
 
   @Mutation

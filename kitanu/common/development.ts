@@ -9,6 +9,10 @@ type DummyUser = {
 };
 
 export const makeDummyUsers = () => {
+  if (userStore.users.length > 0) {
+    return;
+  }
+
   const users: DummyUser[] = [];
   users.push({
     email: process.env.DEV_USER_EMAIL || '',
@@ -50,7 +54,7 @@ export const makeDummyUsers = () => {
   return ps
     .then(() => {
       console.log('ダミーユーザ作成完了');
-      userStore.Logout();
+      // userStore.Logout();
     })
     .catch((error: Error) => {
       console.log('ダミーユーザ作成失敗', error);

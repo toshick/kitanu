@@ -88,7 +88,7 @@ export default class MyClass extends VuexModule {
       (c: TypeChatPost) => c.id === chatpostID,
     );
     if (!chatpost) {
-      return Promise.reject(new Error('no chatpost'));
+      return Promise.resolve({ errorMsg: 'no chatpost' });
     }
     let ids = [...chatpost.goodMemberIDs];
     if (ids.includes(loginUserID)) {
@@ -125,7 +125,7 @@ export default class MyClass extends VuexModule {
   UpdateChatPost(p: ChatPostUpdateRequest): Promise<ActionRes> {
     const chatpostID = p.postid;
     if (!chatpostID) {
-      return Promise.reject(new Error('no postid'));
+      return Promise.resolve({ errorMsg: 'no postid' });
     }
     const param: ChatPostUpdateRequest = {
       postid: chatpostID,
@@ -162,9 +162,9 @@ export default class MyClass extends VuexModule {
     // 投稿のコメント削除用にidを確保;
     const find = this._chatPosts.find((p: TypeChatPost) => p.id === chatpostid);
     if (!find) {
-      return Promise.reject(
-        new Error('could not find chatpost on RemoveChatPost'),
-      );
+      return Promise.resolve({
+        errorMsg: 'could not find chatpost on RemoveChatPost',
+      });
     }
     const removeIDs: string[] = [...find.commentPostIDs];
     // まず投稿削除
@@ -180,7 +180,9 @@ export default class MyClass extends VuexModule {
         return { errorCode: error.code, errorMsg: error.message };
       });
     if (res.errorMsg) {
-      return Promise.reject(new Error('could remove chatpost'));
+      return Promise.resolve({
+        errorMsg: 'could not remove chatpost',
+      });
     }
 
     // 投稿のコメント削除
@@ -198,7 +200,10 @@ export default class MyClass extends VuexModule {
 
   @Action({ rawError: true })
   CreateChatPost(p: ChatPostCreateRequest): Promise<ActionRes> {
-    if (!p.chatroomID) return Promise.reject(new Error('no chatroomID'));
+    if (!p.chatroomID) return Promise.resolve({ errorMsg: 'no chatroomID' });
+
+    console.log('くりえいと', p);
+
     const loginUserID = userStore.loginedUser.id;
     const post: TypeChatPost = makeChatPost({
       text: p.text,
@@ -229,7 +234,7 @@ export default class MyClass extends VuexModule {
   }): Promise<ActionRes> {
     const chatpostID = p.postid;
     if (!chatpostID) {
-      return Promise.reject(new Error('no postid'));
+      return Promise.resolve({ errorMsg: 'no postid' });
     }
     console.log('AddChatPostComment', chatpostID);
 
@@ -237,7 +242,7 @@ export default class MyClass extends VuexModule {
       (c: TypeChatPost) => c.id === chatpostID,
     );
     if (!chatpost) {
-      return Promise.reject(new Error('could not find chatpost'));
+      return Promise.resolve({ errorMsg: 'could not find chatpost' });
     }
     const { text } = p.commentPost;
 
@@ -249,9 +254,9 @@ export default class MyClass extends VuexModule {
       isComment: true,
     });
     if (res.errorMsg) {
-      return Promise.reject(
-        new Error('could create chatpost before comment post'),
-      );
+      return Promise.resolve({
+        errorMsg: 'could create chatpost before comment post',
+      });
     }
     const createdPost = res.result;
     const commentPostIDs = [...chatpost.commentPostIDs];

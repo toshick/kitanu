@@ -1,7 +1,7 @@
 // import dayjs from 'dayjs';
 import { v4 as uuidv4 } from 'uuid';
 import { Module, VuexModule, Mutation, Action } from 'vuex-module-decorators';
-import { asort, setClipBoard } from '@/common/util';
+import { arrayAsort, setClipBoard } from '@/common/util';
 import { ActionRes, TypeUser } from '@/components/types/apptypes';
 import { friends } from '@/mock/mockdata';
 
@@ -23,7 +23,7 @@ export default class MyClass extends VuexModule {
     const find = this._friends.find((d: TypeUser) => d.id === friend.id);
     if (find) return;
     const ary = [...this._friends, friend];
-    this._friends = asort(ary, 'createdAt').reverse();
+    this._friends = arrayAsort(ary, 'createdAt').reverse();
   }
 
   @Mutation
@@ -34,7 +34,7 @@ export default class MyClass extends VuexModule {
       }
       return u;
     });
-    this._friends = asort(ary, 'createdAt').reverse();
+    this._friends = arrayAsort(ary, 'createdAt').reverse();
   }
 
   @Mutation
