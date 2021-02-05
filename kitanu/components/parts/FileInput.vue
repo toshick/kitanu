@@ -13,10 +13,9 @@
 <script lang="ts">
 import Vue from 'vue';
 import { TypeFile } from '@/components/types/apptypes';
+import { base64ToFile } from '@/common/util';
 
-type State = {
-  files: TypeFile[];
-};
+type State = {};
 
 export default Vue.extend({
   name: 'FileUpload',
@@ -38,13 +37,13 @@ export default Vue.extend({
       if (this.disabled) {
         klass['-disabled'] = true;
       }
-
       return klass;
     },
   },
   mounted() {},
   methods: {
     onFileChange(e: any) {
+      const myfiles: TypeFile[] = [];
       const files: File[] = e.target.files || e.dataTransfer.files;
 
       const p: Promise<any>[] = [];
@@ -55,13 +54,27 @@ export default Vue.extend({
             reader.onload = (e: Event) => {
               const fr = e.target as FileReader;
               const base64str: string = fr.result as string;
-              const fitem: TypeFile = {
-                file: f,
-                base64str,
+
+              // サイズ取得
+              const image = new Image();
+              image.onload = async () => {
+                const size = {
+                  width: image.naturalWidth,
+                  height: image.naturalHeight,
+                };
+                const base64strResized = this.resize(image, f.type, size);
+
+                const f2: File = await base64ToFile(base64strResized, f.name);
+
+                const fitem = {
+                  file: f2,
+                  base64str,
+                };
+                myfiles.push(fitem);
+                this.$emit('loaded', fitem);
+                resolve();
               };
-              this.files.push(fitem);
-              this.$emit('loaded', fitem);
-              resolve();
+              image.src = base64str;
             };
             reader.readAsDataURL(f);
           }),
@@ -69,9 +82,27 @@ export default Vue.extend({
       });
 
       Promise.all(p).then(() => {
-        this.$emit('finish-all', this.files);
-        this.files = [];
+        console.log('おわり');
+        this.$emit('finish-all', myfiles);
       });
+    },
+    resize(
+      img: Image,
+      mimetype: string,
+      size: { width: number; height: number },
+    ): string {
+      const w = size.width / 10;
+      const h = size.height / 10;
+      const canvas = document.createElement('canvas');
+      canvas.width = w;
+      canvas.height = h;
+      const ctx = canvas.getContext('2d');
+      if (ctx) {
+        ctx.drawImage(img, 0, 0, w, h);
+      }
+
+      const data = canvas.toDataURL(mimetype);
+      return data;
     },
   },
 });

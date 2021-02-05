@@ -116,12 +116,16 @@ export default Vue.extend({
     },
     async onSubmit(p: ChatPostCreateRequest) {
       await this.scrollTopSmooth();
-      this.showInlineLoading(true);
-      const res = await this.createPost(p);
+      this.showLoading(true);
+      const res = await chatPostStore.CreateChatPost({
+        ...p,
+        chatroomID: this.chatroomid,
+      });
+      this.showLoading(false);
       if (res.errorMsg) {
         toast('とーこうしっぱいヌ');
+        return;
       }
-      this.showInlineLoading(false);
       toast('とーこうしタヌ');
       setTimeout(() => {
         this.scrollTopSmooth();
@@ -137,13 +141,13 @@ export default Vue.extend({
     //   this.showInlineLoading(false);
     //   toast('こーしんしタヌ');
     // },
-    createPost(p: ChatPostCreateRequest) {
-      return chatPostStore.CreateChatPost({
-        chatroomID: this.chatroomid,
-        text: p.text,
-        fukitype: p.fukitype,
-      });
-    },
+    // createPost(p: ChatPostCreateRequest) {
+    //   return chatPostStore.CreateChatPost({
+    //     chatroomID: this.chatroomid,
+    //     text: p.text,
+    //     fukitype: p.fukitype,
+    //   });
+    // },
     updatePost(p: ChatPostUpdateRequest) {
       return chatPostStore.UpdateChatPost({
         postid: p.postid,

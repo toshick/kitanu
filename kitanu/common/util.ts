@@ -8,7 +8,7 @@ import CaToastPG, {
 import Loading from '@/components/parts/Loading.vue';
 import Particle from '@/components/parts/Particle.vue';
 import dayjs from 'dayjs';
-export { zeropad } from './util-other';
+export { zeropad, base64ToFile } from './util-other';
 export {
   arraySliceTo,
   arrayShuffle,

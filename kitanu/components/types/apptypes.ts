@@ -137,3 +137,13 @@ export type ChatPostUpdateRequest = {
   removed?: boolean;
   commentPostIDs?: string[];
 };
+
+// ----------------------
+// enum
+// ----------------------
+
+// storageのディレクトリ
+export enum TypeFileDirPath {
+  Postimgs = 'postimgs',
+  Usericon = 'usericon',
+}

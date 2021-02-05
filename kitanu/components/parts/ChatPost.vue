@@ -32,7 +32,7 @@
         class="chatitem-edit-textarea"
         placeholder="コメントヌ"
         with-color
-        :value="text"
+        :value="myitem.text"
         @close="editting = false"
         @submit="onSubmitCommentEdit"
         @remove="onRemovePost"
@@ -116,7 +116,6 @@ import { hiraToKana } from '@/common/util';
 import { makeUserDisp } from '@/common/helper';
 
 type State = {
-  urls: string[];
   visibleCommentInput: boolean;
   editting: boolean;
 };
@@ -147,7 +146,6 @@ export default Vue.extend({
   },
   data(): State {
     return {
-      urls: [],
       visibleCommentInput: false,
       editting: false,
     };
@@ -179,7 +177,7 @@ export default Vue.extend({
     text(): string {
       if (!this.myitem) return '';
       const txt = this.myitem.text
-        .replace(/http.*[a-zA-Z]?/, '')
+        // .replace(/http.*[a-zA-Z]?/, '')
         .replace(/[\n]/g, '<br>');
       return hiraToKana(txt).trim();
     },
@@ -218,15 +216,25 @@ export default Vue.extend({
     editable(): boolean {
       return this.isSelfPost && !this.editting && !this.isRemoved;
     },
+    urls(): string[] {
+      let ret: string[] = [];
+      const { imgurl, text } = this.myitem;
+      const links = text.match(/http.*[a-zA-Z]?/g);
+      if (links && links.length > 0) {
+        ret = ret.concat(links);
+      }
+      if (imgurl) ret = ret.concat(imgurl);
+      return ret;
+    },
   },
   mounted() {
-    const links = this.myitem.text.match(/http.*[a-zA-Z]?/g);
-    if (links && links.length > 0) {
-      this.urls = links;
-    }
-    if (this.myitem.imgurl) {
-      this.urls.push(this.myitem.imgurl);
-    }
+    // const links = this.myitem.text.match(/http.*[a-zA-Z]?/g);
+    // if (links && links.length > 0) {
+    //   this.urls = links;
+    // }
+    // if (this.myitem.imgurl) {
+    //   this.urls.push(this.myitem.imgurl);
+    // }
   },
   methods: {
     toggleStartComment() {
@@ -423,10 +431,13 @@ export default Vue.extend({
 }
 
 .chatitem-body-img {
+  position: relative;
   margin: 10px 0;
   img {
+    display: block;
     border-radius: 4px;
-    box-shadow: 0 0 2px 1px rgba(#a89b52, 0.6);
+    box-shadow: 0 0 3px 0px rgba(#666, 0.6);
+    max-height: 200px;
   }
 }
 

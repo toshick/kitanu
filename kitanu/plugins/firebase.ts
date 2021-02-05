@@ -1,6 +1,7 @@
 import firebase from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
+import 'firebase/storage';
 import { isLocal } from '@/common/util';
 import { makeDummyUsers } from '@/common/development';
 import { makeLoginUser } from '@/common/helper';
@@ -25,6 +26,8 @@ if (isLocal) {
   firestore.useEmulator('localhost', 8080);
   firebase.auth().useEmulator('http://localhost:9099/');
 }
+const storage: firebase.storage.Storage = firebase.storage();
+export const storageRef = storage.ref();
 
 /**
  * default

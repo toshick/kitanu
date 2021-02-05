@@ -202,7 +202,7 @@ export default Vue.extend({
       if (this.editpost) {
         params = {
           postid: this.editpost.id,
-          fileItem: this.fileItems[0],
+          fileItem: this.fileItems[0] || null,
           text,
           fukitype,
           createdAt: this.editpost.createdAt,
@@ -210,12 +210,11 @@ export default Vue.extend({
       } else {
         params = {
           chatroomID: '',
-          fileItem: this.fileItems[0],
+          fileItem: this.fileItems[0] || null,
           text,
           fukitype,
         } as ChatPostCreateRequest;
       }
-
       this.$emit('submit', params);
       this.reset();
     },

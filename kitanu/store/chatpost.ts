@@ -6,6 +6,7 @@ import { makeUserDisp, makeChatPost } from '@/common/helper';
 import { chatpostRef } from '@/plugins/firebase';
 import { activityStore, userStore } from '@/store';
 import { logError } from '@/common/error';
+import { upload } from '@/common/file-uploader';
 
 import {
   ActionRes,
@@ -15,6 +16,7 @@ import {
   TypeFile,
   ChatPostCreateRequest,
   ChatPostUpdateRequest,
+  TypeFileDirPath,
 } from '@/components/types/apptypes';
 // import kitanuTalks from '@/assets/kitanuTalks';
 import { members } from '@/mock/mockdata';
@@ -199,10 +201,19 @@ export default class MyClass extends VuexModule {
   }
 
   @Action({ rawError: true })
-  CreateChatPost(p: ChatPostCreateRequest): Promise<ActionRes> {
+  async CreateChatPost(p: ChatPostCreateRequest): Promise<ActionRes> {
     if (!p.chatroomID) return Promise.resolve({ errorMsg: 'no chatroomID' });
 
     console.log('くりえいと', p);
+    let imgurl = '';
+    if (p.fileItem && p.fileItem.file) {
+      console.log('ふぁいる', p.fileItem.file);
+      const res = await upload(p.fileItem.file, TypeFileDirPath.Postimgs);
+      if (res.error) {
+        return Promise.resolve({ errorMsg: 'could not upload file' });
+      }
+      imgurl = res.url || '';
+    }
 
     const loginUserID = userStore.loginedUser.id;
     const post: TypeChatPost = makeChatPost({
@@ -211,6 +222,7 @@ export default class MyClass extends VuexModule {
       chatroomID: p.chatroomID,
       fukitype: p.fukitype,
       isComment: p.isComment,
+      imgurl,
     });
 
     // 作成
