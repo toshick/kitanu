@@ -32,7 +32,7 @@
 <!------------------------------->
 <script lang="ts">
 import Vue from 'vue';
-import { arrayShuffle } from '@/common/util';
+import { ArrayUtil } from '@/common/util';
 
 type State = {
   comment: string;
@@ -66,7 +66,7 @@ export default Vue.extend({
     };
   },
   mounted() {
-    this.comment = arrayShuffle(comments)[0];
+    this.comment = ArrayUtil.Shuffle(comments)[0];
     // this.comment = comments[comments.length - 1];
   },
   methods: {

@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import firebase from 'firebase/app';
 import { Module, VuexModule, Mutation, Action } from 'vuex-module-decorators';
-import { arrayAsort, log, arrayUnique, arraySliceTo } from '@/common/util';
+import { log, ArrayUtil } from '@/common/util';
 import { makeUserDisp, makeChatPost } from '@/common/helper';
 import { chatpostRef } from '@/plugins/firebase';
 import { activityStore, userStore } from '@/store';
@@ -53,7 +53,7 @@ export default class MyClass extends VuexModule {
 
   @Mutation
   ADD_CHATPOST(chatpost: TypeChatPost) {
-    this._chatPosts = arrayAsort(
+    this._chatPosts = ArrayUtil.Asort(
       [...this._chatPosts, chatpost],
       'createdAt',
     ).reverse();
@@ -74,7 +74,7 @@ export default class MyClass extends VuexModule {
       }
       return c;
     });
-    this._chatPosts = arrayAsort(ary, 'createdAt').reverse();
+    this._chatPosts = ArrayUtil.Asort(ary, 'createdAt').reverse();
   }
 
   // ----------------------
@@ -331,7 +331,7 @@ export default class MyClass extends VuexModule {
    */
   @Action({ rawError: true })
   ListenComment(postIds: string[]): void {
-    const idsSprit = arraySliceTo(postIds, 10);
+    const idsSprit = ArrayUtil.SliceTo(postIds, 10);
     idsSprit.forEach((ids: string[]) => {
       this.ListenCommentExe(ids);
     });
@@ -416,7 +416,7 @@ export default class MyClass extends VuexModule {
         //   ids.push(commentPost.id);
         // });
       });
-      return arrayUnique(ids);
+      return ArrayUtil.Unique(ids);
     };
   }
 

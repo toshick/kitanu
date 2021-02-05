@@ -437,7 +437,7 @@ export default Vue.extend({
     display: block;
     border-radius: 4px;
     box-shadow: 0 0 3px 0px rgba(#666, 0.6);
-    max-height: 200px;
+    max-height: 230px;
   }
 }
 

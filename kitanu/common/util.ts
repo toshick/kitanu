@@ -9,12 +9,7 @@ import Loading from '@/components/parts/Loading.vue';
 import Particle from '@/components/parts/Particle.vue';
 import dayjs from 'dayjs';
 export { zeropad, base64ToFile } from './util-other';
-export {
-  arraySliceTo,
-  arrayShuffle,
-  arrayAsort,
-  arrayUnique,
-} from './util-array';
+export { ArrayUtil } from './util-array';
 
 /**
  * isLocal

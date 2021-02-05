@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 import firebase from 'firebase/app';
-import { arrayAsort, log, arraySliceTo } from '@/common/util';
+import { log, ArrayUtil } from '@/common/util';
 import { makeUserFromAuthUser, makeUser, makeUserDisp } from '@/common/helper';
 import { Module, VuexModule, Mutation, Action } from 'vuex-module-decorators';
 import { userRef } from '@/plugins/firebase';
@@ -51,7 +51,7 @@ export default class MyClass extends VuexModule {
       }
       return u;
     });
-    this._users = arrayAsort(ary, 'createdAt').reverse();
+    this._users = ArrayUtil.Asort(ary, 'createdAt').reverse();
   }
 
   @Mutation
@@ -59,7 +59,7 @@ export default class MyClass extends VuexModule {
     const find = this._users.find((d: TypeUser) => d.id === user.id);
     if (find) return;
     const ary = [...this._users, user];
-    this._users = arrayAsort(ary, 'createdAt').reverse();
+    this._users = ArrayUtil.Asort(ary, 'createdAt').reverse();
   }
 
   @Mutation
@@ -493,7 +493,7 @@ export default class MyClass extends VuexModule {
       return Promise.resolve({});
     }
 
-    const myidsSprit = arraySliceTo(myids, 10);
+    const myidsSprit = ArrayUtil.SliceTo(myids, 10);
     const ps: Promise<ActionRes>[] = [];
     myidsSprit.forEach((ids: string[]) => {
       ps.push(this.FetchUsersExe(ids));

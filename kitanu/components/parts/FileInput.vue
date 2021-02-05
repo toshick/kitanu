@@ -13,7 +13,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import { TypeFile } from '@/components/types/apptypes';
-import { base64ToFile } from '@/common/util';
+import { base64ToFile, ArrayUtil } from '@/common/util';
 
 type State = {};
 
@@ -43,6 +43,9 @@ export default Vue.extend({
   mounted() {},
   methods: {
     onFileChange(e: any) {
+      const a = ArrayUtil.Unique(['aaa', 'aaa', 'ggg']);
+      console.log('ユニーク', a);
+
       const myfiles: TypeFile[] = [];
       const files: File[] = e.target.files || e.dataTransfer.files;
 
@@ -58,18 +61,16 @@ export default Vue.extend({
               // サイズ取得
               const image = new Image();
               image.onload = async () => {
-                const size = {
+                const base64strResized = this.resize(image, f.type, {
                   width: image.naturalWidth,
                   height: image.naturalHeight,
-                };
-                const base64strResized = this.resize(image, f.type, size);
+                });
 
                 const f2: File = await base64ToFile(base64strResized, f.name);
-
                 const fitem = {
                   file: f2,
                   base64str,
-                };
+                } as const;
                 myfiles.push(fitem);
                 this.$emit('loaded', fitem);
                 resolve();
@@ -91,8 +92,11 @@ export default Vue.extend({
       mimetype: string,
       size: { width: number; height: number },
     ): string {
-      const w = size.width / 10;
-      const h = size.height / 10;
+      const { width, height } = size;
+      const maxW = 640;
+      const ratio = maxW / size.width;
+      const w = Math.floor(width * ratio);
+      const h = Math.floor(height * ratio);
       const canvas = document.createElement('canvas');
       canvas.width = w;
       canvas.height = h;
@@ -100,9 +104,7 @@ export default Vue.extend({
       if (ctx) {
         ctx.drawImage(img, 0, 0, w, h);
       }
-
-      const data = canvas.toDataURL(mimetype);
-      return data;
+      return canvas.toDataURL(mimetype);
     },
   },
 });
