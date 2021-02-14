@@ -23,7 +23,7 @@
       </p>
       <!-- text -->
       <p
-        v-if="!editting"
+        v-if="!editing"
         class="chatitem-body-text"
         v-html="$sanitize(text)"
       ></p>
@@ -33,7 +33,7 @@
         placeholder="コメントヌ"
         with-color
         :value="myitem.text"
-        @close="editting = false"
+        @close="editing = false"
         @submit="onSubmitCommentEdit"
         @remove="onRemovePost"
       />
@@ -44,12 +44,12 @@
       <!-- bottom -->
       <div class="chatitem-bottom">
         <!-- 編集 -->
-        <a v-if="editable" class="chatitem-edit" @click="editting = true">
+        <a v-if="editable" class="chatitem-edit" @click="editing = true">
           編集</a
         >
         <!-- グッドヌ -->
         <a
-          v-show="!editting && !isRemoved"
+          v-show="!editing && !isRemoved"
           class="chatitem-good"
           @click="$emit('good', myitem.id)"
         >
@@ -85,7 +85,11 @@
       </div>
       <!-- 返信 -->
       <div v-if="visibleCommentBtn" class="chatitem-reply">
-        <div class="chatitem-reply-btn" @click="toggleStartComment">
+        <div
+          v-show="!visibleCommentInput"
+          class="chatitem-reply-btn"
+          @click="toggleStartComment"
+        >
           <ion-icon name="chatbubble-ellipses-outline" size="small"></ion-icon>
         </div>
         <!-- コメント入力 -->
@@ -117,7 +121,7 @@ import { makeUserDisp } from '@/common/helper';
 
 type State = {
   visibleCommentInput: boolean;
-  editting: boolean;
+  editing: boolean;
 };
 
 export default Vue.extend({
@@ -147,7 +151,7 @@ export default Vue.extend({
   data(): State {
     return {
       visibleCommentInput: false,
-      editting: false,
+      editing: false,
     };
   },
   computed: {
@@ -166,8 +170,8 @@ export default Vue.extend({
       if (this.isSelfPost) {
         ret['--self'] = true;
       }
-      if (this.editting) {
-        ret['--editting'] = true;
+      if (this.editing) {
+        ret['--editing'] = true;
       }
       if (this.isRemoved) {
         ret['--removed'] = true;
@@ -214,7 +218,7 @@ export default Vue.extend({
       return this.myitem.removed;
     },
     editable(): boolean {
-      return this.isSelfPost && !this.editting && !this.isRemoved;
+      return this.isSelfPost && !this.editing && !this.isRemoved;
     },
     urls(): string[] {
       let ret: string[] = [];
@@ -256,11 +260,11 @@ export default Vue.extend({
     // },
     onRemovePost(str: string) {
       this.$emit('remove-post', this.myitem.id, str);
-      // this.editting = false;
+      // this.editing = false;
     },
     onRemovePostComment(chatpostid: string, str: string) {
       this.$emit('remove-post', chatpostid, str);
-      // this.editting = false;
+      // this.editing = false;
     },
     onSubmitComment(str: string) {
       this.$emit('submit-comment', this.myitem.id, str);
@@ -268,7 +272,7 @@ export default Vue.extend({
     },
     onSubmitCommentEdit(str: string) {
       this.$emit('update-comment', this.myitem.id, str);
-      this.editting = false;
+      this.editing = false;
     },
   },
 });
@@ -312,7 +316,7 @@ export default Vue.extend({
     min-height: auto;
     padding: 10px 15px;
     margin: 20px 20px 10px;
-    border-radius: 16px;
+    border-radius: 12px;
     background-color: $fuki1BG;
     color: #fff;
     font-weight: normal;
@@ -327,7 +331,7 @@ export default Vue.extend({
       background-color: $fuki1BG;
       // box-shadow: 0 1px 1px 0 rgba(#000, 0.3);
       position: absolute;
-      top: 5px;
+      top: 10px;
       left: -10px;
     }
     &::after {
@@ -338,7 +342,7 @@ export default Vue.extend({
       background-color: $fuki1BG;
       // box-shadow: 0 1px 1px 0 rgba(#000, 0.3);
       position: absolute;
-      top: -4px;
+      top: 0px;
       left: -15px;
     }
   }
@@ -381,7 +385,7 @@ export default Vue.extend({
       margin-bottom: 0;
     }
   }
-  &.--editting > .chatitem-icon {
+  &.--editing > .chatitem-icon {
     transform: scale(0.9, 0.9);
     opacity: 0.5;
   }
@@ -392,7 +396,7 @@ export default Vue.extend({
     background-image: none;
     min-height: auto;
     justify-content: center;
-    padding: 20px 0px;
+    padding: 10px 0px;
     text-indent: 0;
   }
 }
@@ -470,10 +474,10 @@ export default Vue.extend({
   right: 30px;
   ion-icon {
     color: inherit;
-    background-color: #fff;
     border-radius: 50%;
     padding: 1px;
-    box-shadow: 0 1px 0 rgba(#000, 0.2);
+    // background-color: #fff;
+    // box-shadow: 0 1px 0 rgba(#000, 0.2);
   }
   span {
     display: block;
@@ -518,6 +522,9 @@ $leftSpace: 36px;
 .chatitem-edit-textarea {
   padding: 0 4px;
   margin: 10px 0 0 $leftSpace;
+}
+.chatitem-comment {
+  padding-top: 4px;
 }
 .chatitem-comment-textarea {
   padding: 0 4px;

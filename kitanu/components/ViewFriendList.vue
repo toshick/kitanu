@@ -24,7 +24,7 @@
           v-for="(u, index) in members"
           :key="`member-${index}-${u.username}`"
         >
-          <UserForList :user="u" />
+          <UserForList :user="u" :selected="true" />
         </li>
       </ul>
     </ViewBody>

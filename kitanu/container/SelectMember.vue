@@ -1,5 +1,6 @@
 <template>
   <ViewSelectMember
+    :login-user="loginUser"
     :title="title"
     :members="members"
     @close="$emit('close')"
@@ -31,6 +32,9 @@ export default Vue.extend({
   computed: {
     members(): TypeUserDisp[] {
       return userStore.loginedUserFriends;
+    },
+    loginUser(): TypeUserDisp {
+      return userStore.loginedUserDisp;
     },
   },
   mounted() {

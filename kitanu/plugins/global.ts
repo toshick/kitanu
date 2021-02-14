@@ -166,19 +166,19 @@ Vue.mixin({
     },
     drillDown(params: OpenParams) {
       const $t = this.$el.closest('.mobileview') || null;
-      drillDown({ target: $t, ...params });
+      return drillDown({ target: $t, ...params });
     },
     openView(params: OpenParams) {
       const $t = this.$el.closest('.mobileview') || null;
-      openView({ target: $t, ...params });
+      return openView({ target: $t, ...params });
     },
     openModal(params: OpenParams) {
       const $t = this.$el.closest('.mobileview') || null;
-      openModal({ target: $t, ...params });
+      return openModal({ target: $t, ...params });
     },
     openDialog(params: OpenParams) {
       const $t = this.$el.closest('.mobileview') || null;
-      openDialog({
+      return openDialog({
         target: $t,
         ...params,
         titleIcon: {
@@ -195,7 +195,7 @@ Vue.mixin({
     },
     toast(txt: string) {
       const $t = this.$el.closest('.mobileview') || null;
-      toast(txt, { target: $t });
+      return toast(txt, { target: $t });
     },
     openMenu() {
       // const $t = this.$el.closest('.mobileview') || null;
@@ -207,7 +207,7 @@ Vue.mixin({
     },
     showSetting() {
       const $t = this.$el.closest('.mobileview') || null;
-      drillDown({ target: $t, component: Setting });
+      return drillDown({ target: $t, component: Setting });
     },
     showConfirm(
       p: {

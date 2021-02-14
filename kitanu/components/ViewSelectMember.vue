@@ -1,5 +1,5 @@
 <template>
-  <section class="app view">
+  <section class="app view selectmember">
     <ViewHeader>
       <a class="btn-back" @click.stop.prevent="$emit('close')"
         ><ion-icon name="chevron-down" size="medium"
@@ -13,12 +13,29 @@
       </template>
     </ViewHeader>
     <ViewBody>
-      <div class="member-total">{{ selectedCount }}人</div>
+      <div class="search-block">
+        <div>
+          <CaInput
+            name="title"
+            title="ユーザIDまたはユーザ名から検索"
+            rules="max:50"
+            placeholder="完全一致で検索ヌ"
+            width="100"
+            size="S"
+            has-remove-btn
+            @input="searchFunc"
+          ></CaInput>
+        </div>
+      </div>
+      <div class="member-total">
+        <span>{{ selectedCount }}人</span>
+      </div>
       <ul class="member-list">
         <li
-          v-for="(u, index) in members"
+          v-for="(u, index) in form.members"
           :key="`member-${index}-${u.username}`"
           class="member-item"
+          :class="{ '-disabled': u.id === loginUser.id }"
         >
           <label>
             <input
@@ -27,10 +44,10 @@
               :name="u.username"
             />
             <div>
+              <UserForList :user="u" :selected="selectedMap[u.id]" />
               <b>
-                <ion-icon name="bicycle-outline"></ion-icon>
+                <ion-icon name="hand-left-outline"></ion-icon>
               </b>
-              <UserForList :user="u" />
             </div>
           </label>
         </li>
@@ -47,14 +64,21 @@ import Vue, { PropType } from 'vue';
 import { TypeUserDisp } from '@/components/types/apptypes';
 
 type State = {
-  selectedMap: { [key: string]: string };
+  selectedMap: { [key: string]: boolean };
   findUserID: string;
+  form: {
+    members: TypeUserDisp[];
+  };
 };
 
 export default Vue.extend({
   name: 'ViewSelectMember',
   components: {},
   props: {
+    loginUser: {
+      required: true,
+      type: Object as PropType<TypeUserDisp>,
+    },
     members: {
       default: [],
       type: Array as PropType<TypeUserDisp[]>,
@@ -68,6 +92,9 @@ export default Vue.extend({
     return {
       selectedMap: {},
       findUserID: '',
+      form: {
+        members: [],
+      },
     };
   },
   computed: {
@@ -87,7 +114,22 @@ export default Vue.extend({
       return count;
     },
   },
-  mounted() {},
+  created() {
+    this.form = {
+      members: this.members.map((m: TypeUserDisp) => {
+        const m2 = { ...m };
+        let selected = false;
+        if (m2.id === this.loginUser.id) {
+          m2.subtext = 'あんただヌ';
+          selected = true;
+        }
+
+        this.$set(this.selectedMap, m2.id, selected);
+
+        return m2;
+      }),
+    };
+  },
   methods: {
     save() {
       const list: TypeUserDisp[] = [];
@@ -107,12 +149,41 @@ export default Vue.extend({
 
 <!------------------------------->
 <style scoped lang="scss">
+$bgColor: #fff8e3;
+.selectmember {
+  // background-image: none;
+  background-color: $bgColor;
+  .app-body {
+    padding: 20px;
+  }
+}
 .member-total {
-  padding: 20px;
+  position: relative;
+  padding: 0 20px 0px;
   color: var(--app-color-dark);
+  text-align: center;
+  height: 30px;
+  span {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: $bgColor;
+    background-image: url('/img/pat/subtle-dark-vertical.png');
+    padding: 0 20px;
+    z-index: 1;
+    color: var(--app-base-color2);
+  }
+  &::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    border-top: dashed 1px var(--app-base-color2);
+  }
 }
 .member-list {
-  padding: 0 20px;
   li {
     padding: 10px 0;
     input {
@@ -121,6 +192,9 @@ export default Vue.extend({
   }
 }
 .member-item {
+  &.-disabled {
+    pointer-events: none;
+  }
   label {
     display: block;
     color: var(--app-color-dark);
@@ -140,23 +214,20 @@ export default Vue.extend({
       height: 30px;
       border-radius: 50%;
       background-color: #fff;
-      margin-right: 1em;
-      box-shadow: 0 0 4px 4px rgba(#000, 0.1);
+      margin: 0 10px 0 auto;
       ion-icon {
         display: none;
-        font-size: 20px;
+        font-size: 26px;
         position: absolute;
-        top: 50%;
+        top: 40%;
         left: 50%;
         transform: translate(-50%, -50%);
-        // color: #fff;
       }
     }
     input[type='checkbox']:checked + div {
-      font-weight: bold;
       & > b {
-        background-color: var(--app-base-color);
-        border: solid 2px #fff;
+        background-color: none;
+        border: none;
         ion-icon {
           display: block;
         }
@@ -165,6 +236,8 @@ export default Vue.extend({
   }
 }
 .search-block {
-  padding: 20px 20px 0;
+  input {
+    border: none;
+  }
 }
 </style>

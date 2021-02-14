@@ -24,7 +24,7 @@ import Vue from 'vue';
 import { TypeUser, TypeUserDisp } from '@/components/types/apptypes';
 import ViewFriendList from '@/components/ViewFriendList.vue';
 import AddFriend from '@/container/AddFriend.vue';
-import { appStore, userStore, friendStore } from '@/store';
+import { userStore, friendStore } from '@/store';
 
 type State = {
   visibleAddFriend: boolean;
@@ -72,9 +72,20 @@ export default Vue.extend({
         },
       );
     },
-    onSaveAddFriend(members: TypeUser[]) {
-      console.log('onSaveAddFriend', members.length);
-
+    async onSaveAddFriend(list: TypeUser[]) {
+      this.showLoading(true);
+      const res = await userStore.AddFriend(list);
+      if (res.errorMsg) {
+        this.showConfirm({
+          title: 'トモダチついかしっぱいヌ',
+          text: res.errorMsg || `なんか失敗したヌ`,
+          isDanger: true,
+          withCancel: false,
+          btnLabel: 'どうしよう',
+        });
+        return;
+      }
+      this.showLoading(false);
       this.visibleAddFriend = false;
     },
   },

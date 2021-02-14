@@ -11,9 +11,9 @@ import { upload } from '@/common/file-uploader';
 import {
   ActionRes,
   TypeChatPost,
+  TypeChatPostDisp,
   TypeUser,
   TypeUserID,
-  TypeFile,
   ChatPostCreateRequest,
   ChatPostUpdateRequest,
   TypeFileDirPath,
@@ -137,6 +137,7 @@ export default class MyClass extends VuexModule {
     if (p.createdAt) param.createdAt = p.createdAt;
     if (p.commentPostIDs) param.commentPostIDs = p.commentPostIDs;
     if (p.removed) param.removed = p.removed;
+    if (p.imgurl || p.imgurl === '') param.imgurl = p.imgurl;
 
     return chatpostRef
       .doc(chatpostID)
@@ -156,6 +157,7 @@ export default class MyClass extends VuexModule {
       postid: chatpostid,
       text: '--- removed ---',
       removed: true,
+      imgurl: '',
     });
   }
 
@@ -367,16 +369,17 @@ export default class MyClass extends VuexModule {
   // get
   // ----------------------
 
-  get chatPosts(): TypeChatPost[] {
+  get chatPosts(): TypeChatPostDisp[] {
     return this._chatPosts
       .filter((post: TypeChatPost) => {
         return !post.isComment;
       })
       .map((post: TypeChatPost) => {
-        const r = makeChatPost(post);
+        const r = makeChatPost(post) as TypeChatPostDisp;
         r.goodMembers = r.goodMemberIDs.map((userID: TypeUserID) => {
           return (
-            userStore.getUserbyID(userID) || makeUserDisp({ id: r.createdByID })
+            userStore.getUserDispByID(userID) ||
+            makeUserDisp({ id: r.createdByID })
           );
         });
         r.comments = r.commentPostIDs
@@ -387,15 +390,15 @@ export default class MyClass extends VuexModule {
             if (!commentPost) {
               return null;
             }
-            const post = { ...commentPost };
-            const createdBy = userStore.getUserbyID(post.createdByID);
+            const post = { ...commentPost } as TypeChatPostDisp;
+            const createdBy = userStore.getUserDispByID(post.createdByID);
             post.createdBy =
               createdBy || makeUserDisp({ id: post.createdByID });
             return post;
           })
           .filter((p: TypeChatPost | null) => p !== null) as TypeChatPost[];
 
-        const createdBy = userStore.getUserbyID(r.createdByID);
+        const createdBy = userStore.getUserDispByID(r.createdByID);
         r.createdBy = createdBy || makeUserDisp({ id: r.createdByID });
 
         return r;
@@ -404,27 +407,19 @@ export default class MyClass extends VuexModule {
 
   get getUserIDsByChatPosts() {
     return (posts: TypeChatPost[]): TypeUserID[] => {
-      const ids: TypeUserID[] = [];
+      let ids: TypeUserID[] = [];
       posts.forEach((post: TypeChatPost) => {
         ids.push(post.createdByID);
         post.goodMemberIDs.forEach((u: TypeUserID) => {
           ids.push(u);
         });
 
-        ids.concat(post.commentPostIDs);
+        ids = ids.concat(post.commentPostIDs);
         // post.comments.forEach((commentPost: TypeChatPost) => {
         //   ids.push(commentPost.id);
         // });
       });
       return ArrayUtil.Unique(ids);
     };
-  }
-
-  // get chatItems(): TypeChatPost[] {
-  //   return chatItems;
-  // }
-
-  get members(): TypeUser[] {
-    return [];
   }
 }

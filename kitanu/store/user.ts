@@ -483,6 +483,7 @@ export default class MyClass extends VuexModule {
     let myids = ids || [];
     if (omitIfExist) {
       const existIds = this._users.map((u: TypeUser) => u.id);
+      console.log('FetchUsers existIds', existIds);
       if (existIds) {
         myids = ids.filter((id: string) => {
           return !existIds.includes(id);
@@ -490,8 +491,10 @@ export default class MyClass extends VuexModule {
       }
     }
     if (myids.length === 0) {
+      console.log('FetchUsers 全員ロード済');
       return Promise.resolve({});
     }
+    console.log('FetchUsers', myids);
 
     const myidsSprit = ArrayUtil.SliceTo(myids, 10);
     const ps: Promise<ActionRes>[] = [];
@@ -586,16 +589,23 @@ export default class MyClass extends VuexModule {
 
   @Action({ rawError: true })
   AddFriend(list: TypeUser[]): Promise<ActionRes> {
-    const find = this._users.find((d: TypeUser) => d.id === this._logined.uid);
+    const find = this.getUserbyID(this._logined.uid);
     if (!find) {
       return Promise.resolve({
         errorMsg: 'can not find login user',
       });
     }
+    const { friendIdList } = find;
+    const list2 = list.filter((u: TypeUser) => {
+      return !friendIdList.includes(u.id);
+    });
+    if (list2.length === 0) {
+      return Promise.resolve({});
+    }
     const friendList: {
       id: string;
       username: string;
-    }[] = list.map((u: TypeUser) => ({ id: u.id, username: u.username }));
+    }[] = list2.map((u: TypeUser) => ({ id: u.id, username: u.username }));
     return userRef
       .doc(find.id)
       .update({
@@ -624,6 +634,7 @@ export default class MyClass extends VuexModule {
   // ----------------------
   // get
   // ----------------------
+
   get loginedUserWithDetail(): TypeLoginUser {
     return this._logined;
   }
@@ -643,7 +654,7 @@ export default class MyClass extends VuexModule {
       removed: false,
       createdAt: 0,
     };
-    const find = this._users.find((d: TypeUser) => d.id === this._logined.uid);
+    const find = this.getUserbyID(this._logined.uid);
     if (find) {
       ret = {
         ...ret,
@@ -655,26 +666,36 @@ export default class MyClass extends VuexModule {
   }
 
   get loginedUserFriends(): TypeUserDisp[] {
-    return this.loginedUser.friendIdList.map((userID: TypeUserID) => {
-      const find = this._users.find((d: TypeUser) => d.id === userID);
-      if (find) return makeUserDisp(find);
-      return makeUserDisp({ id: userID });
+    const members = this.loginedUser.friendIdList.map((userID: TypeUserID) => {
+      return this.getUserDispByID(userID) || makeUserDisp({ id: userID });
     });
+    members.unshift(this.loginedUserDisp);
+    return members;
   }
 
   get logined(): boolean {
     return !!this._logined.uid;
   }
 
+  get loginedUserDisp(): TypeUserDisp {
+    const { uid } = this._logined;
+    return this.getUserDispByID(uid) || makeUserDisp({ id: uid });
+  }
+
   get users(): TypeUser[] {
     return this._users;
   }
 
-  get getUserbyID() {
+  get getUserbyID(): Function {
+    return (userID: TypeUserID): TypeUser | null => {
+      return this._users.find((d: TypeUser) => d.id === userID) || null;
+    };
+  }
+
+  get getUserDispByID(): Function {
     return (userID: TypeUserID): TypeUserDisp | null => {
-      const find = this._users.find((d: TypeUser) => d.id === userID);
-      if (!find) return null;
-      return makeUserDisp(find);
+      const find = this.getUserbyID(userID);
+      return find ? makeUserDisp(find) : null;
     };
   }
 }

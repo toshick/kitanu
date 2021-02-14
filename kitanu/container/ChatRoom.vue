@@ -1,26 +1,25 @@
 <template>
   <div>
-    <!-- <p>total: {{ debugData.totalPosts }} {{ debugData.commentPosts }}</p> -->
     <ViewChatRoom
+      :title="chatRoom.title"
       :chat-posts="chatPosts"
       :info-items="infoItems"
       :isconnecting="connecting"
       :sending="sending"
       :login-user-id="loginUserID"
-      @select-member="visibleSelectMember = true"
+      @edit="visibleEditChatRoom = true"
       @good="onGood"
       @submit="onSubmit"
       @submit-comment="onSubmitComment"
       @update-comment="onSubmitCommentEdit"
       @remove-post="onRemovePost"
     />
-    <!-- SelectMember -->
+    <!-- EditChatRoom -->
     <transition name="modal">
-      <SelectMember
-        v-if="visibleSelectMember"
-        :members="members"
-        @close="visibleSelectMember = false"
-        @save="onSaveSelectMember"
+      <EditChatRoom
+        v-if="visibleEditChatRoom"
+        :chatroomid="chatroomid"
+        @close="visibleEditChatRoom = false"
       />
     </transition>
   </div>
@@ -33,28 +32,32 @@ import Vue from 'vue';
 import mixinScrollview from '@/mixin/mxinScrollview';
 import { toast } from '@/common/util';
 import ViewChatRoom from '@/components/ViewChatRoom.vue';
-import SelectMember from '@/container/SelectMember.vue';
+import EditChatRoom from '@/container/EditChatRoom.vue';
 import {
+  TypeChatRoomDisp,
   TypeChatPost,
   TypeChatInfoItem,
   TypeUserID,
-  TypeFile,
   TypeUser,
   ChatPostCreateRequest,
   ChatPostUpdateRequest,
 } from '@/components/types/apptypes';
-import { chatPostStore, chatinfoStore, userStore } from '@/store';
+import {
+  chatListStore,
+  chatPostStore,
+  chatinfoStore,
+  userStore,
+} from '@/store';
 import { makeChatPost } from '@/common/helper';
-import { postItems } from '@/mock/mockdata';
 
 type State = {
   sending: boolean;
-  visibleSelectMember: boolean;
+  visibleEditChatRoom: boolean;
 };
 
 export default Vue.extend({
   name: 'ChatRoom',
-  components: { ViewChatRoom, SelectMember },
+  components: { ViewChatRoom, EditChatRoom },
   mixins: [mixinScrollview],
   props: {
     chatroomid: {
@@ -65,10 +68,13 @@ export default Vue.extend({
   data(): State {
     return {
       sending: false,
-      visibleSelectMember: false,
+      visibleEditChatRoom: false,
     };
   },
   computed: {
+    chatRoom(): TypeChatRoomDisp {
+      return chatListStore.getChatroomDisp(this.chatroomid);
+    },
     chatPosts(): TypeChatPost[] {
       return chatPostStore.chatPosts;
     },
@@ -131,23 +137,6 @@ export default Vue.extend({
         this.scrollTopSmooth();
       }, 500);
     },
-    // async onSubmitUpdate(p: ChatPostUpdateRequest) {
-    //   await this.scrollTopSmooth();
-    //   this.showInlineLoading(true);
-    //   const res = await this.updatePost(p);
-    //   if (res.errorMsg) {
-    //     toast('こーしんしっぱいヌ');
-    //   }
-    //   this.showInlineLoading(false);
-    //   toast('こーしんしタヌ');
-    // },
-    // createPost(p: ChatPostCreateRequest) {
-    //   return chatPostStore.CreateChatPost({
-    //     chatroomID: this.chatroomid,
-    //     text: p.text,
-    //     fukitype: p.fukitype,
-    //   });
-    // },
     updatePost(p: ChatPostUpdateRequest) {
       return chatPostStore.UpdateChatPost({
         postid: p.postid,
@@ -156,12 +145,9 @@ export default Vue.extend({
         createdAt: p.createdAt,
       });
     },
-    showInlineLoading(flg: boolean): void {
-      this.sending = flg;
-    },
-    onSaveSelectMember(selectedMap: any) {
-      this.visibleSelectMember = false;
-    },
+    // showInlineLoading(flg: boolean): void {
+    //   this.sending = flg;
+    // },
     async onGood(chatpostid: string) {
       const res = await chatPostStore.ToggleGood({
         chatpostID: chatpostid,
@@ -179,7 +165,7 @@ export default Vue.extend({
       toast('投稿削除したヌ');
     },
     async onSubmitComment(chatpostid: string, str: string) {
-      this.showInlineLoading(true);
+      // this.showInlineLoading(true);
       const commentPost = makeChatPost({
         text: str,
         createdByID: this.loginUserID,
@@ -188,7 +174,7 @@ export default Vue.extend({
         postid: chatpostid,
         commentPost,
       });
-      this.showInlineLoading(false);
+      // this.showInlineLoading(false);
       if (res.errorMsg) {
         toast('コメントしっぱいヌ');
       }
@@ -196,12 +182,12 @@ export default Vue.extend({
     },
     async onSubmitCommentEdit(chatpostid: string, str: string) {
       console.log('onSubmitCommentEdit', chatpostid, str);
-      this.showInlineLoading(true);
+      // this.showInlineLoading(true);
       const res = await chatPostStore.UpdateChatPost({
         postid: chatpostid,
         text: str,
       });
-      this.showInlineLoading(false);
+      // this.showInlineLoading(false);
       if (res.errorMsg) {
         toast('コメント編集しっぱいヌ');
       }

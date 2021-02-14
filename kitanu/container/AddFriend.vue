@@ -72,22 +72,9 @@ export default Vue.extend({
       this.searched = true;
       this.searchResult = res.list.map((u: any) => makeUser(u));
     },
-    async onSave(list: TypeUser[]) {
-      this.showLoading(true);
-      const res = await userStore.AddFriend(list);
-      if (res.errorMsg) {
-        this.showConfirm({
-          title: 'トモダチついかしっぱいヌ',
-          text: res.errorMsg || `なんか失敗したヌ`,
-          isDanger: true,
-          withCancel: false,
-          btnLabel: 'どうしよう',
-        });
-        return;
-      }
-
-      this.showLoading(false);
-      this.close();
+    onSave(list: TypeUser[]) {
+      console.log('ほほおh', list);
+      this.$emit('save', list);
     },
     close() {
       this.$emit('close');

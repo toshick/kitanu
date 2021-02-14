@@ -94,7 +94,6 @@ export function makeChatPost(params: Partial<TypeChatPost>): TypeChatPost {
     goodMemberIDs: params.goodMemberIDs || [],
     createdByID: params.createdByID || '',
     commentPostIDs: params.commentPostIDs || [],
-    comments: params.comments || [],
     createdAt: params.createdAt ? params.createdAt : dayjs().valueOf(),
   };
 }

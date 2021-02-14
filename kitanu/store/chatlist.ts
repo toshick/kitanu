@@ -12,6 +12,7 @@ import {
   TypeUserID,
   TypeUserDisp,
   TypeChatRoom,
+  TypeChatRoomDisp,
 } from '@/components/types/apptypes';
 import { members } from '@/mock/mockdata';
 
@@ -62,7 +63,7 @@ export default class MyClass extends VuexModule {
   // Action
   // ----------------------
 
-  @Action
+  @Action({ rawError: true })
   CreateChatRoom(p: {
     userID: TypeUserID;
     users: TypeUserDisp[];
@@ -89,6 +90,28 @@ export default class MyClass extends VuexModule {
       })
       .catch((error) => {
         logError(error, 'CreateChatRoom');
+        return { errorCode: error.code, errorMsg: error.message };
+      });
+  }
+
+  @Action({ rawError: true })
+  UpdateChatRoom(room: Partial<TypeChatRoom>): Promise<ActionRes> {
+    const chatroomID = room.id;
+    if (!chatroomID) {
+      return Promise.resolve({ errorMsg: 'no-id UpdateChatRoom' });
+    }
+    const myroom = { ...room };
+    delete myroom.members;
+    delete myroom.createdBy;
+    // 作成
+    return chatlistRef
+      .doc(chatroomID)
+      .update(myroom)
+      .then(() => {
+        return {};
+      })
+      .catch((error) => {
+        logError(error, 'UpdateChatRoom');
         return { errorCode: error.code, errorMsg: error.message };
       });
   }
@@ -136,15 +159,34 @@ export default class MyClass extends VuexModule {
       const r = makeChatRoom(room);
       r.members = r.memberIDs.map((userID: TypeUserID) => {
         return (
-          userStore.getUserbyID(userID) || makeUserDisp({ id: r.createdByID })
+          userStore.getUserDispByID(userID) ||
+          makeUserDisp({ id: r.createdByID })
         );
       });
 
-      const createdBy = userStore.getUserbyID(r.createdByID);
+      const createdBy = userStore.getUserDispByID(r.createdByID);
       r.createdBy = createdBy || makeUserDisp({ id: r.createdByID });
 
       return r;
     });
+  }
+
+  get getChatroomDisp() {
+    return (chatroomid: string): TypeChatRoomDisp => {
+      const find = this._chatlist.find(
+        (r: TypeChatRoom) => r.id === chatroomid,
+      );
+      if (!find) return makeChatRoom({ id: chatroomid });
+      const ret: TypeChatRoomDisp = { ...find };
+      ret.members = ret.memberIDs
+        .map((userID: string) => {
+          console.log('userIDちぇっっく', userID);
+          return userStore.getUserDispByID(userID);
+        })
+        .filter((u: TypeUserDisp | null) => u);
+      ret.createdBy = userStore.getUserDispByID(ret.createdByID);
+      return ret;
+    };
   }
 
   get getUserIDsByChatRoom() {

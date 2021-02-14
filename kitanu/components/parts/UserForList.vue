@@ -1,9 +1,16 @@
 <template>
   <div :class="myClass">
-    <UserIcon :url="user.iconurl" :username="user.username" />
+    <UserIcon
+      class="myicon"
+      :url="user.iconurl"
+      :username="username"
+      :shadow="true"
+    />
     <div class="userforlist-label">
-      <p class="userforlist-username">{{ user.username }}</p>
-      <p v-if="user.subtext" class="userforlist-subtext">{{ user.subtext }}</p>
+      <p class="userforlist-username">
+        {{ username }}
+      </p>
+      <p v-if="subtext" class="userforlist-subtext">{{ subtext }}</p>
     </div>
   </div>
 </template>
@@ -21,8 +28,12 @@ export default Vue.extend({
   components: {},
   props: {
     user: {
-      default: () => {},
+      required: true,
       type: Object as PropType<TypeUserDisp>,
+    },
+    selected: {
+      default: false,
+      type: Boolean,
     },
     disabled: {
       default: false,
@@ -35,10 +46,19 @@ export default Vue.extend({
   computed: {
     myClass(): any {
       const klass: any = { userforlist: true };
+      if (this.selected) {
+        klass['-selected'] = true;
+      }
       if (this.disabled) {
         klass['-disabled'] = true;
       }
       return klass;
+    },
+    username(): string {
+      return this.user.username;
+    },
+    subtext(): string {
+      return this.user.subtext;
     },
   },
   mounted() {},
@@ -54,24 +74,36 @@ export default Vue.extend({
 .userforlist {
   display: flex;
   align-items: center;
-  &.-disabled {
-    .userforlist-username {
-      opacity: 0.2;
+  &.-selected {
+    .myicon {
+      transform: scale(1, 1);
+      opacity: 1;
     }
-    .userforlist-subtext {
-      opacity: 0.2;
+    .userforlist-username {
+      opacity: 1;
     }
   }
+  &.-disabled {
+    pointer-events: none;
+  }
 }
+.myicon {
+  transform: scale(0.8, 0.8);
+  opacity: 0.3;
+  transition: all 100ms ease;
+}
+
 .userforlist-label {
   color: var(--app-color-dark);
   margin-left: 10px;
 }
 .userforlist-username {
-  font-size: var(--fontsize-medium);
-  font-weight: bold;
+  font-size: var(--fontsize-basic);
+  opacity: 0.3;
 }
 .userforlist-subtext {
   font-size: var(--fontsize-small);
+  color: var(--app-base-color2);
+  margin-top: 4px;
 }
 </style>

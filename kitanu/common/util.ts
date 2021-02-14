@@ -42,7 +42,7 @@ export const placeholderImg =
 
 export const openDialog = (params: OpenParams) => {
   // particleEffect('#ac9934');
-  CaModalPG.openDialog({
+  return CaModalPG.openDialog({
     ...params,
     klass: params.klass
       ? [...params.klass, 'view', '-transparentbg']
@@ -54,7 +54,7 @@ export const openDialog = (params: OpenParams) => {
 
 export const openView = (params: OpenParams) => {
   // particleEffect();
-  CaModalPG.openView({
+  return CaModalPG.openView({
     ...params,
     klass: params.klass ? [...params.klass, 'view'] : ['view'],
     transition: params.transition || 'scalefade',
@@ -63,7 +63,7 @@ export const openView = (params: OpenParams) => {
 
 export const openModal = (params: OpenParams) => {
   // particleEffect();
-  CaModalPG.openView({
+  return CaModalPG.openView({
     ...params,
     klass: params.klass ? [...params.klass, 'view'] : ['view'],
     transition: params.transition || 'modal',
@@ -72,7 +72,7 @@ export const openModal = (params: OpenParams) => {
 
 export const drillDown = (params: OpenParams) => {
   // particleEffect();
-  CaModalPG.drillDown({
+  return CaModalPG.drillDown({
     ...params,
     klass: params.klass ? [...params.klass, 'view'] : ['view'],
   });
@@ -81,7 +81,7 @@ export const drillDown = (params: OpenParams) => {
 type ToastOption = Omit<OpenParamsToast, 'text'>;
 export const toast = (text: string, params?: ToastOption) => {
   const p = params || {};
-  CaToastPG.open({
+  return CaToastPG.open({
     ...p,
     text,
   });
@@ -111,31 +111,15 @@ export const loading = (flg: boolean) => {
     return;
   }
   const params: OpenParams = { easyClose: false };
-  const vm = CaModalPG.openView({
+  const ret = CaModalPG.openView({
     ...params,
     component: Loading,
     klass: ['-loading'],
     transition: 'scalefade',
   });
 
-  vm.$children.forEach((child: any) => {
-    if (child.close) {
-      closeLoading = child.close;
-    }
-  });
+  closeLoading = ret.close;
 };
-
-/**
- * zeropad
- */
-// export const zeropad = (num: number, keta: number = 5) => {
-//   let str = `${num}`;
-//   if (str.length >= keta) return str;
-//   while (str.length < keta) {
-//     str = `0${str}`;
-//   }
-//   return str;
-// };
 
 /**
  * particleEffect

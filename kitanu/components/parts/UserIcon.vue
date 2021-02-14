@@ -121,7 +121,7 @@ export default Vue.extend({
   &.-shadow {
     .initialStamp,
     img {
-      box-shadow: 0 0 1px 1px rgba(#000, 0.15);
+      box-shadow: 0 0 1px 1px rgba(#c8ab381a, 0.15);
     }
   }
 }

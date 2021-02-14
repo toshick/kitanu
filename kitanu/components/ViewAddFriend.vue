@@ -4,7 +4,7 @@
       <a class="btn-back" @click.stop.prevent="$emit('close')"
         ><ion-icon name="chevron-down" size="medium"
       /></a>
-      <h1>ファインドフレンド</h1>
+      <h1>{{ title }}</h1>
       <!-- right -->
       <template v-slot:right>
         <a class="btn-header" :disabled="selectedCount === 0" @click="save"
@@ -49,10 +49,12 @@
                 :name="u.user.username"
               />
               <div>
-                <b v-if="u.friend"> <span>済</span> </b>
-                <b v-else><ion-icon name="bicycle-outline"></ion-icon></b>
-
-                <UserForList :user="u.user" :disabled="u.friend" />
+                <UserForList
+                  :user="u.user"
+                  :disabled="u.friend"
+                  :selected="selectedMap[u.user.id]"
+                />
+                <b><ion-icon name="hand-left-outline"></ion-icon></b>
               </div>
             </label>
           </li>
@@ -76,6 +78,12 @@ import {
 type State = {
   selectedMap: { [key: string]: string };
   searchFunc: (str: string) => void;
+};
+
+type Member = {
+  user: TypeUser;
+  selected: boolean;
+  friend: boolean;
 };
 
 export default Vue.extend({
@@ -107,10 +115,13 @@ export default Vue.extend({
     };
   },
   computed: {
-    membersList(): any {
+    membersList(): Member[] {
       return this.searchResult.map((m: TypeUser) => {
-        const selected = this.selectedMap[m.id] || false;
+        const selected = !!this.selectedMap[m.id];
         const friend = this.friends.find((uid: TypeUserID) => uid === m.id);
+        if (friend) {
+          this.$set(this.selectedMap, friend, selected);
+        }
         return { user: m, selected, friend: !!friend };
       });
     },
@@ -130,12 +141,11 @@ export default Vue.extend({
   mounted() {},
   methods: {
     save() {
-      const list: TypeUser[] = [];
-      this.membersList.forEach((m: { user: TypeUser; selected: boolean }) => {
-        if (m.selected) {
-          list.push(m.user);
-        }
-      });
+      const list: TypeUser[] = this.membersList
+        .filter((m: { user: TypeUser; selected: boolean }) => {
+          return m.selected;
+        })
+        .map((m: { user: TypeUser; selected: boolean }) => m.user);
       this.$emit('save', list);
     },
     search(str: string) {
@@ -172,37 +182,26 @@ export default Vue.extend({
     }
 
     b {
-      flex: 0 0 auto;
       position: relative;
       display: block;
       width: 30px;
       height: 30px;
       border-radius: 50%;
       background-color: #fff;
-      margin-right: 1em;
-      box-shadow: 0 0 1px 1px rgba(#000, 0.1);
+      margin: 0 10px 0 auto;
       ion-icon {
         display: none;
-        font-size: 20px;
+        font-size: 26px;
         position: absolute;
-        top: 50%;
+        top: 40%;
         left: 50%;
         transform: translate(-50%, -50%);
-      }
-      span {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        font-weight: normal;
-        font-size: var(--fontsize-small);
       }
     }
     input[type='checkbox']:checked + div {
-      font-weight: bold;
       & > b {
-        background-color: var(--app-base-color);
-        border: solid 2px #fff;
+        background-color: none;
+        border: none;
         ion-icon {
           display: block;
         }

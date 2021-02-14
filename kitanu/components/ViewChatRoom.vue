@@ -10,9 +10,9 @@
       <template v-slot:right>
         <ParticleButton
           class="btn-header margin-left-auto"
-          @click="$emit('select-member')"
+          @click="$emit('edit')"
         >
-          <ion-icon name="skull-outline" size="medium"></ion-icon>
+          <ion-icon name="restaurant-outline" size="medium"></ion-icon>
         </ParticleButton>
       </template>
     </ViewHeader>

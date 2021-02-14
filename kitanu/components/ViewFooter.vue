@@ -37,14 +37,14 @@
         tag="div"
       >
         <!-- good button -->
-        <ParticleButton
+        <!-- <ParticleButton
           v-show="!imgSelected"
           class="btn-good"
           :disabled="isconnecting"
           @click="doGood"
         >
           <ion-icon name="heart-outline" />
-        </ParticleButton>
+        </ParticleButton> -->
 
         <!-- <CaTextarea v-model="talkText" name="talkText" width="M" placeholder="コメント"></CaTextarea> -->
         <div class="textarea">

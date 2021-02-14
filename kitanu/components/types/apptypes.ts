@@ -73,11 +73,14 @@ export type TypeAlbumPost = {
 export type TypeChatRoom = {
   id: string;
   memberIDs: TypeUserID[];
-  members?: TypeUserDisp[]; // used at runtime
   createdByID: TypeUserID;
-  createdBy?: TypeUserDisp; // used at runtime
   title?: string;
   createdAt?: number;
+};
+
+export type TypeChatRoomDisp = TypeChatRoom & {
+  members?: TypeUserDisp[]; // used at runtime
+  createdBy?: TypeUserDisp; // used at runtime
 };
 
 export type TypeChatPost = {
@@ -90,12 +93,15 @@ export type TypeChatPost = {
   imgurl?: string;
   removed: boolean;
   goodMemberIDs: TypeUserID[];
-  goodMembers?: TypeUserDisp[]; // used at runtime
   createdByID: TypeUserID;
-  createdBy?: TypeUserDisp; // used at runtime
   commentPostIDs: string[];
-  comments: TypeChatPost[]; // used at runtime
   createdAt?: number;
+};
+
+export type TypeChatPostDisp = TypeChatPost & {
+  goodMembers?: TypeUserDisp[]; // used at runtime
+  createdBy?: TypeUserDisp; // used at runtime
+  comments?: TypeChatPost[]; // used at runtime
 };
 
 export type TypeChatInfoItem = {
@@ -135,6 +141,7 @@ export type ChatPostUpdateRequest = {
   fukitype?: string;
   createdAt?: string;
   removed?: boolean;
+  imgurl?: string;
   commentPostIDs?: string[];
 };
 
