@@ -144,14 +144,6 @@ export default Vue.extend({
     }, 500);
   },
   methods: {
-    save() {
-      // const members: TypeUserDisp[] = this.membersList
-      //   .filter((m: { user: TypeUserDisp; selected: boolean }) => {
-      //     return m.selected;
-      //   })
-      //   .map((m: { user: TypeUserDisp; selected: boolean }) => m.user);
-      // this.$emit('save', { members, title: this.form.title });
-    },
     saveTitle() {
       this.$emit('save', { title: this.form.title });
     },
@@ -164,6 +156,7 @@ export default Vue.extend({
         },
         () => {
           this.$emit('remove-member', user.id);
+          this.editing = false;
         },
       );
     },

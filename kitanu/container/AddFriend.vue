@@ -15,11 +15,7 @@
 <script lang="ts">
 import Vue, { PropType } from 'vue';
 import ViewAddFriend from '@/components/ViewAddFriend.vue';
-import {
-  TypeUser,
-  TypeUserID,
-  TypeUserDisp,
-} from '@/components/types/apptypes';
+import { TypeUser } from '@/components/types/apptypes';
 import { userStore } from '@/store';
 import { makeUser } from '~/common/helper';
 

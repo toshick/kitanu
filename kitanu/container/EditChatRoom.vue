@@ -22,6 +22,7 @@ import {
   TypeChatRoom,
   TypeChatRoomDisp,
   TypeUserDisp,
+  TypeUser,
   TypeUserID,
 } from '@/components/types/apptypes';
 import { chatListStore, userStore } from '@/store';
@@ -86,22 +87,46 @@ export default Vue.extend({
           existsMember: this.members,
         },
         on: {
-          save(list: TypeUserDisp[]) {
+          save: async (list: TypeUser[]) => {
             console.log('ほぞんんだ', list);
-            res.close();
+            this.showLoading(true);
+            const res = await chatListStore.UpdateChatRoom({
+              id: this.chatroomid,
+              memberIDs: this.chatroom.memberIDs.concat(
+                list.map((u: TypeUser) => u.id),
+              ),
+            });
+            this.showLoading(false);
+            if (res.errorMsg) {
+              toast(`ルームメンバ追加しっぱいヌ`);
+              return;
+            }
+            toast('ルームメンバ追加したヌ');
+            close();
           },
         },
       });
+      function close() {
+        res.close();
+      }
     },
-    removeMember(userID: string) {
-      if (!this.chatroom.memberIDs) return;
+    async removeMember(userID: string) {
       const memberIDs = this.chatroom.memberIDs.filter((id: TypeUserID) => {
         return id !== userID;
       });
-      console.log('removeMember', memberIDs);
-      chatListStore.UpdateChatRoom({
+      if (memberIDs.length === 0) return;
+      this.showLoading(true);
+      console.log('removeMember222', memberIDs);
+      const res = await chatListStore.UpdateChatRoom({
+        id: this.chatroomid,
         memberIDs,
       });
+      this.showLoading(false);
+      if (res.errorMsg) {
+        toast(`ルームメンバ削除しっぱいヌ`);
+        return;
+      }
+      toast('ルームメンバ削除したヌ');
     },
   },
 });

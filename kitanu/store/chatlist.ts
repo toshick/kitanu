@@ -100,13 +100,11 @@ export default class MyClass extends VuexModule {
     if (!chatroomID) {
       return Promise.resolve({ errorMsg: 'no-id UpdateChatRoom' });
     }
-    const myroom = { ...room };
-    delete myroom.members;
-    delete myroom.createdBy;
+
     // 作成
     return chatlistRef
       .doc(chatroomID)
-      .update(myroom)
+      .update({ ...room })
       .then(() => {
         return {};
       })
@@ -156,7 +154,7 @@ export default class MyClass extends VuexModule {
 
   get chatlist(): TypeChatRoom[] {
     return this._chatlist.map((room: TypeChatRoom) => {
-      const r = makeChatRoom(room);
+      const r = makeChatRoom(room) as TypeChatRoomDisp;
       r.members = r.memberIDs.map((userID: TypeUserID) => {
         return (
           userStore.getUserDispByID(userID) ||
