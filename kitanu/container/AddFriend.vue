@@ -1,8 +1,7 @@
 <template>
   <ViewAddFriend
     :title="title"
-    :members="members"
-    :friends="friends"
+    :exists-member="existsMember"
     :search-result="searchResult"
     :searched="searched"
     @close="close"
@@ -14,7 +13,7 @@
 
 <!------------------------------->
 <script lang="ts">
-import Vue from 'vue';
+import Vue, { PropType } from 'vue';
 import ViewAddFriend from '@/components/ViewAddFriend.vue';
 import {
   TypeUser,
@@ -36,6 +35,10 @@ export default Vue.extend({
       default: '',
       type: String,
     },
+    existsMember: {
+      default: [],
+      type: Array as PropType<TypeUser[]>,
+    },
   },
   data(): State {
     return {
@@ -43,16 +46,7 @@ export default Vue.extend({
       searched: false,
     };
   },
-  computed: {
-    members(): TypeUserDisp[] {
-      return userStore.loginedUserFriends;
-    },
-    friends(): TypeUserID[] {
-      return userStore.loginedUserFriends
-        .map((u: TypeUserDisp) => u.id)
-        .concat([userStore.loginedUser.id]);
-    },
-  },
+  computed: {},
   mounted() {
     this.fetch();
   },
@@ -73,7 +67,6 @@ export default Vue.extend({
       this.searchResult = res.list.map((u: any) => makeUser(u));
     },
     onSave(list: TypeUser[]) {
-      console.log('ほほおh', list);
       this.$emit('save', list);
     },
     close() {

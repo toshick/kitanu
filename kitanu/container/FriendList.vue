@@ -10,6 +10,7 @@
       <AddFriend
         v-if="visibleAddFriend"
         title="トモダチを追加ヌ"
+        :exists-member="members"
         @close="visibleAddFriend = false"
         @save="onSaveAddFriend"
       />
@@ -21,7 +22,11 @@
 <!------------------------------->
 <script lang="ts">
 import Vue from 'vue';
-import { TypeUser, TypeUserDisp } from '@/components/types/apptypes';
+import {
+  TypeUser,
+  TypeUserID,
+  TypeUserDisp,
+} from '@/components/types/apptypes';
 import ViewFriendList from '@/components/ViewFriendList.vue';
 import AddFriend from '@/container/AddFriend.vue';
 import { userStore, friendStore } from '@/store';

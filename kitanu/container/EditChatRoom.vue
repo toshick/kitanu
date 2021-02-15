@@ -83,6 +83,7 @@ export default Vue.extend({
         klass: ['view-selectmember'],
         compoParams: {
           title: 'ルームメンバついか',
+          existsMember: this.members,
         },
         on: {
           save(list: TypeUserDisp[]) {

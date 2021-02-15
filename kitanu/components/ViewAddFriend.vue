@@ -40,7 +40,7 @@
             v-for="(u, index) in membersList"
             :key="`member-${index}-${u.user.username}`"
             class="member-item"
-            :class="{ '-added': u.friend }"
+            :class="{ '-added': u.exist }"
           >
             <label>
               <input
@@ -51,7 +51,7 @@
               <div>
                 <UserForList
                   :user="u.user"
-                  :disabled="u.friend"
+                  :disabled="u.exist"
                   :selected="selectedMap[u.user.id]"
                 />
                 <b><ion-icon name="hand-left-outline"></ion-icon></b>
@@ -83,7 +83,7 @@ type State = {
 type Member = {
   user: TypeUser;
   selected: boolean;
-  friend: boolean;
+  exist: boolean;
 };
 
 export default Vue.extend({
@@ -98,9 +98,9 @@ export default Vue.extend({
       default: [],
       type: Array as PropType<TypeUser[]>,
     },
-    friends: {
+    existsMember: {
       default: [],
-      type: Array as PropType<TypeUserID[]>,
+      type: Array as PropType<TypeUser[]>,
     },
     searched: {
       default: false,
@@ -118,11 +118,11 @@ export default Vue.extend({
     membersList(): Member[] {
       return this.searchResult.map((m: TypeUser) => {
         const selected = !!this.selectedMap[m.id];
-        const friend = this.friends.find((uid: TypeUserID) => uid === m.id);
-        if (friend) {
-          this.$set(this.selectedMap, friend, selected);
+        const exist = this.existsMember.find((u: TypeUser) => u.id === m.id);
+        if (exist) {
+          this.$set(this.selectedMap, exist.id, selected);
         }
-        return { user: m, selected, friend: !!friend };
+        return { user: m, selected, exist: !!exist };
       });
     },
     selectedCount(): number {
